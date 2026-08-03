@@ -1,0 +1,576 @@
+/* =====================================
+   V8 PLAY+
+   STYLE.CSS
+   Estilo principal do site
+===================================== */
+
+
+/* ===============================
+   RESET
+================================ */
+
+
+* {
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+
+
+body {
+
+    background: var(--background);
+
+    color: var(--text);
+
+    font-family: var(--font-primary);
+
+    min-height: 100vh;
+
+}
+
+
+
+
+
+a {
+
+    text-decoration: none;
+
+    color: inherit;
+
+}
+
+
+
+button,
+input {
+
+    font-family: inherit;
+
+}
+
+
+
+
+
+/* ===============================
+   HEADER
+================================ */
+
+
+.header {
+
+
+    width: 100%;
+
+    height: 80px;
+
+    padding: 0 5%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+
+    background: var(--header-background);
+
+    backdrop-filter: blur(10px);
+
+    position: fixed;
+
+    top: 0;
+
+    z-index: 1000;
+
+
+}
+
+
+
+
+
+.logo {
+
+
+    font-size: 32px;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+
+
+}
+
+
+
+.logo span {
+
+
+    color: var(--primary-light);
+
+
+}
+
+
+
+
+
+
+.menu {
+
+
+    display: flex;
+
+    gap: 25px;
+
+
+}
+
+
+
+.menu a {
+
+
+    color: var(--text-secondary);
+
+    font-size: 15px;
+
+    transition: var(--transition);
+
+
+}
+
+
+
+.menu a:hover {
+
+
+    color: var(--text);
+
+
+}
+
+
+
+
+
+.header-actions {
+
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+
+}
+
+
+
+
+.header-actions input {
+
+
+    width: 220px;
+
+    padding: 10px 15px;
+
+    border-radius: 20px;
+
+    border: 1px solid var(--border-color);
+
+    background: var(--card-background);
+
+    color: white;
+
+
+}
+
+
+
+
+
+.header-actions button {
+
+
+    background: var(--primary);
+
+    border: none;
+
+    color: white;
+
+    padding: 10px 22px;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+
+
+}
+
+
+
+
+.header-actions button:hover {
+
+
+    background: var(--primary-light);
+
+
+}
+
+
+
+
+
+
+
+/* ===============================
+   HERO / BANNER
+================================ */
+
+
+
+.hero {
+
+
+    height: 650px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 5%;
+
+
+    background:
+
+    linear-gradient(
+        90deg,
+        rgba(15,17,21,1),
+        rgba(15,17,21,0.4)
+    );
+
+
+    margin-top: 80px;
+
+
+}
+
+
+
+
+
+.hero-content {
+
+
+    max-width: 600px;
+
+
+}
+
+
+
+
+
+.hero h1 {
+
+
+    font-size: 55px;
+
+    font-weight: 800;
+
+    margin-bottom: 20px;
+
+
+}
+
+
+
+.hero p {
+
+
+    color: var(--text-secondary);
+
+    font-size: 18px;
+
+    margin-bottom: 30px;
+
+
+}
+
+
+
+
+
+.hero-buttons {
+
+
+    display: flex;
+
+    gap: 15px;
+
+
+}
+
+
+
+
+.btn-primary,
+.btn-secondary {
+
+
+    padding: 14px 30px;
+
+    border-radius: 30px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    border: none;
+
+
+}
+
+
+
+
+.btn-primary {
+
+
+    background: var(--primary);
+
+    color: white;
+
+
+}
+
+
+
+.btn-secondary {
+
+
+    background: rgba(255,255,255,0.1);
+
+    color:white;
+
+
+}
+
+
+
+
+
+/* ===============================
+   CATALOGO
+================================ */
+
+
+
+.catalog-section {
+
+
+    padding: 40px 5%;
+
+
+}
+
+
+
+
+.catalog-section h2 {
+
+
+    font-size: 28px;
+
+    margin-bottom: 25px;
+
+
+}
+
+
+
+
+
+.movie-grid {
+
+
+    display: grid;
+
+    grid-template-columns:
+
+    repeat(auto-fill,minmax(180px,1fr));
+
+
+    gap: 25px;
+
+
+}
+
+
+
+
+
+/* CARD FILMES */
+
+.movie-card {
+
+
+    background: var(--card-background);
+
+    border-radius: var(--border-radius);
+
+    overflow: hidden;
+
+    transition: var(--transition);
+
+    cursor: pointer;
+
+
+}
+
+
+
+
+.movie-card:hover {
+
+
+    transform: translateY(-8px);
+
+    box-shadow: var(--shadow-hover);
+
+
+}
+
+
+
+
+
+.movie-card img {
+
+
+    width:100%;
+
+    height:270px;
+
+    object-fit:cover;
+
+
+}
+
+
+
+
+
+.movie-info {
+
+
+    padding:15px;
+
+
+}
+
+
+
+.movie-info h3 {
+
+
+    font-size:16px;
+
+    margin-bottom:8px;
+
+
+}
+
+
+
+
+
+.movie-info span {
+
+
+    font-size:13px;
+
+    color:var(--text-secondary);
+
+
+}
+
+
+
+
+
+
+
+/* ===============================
+   PLANOS
+================================ */
+
+
+
+.badge-free {
+
+
+    color:var(--free-color);
+
+}
+
+
+
+.badge-prime {
+
+
+    color:var(--prime-color);
+
+
+}
+
+
+
+.badge-premium {
+
+
+    color:var(--premium-color);
+
+
+}
+
+
+
+
+
+/* ===============================
+   FOOTER
+================================ */
+
+
+footer {
+
+
+    padding:40px;
+
+    text-align:center;
+
+    color:var(--text-secondary);
+
+    background:#090A0D;
+
+
+}
