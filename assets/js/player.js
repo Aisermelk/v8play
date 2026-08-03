@@ -1,11 +1,13 @@
 /* =====================================
    V8 PLAY+
    PLAYER.JS
-   Sistema de reprodução
+   Player inteligente
 ===================================== */
 
 
 console.log("🎬 Player V8 Play+ iniciado");
+
+
 
 
 
@@ -32,13 +34,16 @@ if(!dadosFilme){
 
 
 console.error(
-"❌ Nenhum filme encontrado"
+"❌ Nenhum filme selecionado"
 );
 
 
-mostrarErro(
-"Nenhum filme selecionado"
-);
+
+document.getElementById(
+"tituloFilme"
+).innerText =
+"Nenhum filme encontrado";
+
 
 
 }
@@ -58,9 +63,15 @@ filme.titulo
 
 
 
-carregarFilme(
+carregarDados(
 filme
 );
+
+
+carregarVideo(
+filme.video
+);
+
 
 
 }
@@ -71,19 +82,25 @@ filme
 
 
 
-
 /* ===============================
-   CARREGAR DADOS
+   DADOS DO FILME
 ================================ */
 
 
-function carregarFilme(filme){
+function carregarDados(filme){
 
 
 
 const titulo =
 document.getElementById(
 "tituloFilme"
+);
+
+
+
+const capa =
+document.getElementById(
+"capaFilme"
 );
 
 
@@ -95,9 +112,116 @@ document.getElementById(
 
 
 
-const capa =
+const ano =
 document.getElementById(
-"capaFilme"
+"anoFilme"
+);
+
+
+
+const categoria =
+document.getElementById(
+"categoriaFilme"
+);
+
+
+
+
+
+if(titulo){
+
+titulo.innerText =
+filme.titulo || "Sem título";
+
+}
+
+
+
+
+
+if(capa){
+
+capa.src =
+filme.capa ||
+"assets/img/default.jpg";
+
+}
+
+
+
+
+
+if(descricao){
+
+descricao.innerText =
+filme.descricao ||
+"Sem descrição";
+
+}
+
+
+
+
+
+if(ano){
+
+ano.innerText =
+filme.ano || "";
+
+}
+
+
+
+
+
+if(categoria){
+
+categoria.innerText =
+filme.categoria || "";
+
+}
+
+
+
+
+
+}
+
+
+
+
+
+
+
+/* ===============================
+   PLAYER AUTOMÁTICO
+================================ */
+
+
+function carregarVideo(url){
+
+
+
+if(!url){
+
+
+console.warn(
+"⚠ Sem vídeo cadastrado"
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+const youtube =
+document.getElementById(
+"youtubePlayer"
 );
 
 
@@ -111,11 +235,40 @@ document.getElementById(
 
 
 
-if(titulo){
+
+/* ===============================
+   YOUTUBE
+================================ */
 
 
-titulo.innerText =
-filme.titulo || "Sem título";
+
+if(
+url.includes("youtube.com") ||
+url.includes("youtu.be")
+){
+
+
+
+let videoId;
+
+
+
+if(url.includes("watch?v=")){
+
+
+videoId =
+url.split("watch?v=")[1]
+.split("&")[0];
+
+
+}
+
+
+else if(url.includes("youtu.be")){
+
+
+videoId =
+url.split("youtu.be/")[1];
 
 
 }
@@ -123,100 +276,75 @@ filme.titulo || "Sem título";
 
 
 
-
-if(descricao){
-
-
-descricao.innerText =
-filme.descricao || 
-"Sem descrição";
-
-
-}
+youtube.src =
+`https://www.youtube.com/embed/${videoId}`;
 
 
 
+youtube.style.display =
+"block";
 
-
-if(capa){
-
-
-capa.src =
-filme.capa || 
-"assets/img/default.jpg";
-
-
-}
-
-
-
-
-
-if(video){
-
-
-if(filme.video){
-
-
-video.src =
-filme.video;
 
 
 console.log(
-"▶ Vídeo carregado:",
-filme.video
+"▶ YouTube carregado:",
+videoId
 );
 
 
-}
-
-else{
-
-
-console.warn(
-"⚠ Filme sem link de vídeo"
-);
-
 
 }
-
-
-}
-
-
-
-}
-
-
 
 
 
 
 
 /* ===============================
-   ERRO
+   MP4
 ================================ */
 
 
-function mostrarErro(mensagem){
+else if(
+url.endsWith(".mp4")
+){
 
 
 
-const titulo =
-document.getElementById(
-"tituloFilme"
+video.src =
+url;
+
+
+
+video.style.display =
+"block";
+
+
+
+console.log(
+"▶ MP4 carregado:",
+url
 );
 
 
 
-if(titulo){
+}
 
 
-titulo.innerText =
-mensagem;
+
+
+
+else{
+
+
+console.warn(
+"Formato de vídeo não reconhecido:",
+url
+);
+
 
 
 }
+
 
 
 }
