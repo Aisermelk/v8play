@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V8 Play+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <style>
+        :root { --primary: #00d4ff; --bg-dark: #0a0a0b; --bg-card: #16161a; --text: #fff; }
+        * { box-sizing: border-box; }
+        body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; margin: 0; overflow-x: hidden; }
+
+        header { display: flex; justify-content: space-between; gap: 20px; padding: 20px 5%; position: fixed; width: 100%; z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); align-items: center; }
+        .logo { display: flex; align-items: center; text-decoration: none; white-space: nowrap; }
+        .logo-img { height: 48px; width: auto; object-fit: contain; transition: transform .2s; }
+        .logo-img:hover { transform: scale(1.05); }
+        .logo span { color: var(--primary); }
+
+        #busca { flex: 1; max-width: 320px; padding: 8px 14px; border-radius: 4px; border: 1px solid #333; background: rgba(255,255,255,0.08); color: white; }
+        #busca::placeholder { color: #aaa; }
+
+        .btn-login { background: var(--primary); border: none; padding: 8px 20px; border-radius: 4px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+
+        #hero { height: 70vh; position: relative; display: flex; align-items: flex-end; padding: 0 5% 60px; background-size: cover; background-position: center; background-color: #111; transition: background-image 0.4s ease; }
+        #hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, var(--bg-dark), transparent 60%), linear-gradient(to right, black, transparent); }
+        .hero-content { position: relative; z-index: 1; max-width: 600px; }
+        .hero-content h1 { font-size: 2.4rem; margin-bottom: 10px; }
+        .hero-content p { color: #ddd; margin-bottom: 18px; }
+        .hero-btns button { padding: 10px 24px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer; margin-right: 10px; }
+        .btn-assistir { background: white; }
+        .btn-info { background: rgba(255,255,255,0.2); color: white; }
+
+        .container { padding: 30px 5%; }
+        .container h2 { margin-bottom: 12px; font-size: 1.2rem; }
+
+        .filtros { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
+        .chip { padding: 7px 16px; border-radius: 20px; border: 1px solid #333; background: transparent; color: #ccc; cursor: pointer; font-size: 0.85rem; transition: 0.2s; }
+        .chip:hover { border-color: var(--primary); color: white; }
+        .chip.ativo { background: var(--primary); color: #000; border-color: var(--primary); font-weight: 600; }
+        .cards { display: flex; gap: 15px; overflow-x: auto; padding: 10px 0 20px; scrollbar-width: thin; }
+        .movie-card { min-width: 160px; height: 240px; background: var(--bg-card); border-radius: 8px; cursor: pointer; transition: 0.25s; flex-shrink: 0; overflow: hidden; position: relative; }
+        .movie-card:hover { transform: scale(1.06); box-shadow: 0 0 0 2px var(--primary); }
+        .movie-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .movie-card .titulo-fallback { padding: 10px; font-size: 0.85rem; }
+        .vazio { color: #888; font-size: 0.9rem; }
+
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.9); padding: 20px; }
+        .hidden { display: none !important; }
+        .login-box { background: #111; padding: 40px; border-radius: 8px; width: 100%; max-width: 350px; text-align: center; }
+        .login-box h2 { margin-bottom: 20px; }
+        .login-box input { width: 100%; padding: 12px; margin-bottom: 10px; background: #222; border: 1px solid #333; color: white; border-radius: 4px; }
+        .login-box .btn-secundario { background: none; color: #aaa; border: none; margin-top: 8px; cursor: pointer; text-decoration: underline; font-size: 0.85rem; }
+        .erro-msg { color: #ff6b6b; font-size: 0.85rem; min-height: 18px; margin-bottom: 6px; }
+
+        .detalhe-box { background: #111; border-radius: 10px; max-width: 600px; width: 100%; overflow: hidden; }
+        .detalhe-box img { width: 100%; max-height: 300px; object-fit: cover; }
+        .detalhe-info { padding: 25px; }
+        .detalhe-info h2 { margin-bottom: 8px; }
+        .detalhe-meta { color: #aaa; font-size: 0.85rem; margin-bottom: 12px; }
+        .detalhe-info p { color: #ddd; line-height: 1.5; margin-bottom: 20px; }
+        .detalhe-btns { margin-bottom: 12px; }
+        .detalhe-btns button { padding: 10px 22px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer; margin-right: 10px; }
+
+        #playerPage { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 3000; }
+        #playerPage video, #playerPage iframe { width: 100%; height: 100%; border: none; }
+        #fecharPlayer { position: absolute; top: 20px; left: 20px; z-index: 3001; background: rgba(0,0,0,0.6); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; }
+
+        #notification { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #222; padding: 12px 24px; border-radius: 6px; z-index: 4000; border: 1px solid #333; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo"><img src="assets/v8p.png" alt="V8 Play+" class="logo-img"></a>
+        <input type="text" id="busca" name="busca-catalogo" placeholder="Buscar filmes e séries..." autocomplete="off">
+        <button class="btn-login" id="authBtn">Entrar</button>
+    </header>
+
+    <!-- MODAL DE COMPRA (por título) -->
+    <div id="modalCompra" class="modal hidden">
+        <div class="login-box">
+            <h2>Comprar título</h2>
+            <p id="compraTitulo" style="color:#fff; font-weight:600; margin-bottom:6px;"></p>
+            <p id="compraPreco" style="color:#00d4ff; font-size:1.4rem; font-weight:700; margin-bottom:20px;"></p>
+            <p class="erro-msg" id="erroCompra"></p>
+            <button class="btn-login" style="width:100%;" id="btnIrPagar">Pagar com Mercado Pago</button>
+            <p style="color:#888; font-size:0.8rem; margin-top:10px;">Libera assistir online e baixar o arquivo, sem limite de tempo.</p>
+            <button onclick="document.getElementById('modalCompra').classList.add('hidden')" style="background:none; color:white; border:none; margin-top:10px; cursor:pointer;">Cancelar</button>
+        </div>
+    </div>
+
+    <section id="hero">
+        <div class="hero-content">
+            <h1 id="heroTitle">V8 Play+</h1>
+            <p id="heroDesc">Sua nova experiência em streaming conectada ao Firebase.</p>
+            <div class="hero-btns">
+                <button class="btn-assistir" id="heroAssistir"><i class="fa-solid fa-play"></i> Assistir</button>
+                <button class="btn-info" id="heroInfo">Mais informações</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="filtros" id="filtros">
+            <button class="chip ativo" data-genero="Todos">Todos</button>
+        </div>
+
+        <h2>🔥 Em Alta</h2>
+        <div class="cards" id="emAlta"></div>
+
+        <h2>🎬 Filmes</h2>
+        <div class="cards" id="filmes"></div>
+
+        <h2>📺 Séries</h2>
+        <div class="cards" id="series"></div>
+
+        <h2>🎌 Animes</h2>
+        <div class="cards" id="animes"></div>
+
+        <h2>🎭 Doramas</h2>
+        <div class="cards" id="doramas"></div>
+
+        <h2>⭐ Recomendados</h2>
+        <div class="cards" id="recomendados"></div>
+    </div>
+
+    <!-- MODAL LOGIN / CADASTRO -->
+    <div id="loginModal" class="modal hidden">
+        <div class="login-box">
+            <h2 id="tituloAuth">Login</h2>
+            <p class="erro-msg" id="erroAuth"></p>
+            <input type="email" id="email" placeholder="E-mail" autocomplete="username">
+            <input type="password" id="password" placeholder="Senha" autocomplete="current-password">
+            <button class="btn-login" style="width: 100%;" id="doLogin">Entrar</button>
+            <button class="btn-secundario" id="alternarCadastro">Ainda não tem conta? Criar conta</button>
+            <br>
+            <button onclick="document.getElementById('loginModal').classList.add('hidden')" style="background:none; color:white; border:none; margin-top:10px; cursor:pointer;">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- MODAL DETALHES DO FILME -->
+    <div id="detalheModal" class="modal hidden">
+        <div class="detalhe-box">
+            <img id="detImg" src="" alt="">
+            <div class="detalhe-info">
+                <h2 id="detTitulo"></h2>
+                <div class="detalhe-meta"><span id="detAno"></span> · <span id="detCategoria"></span></div>
+                <p id="detDescricao"></p>
+                <div class="detalhe-btns" id="detBtnsTrailer">
+                    <button class="btn-info" id="detTrailer"><i class="fa-solid fa-film"></i> Ver trailer</button>
+                </div>
+                <div class="detalhe-btns" id="detBtnsBloqueado">
+                    <button class="btn-assistir" id="detComprar"><i class="fa-solid fa-lock"></i> Comprar - <span id="detPreco"></span></button>
+                </div>
+                <div class="detalhe-btns hidden" id="detBtnsLiberado">
+                    <button class="btn-assistir" id="detAssistir"><i class="fa-solid fa-play"></i> Assistir</button>
+                    <button class="btn-info" id="detBaixar"><i class="fa-solid fa-download"></i> Baixar</button>
+                </div>
+                <div class="detalhe-btns">
+                    <button class="btn-info" onclick="document.getElementById('detalheModal').classList.add('hidden')">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLAYER -->
+    <div id="playerPage" class="hidden">
+        <button id="fecharPlayer"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+        <video id="videoPlayer" controls autoplay></video>
+        <iframe id="youtubePlayer" class="hidden" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <div id="notification" class="hidden"><span id="notificationText"></span></div>
+
+    <!-- SCRIPTS FIREBASE -->
+    <script type="module">
+        import { db, auth } from "./js/firebase.js";
+        import { collection, query, where, orderBy, getDocs, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        let catalogo = [];
+        let filmeAtual = null;
+        let modoCadastro = false;
+
+        // --- CARREGAR CATÁLOGO ---
+        const COLECOES = ["filmes", "series", "animes", "doramas"];
+
+        async function buscarColecao(nome) {
+            try {
+                // "ativo == true" + "orderBy data" pode pedir a criação de um índice composto
+                // na primeira vez para cada coleção -- o Firestore mostra um link pronto no
+                // console do navegador para criar automaticamente, é só clicar nele.
+                const consulta = query(
+                    collection(db, nome),
+                    where("ativo", "==", true),
+                    orderBy("data", "desc")
+                );
+                const snap = await getDocs(consulta);
+                const itens = [];
+                snap.forEach((doc) => itens.push({ id: doc.id, colecao: nome, ...doc.data() }));
+                return itens;
+            } catch (e) {
+                console.error(`Erro ao buscar coleção "${nome}":`, e);
+                return [];
+            }
+        }
+
+        async function carregarFilmes() {
+            const emAlta = document.getElementById('emAlta');
+            const filmes = document.getElementById('filmes');
+            const series = document.getElementById('series');
+            const animes = document.getElementById('animes');
+            const doramas = document.getElementById('doramas');
+            const recomendados = document.getElementById('recomendados');
+
+            const resultados = await Promise.all(COLECOES.map(buscarColecao));
+            catalogo = resultados.flat();
+
+            emAlta.innerHTML = filmes.innerHTML = series.innerHTML = animes.innerHTML = doramas.innerHTML = recomendados.innerHTML = "";
+
+            if (catalogo.length === 0) {
+                filmes.innerHTML = "<p class='vazio'>Nenhum filme encontrado. Cadastre pelo painel admin.</p>";
+                return;
+            }
+
+            catalogo.forEach((item) => {
+                if (item.destaque) emAlta.appendChild(criarCard(item));
+
+                if (item.tipo === "serie") series.appendChild(criarCard(item));
+                else if (item.tipo === "anime") animes.appendChild(criarCard(item));
+                else if (item.tipo === "dorama") doramas.appendChild(criarCard(item));
+                else filmes.appendChild(criarCard(item));
+
+                if (item.recomendado) recomendados.appendChild(criarCard(item));
+            });
+
+            carregarDestaque();
+            montarFiltros();
+        }
+
+        // --- FILTROS DE GÊNERO ---
+        function montarFiltros() {
+            const container = document.getElementById('filtros');
+            const generos = [...new Set(catalogo.map(i => i.categoria).filter(Boolean))].sort();
+
+            container.querySelectorAll('.chip:not([data-genero="Todos"])').forEach(c => c.remove());
+
+            generos.forEach(genero => {
+                const chip = document.createElement('button');
+                chip.className = 'chip';
+                chip.dataset.genero = genero;
+                chip.innerText = genero;
+                container.appendChild(chip);
+            });
+        }
+
+        document.getElementById('filtros').addEventListener('click', (e) => {
+            if (!e.target.classList.contains('chip')) return;
+
+            document.querySelectorAll('#filtros .chip').forEach(c => c.classList.remove('ativo'));
+            e.target.classList.add('ativo');
+
+            const genero = e.target.dataset.genero;
+            document.querySelectorAll('.movie-card').forEach(card => {
+                card.style.display = (genero === 'Todos' || card.dataset.categoria === genero) ? '' : 'none';
+            });
+        });
+
+        function criarCard(item) {
+            const card = document.createElement('div');
+            card.className = 'movie-card';
+            card.dataset.categoria = item.categoria || "";
+            if (item.capa) {
+                card.innerHTML = `<img src="${item.capa}" alt="${item.titulo}">`;
+            } else {
+                card.innerHTML = `<div class="titulo-fallback">${item.titulo}</div>`;
+            }
+            card.onclick = () => abrirDetalhes(item);
+            return card;
+        }
+
+        function carregarDestaque() {
+            const destaque = catalogo.find(i => i.destaque === true) || catalogo[0];
+            if (!destaque) return;
+            filmeAtual = destaque;
+            document.getElementById('heroTitle').innerText = destaque.titulo;
+            document.getElementById('heroDesc').innerText = destaque.descricao || "";
+            const hero = document.getElementById('hero');
+            if (destaque.banner) hero.style.backgroundImage = `url('${destaque.banner}')`;
+        }
+
+        function formatarPreco(preco) {
+            const valor = Number(preco) || 0;
+            return valor > 0 ? `R$ ${valor.toFixed(2).replace('.', ',')}` : "Grátis";
+        }
+
+        // Verifica se o usuário logado já comprou este título, buscando a
+        // subcoleção protegida (as regras do Firestore barram quem não comprou)
+        async function checarPosse(item) {
+            if (!auth.currentUser) return null;
+            try {
+                const snap = await getDoc(doc(db, item.colecao, item.id, "protegido", "dados"));
+                return snap.exists() ? snap.data() : null;
+            } catch (e) {
+                return null; // sem permissão -> ainda não comprou
+            }
+        }
+
+        async function abrirDetalhes(item) {
+            filmeAtual = item;
+            document.getElementById('detImg').src = item.banner || item.capa || "";
+            document.getElementById('detTitulo').innerText = item.titulo;
+            document.getElementById('detAno').innerText = item.ano || "";
+            document.getElementById('detCategoria').innerText = item.categoria || (item.tipo === "serie" ? "Série" : "Filme");
+            document.getElementById('detDescricao').innerText = item.descricao || "";
+            document.getElementById('detPreco').innerText = formatarPreco(item.preco);
+
+            document.getElementById('detBtnsTrailer').style.display = item.trailer ? '' : 'none';
+            document.getElementById('detBtnsBloqueado').classList.remove('hidden');
+            document.getElementById('detBtnsLiberado').classList.add('hidden');
+
+            document.getElementById('detalheModal').classList.remove('hidden');
+
+            const dados = await checarPosse(item);
+            filmeAtual._dadosProtegidos = dados;
+
+            if (filmeAtual !== item) return; // usuário já abriu outro título enquanto verificava
+
+            if (dados) {
+                document.getElementById('detBtnsBloqueado').classList.add('hidden');
+                document.getElementById('detBtnsLiberado').classList.remove('hidden');
+            }
+        }
+
+        // Extrai o ID do vídeo de qualquer formato comum de link do YouTube
+        function idDoYoutube(url) {
+            const padrao = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/;
+            const match = url.match(padrao);
+            return match ? match[1] : null;
+        }
+
+        // Toca uma URL no player (trailer ou vídeo completo) -- YouTube vira
+        // iframe, link direto (.mp4) vira tag <video>
+        function tocarUrl(url, opts = {}) {
+            if (!url) { mostrarNotificacao("Vídeo não disponível"); return; }
+
+            const video = document.getElementById('videoPlayer');
+            const youtube = document.getElementById('youtubePlayer');
+            const idYt = idDoYoutube(url);
+
+            if (idYt) {
+                video.classList.add('hidden');
+                video.pause();
+                video.src = "";
+
+                youtube.src = `https://www.youtube.com/embed/${idYt}?autoplay=1`;
+                youtube.classList.remove('hidden');
+            } else {
+                youtube.classList.add('hidden');
+                youtube.src = "";
+
+                video.classList.remove('hidden');
+                video.src = url;
+                if (opts.progresso) video.currentTime = opts.progresso;
+            }
+
+            document.getElementById('detalheModal').classList.add('hidden');
+            document.getElementById('playerPage').classList.remove('hidden');
+        }
+
+        // --- TRAILER (público, não precisa ter comprado) ---
+        document.getElementById('detTrailer').addEventListener('click', () => {
+            if (filmeAtual && filmeAtual.trailer) tocarUrl(filmeAtual.trailer);
+        });
+
+        // --- ASSISTIR (vídeo completo, só quem comprou) ---
+        document.getElementById('detAssistir').addEventListener('click', async () => {
+            if (!filmeAtual) return;
+            let dados = filmeAtual._dadosProtegidos || await checarPosse(filmeAtual);
+            if (!dados) { mostrarNotificacao("Você ainda não comprou esse título"); return; }
+            tocarUrl(dados.video);
+            registrarHistorico(filmeAtual);
+        });
+
+        // --- BAIXAR (só funciona pra link direto .mp4, não pra YouTube) ---
+        document.getElementById('detBaixar').addEventListener('click', async () => {
+            if (!filmeAtual) return;
+            let dados = filmeAtual._dadosProtegidos || await checarPosse(filmeAtual);
+            const url = dados && (dados.arquivoDownload || dados.video);
+            if (!url) { mostrarNotificacao("Arquivo não disponível pra download"); return; }
+            if (idDoYoutube(url)) { mostrarNotificacao("Esse título só está disponível pra assistir online"); return; }
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = (filmeAtual.titulo || "video") + ".mp4";
+            link.target = "_blank";
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        });
+
+        // --- HISTÓRICO ("assistido em") ---
+        async function registrarHistorico(item) {
+            const usuario = auth.currentUser;
+            if (!usuario) return;
+
+            try {
+                const ref = doc(db, "historico", `${usuario.uid}_${item.id}`);
+                await setDoc(ref, {
+                    usuario: usuario.uid,
+                    filmeId: item.id,
+                    titulo: item.titulo,
+                    capa: item.capa || "",
+                    assistidoEm: serverTimestamp()
+                }, { merge: true });
+            } catch (e) {
+                console.error("Erro ao registrar histórico:", e);
+            }
+        }
+
+        // --- PROGRESSO ("continuar assistindo") ---
+        // Só disponível para vídeo direto (mp4) -- o player do YouTube embutido
+        // não expõe o tempo atual sem carregar a API extra do YouTube.
+        let ultimoSalvamento = 0;
+        document.getElementById('videoPlayer').addEventListener('timeupdate', (e) => {
+            const agora = Date.now();
+            if (agora - ultimoSalvamento < 5000) return; // salva no máximo a cada 5s
+            ultimoSalvamento = agora;
+            salvarProgresso(e.target.currentTime);
+        });
+
+        async function salvarProgresso(tempo) {
+            const usuario = auth.currentUser;
+            if (!usuario || !filmeAtual) return;
+
+            try {
+                const ref = doc(db, "progresso", `${usuario.uid}_${filmeAtual.id}`);
+                await setDoc(ref, {
+                    usuario: usuario.uid,
+                    filmeId: filmeAtual.id,
+                    titulo: filmeAtual.titulo,
+                    tempo: tempo,
+                    atualizadoEm: serverTimestamp()
+                }, { merge: true });
+            } catch (e) {
+                console.error("Erro ao salvar progresso:", e);
+            }
+        }
+
+        document.getElementById('heroAssistir').addEventListener('click', () => filmeAtual && abrirDetalhes(filmeAtual));
+        document.getElementById('heroInfo').addEventListener('click', () => filmeAtual && abrirDetalhes(filmeAtual));
+
+        document.getElementById('fecharPlayer').addEventListener('click', () => {
+            const video = document.getElementById('videoPlayer');
+            const youtube = document.getElementById('youtubePlayer');
+            if (!video.classList.contains('hidden') && video.currentTime > 0) {
+                salvarProgresso(video.currentTime);
+            }
+            video.pause();
+            video.src = "";
+            youtube.src = "";
+            document.getElementById('playerPage').classList.add('hidden');
+        });
+
+        // Fechar com tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !document.getElementById('playerPage').classList.contains('hidden')) {
+                document.getElementById('fecharPlayer').click();
+            }
+        });
+
+        function mostrarNotificacao(msg) {
+            const box = document.getElementById('notification');
+            document.getElementById('notificationText').innerText = msg;
+            box.classList.remove('hidden');
+            setTimeout(() => box.classList.add('hidden'), 3000);
+        }
+
+        // --- BUSCA ---
+        document.getElementById('busca').addEventListener('input', (e) => {
+            const texto = e.target.value.toLowerCase();
+            document.querySelectorAll('.movie-card').forEach(card => {
+                card.style.display = card.innerText.toLowerCase().includes(texto) || texto === "" ? "block" : "none";
+            });
+        });
+
+        // --- LOGIN / CADASTRO ---
+        document.getElementById('alternarCadastro').addEventListener('click', () => {
+            modoCadastro = !modoCadastro;
+            document.getElementById('tituloAuth').innerText = modoCadastro ? "Criar conta" : "Login";
+            document.getElementById('doLogin').innerText = modoCadastro ? "Criar conta" : "Entrar";
+            document.getElementById('alternarCadastro').innerText = modoCadastro ? "Já tem conta? Entrar" : "Ainda não tem conta? Criar conta";
+            document.getElementById('erroAuth').innerText = "";
+        });
+
+        document.getElementById('doLogin').addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            const erro = document.getElementById('erroAuth');
+            erro.innerText = "";
+
+            try {
+                if (modoCadastro) {
+                    await createUserWithEmailAndPassword(auth, email, pass);
+                } else {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                }
+                document.getElementById('loginModal').classList.add('hidden');
+                document.getElementById('email').value = "";
+                document.getElementById('password').value = "";
+            } catch (e) {
+                erro.innerText = traduzirErro(e.code);
+            }
+        });
+
+        function traduzirErro(codigo) {
+            const mapa = {
+                "auth/invalid-email": "E-mail inválido",
+                "auth/user-not-found": "Usuário não encontrado",
+                "auth/wrong-password": "Senha incorreta",
+                "auth/invalid-credential": "E-mail ou senha incorretos",
+                "auth/email-already-in-use": "Esse e-mail já está cadastrado",
+                "auth/weak-password": "A senha precisa ter pelo menos 6 caracteres"
+            };
+            return mapa[codigo] || "Ocorreu um erro, tente novamente";
+        }
+
+        // --- LOGOUT ---
+        document.getElementById('authBtn').addEventListener('click', () => {
+            if (auth.currentUser) {
+                signOut(auth);
+            } else {
+                document.getElementById('loginModal').classList.remove('hidden');
+            }
+        });
+
+        // --- MONITORAR USUÁRIO ---
+        onAuthStateChanged(auth, (user) => {
+            const btn = document.getElementById('authBtn');
+            btn.innerText = user ? "Sair (" + user.email.split('@')[0] + ")" : "Entrar";
+        });
+
+        // --- COMPRA POR TÍTULO ---
+        document.getElementById('detComprar').addEventListener('click', () => {
+            if (!filmeAtual) return;
+
+            if (!auth.currentUser) {
+                mostrarNotificacao("Faça login antes de comprar");
+                document.getElementById('detalheModal').classList.add('hidden');
+                document.getElementById('loginModal').classList.remove('hidden');
+                return;
+            }
+
+            document.getElementById('compraTitulo').innerText = filmeAtual.titulo;
+            document.getElementById('compraPreco').innerText = formatarPreco(filmeAtual.preco);
+            document.getElementById('erroCompra').innerText = "";
+            document.getElementById('modalCompra').classList.remove('hidden');
+        });
+
+        document.getElementById('btnIrPagar').addEventListener('click', async () => {
+            const erro = document.getElementById('erroCompra');
+            erro.innerText = "";
+            if (!filmeAtual || !auth.currentUser) return;
+
+            try {
+                const resp = await fetch('/.netlify/functions/criar-compra', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        uid: auth.currentUser.uid,
+                        email: auth.currentUser.email,
+                        colecao: filmeAtual.colecao,
+                        itemId: filmeAtual.id,
+                        titulo: filmeAtual.titulo,
+                        preco: filmeAtual.preco
+                    })
+                });
+                const dados = await resp.json();
+                if (dados.init_point) {
+                    window.location.href = dados.init_point;
+                } else {
+                    erro.innerText = "Não foi possível iniciar o pagamento. Tente novamente.";
+                }
+            } catch (e) {
+                erro.innerText = "Erro de conexão com o pagamento.";
+            }
+        });
+
+        carregarFilmes();
+    </script>
+</body>
+</html>
