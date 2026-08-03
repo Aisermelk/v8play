@@ -1,5 +1,3 @@
-import { db } from "./firebase.js";
-
 /* =====================================
    V8 PLAY+
    APP.JS
@@ -7,15 +5,34 @@ import { db } from "./firebase.js";
 ===================================== */
 
 
+/* ===============================
+   FIREBASE
+================================ */
+
+
+import { db } from "./firebase.js";
+
+import { 
+collection,
+getDocs,
+query,
+where
+}
+from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+
+
+
 console.log("🚀 V8 Play+ iniciado");
 
 
 
-/*
-=====================================
-CONFIGURAÇÃO INICIAL
-=====================================
-*/
+
+
+/* ===============================
+   INICIALIZAÇÃO
+================================ */
 
 
 document.addEventListener(
@@ -24,9 +41,8 @@ document.addEventListener(
 
 
 console.log(
-"✅ Página carregada corretamente"
+"✅ Página carregada"
 );
-
 
 
 iniciarSite();
@@ -38,11 +54,10 @@ iniciarSite();
 
 
 
-/*
-=====================================
-FUNÇÃO PRINCIPAL
-=====================================
-*/
+
+/* ===============================
+   FUNÇÃO PRINCIPAL
+================================ */
 
 
 function iniciarSite(){
@@ -50,7 +65,11 @@ function iniciarSite(){
 
 configurarLogin();
 
+
 configurarPesquisa();
+
+
+carregarCatalogo();
 
 
 }
@@ -58,11 +77,11 @@ configurarPesquisa();
 
 
 
-/*
-=====================================
-LOGIN
-=====================================
-*/
+
+
+/* ===============================
+   LOGIN
+================================ */
 
 
 function configurarLogin(){
@@ -82,7 +101,7 @@ loginBtn.addEventListener(
 
 
 alert(
-"Área de login será ativada em breve"
+"Login V8 Play+ em desenvolvimento"
 );
 
 
@@ -92,18 +111,17 @@ alert(
 }
 
 
-
 }
 
 
 
 
 
-/*
-=====================================
-PESQUISA
-=====================================
-*/
+
+
+/* ===============================
+   PESQUISA
+================================ */
 
 
 function configurarPesquisa(){
@@ -118,12 +136,12 @@ if(searchInput){
 
 
 searchInput.addEventListener(
-"keyup",
+"input",
 (e)=>{
 
 
 console.log(
-"Pesquisa:",
+"Pesquisando:",
 e.target.value
 );
 
@@ -132,6 +150,209 @@ e.target.value
 
 
 }
+
+
+}
+
+
+
+
+
+
+
+/* ===============================
+   CARREGAR FILMES
+================================ */
+
+
+async function carregarCatalogo(){
+
+
+try{
+
+
+console.log(
+"🎬 Buscando filmes..."
+);
+
+
+
+const filmesRef =
+collection(db,"filmes");
+
+
+
+const filmesSnapshot =
+await getDocs(filmesRef);
+
+
+
+
+filmesSnapshot.forEach(
+(doc)=>{
+
+
+const filme =
+doc.data();
+
+
+
+console.log(
+"Filme encontrado:",
+filme.titulo
+);
+
+
+
+mostrarFilme(
+filme
+);
+
+
+
+});
+
+
+
+}
+
+catch(error){
+
+
+console.error(
+"Erro ao buscar filmes:",
+error
+);
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+/* ===============================
+   MOSTRAR FILME NA TELA
+================================ */
+
+
+function mostrarFilme(filme){
+
+
+
+let local;
+
+
+
+if(filme.plano === "FREE"){
+
+
+local =
+document.getElementById(
+"freeMovies"
+);
+
+
+}
+
+
+
+else if(filme.plano === "PRIME"){
+
+
+local =
+document.getElementById(
+"primeMovies"
+);
+
+
+}
+
+
+
+else if(filme.plano === "PREMIUM"){
+
+
+local =
+document.getElementById(
+"premiumMovies"
+);
+
+
+}
+
+
+
+else {
+
+
+local =
+document.getElementById(
+"featuredMovies"
+);
+
+
+}
+
+
+
+
+
+if(!local) return;
+
+
+
+
+
+const card = document.createElement(
+"div"
+);
+
+
+
+card.className =
+"movie-card";
+
+
+
+
+
+card.innerHTML = `
+
+<img 
+src="${filme.capa || 'assets/img/default.jpg'}"
+alt="${filme.titulo}"
+>
+
+
+<div class="movie-info">
+
+
+<h3>
+${filme.titulo}
+</h3>
+
+
+<span>
+${filme.plano || "FREE"}
+</span>
+
+
+</div>
+
+`;
+
+
+
+
+
+local.appendChild(card);
 
 
 
