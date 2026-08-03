@@ -14,7 +14,7 @@ import { db } from "./firebase.js";
 import {
     collection,
     getDocs
-} 
+}
 from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
@@ -51,7 +51,7 @@ iniciarSite();
 
 
 /* ===============================
-   SISTEMA PRINCIPAL
+   INICIAR SISTEMA
 ================================ */
 
 
@@ -68,7 +68,6 @@ carregarCatalogo();
 
 
 }
-
 
 
 
@@ -114,8 +113,6 @@ alert(
 
 
 
-
-
 /* ===============================
    PESQUISA
 ================================ */
@@ -138,7 +135,7 @@ searchInput.addEventListener(
 (e)=>{
 
 
-const texto =
+const busca =
 e.target.value.toLowerCase();
 
 
@@ -156,10 +153,11 @@ card
 
 
 
-if(titulo.includes(texto)){
+if(titulo.includes(busca)){
 
 
-card.style.display="block";
+card.style.display =
+"block";
 
 
 }
@@ -167,7 +165,8 @@ card.style.display="block";
 else{
 
 
-card.style.display="none";
+card.style.display =
+"none";
 
 
 }
@@ -189,7 +188,7 @@ card.style.display="none";
 
 
 /* ===============================
-   BUSCAR FILMES FIRESTORE
+   CARREGAR FILMES
 ================================ */
 
 
@@ -217,21 +216,6 @@ const snapshot =
 await getDocs(
 filmesRef
 );
-
-
-
-if(snapshot.empty){
-
-
-console.log(
-"Nenhum filme encontrado"
-);
-
-
-return;
-
-
-}
 
 
 
@@ -266,7 +250,7 @@ catch(error){
 
 
 console.error(
-"Erro ao carregar filmes:",
+"Erro ao buscar filmes:",
 error
 );
 
@@ -282,10 +266,8 @@ error
 
 
 
-
-
 /* ===============================
-   CRIAR CARD DO FILME
+   MOSTRAR FILME
 ================================ */
 
 
@@ -296,43 +278,41 @@ let local;
 
 
 
-switch(filme.plano){
+if(filme.plano === "FREE"){
 
-
-case "FREE":
 
 local =
 document.getElementById(
 "freeMovies"
 );
 
-break;
 
+}
 
+else if(filme.plano === "PRIME"){
 
-case "PRIME":
 
 local =
 document.getElementById(
 "primeMovies"
 );
 
-break;
 
+}
 
+else if(filme.plano === "PREMIUM"){
 
-case "PREMIUM":
 
 local =
 document.getElementById(
 "premiumMovies"
 );
 
-break;
 
+}
 
+else{
 
-default:
 
 local =
 document.getElementById(
@@ -344,16 +324,20 @@ document.getElementById(
 
 
 
+
+
 if(!local){
+
 
 console.warn(
 "Área do catálogo não encontrada"
 );
 
+
 return;
 
-}
 
+}
 
 
 
@@ -375,8 +359,7 @@ card.className =
 
 card.innerHTML = `
 
-
-<img
+<img 
 src="${filme.capa || 'assets/img/default.jpg'}"
 alt="${filme.titulo}"
 >
@@ -388,7 +371,6 @@ alt="${filme.titulo}"
 <h3>
 ${filme.titulo || "Sem título"}
 </h3>
-
 
 
 <span>
@@ -404,9 +386,7 @@ ${filme.plano || "FREE"}
 </button>
 
 
-
 </div>
-
 
 `;
 
@@ -463,8 +443,8 @@ function abrirPlayer(filme){
 
 
 console.log(
-"▶ Abrindo:",
-filme.titulo
+"▶ Filme selecionado:",
+filme
 );
 
 
@@ -472,6 +452,13 @@ filme.titulo
 localStorage.setItem(
 "filmeAtual",
 JSON.stringify(filme)
+);
+
+
+
+console.log(
+"💾 Filme salvo:",
+localStorage.getItem("filmeAtual")
 );
 
 
