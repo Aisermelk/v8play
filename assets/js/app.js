@@ -1,3 +1,5 @@
+import { db } from "./firebase.js";
+
 /* =====================================
    V8 PLAY+
    APP.JS
