@@ -39,28 +39,33 @@ body{
 
 :root{
 
-    --primary:#00d26a;
+    --primary:#9C4DFF;
 
-    --secondary:#00a955;
+    --primary-dark:#7B2EFF;
 
-    --background:#090909;
+    --secondary:#FF4FD8;
 
-    --surface:#141414;
+    --accent:#43C7FF;
 
-    --surface2:#1d1d1d;
+    --background:#09070F;
 
-    --text:#ffffff;
+    --surface:#161122;
 
-    --text2:#bbbbbb;
+    --surface2:#221834;
 
-    --danger:#ff3b3b;
+    --text:#FFFFFF;
 
-    --radius:12px;
+    --text-secondary:#C8C8D8;
+
+    --success:#43C7FF;
+
+    --danger:#FF4D7A;
+
+    --radius:14px;
 
     --transition:.30s;
 
 }
-
 
 
 /* ==========================
