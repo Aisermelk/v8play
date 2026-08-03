@@ -4,11 +4,17 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 
 <title>V8 Play+ Player</title>
 
+
+<link rel="stylesheet" href="assets/css/variables.css">
+
 <link rel="stylesheet" href="assets/css/style.css">
+
 
 </head>
 
@@ -16,37 +22,168 @@
 <body>
 
 
-<div class="player-container">
+<header class="header">
 
 
-<h1 id="tituloFilme">
-Carregando...
-</h1>
+<div class="logo">
+
+V8 <span>Play+</span>
+
+</div>
 
 
-<video 
-id="videoPlayer"
-controls
-width="100%"
+</header>
+
+
+
+
+
+<main class="player-page">
+
+
+<section class="player-container">
+
+
+
+<!-- CAPA -->
+
+<img 
+id="capaFilme"
+class="player-cover"
+src="assets/img/default.jpg"
+alt="Capa do filme"
 >
 
 
-Seu navegador não suporta vídeo.
 
 
-</video>
+
+<!-- INFORMAÇÕES -->
 
 
-<p id="descricaoFilme"></p>
+<div class="player-info">
+
+
+<h1 id="tituloFilme">
+
+Carregando...
+
+</h1>
+
+
+
+<div class="movie-meta">
+
+
+<span id="anoFilme"></span>
+
+<span id="categoriaFilme"></span>
 
 
 </div>
 
 
 
-<script type="module" src="assets/js/player.js"></script>
+
+<p id="descricaoFilme">
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- PLAYER YOUTUBE / MP4 -->
+
+
+<div class="video-container">
+
+
+<!-- YouTube -->
+
+<iframe
+
+id="youtubePlayer"
+
+style="display:none;"
+
+width="100%"
+
+height="500"
+
+frameborder="0"
+
+allow="autoplay; encrypted-media"
+
+allowfullscreen>
+
+</iframe>
+
+
+
+
+
+<!-- MP4 -->
+
+<video
+
+id="videoPlayer"
+
+style="display:none;"
+
+controls
+
+width="100%"
+
+>
+
+Seu navegador não suporta vídeo.
+
+</video>
+
+
+
+</div>
+
+
+
+
+
+
+
+<button 
+class="btn-secondary"
+onclick="history.back()"
+>
+
+⬅ Voltar
+
+</button>
+
+
+
+</section>
+
+
+</main>
+
+
+
+
+
+<script 
+type="module" 
+src="assets/js/player.js">
+</script>
 
 
 </body>
+
 
 </html>
