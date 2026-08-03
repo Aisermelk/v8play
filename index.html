@@ -7,7 +7,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
 <title>V8 Play+</title>
 
 
@@ -21,9 +20,7 @@
 <!-- CSS -->
 
 <link rel="stylesheet" href="assets/css/variables.css">
-
 <link rel="stylesheet" href="assets/css/style.css">
-
 <link rel="stylesheet" href="assets/css/responsive.css">
 
 
@@ -33,6 +30,7 @@
 <body>
 
 
+
 <!-- HEADER -->
 
 <header class="header">
@@ -40,7 +38,8 @@
 
 <div class="logo">
 
-V8 <span>Play+</span>
+    <span class="logo-v8">V8</span>
+    <span class="logo-play">Play+</span>
 
 </div>
 
@@ -50,15 +49,15 @@ V8 <span>Play+</span>
 
 <a href="#">Início</a>
 
-<a href="#">Filmes</a>
+<a href="#filmes">Filmes</a>
 
-<a href="#">Séries</a>
+<a href="#series">Séries</a>
 
-<a href="#">FREE</a>
+<a href="#free">FREE</a>
 
-<a href="#">PRIME</a>
+<a href="#prime">PRIME</a>
 
-<a href="#">PREMIUM</a>
+<a href="#premium">PREMIUM</a>
 
 </nav>
 
@@ -68,11 +67,10 @@ V8 <span>Play+</span>
 
 
 <input 
-type="search" 
-placeholder="Pesquisar filmes..."
+type="search"
 id="searchInput"
+placeholder="Pesquisar filmes..."
 >
-
 
 
 <button id="loginBtn">
@@ -90,9 +88,15 @@ Entrar
 
 
 
-<!-- BANNER PRINCIPAL -->
+
+
+<!-- HERO -->
+
 
 <section class="hero">
+
+
+<div class="container">
 
 
 <div class="hero-content">
@@ -100,9 +104,11 @@ Entrar
 
 <h1 id="heroTitle">
 
-Bem-vindo ao V8 Play+
+Bem-vindo ao 
+<span>V8 Play+</span>
 
 </h1>
+
 
 
 <p id="heroDescription">
@@ -113,12 +119,13 @@ Filmes, séries e entretenimento em um só lugar.
 
 
 
+
 <div class="hero-buttons">
 
 
 <button class="btn-primary">
 
-▶ Assistir Trailer
+▶ Assistir Agora
 
 </button>
 
@@ -134,6 +141,10 @@ Detalhes
 </div>
 
 
+
+</div>
+
+
 </div>
 
 
@@ -143,15 +154,19 @@ Detalhes
 
 
 
-<!-- CONTEÚDO -->
 
 
-<main>
+<!-- CATÁLOGO -->
+
+
+<main class="container">
 
 
 
-<section class="catalog-section">
+<section class="catalog-section" id="filmes">
 
+
+<div class="section-title">
 
 <h2>
 
@@ -160,14 +175,21 @@ Detalhes
 </h2>
 
 
+<p>
+
+Os melhores conteúdos selecionados para você.
+
+</p>
+
+
+</div>
+
+
+
 <div 
-class="movie-grid"
+class="movies-grid"
 id="featuredMovies"
 >
-
-
-<!-- Filmes carregados pelo Firebase -->
-
 
 </div>
 
@@ -178,8 +200,11 @@ id="featuredMovies"
 
 
 
-<section class="catalog-section">
 
+<section class="catalog-section" id="free">
+
+
+<div class="section-title">
 
 <h2>
 
@@ -188,11 +213,21 @@ id="featuredMovies"
 </h2>
 
 
+<p>
+
+Conteúdos gratuitos para assistir.
+
+</p>
+
+
+</div>
+
+
+
 <div 
-class="movie-grid"
+class="movies-grid"
 id="freeMovies"
 >
-
 
 </div>
 
@@ -203,7 +238,12 @@ id="freeMovies"
 
 
 
-<section class="catalog-section">
+
+
+<section class="catalog-section" id="prime">
+
+
+<div class="section-title">
 
 
 <h2>
@@ -213,11 +253,21 @@ id="freeMovies"
 </h2>
 
 
+<p>
+
+Conteúdos exclusivos.
+
+</p>
+
+
+</div>
+
+
+
 <div 
-class="movie-grid"
+class="movies-grid"
 id="primeMovies"
 >
-
 
 </div>
 
@@ -228,7 +278,12 @@ id="primeMovies"
 
 
 
-<section class="catalog-section">
+
+
+<section class="catalog-section" id="premium">
+
+
+<div class="section-title">
 
 
 <h2>
@@ -238,16 +293,30 @@ id="primeMovies"
 </h2>
 
 
-<div 
-class="movie-grid"
-id="premiumMovies"
->
+<p>
+
+Experiência completa V8 Play+.
+
+</p>
 
 
 </div>
 
 
+
+<div 
+class="movies-grid"
+id="premiumMovies"
+>
+
+</div>
+
+
 </section>
+
+
+
+
 
 
 </main>
@@ -257,15 +326,21 @@ id="premiumMovies"
 
 
 
+
+
 <!-- FOOTER -->
 
 
-<footer>
+<footer class="footer">
 
 
 <p>
 
-© 2026 V8 Play+ - Todos os direitos reservados.
+<span>V8 Play+</span>
+
+<br>
+
+© 2026 - Todos os direitos reservados.
 
 </p>
 
@@ -276,9 +351,14 @@ id="premiumMovies"
 
 
 
+
+
+
 <!-- JAVASCRIPT -->
 
+
 <script type="module" src="assets/js/app.js"></script>
+
 
 
 </body>
