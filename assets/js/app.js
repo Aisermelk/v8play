@@ -170,11 +170,8 @@ function mostrarFilme(filme){
     }
 
     if(!local){
-
         console.error("❌ Área do catálogo não encontrada.");
-
         return;
-
     }
 
     const card = document.createElement("div");
@@ -182,7 +179,6 @@ function mostrarFilme(filme){
     card.className = "movie-card";
 
     card.innerHTML = `
-
         <img
             src="${filme.capa || 'assets/img/default.jpg'}"
             alt="${filme.titulo}"
@@ -196,24 +192,31 @@ function mostrarFilme(filme){
 
             <button
                 type="button"
-                class="watch-btn"
-            >
+                class="watch-btn">
                 ▶ Assistir
             </button>
 
         </div>
-
     `;
 
+    // Clique no card inteiro
+    card.addEventListener("click", () => {
+
+        console.log("🟢 CARD CLICADO");
+
+        abrirPlayer(filme);
+
+    });
+
+    // Clique somente no botão
     const botao = card.querySelector(".watch-btn");
 
-    botao.addEventListener("click",(event)=>{
+    botao.addEventListener("click", (event) => {
 
         event.preventDefault();
-
         event.stopPropagation();
 
-        console.log("🟢 Botão Assistir clicado");
+        console.log("🟢 BOTÃO CLICADO");
 
         abrirPlayer(filme);
 
@@ -222,7 +225,6 @@ function mostrarFilme(filme){
     local.appendChild(card);
 
 }
-
 
 /* ===============================
    ABRIR PLAYER
