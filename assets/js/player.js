@@ -1,11 +1,17 @@
 /* =====================================
    V8 PLAY+
    PLAYER.JS
+   Sistema de reprodução
 ===================================== */
 
 
-console.log("🎬 Player iniciado");
+console.log("🎬 Player V8 Play+ iniciado");
 
+
+
+/* ===============================
+   RECEBER FILME
+================================ */
 
 
 const dadosFilme =
@@ -20,25 +26,19 @@ dadosFilme
 
 
 
-const filme =
-JSON.parse(dadosFilme);
 
 
-
-
-
-if(!filme){
+if(!dadosFilme){
 
 
 console.error(
-"❌ Nenhum filme encontrado no localStorage"
+"❌ Nenhum filme encontrado"
 );
 
 
-document.getElementById(
-"tituloFilme"
-).innerText =
-"Nenhum filme selecionado";
+mostrarErro(
+"Nenhum filme selecionado"
+);
 
 
 }
@@ -46,11 +46,38 @@ document.getElementById(
 else{
 
 
+const filme =
+JSON.parse(dadosFilme);
+
+
+
 console.log(
 "✅ Filme carregado:",
 filme.titulo
 );
 
+
+
+carregarFilme(
+filme
+);
+
+
+}
+
+
+
+
+
+
+
+
+/* ===============================
+   CARREGAR DADOS
+================================ */
+
+
+function carregarFilme(filme){
 
 
 
@@ -68,6 +95,13 @@ document.getElementById(
 
 
 
+const capa =
+document.getElementById(
+"capaFilme"
+);
+
+
+
 const video =
 document.getElementById(
 "videoPlayer"
@@ -75,33 +109,114 @@ document.getElementById(
 
 
 
+
+
 if(titulo){
 
+
 titulo.innerText =
-filme.titulo;
+filme.titulo || "Sem título";
+
 
 }
+
+
 
 
 
 if(descricao){
 
+
 descricao.innerText =
-filme.descricao || "Sem descrição";
+filme.descricao || 
+"Sem descrição";
+
 
 }
 
 
 
-if(video && filme.video){
+
+
+if(capa){
+
+
+capa.src =
+filme.capa || 
+"assets/img/default.jpg";
+
+
+}
+
+
+
+
+
+if(video){
+
+
+if(filme.video){
 
 
 video.src =
 filme.video;
 
 
+console.log(
+"▶ Vídeo carregado:",
+filme.video
+);
+
+
 }
 
+else{
+
+
+console.warn(
+"⚠ Filme sem link de vídeo"
+);
+
+
+}
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+/* ===============================
+   ERRO
+================================ */
+
+
+function mostrarErro(mensagem){
+
+
+
+const titulo =
+document.getElementById(
+"tituloFilme"
+);
+
+
+
+if(titulo){
+
+
+titulo.innerText =
+mensagem;
+
+
+}
 
 
 }
