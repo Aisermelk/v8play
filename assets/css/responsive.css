@@ -1,0 +1,284 @@
+/* =====================================
+   V8 PLAY+
+   RESPONSIVE.CSS
+   Ajustes para telas menores
+===================================== */
+
+
+/* ===============================
+   TABLETS
+================================ */
+
+@media (max-width: 1024px) {
+
+
+.header {
+
+    padding: 0 3%;
+
+}
+
+
+.menu {
+
+    gap:15px;
+
+}
+
+
+.menu a {
+
+    font-size:14px;
+
+}
+
+
+
+.hero h1 {
+
+    font-size:45px;
+
+}
+
+
+
+.movie-grid {
+
+    grid-template-columns:
+    repeat(auto-fill,minmax(160px,1fr));
+
+}
+
+
+}
+
+
+
+
+
+/* ===============================
+   CELULARES
+================================ */
+
+
+@media (max-width:768px) {
+
+
+
+.header {
+
+
+    height:auto;
+
+    padding:15px;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+
+}
+
+
+
+.logo {
+
+
+    font-size:26px;
+
+
+}
+
+
+
+.menu {
+
+
+    order:3;
+
+    width:100%;
+
+    overflow-x:auto;
+
+    padding-bottom:10px;
+
+
+}
+
+
+
+.menu a {
+
+
+    white-space:nowrap;
+
+
+}
+
+
+
+.header-actions {
+
+
+    width:100%;
+
+}
+
+
+
+.header-actions input {
+
+
+    width:100%;
+
+
+}
+
+
+
+.hero {
+
+
+    height:550px;
+
+    padding:0 20px;
+
+
+}
+
+
+
+.hero h1 {
+
+
+    font-size:34px;
+
+
+}
+
+
+
+.hero p {
+
+
+    font-size:16px;
+
+
+}
+
+
+
+.hero-buttons {
+
+
+    flex-direction:column;
+
+
+}
+
+
+
+.btn-primary,
+.btn-secondary {
+
+
+    width:100%;
+
+
+}
+
+
+
+.catalog-section {
+
+
+    padding:30px 20px;
+
+
+}
+
+
+
+.catalog-section h2 {
+
+
+    font-size:22px;
+
+
+}
+
+
+
+.movie-grid {
+
+
+    grid-template-columns:
+
+    repeat(2,1fr);
+
+
+    gap:15px;
+
+
+}
+
+
+
+.movie-card img {
+
+
+    height:220px;
+
+
+}
+
+
+
+}
+
+
+
+
+
+/* ===============================
+   CELULARES PEQUENOS
+================================ */
+
+
+@media(max-width:420px){
+
+
+
+.movie-grid {
+
+
+    grid-template-columns:
+
+    repeat(2,1fr);
+
+
+}
+
+
+
+.movie-card img {
+
+
+    height:180px;
+
+
+}
+
+
+
+.hero h1 {
+
+
+    font-size:30px;
+
+
+}
+
+
+
+}
