@@ -1,41 +1,28 @@
 /* =====================================
    V8 PLAY+
-   STYLE.CSS
-   Estilo principal do site
+   PLAYER PAGE
 ===================================== */
 
 
-/* ===============================
-   RESET
-================================ */
+.player-page{
 
+min-height:100vh;
 
-* {
+padding:40px 5%;
 
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+background:#0b0b0b;
 
-}
-
-
-html {
-
-    scroll-behavior: smooth;
+color:#fff;
 
 }
 
 
 
-body {
+.player-container{
 
-    background: var(--background);
+max-width:1200px;
 
-    color: var(--text);
-
-    font-family: var(--font-primary);
-
-    min-height: 100vh;
+margin:auto;
 
 }
 
@@ -43,58 +30,21 @@ body {
 
 
 
-a {
+/* CAPA DO FILME */
 
-    text-decoration: none;
+.player-cover{
 
-    color: inherit;
+width:220px;
 
-}
+height:320px;
 
+object-fit:cover;
 
+border-radius:12px;
 
-button,
-input {
+box-shadow:0 10px 30px rgba(0,0,0,.6);
 
-    font-family: inherit;
-
-}
-
-
-
-
-
-/* ===============================
-   HEADER
-================================ */
-
-
-.header {
-
-
-    width: 100%;
-
-    height: 80px;
-
-    padding: 0 5%;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-
-    background: var(--header-background);
-
-    backdrop-filter: blur(10px);
-
-    position: fixed;
-
-    top: 0;
-
-    z-index: 1000;
-
+margin-bottom:25px;
 
 }
 
@@ -102,25 +52,54 @@ input {
 
 
 
-.logo {
+/* INFORMAÇÕES */
 
 
-    font-size: 32px;
+.player-info h1{
 
-    font-weight: 800;
+font-size:42px;
 
-    letter-spacing: -1px;
-
+margin-bottom:15px;
 
 }
 
 
 
-.logo span {
+.player-info p{
+
+color:#ccc;
+
+font-size:17px;
+
+line-height:1.6;
+
+}
 
 
-    color: var(--primary-light);
 
+
+
+.movie-meta{
+
+display:flex;
+
+gap:15px;
+
+margin-bottom:20px;
+
+}
+
+
+
+.movie-meta span{
+
+background:#222;
+
+padding:8px 15px;
+
+border-radius:20px;
+
+color:#00ff88;
 
 }
 
@@ -129,74 +108,35 @@ input {
 
 
 
-.menu {
+
+/* ÁREA DO VÍDEO */
 
 
-    display: flex;
+.video-container{
 
-    gap: 25px;
+margin-top:35px;
 
+background:#000;
 
-}
+border-radius:15px;
 
+overflow:hidden;
 
-
-.menu a {
-
-
-    color: var(--text-secondary);
-
-    font-size: 15px;
-
-    transition: var(--transition);
-
+box-shadow:0 10px 40px rgba(0,0,0,.8);
 
 }
 
 
 
-.menu a:hover {
+.video-container iframe,
+.video-container video{
 
 
-    color: var(--text);
+width:100%;
 
+min-height:500px;
 
-}
-
-
-
-
-
-.header-actions {
-
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-
-
-}
-
-
-
-
-.header-actions input {
-
-
-    width: 220px;
-
-    padding: 10px 15px;
-
-    border-radius: 20px;
-
-    border: 1px solid var(--border-color);
-
-    background: var(--card-background);
-
-    color: white;
-
+border:none;
 
 }
 
@@ -204,33 +144,38 @@ input {
 
 
 
-.header-actions button {
 
 
-    background: var(--primary);
+/* BOTÃO VOLTAR */
 
-    border: none;
 
-    color: white;
+.btn-secondary{
 
-    padding: 10px 22px;
 
-    border-radius: 20px;
+margin-top:30px;
 
-    cursor: pointer;
+padding:12px 25px;
 
-    transition: var(--transition);
+border:none;
 
+border-radius:8px;
+
+background:#222;
+
+color:#fff;
+
+cursor:pointer;
+
+font-size:16px;
 
 }
 
 
 
+.btn-secondary:hover{
 
-.header-actions button:hover {
 
-
-    background: var(--primary-light);
+background:#333;
 
 
 }
@@ -241,336 +186,46 @@ input {
 
 
 
-/* ===============================
-   HERO / BANNER
-================================ */
+/* CELULAR */
+
+
+@media(max-width:768px){
 
 
 
-.hero {
+.player-page{
 
-
-    height: 650px;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 0 5%;
-
-
-    background:
-
-    linear-gradient(
-        90deg,
-        rgba(15,17,21,1),
-        rgba(15,17,21,0.4)
-    );
-
-
-    margin-top: 80px;
-
+padding:20px;
 
 }
 
 
 
+.player-cover{
 
+width:160px;
 
-.hero-content {
-
-
-    max-width: 600px;
-
+height:230px;
 
 }
 
 
 
+.player-info h1{
 
-
-.hero h1 {
-
-
-    font-size: 55px;
-
-    font-weight: 800;
-
-    margin-bottom: 20px;
-
+font-size:30px;
 
 }
 
 
 
-.hero p {
+.video-container iframe,
+.video-container video{
 
-
-    color: var(--text-secondary);
-
-    font-size: 18px;
-
-    margin-bottom: 30px;
-
+min-height:250px;
 
 }
 
-
-
-
-
-.hero-buttons {
-
-
-    display: flex;
-
-    gap: 15px;
-
-
-}
-
-
-
-
-.btn-primary,
-.btn-secondary {
-
-
-    padding: 14px 30px;
-
-    border-radius: 30px;
-
-    cursor: pointer;
-
-    font-weight: 600;
-
-    border: none;
-
-
-}
-
-
-
-
-.btn-primary {
-
-
-    background: var(--primary);
-
-    color: white;
-
-
-}
-
-
-
-.btn-secondary {
-
-
-    background: rgba(255,255,255,0.1);
-
-    color:white;
-
-
-}
-
-
-
-
-
-/* ===============================
-   CATALOGO
-================================ */
-
-
-
-.catalog-section {
-
-
-    padding: 40px 5%;
-
-
-}
-
-
-
-
-.catalog-section h2 {
-
-
-    font-size: 28px;
-
-    margin-bottom: 25px;
-
-
-}
-
-
-
-
-
-.movie-grid {
-
-
-    display: grid;
-
-    grid-template-columns:
-
-    repeat(auto-fill,minmax(180px,1fr));
-
-
-    gap: 25px;
-
-
-}
-
-
-
-
-
-/* CARD FILMES */
-
-.movie-card {
-
-
-    background: var(--card-background);
-
-    border-radius: var(--border-radius);
-
-    overflow: hidden;
-
-    transition: var(--transition);
-
-    cursor: pointer;
-
-
-}
-
-
-
-
-.movie-card:hover {
-
-
-    transform: translateY(-8px);
-
-    box-shadow: var(--shadow-hover);
-
-
-}
-
-
-
-
-
-.movie-card img {
-
-
-    width:100%;
-
-    height:270px;
-
-    object-fit:cover;
-
-
-}
-
-
-
-
-
-.movie-info {
-
-
-    padding:15px;
-
-
-}
-
-
-
-.movie-info h3 {
-
-
-    font-size:16px;
-
-    margin-bottom:8px;
-
-
-}
-
-
-
-
-
-.movie-info span {
-
-
-    font-size:13px;
-
-    color:var(--text-secondary);
-
-
-}
-
-
-
-
-
-
-
-/* ===============================
-   PLANOS
-================================ */
-
-
-
-.badge-free {
-
-
-    color:var(--free-color);
-
-}
-
-
-
-.badge-prime {
-
-
-    color:var(--prime-color);
-
-
-}
-
-
-
-.badge-premium {
-
-
-    color:var(--premium-color);
-
-
-}
-
-
-
-
-
-/* ===============================
-   FOOTER
-================================ */
-
-
-footer {
-
-
-    padding:40px;
-
-    text-align:center;
-
-    color:var(--text-secondary);
-
-    background:#090A0D;
 
 
 }
