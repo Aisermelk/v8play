@@ -9,20 +9,17 @@
    FIREBASE
 ================================ */
 
-
 import { db } from "./firebase.js";
 
-import { 
-collection,
-getDocs,
-query,
-where
-}
+import {
+    collection,
+    getDocs
+} 
 from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
 
-
+console.log("🔥 Firebase conectado ao V8 Play+");
 
 console.log("🚀 V8 Play+ iniciado");
 
@@ -40,9 +37,7 @@ document.addEventListener(
 ()=>{
 
 
-console.log(
-"✅ Página carregada"
-);
+console.log("✅ Página carregada");
 
 
 iniciarSite();
@@ -56,7 +51,7 @@ iniciarSite();
 
 
 /* ===============================
-   FUNÇÃO PRINCIPAL
+   SISTEMA PRINCIPAL
 ================================ */
 
 
@@ -73,6 +68,7 @@ carregarCatalogo();
 
 
 }
+
 
 
 
@@ -119,6 +115,7 @@ alert(
 
 
 
+
 /* ===============================
    PESQUISA
 ================================ */
@@ -132,7 +129,8 @@ document.getElementById("searchInput");
 
 
 
-if(searchInput){
+if(!searchInput) return;
+
 
 
 searchInput.addEventListener(
@@ -140,16 +138,46 @@ searchInput.addEventListener(
 (e)=>{
 
 
-console.log(
-"Pesquisando:",
-e.target.value
-);
+const texto =
+e.target.value.toLowerCase();
+
+
+
+document
+.querySelectorAll(".movie-card")
+.forEach(card=>{
+
+
+const titulo =
+card
+.querySelector("h3")
+.innerText
+.toLowerCase();
+
+
+
+if(titulo.includes(texto)){
+
+
+card.style.display="block";
+
+
+}
+
+else{
+
+
+card.style.display="none";
+
+
+}
+
 
 
 });
 
 
-}
+});
 
 
 }
@@ -161,7 +189,7 @@ e.target.value
 
 
 /* ===============================
-   CARREGAR FILMES
+   BUSCAR FILMES FIRESTORE
 ================================ */
 
 
@@ -178,17 +206,36 @@ console.log(
 
 
 const filmesRef =
-collection(db,"filmes");
+collection(
+db,
+"filmes"
+);
 
 
 
-const filmesSnapshot =
-await getDocs(filmesRef);
+const snapshot =
+await getDocs(
+filmesRef
+);
 
 
 
+if(snapshot.empty){
 
-filmesSnapshot.forEach(
+
+console.log(
+"Nenhum filme encontrado"
+);
+
+
+return;
+
+
+}
+
+
+
+snapshot.forEach(
 (doc)=>{
 
 
@@ -213,14 +260,13 @@ filme
 });
 
 
-
 }
 
 catch(error){
 
 
 console.error(
-"Erro ao buscar filmes:",
+"Erro ao carregar filmes:",
 error
 );
 
@@ -237,60 +283,56 @@ error
 
 
 
+
 /* ===============================
-   MOSTRAR FILME NA TELA
+   CRIAR CARD DO FILME
 ================================ */
 
 
 function mostrarFilme(filme){
 
 
-
 let local;
 
 
 
-if(filme.plano === "FREE"){
+switch(filme.plano){
 
+
+case "FREE":
 
 local =
 document.getElementById(
 "freeMovies"
 );
 
-
-}
-
+break;
 
 
-else if(filme.plano === "PRIME"){
 
+case "PRIME":
 
 local =
 document.getElementById(
 "primeMovies"
 );
 
-
-}
-
+break;
 
 
-else if(filme.plano === "PREMIUM"){
 
+case "PREMIUM":
 
 local =
 document.getElementById(
 "premiumMovies"
 );
 
-
-}
-
+break;
 
 
-else {
 
+default:
 
 local =
 document.getElementById(
@@ -302,15 +344,23 @@ document.getElementById(
 
 
 
+if(!local){
+
+console.warn(
+"Área do catálogo não encontrada"
+);
+
+return;
+
+}
 
 
-if(!local) return;
 
 
 
 
-
-const card = document.createElement(
+const card =
+document.createElement(
 "div"
 );
 
@@ -325,7 +375,8 @@ card.className =
 
 card.innerHTML = `
 
-<img 
+
+<img
 src="${filme.capa || 'assets/img/default.jpg'}"
 alt="${filme.titulo}"
 >
@@ -335,8 +386,9 @@ alt="${filme.titulo}"
 
 
 <h3>
-${filme.titulo}
+${filme.titulo || "Sem título"}
 </h3>
+
 
 
 <span>
@@ -344,7 +396,17 @@ ${filme.plano || "FREE"}
 </span>
 
 
+
+<button class="watch-btn">
+
+▶ Assistir
+
+</button>
+
+
+
 </div>
+
 
 `;
 
@@ -352,8 +414,70 @@ ${filme.plano || "FREE"}
 
 
 
-local.appendChild(card);
 
+
+const botao =
+card.querySelector(
+".watch-btn"
+);
+
+
+
+botao.addEventListener(
+"click",
+()=>{
+
+
+abrirPlayer(
+filme
+);
+
+
+});
+
+
+
+
+
+local.appendChild(
+card
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+/* ===============================
+   ABRIR PLAYER
+================================ */
+
+
+function abrirPlayer(filme){
+
+
+console.log(
+"▶ Abrindo:",
+filme.titulo
+);
+
+
+
+localStorage.setItem(
+"filmeAtual",
+JSON.stringify(filme)
+);
+
+
+
+window.location.href =
+"player.html";
 
 
 }
