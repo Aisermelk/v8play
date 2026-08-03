@@ -1,9 +1,7 @@
 /* =====================================
    V8 PLAY+
    APP.JS
-   Sistema principal
 ===================================== */
-
 
 /* ===============================
    FIREBASE
@@ -14,457 +12,248 @@ import { db } from "./firebase.js";
 import {
     collection,
     getDocs
-}
-from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
 console.log("🔥 Firebase conectado ao V8 Play+");
-
 console.log("🚀 V8 Play+ iniciado");
-
-
-
 
 
 /* ===============================
    INICIALIZAÇÃO
 ================================ */
 
+document.addEventListener("DOMContentLoaded", () => {
 
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
+    console.log("✅ Página carregada");
 
-
-console.log("✅ Página carregada");
-
-
-iniciarSite();
-
+    iniciarSite();
 
 });
-
-
-
-
 
 
 /* ===============================
    INICIAR SISTEMA
 ================================ */
 
-
 function iniciarSite(){
 
+    configurarLogin();
 
-configurarLogin();
+    configurarPesquisa();
 
-
-configurarPesquisa();
-
-
-carregarCatalogo();
-
+    carregarCatalogo();
 
 }
-
-
-
-
 
 
 /* ===============================
    LOGIN
 ================================ */
 
-
 function configurarLogin(){
 
+    const loginBtn = document.getElementById("loginBtn");
 
-const loginBtn =
-document.getElementById("loginBtn");
+    if(loginBtn){
 
+        loginBtn.addEventListener("click", () => {
 
+            alert("Login V8 Play+ em desenvolvimento");
 
-if(loginBtn){
+        });
 
-
-loginBtn.addEventListener(
-"click",
-()=>{
-
-
-alert(
-"Login V8 Play+ em desenvolvimento"
-);
-
-
-});
-
+    }
 
 }
-
-
-}
-
-
-
-
 
 
 /* ===============================
    PESQUISA
 ================================ */
 
-
 function configurarPesquisa(){
 
+    const searchInput = document.getElementById("searchInput");
 
-const searchInput =
-document.getElementById("searchInput");
+    if(!searchInput) return;
 
+    searchInput.addEventListener("input",(e)=>{
 
+        const busca = e.target.value.toLowerCase();
 
-if(!searchInput) return;
+        document.querySelectorAll(".movie-card").forEach(card=>{
 
+            const titulo = card.querySelector("h3").innerText.toLowerCase();
 
+            card.style.display =
+                titulo.includes(busca)
+                ? "block"
+                : "none";
 
-searchInput.addEventListener(
-"input",
-(e)=>{
+        });
 
-
-const busca =
-e.target.value.toLowerCase();
-
-
-
-document
-.querySelectorAll(".movie-card")
-.forEach(card=>{
-
-
-const titulo =
-card
-.querySelector("h3")
-.innerText
-.toLowerCase();
-
-
-
-if(titulo.includes(busca)){
-
-
-card.style.display =
-"block";
-
+    });
 
 }
-
-else{
-
-
-card.style.display =
-"none";
-
-
-}
-
-
-
-});
-
-
-});
-
-
-}
-
-
-
-
-
 
 
 /* ===============================
    CARREGAR FILMES
 ================================ */
 
-
 async function carregarCatalogo(){
 
+    try{
 
-try{
+        console.log("🎬 Buscando filmes...");
 
+        const filmesRef = collection(db,"filmes");
 
-console.log(
-"🎬 Buscando filmes..."
-);
+        const snapshot = await getDocs(filmesRef);
 
+        if(snapshot.empty){
 
+            console.warn("⚠ Nenhum filme encontrado.");
 
-const filmesRef =
-collection(
-db,
-"filmes"
-);
+            return;
 
+        }
 
+        snapshot.forEach((doc)=>{
 
-const snapshot =
-await getDocs(
-filmesRef
-);
+            const filme = doc.data();
 
+            console.log("🎥 Filme encontrado:",filme.titulo);
 
+            mostrarFilme(filme);
 
-snapshot.forEach(
-(doc)=>{
+        });
 
+    }
 
-const filme =
-doc.data();
+    catch(error){
 
+        console.error("❌ Erro ao buscar filmes:",error);
 
-
-console.log(
-"Filme encontrado:",
-filme.titulo
-);
-
-
-
-mostrarFilme(
-filme
-);
-
-
-
-});
-
+    }
 
 }
-
-catch(error){
-
-
-console.error(
-"Erro ao buscar filmes:",
-error
-);
-
-
-}
-
-
-}
-
-
-
-
-
 
 
 /* ===============================
    MOSTRAR FILME
 ================================ */
 
-
 function mostrarFilme(filme){
 
+    let local;
 
-let local;
+    switch(filme.plano){
 
+        case "FREE":
+            local = document.getElementById("freeMovies");
+            break;
 
+        case "PRIME":
+            local = document.getElementById("primeMovies");
+            break;
 
-if(filme.plano === "FREE"){
+        case "PREMIUM":
+            local = document.getElementById("premiumMovies");
+            break;
 
+        default:
+            local = document.getElementById("featuredMovies");
+            break;
 
-local =
-document.getElementById(
-"freeMovies"
-);
+    }
 
+    if(!local){
+
+        console.error("❌ Área do catálogo não encontrada.");
+
+        return;
+
+    }
+
+    const card = document.createElement("div");
+
+    card.className = "movie-card";
+
+    card.innerHTML = `
+
+        <img
+            src="${filme.capa || 'assets/img/default.jpg'}"
+            alt="${filme.titulo}"
+        >
+
+        <div class="movie-info">
+
+            <h3>${filme.titulo || "Sem título"}</h3>
+
+            <span>${filme.plano || "FREE"}</span>
+
+            <button
+                type="button"
+                class="watch-btn"
+            >
+                ▶ Assistir
+            </button>
+
+        </div>
+
+    `;
+
+    const botao = card.querySelector(".watch-btn");
+
+    botao.addEventListener("click",(event)=>{
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        console.log("🟢 Botão Assistir clicado");
+
+        abrirPlayer(filme);
+
+    });
+
+    local.appendChild(card);
 
 }
-
-else if(filme.plano === "PRIME"){
-
-
-local =
-document.getElementById(
-"primeMovies"
-);
-
-
-}
-
-else if(filme.plano === "PREMIUM"){
-
-
-local =
-document.getElementById(
-"premiumMovies"
-);
-
-
-}
-
-else{
-
-
-local =
-document.getElementById(
-"featuredMovies"
-);
-
-
-}
-
-
-
-
-
-if(!local){
-
-
-console.warn(
-"Área do catálogo não encontrada"
-);
-
-
-return;
-
-
-}
-
-
-
-
-
-const card =
-document.createElement(
-"div"
-);
-
-
-
-card.className =
-"movie-card";
-
-
-
-
-
-card.innerHTML = `
-
-<img 
-src="${filme.capa || 'assets/img/default.jpg'}"
-alt="${filme.titulo}"
->
-
-
-<div class="movie-info">
-
-
-<h3>
-${filme.titulo || "Sem título"}
-</h3>
-
-
-<span>
-${filme.plano || "FREE"}
-</span>
-
-
-
-<button class="watch-btn">
-
-▶ Assistir
-
-</button>
-
-
-</div>
-
-`;
-
-
-
-
-
-
-
-const botao =
-card.querySelector(
-".watch-btn"
-);
-
-
-
-botao.addEventListener(
-"click",
-()=>{
-
-
-abrirPlayer(
-filme
-);
-
-
-});
-
-
-
-
-
-local.appendChild(
-card
-);
-
-
-
-}
-
-
-
-
-
-
 
 
 /* ===============================
    ABRIR PLAYER
 ================================ */
 
-
 function abrirPlayer(filme){
 
+    try{
 
-console.log(
-"▶ Filme selecionado:",
-filme
-);
+        console.log("▶ Abrindo Player");
 
+        console.log(filme);
 
+        localStorage.setItem(
+            "filmeAtual",
+            JSON.stringify(filme)
+        );
 
-localStorage.setItem(
-"filmeAtual",
-JSON.stringify(filme)
-);
+        console.log(
+            "💾 Filme salvo:",
+            localStorage.getItem("filmeAtual")
+        );
 
+        window.location.assign("player.html");
 
+    }
 
-console.log(
-"💾 Filme salvo:",
-localStorage.getItem("filmeAtual")
-);
+    catch(error){
 
+        console.error("❌ Erro ao abrir o player:",error);
 
-
-window.location.href =
-"player.html";
-
+    }
 
 }
