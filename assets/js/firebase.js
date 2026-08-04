@@ -1,59 +1,53 @@
 /* =====================================
    V8 PLAY+
-   FIREBASE.JS
-   Conexão Firebase
+   FIREBASE CONFIG
 ===================================== */
 
 
-/* Firebase SDK */
+// Firebase SDK
 
-import { initializeApp }
+import { initializeApp } 
 from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 
 
-import { getFirestore }
+import { getFirestore } 
 from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
-import { getAuth }
+import { getAuth } 
 from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 
-import { getStorage }
+import { getStorage } 
 from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
 
 
 
 
-/* CONFIGURAÇÃO FIREBASE */
+/* =====================================
+   CONFIGURAÇÃO DO SEU PROJETO FIREBASE
+
+   SUBSTITUA PELOS DADOS DO SEU FIREBASE
+===================================== */
 
 
 const firebaseConfig = {
-
-
-apiKey: "AIzaSyCj00E3qCzJJEIFnTVcvRC97f4HgERvaoI",
-
-authDomain: "v8-play.firebaseapp.com",
-
-projectId: "v8-play",
-
-storageBucket: "v8-play.firebasestorage.app",
-
-messagingSenderId: "593432751068",
-
-appId: "1:593432751068:web:8ca518d66d43ae2fb77d19",
-
-measurementId: "G-7C60RJTW8S"
-
-
+  apiKey: "AIzaSyCj00E3qCzJJEIFnTVcvRC97f4HgERvaoI",
+  authDomain: "v8-play.firebaseapp.com",
+  projectId: "v8-play",
+  storageBucket: "v8-play.firebasestorage.app",
+  messagingSenderId: "593432751068",
+  appId: "1:593432751068:web:8ca518d66d43ae2fb77d19",
+  measurementId: "G-7C60RJTW8S"
 };
 
 
 
 
-
-/* INICIAR FIREBASE */
+/* =====================================
+   INICIALIZAÇÃO
+===================================== */
 
 
 const app = initializeApp(firebaseConfig);
@@ -62,7 +56,9 @@ const app = initializeApp(firebaseConfig);
 
 
 
-/* SERVIÇOS */
+/* =====================================
+   SERVIÇOS
+===================================== */
 
 
 const db = getFirestore(app);
@@ -77,20 +73,30 @@ const storage = getStorage(app);
 
 
 
-/* EXPORTAR */
+/* =====================================
+   EXPORTAÇÃO
+
+   Outros arquivos usarão:
+
+   import {db,auth,storage}
+   from "./firebase.js"
+
+===================================== */
 
 
 export {
 
-app,
+    app,
 
-db,
+    db,
 
-auth,
+    auth,
 
-storage
+    storage
 
 };
+
+
 
 
 
