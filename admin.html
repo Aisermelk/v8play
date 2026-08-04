@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V8 Play+ Admin</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,Arial;
+}
+
+body{
+    background:#050505;
+    color:white;
+    padding:40px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    background:#111;
+    padding:35px;
+    border-radius:15px;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.logo{
+    text-align:center;
+    font-size:35px;
+    font-weight:800;
+    margin-bottom:20px;
+}
+
+.logo span{
+    color:#00d4ff;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:15px;
+    margin-bottom:15px;
+    background:#222;
+    border:1px solid #333;
+    border-radius:8px;
+    color:white;
+}
+
+textarea{
+    height:120px;
+    resize:none;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:8px;
+    background:#00d4ff;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:white;
+}
+
+.checkbox{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+#mensagem{
+    margin-top:20px;
+    text-align:center;
+}
+
+/* A classe .hidden não existia em nenhum lugar do projeto original
+   (index.html também usa classList "hidden" sem ela estar definida) */
+.hidden{
+    display:none;
+}
+
+#topoAdmin{
+    max-width:700px;
+    margin:0 auto 15px auto;
+    display:flex;
+    justify-content:flex-end;
+}
+
+#topoAdmin button{
+    width:auto;
+    padding:8px 16px;
+    font-size:13px;
+    background:#222;
+    color:white;
+    border:1px solid #333;
+}
+
+#acessoNegado{
+    max-width:700px;
+    margin:80px auto;
+    text-align:center;
+}
+
+#mensagemLogin{
+    text-align:center;
+    margin-top:10px;
+    min-height:20px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ===================================
+     TELA DE LOGIN (mostrada por padrão)
+     Só ela fica visível até confirmarmos
+     que o usuário está logado E é admin
+==================================== -->
+<div class="container" id="telaLogin">
+
+    <div class="logo">V8 <span>Play+</span></div>
+    <h1>Painel Administrativo</h1>
+
+    <input id="loginEmail" type="email" placeholder="E-mail">
+    <input id="loginSenha" type="password" placeholder="Senha">
+
+    <button id="btnEntrarAdmin">Entrar</button>
+
+    <button id="btnEsqueciSenha" style="background:none; color:#00d4ff; margin-top:10px; text-decoration:underline; font-weight:normal;">Esqueci minha senha</button>
+
+    <p id="mensagemLogin"></p>
+
+</div>
+
+
+<!-- ===================================
+     ACESSO NEGADO
+     Usuário logou mas não é admin
+==================================== -->
+<div class="container hidden" id="acessoNegado">
+
+    <div class="logo">V8 <span>Play+</span></div>
+    <h1>Acesso restrito</h1>
+    <p style="text-align:center; margin-bottom:20px;">
+        Essa conta não tem permissão de administrador.
+    </p>
+    <button id="btnSairNegado">Sair</button>
+
+</div>
+
+
+<!-- ===================================
+     PAINEL (só aparece se for admin)
+==================================== -->
+<div id="painelAdmin" class="hidden">
+
+    <div id="topoAdmin">
+        <button id="btnSairAdmin">Sair</button>
+    </div>
+
+    <div class="container" id="formConteudo">
+
+        <div class="logo">V8 <span>Play+</span></div>
+        <h1>Painel Administrativo</h1>
+
+        <input id="titulo" placeholder="Título do filme">
+        <input id="capa" placeholder="URL da capa">
+        <input id="banner" placeholder="URL do banner">
+
+        <textarea id="descricao" placeholder="Descrição"></textarea>
+
+        <input id="trailer" placeholder="URL do trailer (YouTube) - liberado sem comprar">
+        <input id="video" placeholder="URL do filme completo (YouTube ou .mp4) - liberado após compra">
+        <input id="arquivoDownload" placeholder="URL do arquivo pra download (.mp4) - opcional, deixe vazio pra usar o mesmo link do vídeo">
+
+        <select id="tipo">
+            <option value="filme">Filme</option>
+            <option value="serie">Série</option>
+            <option value="anime">Anime</option>
+            <option value="dorama">Dorama</option>
+        </select>
+
+        <select id="categoria">
+            <option value="">Selecione o gênero</option>
+            <option value="Ação">Ação</option>
+            <option value="Comédia">Comédia</option>
+            <option value="Drama">Drama</option>
+            <option value="Terror">Terror</option>
+            <option value="Suspense">Suspense</option>
+            <option value="Romance">Romance</option>
+            <option value="Ficção Científica">Ficção Científica</option>
+            <option value="Fantasia">Fantasia</option>
+            <option value="Animação">Animação</option>
+            <option value="Documentário">Documentário</option>
+            <option value="Aventura">Aventura</option>
+            <option value="Crime">Crime</option>
+        </select>
+        <input id="ano" placeholder="Ano">
+
+        <!-- Selo visual (não controla preço nem acesso) -->
+        <select id="nivel">
+            <option value="free">Selo: FREE</option>
+            <option value="prime">Selo: PRIME</option>
+            <option value="premium">Selo: PREMIUM</option>
+        </select>
+
+        <!-- Preço individual do título -- é isso que controla o desbloqueio -->
+        <input id="preco" type="number" step="0.01" min="0" placeholder="Preço (R$) - deixe 0 ou vazio pra ser grátis">
+
+        <div class="checkbox">
+            <input type="checkbox" id="destaque">
+            <label>Destaque principal</label>
+        </div>
+
+        <div class="checkbox">
+            <input type="checkbox" id="recomendado">
+            <label>Recomendado</label>
+        </div>
+
+        <button id="salvar">Cadastrar Conteúdo</button>
+
+        <p id="mensagem"></p>
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+import { auth, db } from "./js/firebase.js";
+
+import {
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail,
+    signOut,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+import {
+    doc,
+    getDoc,
+    setDoc,
+    collection,
+    addDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+const telaLogin   = document.getElementById("telaLogin");
+const acessoNegado = document.getElementById("acessoNegado");
+const painelAdmin = document.getElementById("painelAdmin");
+
+
+/* =====================================
+   CONTROLA QUAL TELA APARECE
+===================================== */
+function mostrarTela(nome){
+
+    telaLogin.classList.add("hidden");
+    acessoNegado.classList.add("hidden");
+    painelAdmin.classList.add("hidden");
+
+    if(nome === "login") telaLogin.classList.remove("hidden");
+    if(nome === "negado") acessoNegado.classList.remove("hidden");
+    if(nome === "painel") painelAdmin.classList.remove("hidden");
+}
+
+
+/* =====================================
+   VERIFICA SE O USUÁRIO LOGADO É ADMIN
+   (consulta o campo "admin" no documento
+   dele em usuarios/{uid})
+===================================== */
+async function verificarSeEhAdmin(usuario){
+
+    try{
+
+        const refUsuario = doc(db, "usuarios", usuario.uid);
+        const snap = await getDoc(refUsuario);
+
+        if(snap.exists() && snap.data().admin === true){
+            mostrarTela("painel");
+        } else {
+            mostrarTela("negado");
+        }
+
+    } catch(error){
+        console.error("Erro ao verificar admin:", error);
+        mostrarTela("negado");
+    }
+
+}
+
+
+/* =====================================
+   OBSERVA ESTADO DE LOGIN
+===================================== */
+onAuthStateChanged(auth, (usuario)=>{
+
+    if(usuario){
+        verificarSeEhAdmin(usuario);
+    } else {
+        mostrarTela("login");
+    }
+
+});
+
+
+/* =====================================
+   LOGIN
+===================================== */
+document.getElementById("btnEntrarAdmin").addEventListener("click", async ()=>{
+
+    const email = document.getElementById("loginEmail").value;
+    const senha = document.getElementById("loginSenha").value;
+    const msg = document.getElementById("mensagemLogin");
+
+    try{
+        await signInWithEmailAndPassword(auth, email, senha);
+        msg.innerText = "";
+    } catch(error){
+        msg.innerText = "E-mail ou senha incorretos";
+    }
+
+});
+
+
+document.getElementById("btnEsqueciSenha").addEventListener("click", async ()=>{
+
+    const email = document.getElementById("loginEmail").value;
+    const msg = document.getElementById("mensagemLogin");
+
+    if(!email){
+        msg.innerText = "Digite seu e-mail no campo acima primeiro";
+        return;
+    }
+
+    try{
+        await sendPasswordResetEmail(auth, email);
+        msg.innerText = "✅ E-mail de recuperação enviado! Confira sua caixa de entrada (e o spam).";
+    } catch(error){
+        msg.innerText = "❌ Não foi possível enviar: " + error.message;
+    }
+
+});
+
+
+/* =====================================
+   LOGOUT
+===================================== */
+document.getElementById("btnSairAdmin").addEventListener("click", ()=>{
+    signOut(auth);
+});
+
+document.getElementById("btnSairNegado").addEventListener("click", ()=>{
+    signOut(auth);
+});
+
+
+/* =====================================
+   CADASTRAR FILME (mesma lógica de antes)
+===================================== */
+document.getElementById("salvar").onclick = async ()=>{
+
+    const mensagem = document.getElementById("mensagem");
+
+    const colecoes = {
+        filme: "filmes",
+        serie: "series",
+        anime: "animes",
+        dorama: "doramas"
+    };
+
+    const nomeColecao = colecoes[tipo.value] || "filmes";
+
+    try{
+
+        const docRef = await addDoc(collection(db, nomeColecao), {
+            titulo: titulo.value,
+            capa: capa.value,
+            banner: banner.value,
+            descricao: descricao.value,
+            trailer: trailer.value,
+            tipo: tipo.value,
+            categoria: categoria.value,
+            ano: ano.value,
+            nivel: nivel.value,
+            preco: parseFloat(preco.value) || 0,
+            destaque: destaque.checked,
+            recomendado: recomendado.checked,
+            ativo: true,
+            data: serverTimestamp()
+        });
+
+        // Vídeo completo e arquivo de download ficam separados,
+        // numa subcoleção só liberada pra quem comprou o título
+        await setDoc(doc(db, nomeColecao, docRef.id, "protegido", "dados"), {
+            video: video.value,
+            arquivoDownload: arquivoDownload.value || video.value
+        });
+
+        mensagem.innerHTML = "✅ Conteúdo cadastrado com sucesso!";
+
+        document.querySelectorAll("#formConteudo input, #formConteudo textarea").forEach(e=>{
+            if(e.type !== "checkbox") e.value = "";
+        });
+
+    } catch(error){
+        mensagem.innerHTML = "❌ Erro: " + error.message;
+    }
+
+};
+
+</script>
+
+</body>
+</html>
