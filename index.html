@@ -8,108 +8,141 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
     <style>
-        :root { --primary: #00d4ff; --bg-dark: #0a0a0b; --bg-card: #16161a; --text: #fff; }
-        * { box-sizing: border-box; }
-        body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; margin: 0; overflow-x: hidden; }
+        :root {
+            --primary: #00d4ff;
+            --primary-hover: #00a2c7;
+            --bg-dark: #0a0a0b;
+            --bg-card: #16161a;
+            --bg-modal: #121214;
+            --text: #ffffff;
+            --text-secondary: #aaaaaa;
+        }
 
-        header { display: flex; justify-content: space-between; gap: 20px; padding: 20px 5%; position: fixed; width: 100%; z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); align-items: center; }
-        .logo { display: flex; align-items: center; text-decoration: none; white-space: nowrap; }
-        .logo-img { height: 48px; width: auto; object-fit: contain; transition: transform .2s; }
-        .logo-img:hover { transform: scale(1.05); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+
+        /* HEADER */
+        header { display: flex; justify-content: space-between; gap: 15px; padding: 15px 5%; position: fixed; top: 0; width: 100%; z-index: 1000; background: linear-gradient(to bottom, rgba(10,10,11,0.95), rgba(10,10,11,0)); backdrop-filter: blur(8px); align-items: center; }
+        .logo { display: flex; align-items: center; text-decoration: none; font-size: 1.5rem; font-weight: 800; color: white; }
         .logo span { color: var(--primary); }
+        .logo-img { height: 42px; width: auto; object-fit: contain; }
 
-        #busca { flex: 1; max-width: 320px; padding: 8px 14px; border-radius: 4px; border: 1px solid #333; background: rgba(255,255,255,0.08); color: white; }
-        #busca::placeholder { color: #aaa; }
+        .search-box { flex: 1; max-width: 360px; position: relative; }
+        #busca { width: 100%; padding: 10px 16px 10px 38px; border-radius: 20px; border: 1px solid #2a2a30; background: rgba(255,255,255,0.06); color: white; outline: none; transition: 0.3s; font-size: 0.9rem; }
+        #busca:focus { border-color: var(--primary); background: rgba(0,0,0,0.4); box-shadow: 0 0 10px rgba(0,212,255,0.2); }
+        .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 0.85rem; }
 
-        .btn-login { background: var(--primary); border: none; padding: 8px 20px; border-radius: 4px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+        .btn-login { background: var(--primary); color: #000; border: none; padding: 8px 22px; border-radius: 20px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; font-size: 0.9rem; }
+        .btn-login:hover { background: var(--primary-hover); transform: translateY(-1px); }
 
-        .badge-nivel { padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; white-space: nowrap; }
-        .badge-nivel.free { background: #333; color: #ccc; }
-        .badge-nivel.prime { background: #7b2ff7; color: #fff; }
-        .badge-nivel.premium { background: linear-gradient(135deg, #f7b733, #fc4a1a); color: #fff; }
+        /* ADS CONTAINERS */
+        .ad-banner-container { width: 100%; display: flex; justify-content: center; align-items: center; padding: 10px 5%; margin-top: 75px; }
+        .ad-box { width: 100%; max-width: 970px; height: 90px; background: #1a1a20; border: 1px dashed #333; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #666; font-size: 0.8rem; text-align: center; }
 
-        .selo-card { position: absolute; top: 8px; right: 8px; padding: 3px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; z-index: 1; }
-        .selo-card.prime { background: #7b2ff7; color: #fff; }
-        .selo-card.premium { background: linear-gradient(135deg, #f7b733, #fc4a1a); color: #fff; }
+        /* HERO */
+        #hero { height: 70vh; position: relative; display: flex; align-items: flex-end; padding: 0 5% 50px; background-size: cover; background-position: center; background-color: #111; transition: background-image 0.5s ease-in-out; }
+        #hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, var(--bg-dark) 5%, transparent 60%), linear-gradient(to right, rgba(10,10,11,0.9), transparent 70%); }
+        .hero-content { position: relative; z-index: 1; max-width: 650px; }
+        .hero-content h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 12px; line-height: 1.1; }
+        .hero-content p { color: #ddd; margin-bottom: 22px; line-height: 1.6; font-size: 0.95rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .hero-btns button { padding: 12px 28px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; margin-right: 12px; transition: 0.2s; font-size: 0.95rem; }
+        .btn-assistir { background: #fff; color: #000; }
+        .btn-assistir:hover { background: #e0e0e0; transform: translateY(-2px); }
+        .btn-info { background: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(5px); }
+        .btn-info:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
 
-        .opcao-nivel { display: flex; justify-content: space-between; align-items: center; background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 12px; text-align: left; }
-        .opcao-nivel button { width: auto; padding: 8px 18px; }
-
-        #hero { height: 70vh; position: relative; display: flex; align-items: flex-end; padding: 0 5% 60px; background-size: cover; background-position: center; background-color: #111; transition: background-image 0.4s ease; }
-        #hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, var(--bg-dark), transparent 60%), linear-gradient(to right, black, transparent); }
-        .hero-content { position: relative; z-index: 1; max-width: 600px; }
-        .hero-content h1 { font-size: 2.4rem; margin-bottom: 10px; }
-        .hero-content p { color: #ddd; margin-bottom: 18px; }
-        .hero-btns button { padding: 10px 24px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer; margin-right: 10px; }
-        .btn-assistir { background: white; }
-        .btn-info { background: rgba(255,255,255,0.2); color: white; }
-
+        /* CONTAINERS & CARDS */
         .container { padding: 30px 5%; }
-        .container h2 { margin-bottom: 12px; font-size: 1.2rem; }
+        .section-title { font-size: 1.3rem; margin: 25px 0 12px; display: flex; align-items: center; gap: 8px; font-weight: 600; }
 
-        .filtros { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
-        .chip { padding: 7px 16px; border-radius: 20px; border: 1px solid #333; background: transparent; color: #ccc; cursor: pointer; font-size: 0.85rem; transition: 0.2s; }
+        .filtros { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; }
+        .filtros::-webkit-scrollbar { display: none; }
+        .chip { padding: 8px 18px; border-radius: 20px; border: 1px solid #2a2a30; background: rgba(255,255,255,0.03); color: var(--text-secondary); cursor: pointer; font-size: 0.85rem; white-space: nowrap; transition: 0.2s; }
         .chip:hover { border-color: var(--primary); color: white; }
         .chip.ativo { background: var(--primary); color: #000; border-color: var(--primary); font-weight: 600; }
-        .cards { display: flex; gap: 15px; overflow-x: auto; padding: 10px 0 20px; scrollbar-width: thin; }
-        .movie-card { min-width: 160px; height: 240px; background: var(--bg-card); border-radius: 8px; cursor: pointer; transition: 0.25s; flex-shrink: 0; overflow: hidden; position: relative; }
-        .movie-card:hover { transform: scale(1.06); box-shadow: 0 0 0 2px var(--primary); }
-        .movie-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .movie-card .titulo-fallback { padding: 10px; font-size: 0.85rem; }
-        .vazio { color: #888; font-size: 0.9rem; }
 
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.9); padding: 20px; }
+        .cards { display: flex; gap: 16px; overflow-x: auto; padding: 10px 0 25px; scrollbar-width: thin; scrollbar-color: #333 transparent; }
+        .movie-card { min-width: 165px; width: 165px; height: 245px; background: var(--bg-card); border-radius: 10px; cursor: pointer; transition: transform 0.25s, box-shadow 0.25s; flex-shrink: 0; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.05); }
+        .movie-card:hover { transform: translateY(-6px); box-shadow: 0 8px 20px rgba(0,212,255,0.25); border-color: var(--primary); }
+        .movie-card img { width: 100%; height: 100%; object-fit: cover; }
+        .movie-card .titulo-fallback { padding: 15px; font-size: 0.9rem; text-align: center; height: 100%; display: flex; align-items: center; justify-content: center; background: #1a1a20; }
+        
+        .selo-card { position: absolute; top: 10px; right: 10px; padding: 4px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.5); text-transform: uppercase; }
+        .selo-card.gratis { background: rgba(0,0,0,0.7); color: #00d4ff; border: 1px solid #00d4ff; }
+        .selo-card.prime { background: linear-gradient(135deg, #ffaa00, #ff5500); color: #000; }
+        .selo-card.premium { background: linear-gradient(135deg, #00d4ff, #0072ff); color: #000; }
+
+        .vazio { color: var(--text-secondary); font-size: 0.9rem; padding: 20px 0; }
+
+        /* MODAIS */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); padding: 20px; }
         .hidden { display: none !important; }
-        .login-box { background: #111; padding: 40px; border-radius: 8px; width: 100%; max-width: 350px; text-align: center; }
-        .login-box h2 { margin-bottom: 20px; }
-        .login-box input { width: 100%; padding: 12px; margin-bottom: 10px; background: #222; border: 1px solid #333; color: white; border-radius: 4px; }
-        .login-box .btn-secundario { background: none; color: #aaa; border: none; margin-top: 8px; cursor: pointer; text-decoration: underline; font-size: 0.85rem; }
-        .erro-msg { color: #ff6b6b; font-size: 0.85rem; min-height: 18px; margin-bottom: 6px; }
+        
+        .login-box { background: var(--bg-modal); padding: 35px; border-radius: 12px; width: 100%; max-width: 400px; text-align: center; border: 1px solid #222; }
+        .login-box h2 { margin-bottom: 15px; font-weight: 700; }
+        .login-box input { width: 100%; padding: 12px; margin-bottom: 12px; background: #1c1c20; border: 1px solid #333; color: white; border-radius: 6px; outline: none; }
+        .login-box input:focus { border-color: var(--primary); }
+        .login-box .btn-secundario { background: none; color: var(--text-secondary); border: none; margin-top: 10px; cursor: pointer; font-size: 0.85rem; display: block; width: 100%; text-align: center; }
+        .login-box .btn-secundario:hover { color: white; text-decoration: underline; }
+        .erro-msg { color: #ff6b6b; font-size: 0.85rem; min-height: 20px; margin-bottom: 8px; }
 
-        .detalhe-box { background: #111; border-radius: 10px; max-width: 600px; width: 100%; overflow: hidden; }
+        .detalhe-box { background: var(--bg-modal); border-radius: 12px; max-width: 650px; width: 100%; overflow: hidden; border: 1px solid #222; position: relative; }
         .detalhe-box img { width: 100%; max-height: 300px; object-fit: cover; }
         .detalhe-info { padding: 25px; }
-        .detalhe-info h2 { margin-bottom: 8px; }
-        .detalhe-meta { color: #aaa; font-size: 0.85rem; margin-bottom: 12px; }
-        .detalhe-info p { color: #ddd; line-height: 1.5; margin-bottom: 20px; }
-        .detalhe-btns { margin-bottom: 12px; }
-        .detalhe-btns button { padding: 10px 22px; border-radius: 4px; border: none; font-weight: 600; cursor: pointer; margin-right: 10px; }
+        .detalhe-info h2 { margin-bottom: 6px; font-size: 1.6rem; }
+        .detalhe-meta { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 14px; display: flex; gap: 10px; }
+        .detalhe-info p { color: #ccc; line-height: 1.6; margin-bottom: 20px; font-size: 0.92rem; }
+        .detalhe-btns { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+        .detalhe-btns button { padding: 10px 20px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
 
-        #playerPage { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 3000; }
-        #playerPage video, #playerPage iframe { width: 100%; height: 100%; border: none; }
-        #fecharPlayer { position: absolute; top: 20px; left: 20px; z-index: 3001; background: rgba(0,0,0,0.6); color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; }
+        .btn-ad-action { background: linear-gradient(135deg, #ff9900, #ff5500); color: white; }
+        .btn-ad-action:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-pix-prime { background: linear-gradient(135deg, #ffaa00, #ff5500); color: #000; }
+        .btn-pix-premium { background: linear-gradient(135deg, #00d4ff, #0072ff); color: #ffffff; }
 
-        #notification { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #222; padding: 12px 24px; border-radius: 6px; z-index: 4000; border: 1px solid #333; }
+        /* PLAYER & CONTROLES MULTI-SERVER */
+        #playerPage { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 3000; display: flex; flex-direction: column; }
+        #playerControls { position: absolute; top: 20px; left: 20px; right: 20px; z-index: 3001; display: flex; justify-content: space-between; align-items: center; }
+        #fecharPlayer { background: rgba(0,0,0,0.7); color: white; border: 1px solid #444; padding: 10px 18px; border-radius: 20px; cursor: pointer; backdrop-filter: blur(4px); transition: 0.2s; }
+        #fecharPlayer:hover { background: var(--primary); color: #000; }
+        
+        .server-selector { display: flex; gap: 8px; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 20px; border: 1px solid #333; backdrop-filter: blur(4px); }
+        .server-btn { background: transparent; color: #ccc; border: none; padding: 6px 14px; border-radius: 15px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+        .server-btn.ativo { background: var(--primary); color: #000; }
+
+        .player-container { flex: 1; width: 100%; height: 100%; position: relative; }
+        .player-container video, .player-container iframe { width: 100%; height: 100%; border: none; }
+
+        /* NOTIFICAÇÃO */
+        #notification { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: #1f1f24; color: white; padding: 12px 28px; border-radius: 30px; z-index: 4000; border: 1px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-size: 0.9rem; text-align: center; }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#" class="logo"><img src="assets/v8p.png" alt="V8 Play+" class="logo-img"></a>
-        <input type="text" id="busca" name="busca-catalogo" placeholder="Buscar filmes e séries..." autocomplete="off">
+        <a href="#" class="logo"><img src="assets/v8p.png" alt="V8 Play+" class="logo-img" onerror="this.style.display='none'"> <span>V8 Play+</span></a>
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="busca" placeholder="Buscar filmes, séries e doramas..." autocomplete="off">
+        </div>
         <button class="btn-login" id="authBtn">Entrar</button>
     </header>
 
-    <!-- MODAL DE COMPRA (por título) -->
-    <div id="modalCompra" class="modal hidden">
-        <div class="login-box">
-            <h2>Comprar título</h2>
-            <p id="compraTitulo" style="color:#fff; font-weight:600; margin-bottom:6px;"></p>
-            <p id="compraPreco" style="color:var(--primary); font-size:1.4rem; font-weight:700; margin-bottom:20px;"></p>
-            <p class="erro-msg" id="erroCompra"></p>
-            <button class="btn-login" style="width:100%;" id="btnIrPagar">Pagar com Mercado Pago</button>
-            <p style="color:#888; font-size:0.8rem; margin-top:10px;">Libera assistir online e baixar o arquivo, sem limite de tempo.</p>
-            <button onclick="document.getElementById('modalCompra').classList.add('hidden')" style="background:none; color:white; border:none; margin-top:10px; cursor:pointer;">Cancelar</button>
+    <!-- BANNER DE ANÚNCIO SUPERIOR -->
+    <div class="ad-banner-container">
+        <div class="ad-box">
+            <span>ESPAÇO PUBLICITÁRIO (ADSENSE / BANNER)</span>
+            <small>Anúncio patrocinado</small>
         </div>
     </div>
 
     <section id="hero">
         <div class="hero-content">
-            <h1 id="heroTitle">V8 Play+</h1>
-            <p id="heroDesc">Sua nova experiência em streaming conectada ao Firebase.</p>
+            <h1 id="heroTitle">Carregando...</h1>
+            <p id="heroDesc">Sua nova experiência em streaming em alta definição.</p>
             <div class="hero-btns">
-                <button class="btn-assistir" id="heroAssistir"><i class="fa-solid fa-play"></i> Assistir</button>
-                <button class="btn-info" id="heroInfo">Mais informações</button>
+                <button class="btn-assistir" id="heroAssistir"><i class="fa-solid fa-play"></i> Ver Opções</button>
+                <button class="btn-info" id="heroInfo"><i class="fa-solid fa-circle-info"></i> Mais detalhes</button>
             </div>
         </div>
     </section>
@@ -119,99 +152,184 @@
             <button class="chip ativo" data-genero="Todos">Todos</button>
         </div>
 
-        <h2>🔥 Em Alta</h2>
+        <h2 class="section-title">🔥 Em Alta</h2>
         <div class="cards" id="emAlta"></div>
 
-        <h2>🎬 Filmes</h2>
+        <h2 class="section-title">🎬 Filmes</h2>
         <div class="cards" id="filmes"></div>
 
-        <h2>📺 Séries</h2>
+        <!-- BANNER DE ANÚNCIO MID-PAGE -->
+        <div class="ad-banner-container" style="margin: 20px 0;">
+            <div class="ad-box" style="height: 120px;">
+                <span>ESPAÇO PUBLICITÁRIO MID-PAGE</span>
+                <small>Monetização V8 Play+</small>
+            </div>
+        </div>
+
+        <h2 class="section-title">📺 Séries</h2>
         <div class="cards" id="series"></div>
 
-        <h2>🎌 Animes</h2>
+        <h2 class="section-title">🎌 Animes</h2>
         <div class="cards" id="animes"></div>
 
-        <h2>🎭 Doramas</h2>
+        <h2 class="section-title">🎭 Doramas</h2>
         <div class="cards" id="doramas"></div>
 
-        <h2>⭐ Recomendados</h2>
+        <h2 class="section-title">⭐ Recomendados</h2>
         <div class="cards" id="recomendados"></div>
     </div>
 
-    <!-- MODAL LOGIN / CADASTRO -->
+    <!-- MODAL AUTHENTICATION -->
     <div id="loginModal" class="modal hidden">
         <div class="login-box">
-            <h2 id="tituloAuth">Login</h2>
+            <h2 id="tituloAuth">Entrar no V8 Play+</h2>
             <p class="erro-msg" id="erroAuth"></p>
+            
             <input type="email" id="email" placeholder="E-mail" autocomplete="username">
             <input type="password" id="password" placeholder="Senha" autocomplete="current-password">
-            <button class="btn-login" style="width: 100%;" id="doLogin">Entrar</button>
+            
+            <button class="btn-login" style="width: 100%; border-radius: 6px; padding: 12px; margin-top: 5px;" id="doLogin">Entrar</button>
+            
+            <button class="btn-secundario" id="btnEsqueciSenha">Esqueci minha senha</button>
             <button class="btn-secundario" id="alternarCadastro">Ainda não tem conta? Criar conta</button>
-            <br>
-            <button onclick="document.getElementById('loginModal').classList.add('hidden')" style="background:none; color:white; border:none; margin-top:10px; cursor:pointer;">Cancelar</button>
+            <button class="btn-secundario" onclick="fecharModais()" style="margin-top: 15px; color: #666;">Cancelar</button>
         </div>
     </div>
 
-    <!-- MODAL DETALHES DO FILME -->
+    <!-- MODAL DETALHES DO TÍTULO -->
     <div id="detalheModal" class="modal hidden">
         <div class="detalhe-box">
             <img id="detImg" src="" alt="">
             <div class="detalhe-info">
                 <h2 id="detTitulo"></h2>
-                <div class="detalhe-meta"><span id="detAno"></span> · <span id="detCategoria"></span></div>
+                <div class="detalhe-meta"><span id="detAno"></span> • <span id="detCategoria"></span></div>
                 <p id="detDescricao"></p>
-                <div class="detalhe-btns" id="detBtnsTrailer">
-                    <button class="btn-info" id="detTrailer"><i class="fa-solid fa-film"></i> Ver trailer</button>
+                
+                <div class="detalhe-btns" id="detBtnsContainer">
+                    <!-- Gerado dinamicamente com base nas Tags (gratis, prime, premium) -->
                 </div>
-                <div class="detalhe-btns" id="detBtnsBloqueado">
-                    <button class="btn-assistir" id="detComprar"><i class="fa-solid fa-lock"></i> Comprar - <span id="detPreco"></span></button>
-                </div>
-                <div class="detalhe-btns hidden" id="detBtnsLiberado">
-                    <button class="btn-assistir" id="detAssistir"><i class="fa-solid fa-play"></i> Assistir</button>
-                    <button class="btn-info" id="detBaixar"><i class="fa-solid fa-download"></i> Baixar</button>
-                </div>
-                <div class="detalhe-btns">
-                    <button class="btn-info" onclick="document.getElementById('detalheModal').classList.add('hidden')">Fechar</button>
+
+                <div class="detalhe-btns" style="margin-top: 15px;">
+                    <button class="btn-info" style="background: transparent; border: 1px solid #333;" onclick="fecharModais()">Fechar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- PLAYER -->
+    <!-- MODAL ASSISTIR ANÚNCIO (TIMER ADS) -->
+    <div id="adModal" class="modal hidden">
+        <div class="login-box" style="max-width: 450px;">
+            <h2>Anúncio Patrocinado</h2>
+            <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">Aguarde o anúncio para liberar sua ação gratuita.</p>
+            
+            <div class="ad-box" style="height: 180px; margin-bottom: 20px;">
+                <span>[ ANÚNCIO PUBLICITÁRIO ]</span>
+                <small>Monetag / Google AdSense / Banner</small>
+            </div>
+
+            <button id="btnConfirmarAd" class="btn-login" style="width: 100%; opacity: 0.5;" disabled>Aguarde <span id="adTimerCount">5</span>s...</button>
+        </div>
+    </div>
+
+    <!-- MODAL PIX INFINITEPAY -->
+    <div id="pixModal" class="modal hidden">
+        <div class="login-box" style="max-width: 420px;">
+            <h2><i class="fa-solid fa-pix" style="color:#00d4ff;"></i> Pagamento via Pix</h2>
+            <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">Copie o código Pix abaixo para liberar este conteúdo com acesso completo sem anúncios e opção de download.</p>
+            
+            <textarea id="pixCode" readonly style="height: 80px; font-size: 0.8rem; font-family: monospace;"></textarea>
+            
+            <button class="btn-login" id="btnCopiarPix" style="width: 100%; margin-bottom: 10px;">Copiar Código Pix</button>
+            <button class="btn-secundario" onclick="fecharModais()">Já fiz o pagamento</button>
+        </div>
+    </div>
+
+    <!-- PLAYER MULTI-SERVER PAGE -->
     <div id="playerPage" class="hidden">
-        <button id="fecharPlayer"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-        <video id="videoPlayer" controls autoplay></video>
-        <iframe id="youtubePlayer" class="hidden" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <div id="playerControls">
+            <button id="fecharPlayer"><i class="fa-solid fa-arrow-left"></i> Voltar ao Catálogo</button>
+            
+            <div class="server-selector">
+                <button class="server-btn ativo" id="btnServer1">Opção 1</button>
+                <button class="server-btn" id="btnServer2">Opção 2</button>
+                <button class="server-btn" id="btnServer3">Opção 3</button>
+            </div>
+        </div>
+
+        <div class="player-container">
+            <video id="videoPlayer" controls autoplay></video>
+            <iframe id="iframePlayer" class="hidden" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
     </div>
 
     <div id="notification" class="hidden"><span id="notificationText"></span></div>
 
-    <!-- SCRIPTS FIREBASE -->
+    <!-- FIREBASE MODULES -->
     <script type="module">
         import { db, auth } from "./js/firebase.js";
-        import { collection, query, where, orderBy, getDocs, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { collection, getDocs, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         let catalogo = [];
         let filmeAtual = null;
         let modoCadastro = false;
+        let acaoAnuncioPendente = null; // 'assistir' ou 'baixar'
+        let titulosComprados = new Set(); // Registra compras salvas do usuário
 
-        // --- CARREGAR CATÁLOGO ---
+        // Configuração de Preços Dinâmicos por Tag (Valores Fallback caso o Painel Admin ainda não tenha definido)
+        let valoresPlanosAdmin = {
+            prime: 9.90,
+            premium: 19.90
+        };
+
         const COLECOES = ["filmes", "series", "animes", "doramas"];
 
+        function formatarPreco(valor) {
+            const num = Number(valor) || 0;
+            return `R$ ${num.toFixed(2).replace('.', ',')}`;
+        }
+
+        // Carrega as configurações de preço salvas pelo Painel Admin no Firestore
+        async function carregarPrecosAdmin() {
+            try {
+                const docRef = doc(db, "configuracoes", "planos");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const dados = docSnap.data();
+                    if (dados.prime) valoresPlanosAdmin.prime = Number(dados.prime);
+                    if (dados.premium) valoresPlanosAdmin.premium = Number(dados.premium);
+                }
+            } catch (e) {
+                console.warn("Usando tabela de preços padrão (Painel Admin não consultado ou sem permissão).");
+            }
+        }
+
+        // Obtém a Tag do conteúdo (gratis, prime ou premium)
+        function obterTagItem(item) {
+            if (item.tag) return item.tag.toLowerCase();
+            if (item.plano) return item.plano.toLowerCase();
+            return "gratis";
+        }
+
+        // BUSCA E ORDENAÇÃO VIA JAVASCRIPT (evita o erro de índice composto no Firestore)
         async function buscarColecao(nome) {
             try {
-                // "ativo == true" + "orderBy data" pode pedir a criação de um índice composto
-                // na primeira vez para cada coleção -- o Firestore mostra um link pronto no
-                // console do navegador para criar automaticamente, é só clicar nele.
-                const consulta = query(
-                    collection(db, nome),
-                    where("ativo", "==", true),
-                    orderBy("data", "desc")
-                );
-                const snap = await getDocs(consulta);
+                const snap = await getDocs(collection(db, nome));
                 const itens = [];
-                snap.forEach((doc) => itens.push({ id: doc.id, colecao: nome, ...doc.data() }));
+                
+                snap.forEach((doc) => {
+                    const data = doc.data();
+                    if (data.ativo !== false) {
+                        itens.push({ id: doc.id, colecao: nome, ...data });
+                    }
+                });
+
+                itens.sort((a, b) => {
+                    const dataA = a.data?.toDate ? a.data.toDate() : new Date(a.data || 0);
+                    const dataB = b.data?.toDate ? b.data.toDate() : new Date(b.data || 0);
+                    return dataB - dataA;
+                });
+
                 return itens;
             } catch (e) {
                 console.error(`Erro ao buscar coleção "${nome}":`, e);
@@ -219,44 +337,64 @@
             }
         }
 
-        async function carregarFilmes() {
-            const emAlta = document.getElementById('emAlta');
-            const filmes = document.getElementById('filmes');
-            const series = document.getElementById('series');
-            const animes = document.getElementById('animes');
-            const doramas = document.getElementById('doramas');
-            const recomendados = document.getElementById('recomendados');
+        async function carregarCatalogo() {
+            await carregarPrecosAdmin();
+
+            const containerIds = ['emAlta', 'filmes', 'series', 'animes', 'doramas', 'recomendados'];
+            containerIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = "";
+            });
 
             const resultados = await Promise.all(COLECOES.map(buscarColecao));
             catalogo = resultados.flat();
 
-            emAlta.innerHTML = filmes.innerHTML = series.innerHTML = animes.innerHTML = doramas.innerHTML = recomendados.innerHTML = "";
-
             if (catalogo.length === 0) {
-                filmes.innerHTML = "<p class='vazio'>Nenhum filme encontrado. Cadastre pelo painel admin.</p>";
+                const filmesEl = document.getElementById('filmes');
+                if (filmesEl) filmesEl.innerHTML = "<p class='vazio'>Nenhum título disponível no momento.</p>";
                 return;
             }
 
             catalogo.forEach((item) => {
-                if (item.destaque) emAlta.appendChild(criarCard(item));
+                if (item.destaque && document.getElementById('emAlta')) document.getElementById('emAlta').appendChild(criarCard(item));
+                if (item.tipo === "serie" && document.getElementById('series')) document.getElementById('series').appendChild(criarCard(item));
+                else if (item.tipo === "anime" && document.getElementById('animes')) document.getElementById('animes').appendChild(criarCard(item));
+                else if (item.tipo === "dorama" && document.getElementById('doramas')) document.getElementById('doramas').appendChild(criarCard(item));
+                else if (document.getElementById('filmes')) document.getElementById('filmes').appendChild(criarCard(item));
 
-                if (item.tipo === "serie") series.appendChild(criarCard(item));
-                else if (item.tipo === "anime") animes.appendChild(criarCard(item));
-                else if (item.tipo === "dorama") doramas.appendChild(criarCard(item));
-                else filmes.appendChild(criarCard(item));
-
-                if (item.recomendado) recomendados.appendChild(criarCard(item));
+                if (item.recomendado && document.getElementById('recomendados')) document.getElementById('recomendados').appendChild(criarCard(item));
             });
 
             carregarDestaque();
             montarFiltros();
         }
 
-        // --- FILTROS DE GÊNERO ---
+        function criarCard(item) {
+            const card = document.createElement('div');
+            card.className = 'movie-card';
+            card.dataset.categoria = item.categoria || "";
+            card.dataset.titulo = (item.titulo || "").toLowerCase();
+
+            const tag = obterTagItem(item);
+            let rotuloSelo = "GRÁTIS";
+            if (tag === "prime") rotuloSelo = `PRIME (${formatarPreco(valoresPlanosAdmin.prime)})`;
+            else if (tag === "premium") rotuloSelo = `PREMIUM (${formatarPreco(valoresPlanosAdmin.premium)})`;
+
+            const selo = `<span class="selo-card ${tag}">${rotuloSelo}</span>`;
+
+            if (item.capa) {
+                card.innerHTML = `${selo}<img src="${item.capa}" alt="${item.titulo}" loading="lazy">`;
+            } else {
+                card.innerHTML = `${selo}<div class="titulo-fallback">${item.titulo}</div>`;
+            }
+            card.onclick = () => abrirDetalhes(item);
+            return card;
+        }
+
         function montarFiltros() {
             const container = document.getElementById('filtros');
+            if (!container) return;
             const generos = [...new Set(catalogo.map(i => i.categoria).filter(Boolean))].sort();
-
             container.querySelectorAll('.chip:not([data-genero="Todos"])').forEach(c => c.remove());
 
             generos.forEach(genero => {
@@ -268,342 +406,341 @@
             });
         }
 
-        document.getElementById('filtros').addEventListener('click', (e) => {
-            if (!e.target.classList.contains('chip')) return;
+        function aplicarFiltrosEBusca() {
+            const texto = document.getElementById('busca').value.toLowerCase().trim();
+            const generoAtivo = document.querySelector('#filtros .chip.ativo')?.dataset.genero || 'Todos';
 
+            document.querySelectorAll('.movie-card').forEach(card => {
+                const titulo = card.dataset.titulo || "";
+                const categoria = card.dataset.categoria || "";
+                const combinaBusca = texto === "" || titulo.includes(texto);
+                const combinaGenero = generoAtivo === 'Todos' || categoria === generoAtivo;
+                card.style.display = (combinaBusca && combinaGenero) ? "" : "none";
+            });
+        }
+
+        document.getElementById('filtros')?.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('chip')) return;
             document.querySelectorAll('#filtros .chip').forEach(c => c.classList.remove('ativo'));
             e.target.classList.add('ativo');
-
-            const genero = e.target.dataset.genero;
-            document.querySelectorAll('.movie-card').forEach(card => {
-                card.style.display = (genero === 'Todos' || card.dataset.categoria === genero) ? '' : 'none';
-            });
+            aplicarFiltrosEBusca();
         });
 
-        function criarCard(item) {
-            const card = document.createElement('div');
-            card.className = 'movie-card';
-            card.dataset.categoria = item.categoria || "";
-
-            const selo = (item.nivel === 'prime' || item.nivel === 'premium')
-                ? `<span class="selo-card ${item.nivel}">${item.nivel.toUpperCase()}</span>`
-                : '';
-
-            if (item.capa) {
-                card.innerHTML = `${selo}<img src="${item.capa}" alt="${item.titulo}">`;
-            } else {
-                card.innerHTML = `${selo}<div class="titulo-fallback">${item.titulo}</div>`;
-            }
-            card.onclick = () => abrirDetalhes(item);
-            return card;
-        }
+        document.getElementById('busca')?.addEventListener('input', aplicarFiltrosEBusca);
 
         function carregarDestaque() {
             const destaque = catalogo.find(i => i.destaque === true) || catalogo[0];
             if (!destaque) return;
             filmeAtual = destaque;
             document.getElementById('heroTitle').innerText = destaque.titulo;
-            document.getElementById('heroDesc').innerText = destaque.descricao || "";
+            document.getElementById('heroDesc').innerText = destaque.descricao || "Assista agora em alta definição no V8 Play+!";
             const hero = document.getElementById('hero');
-            if (destaque.banner) hero.style.backgroundImage = `url('${destaque.banner}')`;
+            if (destaque.banner || destaque.capa) hero.style.backgroundImage = `url('${destaque.banner || destaque.capa}')`;
         }
 
-        // Verifica se o usuário (logado ou não) tem acesso ao vídeo completo,
-        // buscando a subcoleção protegida -- quem decide é a regra do Firestore
-        // (nível FREE é liberado até sem login; PRIME/PREMIUM exigem compra)
-        async function checarPosse(item) {
-            try {
-                const snap = await getDoc(doc(db, item.colecao, item.id, "protegido", "dados"));
-                return snap.exists() ? snap.data() : null;
-            } catch (e) {
-                return null; // sem permissão -> nível insuficiente
-            }
-        }
-
-        async function abrirDetalhes(item) {
+        function abrirDetalhes(item) {
             filmeAtual = item;
             document.getElementById('detImg').src = item.banner || item.capa || "";
             document.getElementById('detTitulo').innerText = item.titulo;
-            document.getElementById('detAno').innerText = item.ano || "";
-            document.getElementById('detCategoria').innerText = item.categoria || (item.tipo === "serie" ? "Série" : "Filme");
-            document.getElementById('detDescricao').innerText = item.descricao || "";
-            document.getElementById('detPreco').innerText = formatarPreco(item.preco);
+            document.getElementById('detAno').innerText = item.ano || "2026";
+            document.getElementById('detCategoria').innerText = item.categoria || item.tipo;
+            document.getElementById('detDescricao').innerText = item.descricao || "Sem descrição disponível.";
 
-            document.getElementById('detBtnsTrailer').style.display = item.trailer ? '' : 'none';
-            document.getElementById('detBtnsBloqueado').classList.remove('hidden');
-            document.getElementById('detBtnsLiberado').classList.add('hidden');
+            const containerBtns = document.getElementById('detBtnsContainer');
+            containerBtns.innerHTML = "";
+
+            const tag = obterTagItem(item);
+            const estaComprado = titulosComprados.has(item.id);
+
+            if (tag === "gratis" || tag === "free") {
+                // TAG GRATIS: Não possui opção de compra. Exige anúncio tanto no player quanto no download.
+                containerBtns.innerHTML = `
+                    <button class="btn-ad-action" id="btnAssistirAnuncio"><i class="fa-solid fa-rectangle-ad"></i> Assistir com Anúncio</button>
+                    <button class="btn-ad-action" id="btnDownloadAnuncio" style="background: linear-gradient(135deg, #00d4ff, #0072ff);"><i class="fa-solid fa-download"></i> Baixar com Anúncio</button>
+                `;
+
+                document.getElementById('btnAssistirAnuncio').onclick = () => iniciarFluxoAnuncio('assistir');
+                document.getElementById('btnDownloadAnuncio').onclick = () => iniciarFluxoAnuncio('baixar');
+
+            } else {
+                // TAG PRIME OU PREMIUM
+                const valorPlano = tag === "prime" ? valoresPlanosAdmin.prime : valoresPlanosAdmin.premium;
+                const valorFormatado = formatarPreco(valorPlano);
+                const classeCorBtn = tag === "prime" ? "btn-pix-prime" : "btn-pix-premium";
+
+                if (estaComprado) {
+                    // SE COMPROU O CONTEÚDO PAGO: Liberado direto sem anúncios
+                    containerBtns.innerHTML = `
+                        <button class="btn-login" id="btnAssistirDireto"><i class="fa-solid fa-play"></i> Assistir Agora</button>
+                        <button class="btn-info" id="btnDownloadDireto"><i class="fa-solid fa-download"></i> Baixar Arquivo</button>
+                    `;
+                    document.getElementById('btnAssistirDireto').onclick = () => iniciarPlayerMultiServer(item);
+                    document.getElementById('btnDownloadDireto').onclick = () => executarDownload(item);
+                } else {
+                    // SE NÃO COMPROU: Botão Pix para liberar o conteúdo daquela tag
+                    containerBtns.innerHTML = `
+                        <button class="${classeCorBtn}" id="btnComprarTag"><i class="fa-solid fa-pix"></i> Liberar Tag ${tag.toUpperCase()} (${valorFormatado})</button>
+                    `;
+                    document.getElementById('btnComprarTag').onclick = () => solicitarPix(item, tag, valorPlano);
+                }
+            }
+
+            if (item.trailer) {
+                const btnTrailer = document.createElement('button');
+                btnTrailer.className = 'btn-info';
+                btnTrailer.innerHTML = `<i class="fa-solid fa-film"></i> Trailer`;
+                btnTrailer.onclick = () => {
+                    fecharModais();
+                    carregarMidiaNoPlayer(item.trailer);
+                    document.getElementById('playerPage').classList.remove('hidden');
+                };
+                containerBtns.appendChild(btnTrailer);
+            }
 
             document.getElementById('detalheModal').classList.remove('hidden');
+        }
 
-            const dados = await checarPosse(item);
-            filmeAtual._dadosProtegidos = dados;
+        function iniciarFluxoAnuncio(tipoAcao) {
+            acaoAnuncioPendente = tipoAcao;
+            document.getElementById('detalheModal').classList.add('hidden');
+            document.getElementById('adModal').classList.remove('hidden');
 
-            if (filmeAtual !== item) return; // usuário já abriu outro título enquanto verificava
+            let count = 5;
+            const btnConfirmar = document.getElementById('btnConfirmarAd');
+            const timerSpan = document.getElementById('adTimerCount');
+            
+            btnConfirmar.disabled = true;
+            btnConfirmar.style.opacity = "0.5";
+            btnConfirmar.innerText = `Aguarde ${count}s...`;
 
-            if (dados) {
-                document.getElementById('detBtnsBloqueado').classList.add('hidden');
-                document.getElementById('detBtnsLiberado').classList.remove('hidden');
+            const interval = setInterval(() => {
+                count--;
+                if (timerSpan) timerSpan.innerText = count;
+                btnConfirmar.innerText = count > 0 ? `Aguarde ${count}s...` : (tipoAcao === 'assistir' ? "Assistir Vídeo Agora" : "Iniciar Download");
+
+                if (count <= 0) {
+                    clearInterval(interval);
+                    btnConfirmar.disabled = false;
+                    btnConfirmar.style.opacity = "1";
+                }
+            }, 1000);
+        }
+
+        document.getElementById('btnConfirmarAd').onclick = () => {
+            if (!filmeAtual) return;
+            fecharModais();
+            if (acaoAnuncioPendente === 'assistir') {
+                iniciarPlayerMultiServer(filmeAtual);
+            } else if (acaoAnuncioPendente === 'baixar') {
+                executarDownload(filmeAtual);
+            }
+        };
+
+        function executarDownload(item) {
+            const url = item.arquivoDownload || item.video1 || item.video;
+            if (!url) {
+                mostrarNotificacao("Link de download não disponível para este item.");
+                return;
+            }
+            window.open(url, '_blank');
+        }
+
+        async function solicitarPix(item, tag, valor) {
+            if (!auth.currentUser) {
+                mostrarNotificacao(`Faça login para adquirir o acesso ${tag.toUpperCase()}.`);
+                fecharModais();
+                document.getElementById('loginModal').classList.remove('hidden');
+                return;
+            }
+
+            try {
+                mostrarNotificacao("Gerando chave Pix para liberação...");
+                const resp = await fetch('/criar-compra-pix', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        uid: auth.currentUser.uid,
+                        email: auth.currentUser.email,
+                        itemId: item.id,
+                        colecao: item.colecao,
+                        tag: tag,
+                        valor: valor
+                    })
+                });
+                const dados = await resp.json();
+                
+                if (dados.pix_code) {
+                    fecharModais();
+                    document.getElementById('pixCode').value = dados.pix_code;
+                    document.getElementById('pixModal').classList.remove('hidden');
+                } else {
+                    mostrarNotificacao(dados.error || "Erro ao gerar cobrança Pix.");
+                }
+            } catch (e) {
+                mostrarNotificacao("Falha na conexão de pagamento Pix.");
             }
         }
 
-        // Extrai o ID do vídeo de qualquer formato comum de link do YouTube
-        function idDoYoutube(url) {
-            const padrao = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/;
-            const match = url.match(padrao);
-            return match ? match[1] : null;
-        }
+        window.fecharModais = function() {
+            document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
+        };
 
-        // Toca uma URL no player (trailer ou vídeo completo) -- YouTube vira
-        // iframe, link direto (.mp4) vira tag <video>
-        function tocarUrl(url, opts = {}) {
-            if (!url) { mostrarNotificacao("Vídeo não disponível"); return; }
-
+        function carregarMidiaNoPlayer(url) {
+            if (!url) { mostrarNotificacao("Opção de player indisponível."); return; }
             const video = document.getElementById('videoPlayer');
-            const youtube = document.getElementById('youtubePlayer');
-            const idYt = idDoYoutube(url);
+            const iframe = document.getElementById('iframePlayer');
 
+            const idYt = idDoYoutube(url);
             if (idYt) {
                 video.classList.add('hidden');
                 video.pause();
-                video.src = "";
-
-                youtube.src = `https://www.youtube.com/embed/${idYt}?autoplay=1`;
-                youtube.classList.remove('hidden');
+                iframe.src = `https://www.youtube.com/embed/${idYt}?autoplay=1`;
+                iframe.classList.remove('hidden');
+            } else if (url.includes("embed") || url.includes("iframe") || !url.endsWith(".mp4")) {
+                video.classList.add('hidden');
+                video.pause();
+                iframe.src = url;
+                iframe.classList.remove('hidden');
             } else {
-                youtube.classList.add('hidden');
-                youtube.src = "";
-
-                video.classList.remove('hidden');
+                iframe.classList.add('hidden');
+                iframe.src = "";
                 video.src = url;
-                if (opts.progresso) video.currentTime = opts.progresso;
+                video.classList.remove('hidden');
             }
-
-            document.getElementById('detalheModal').classList.add('hidden');
-            document.getElementById('playerPage').classList.remove('hidden');
         }
 
-        // --- TRAILER (público, não precisa ter comprado) ---
-        document.getElementById('detTrailer').addEventListener('click', () => {
-            if (filmeAtual && filmeAtual.trailer) tocarUrl(filmeAtual.trailer);
-        });
+        function idDoYoutube(url) {
+            if (!url) return null;
+            const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+            return match ? match[1] : null;
+        }
 
-        // --- ASSISTIR (vídeo completo, só quem comprou) ---
-        document.getElementById('detAssistir').addEventListener('click', async () => {
-            if (!filmeAtual) return;
-            let dados = filmeAtual._dadosProtegidos || await checarPosse(filmeAtual);
-            if (!dados) { mostrarNotificacao("Você ainda não comprou esse título"); return; }
-            tocarUrl(dados.video);
-            registrarHistorico(filmeAtual);
-        });
+        function iniciarPlayerMultiServer(item) {
+            const p1 = item.video1 || item.video;
+            const p2 = item.video2;
+            const p3 = item.video3;
 
-        // --- BAIXAR (só funciona pra link direto .mp4, não pra YouTube) ---
-        document.getElementById('detBaixar').addEventListener('click', async () => {
-            if (!filmeAtual) return;
-            let dados = filmeAtual._dadosProtegidos || await checarPosse(filmeAtual);
-            const url = dados && (dados.arquivoDownload || dados.video);
-            if (!url) { mostrarNotificacao("Arquivo não disponível pra download"); return; }
-            if (idDoYoutube(url)) { mostrarNotificacao("Esse título só está disponível pra assistir online"); return; }
+            document.getElementById('btnServer1').style.display = p1 ? '' : 'none';
+            document.getElementById('btnServer2').style.display = p2 ? '' : 'none';
+            document.getElementById('btnServer3').style.display = p3 ? '' : 'none';
 
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = (filmeAtual.titulo || "video") + ".mp4";
-            link.target = "_blank";
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-        });
+            marcarServerAtivo('btnServer1');
+            carregarMidiaNoPlayer(p1);
 
-        // --- HISTÓRICO ("assistido em") ---
+            fecharModais();
+            document.getElementById('playerPage').classList.remove('hidden');
+            registrarHistorico(item);
+        }
+
+        function marcarServerAtivo(idBtn) {
+            document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('ativo'));
+            document.getElementById(idBtn).classList.add('ativo');
+        }
+
+        document.getElementById('btnServer1').onclick = () => { marcarServerAtivo('btnServer1'); carregarMidiaNoPlayer(filmeAtual.video1 || filmeAtual.video); };
+        document.getElementById('btnServer2').onclick = () => { marcarServerAtivo('btnServer2'); carregarMidiaNoPlayer(filmeAtual.video2); };
+        document.getElementById('btnServer3').onclick = () => { marcarServerAtivo('btnServer3'); carregarMidiaNoPlayer(filmeAtual.video3); };
+
+        document.getElementById('btnCopiarPix').onclick = () => {
+            const copyText = document.getElementById('pixCode');
+            copyText.select();
+            document.execCommand("copy");
+            mostrarNotificacao("Código Pix copiado!");
+        };
+
         async function registrarHistorico(item) {
             const usuario = auth.currentUser;
             if (!usuario) return;
-
             try {
-                const ref = doc(db, "historico", `${usuario.uid}_${item.id}`);
-                await setDoc(ref, {
+                await setDoc(doc(db, "historico", `${usuario.uid}_${item.id}`), {
                     usuario: usuario.uid,
                     filmeId: item.id,
                     titulo: item.titulo,
                     capa: item.capa || "",
                     assistidoEm: serverTimestamp()
                 }, { merge: true });
-            } catch (e) {
-                console.error("Erro ao registrar histórico:", e);
-            }
+            } catch (e) {}
         }
 
-        // --- PROGRESSO ("continuar assistindo") ---
-        // Só disponível para vídeo direto (mp4) -- o player do YouTube embutido
-        // não expõe o tempo atual sem carregar a API extra do YouTube.
-        let ultimoSalvamento = 0;
-        document.getElementById('videoPlayer').addEventListener('timeupdate', (e) => {
-            const agora = Date.now();
-            if (agora - ultimoSalvamento < 5000) return; // salva no máximo a cada 5s
-            ultimoSalvamento = agora;
-            salvarProgresso(e.target.currentTime);
-        });
-
-        async function salvarProgresso(tempo) {
-            const usuario = auth.currentUser;
-            if (!usuario || !filmeAtual) return;
-
-            try {
-                const ref = doc(db, "progresso", `${usuario.uid}_${filmeAtual.id}`);
-                await setDoc(ref, {
-                    usuario: usuario.uid,
-                    filmeId: filmeAtual.id,
-                    titulo: filmeAtual.titulo,
-                    tempo: tempo,
-                    atualizadoEm: serverTimestamp()
-                }, { merge: true });
-            } catch (e) {
-                console.error("Erro ao salvar progresso:", e);
-            }
-        }
-
-        document.getElementById('heroAssistir').addEventListener('click', () => filmeAtual && abrirDetalhes(filmeAtual));
-        document.getElementById('heroInfo').addEventListener('click', () => filmeAtual && abrirDetalhes(filmeAtual));
-
-        document.getElementById('fecharPlayer').addEventListener('click', () => {
+        document.getElementById('fecharPlayer').onclick = () => {
             const video = document.getElementById('videoPlayer');
-            const youtube = document.getElementById('youtubePlayer');
-            if (!video.classList.contains('hidden') && video.currentTime > 0) {
-                salvarProgresso(video.currentTime);
-            }
+            const iframe = document.getElementById('iframePlayer');
             video.pause();
             video.src = "";
-            youtube.src = "";
+            iframe.src = "";
             document.getElementById('playerPage').classList.add('hidden');
-        });
+        };
 
-        // Fechar com tecla ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !document.getElementById('playerPage').classList.contains('hidden')) {
-                document.getElementById('fecharPlayer').click();
+        document.getElementById('heroAssistir').onclick = () => filmeAtual && abrirDetalhes(filmeAtual);
+        document.getElementById('heroInfo').onclick = () => filmeAtual && abrirDetalhes(filmeAtual);
+
+        document.getElementById('alternarCadastro').onclick = () => {
+            modoCadastro = !modoCadastro;
+            document.getElementById('tituloAuth').innerText = modoCadastro ? "Criar nova conta" : "Entrar no V8 Play+";
+            document.getElementById('doLogin').innerText = modoCadastro ? "Criar conta" : "Entrar";
+            document.getElementById('alternarCadastro').innerText = modoCadastro ? "Já possui conta? Fazer login" : "Ainda não tem conta? Criar conta";
+            document.getElementById('erroAuth').innerText = "";
+        };
+
+        document.getElementById('btnEsqueciSenha').onclick = async () => {
+            const email = document.getElementById('email').value;
+            const erro = document.getElementById('erroAuth');
+            if (!email) { erro.innerText = "Informe seu e-mail acima para redefinir a senha."; return; }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                mostrarNotificacao("E-mail de redefinição enviado com sucesso!");
+                erro.innerText = "";
+            } catch (e) {
+                erro.innerText = "Erro ao enviar e-mail. Verifique o endereço digitado.";
             }
+        };
+
+        document.getElementById('doLogin').onclick = async () => {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            const erro = document.getElementById('erroAuth');
+            erro.innerText = "";
+
+            if (!email || !pass) { erro.innerText = "Preencha todos os campos."; return; }
+
+            try {
+                if (modoCadastro) {
+                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    await setDoc(doc(db, "usuarios", cred.user.uid), {
+                        email: email,
+                        admin: false,
+                        criadoEm: serverTimestamp()
+                    });
+                } else {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                }
+                fecharModais();
+            } catch (e) {
+                erro.innerText = "Falha na autenticação. Verifique e-mail e senha.";
+            }
+        };
+
+        document.getElementById('authBtn').onclick = () => {
+            if (auth.currentUser) {
+                signOut(auth);
+                mostrarNotificacao("Sessão encerrada.");
+            } else {
+                document.getElementById('loginModal').classList.remove('hidden');
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            document.getElementById('authBtn').innerText = user ? "Sair (" + user.email.split('@')[0] + ")" : "Entrar";
         });
 
         function mostrarNotificacao(msg) {
             const box = document.getElementById('notification');
             document.getElementById('notificationText').innerText = msg;
             box.classList.remove('hidden');
-            setTimeout(() => box.classList.add('hidden'), 3000);
+            setTimeout(() => box.classList.add('hidden'), 3500);
         }
 
-        // --- BUSCA ---
-        document.getElementById('busca').addEventListener('input', (e) => {
-            const texto = e.target.value.toLowerCase();
-            document.querySelectorAll('.movie-card').forEach(card => {
-                card.style.display = card.innerText.toLowerCase().includes(texto) || texto === "" ? "block" : "none";
-            });
-        });
-
-        // --- LOGIN / CADASTRO ---
-        document.getElementById('alternarCadastro').addEventListener('click', () => {
-            modoCadastro = !modoCadastro;
-            document.getElementById('tituloAuth').innerText = modoCadastro ? "Criar conta" : "Login";
-            document.getElementById('doLogin').innerText = modoCadastro ? "Criar conta" : "Entrar";
-            document.getElementById('alternarCadastro').innerText = modoCadastro ? "Já tem conta? Entrar" : "Ainda não tem conta? Criar conta";
-            document.getElementById('erroAuth').innerText = "";
-        });
-
-        document.getElementById('doLogin').addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
-            const erro = document.getElementById('erroAuth');
-            erro.innerText = "";
-
-            try {
-                if (modoCadastro) {
-                    await createUserWithEmailAndPassword(auth, email, pass);
-                } else {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                }
-                document.getElementById('loginModal').classList.add('hidden');
-                document.getElementById('email').value = "";
-                document.getElementById('password').value = "";
-            } catch (e) {
-                erro.innerText = traduzirErro(e.code);
-            }
-        });
-
-        function traduzirErro(codigo) {
-            const mapa = {
-                "auth/invalid-email": "E-mail inválido",
-                "auth/user-not-found": "Usuário não encontrado",
-                "auth/wrong-password": "Senha incorreta",
-                "auth/invalid-credential": "E-mail ou senha incorretos",
-                "auth/email-already-in-use": "Esse e-mail já está cadastrado",
-                "auth/weak-password": "A senha precisa ter pelo menos 6 caracteres"
-            };
-            return mapa[codigo] || "Ocorreu um erro, tente novamente";
-        }
-
-        // --- LOGOUT ---
-        document.getElementById('authBtn').addEventListener('click', () => {
-            if (auth.currentUser) {
-                signOut(auth);
-            } else {
-                document.getElementById('loginModal').classList.remove('hidden');
-            }
-        });
-
-        function formatarPreco(preco) {
-            const valor = Number(preco) || 0;
-            return valor > 0 ? `R$ ${valor.toFixed(2).replace('.', ',')}` : "Grátis";
-        }
-
-        // --- MONITORAR USUÁRIO ---
-        onAuthStateChanged(auth, (user) => {
-            const btn = document.getElementById('authBtn');
-            btn.innerText = user ? "Sair (" + user.email.split('@')[0] + ")" : "Entrar";
-        });
-
-        // --- COMPRA POR TÍTULO ---
-        document.getElementById('detComprar').addEventListener('click', () => {
-            if (!filmeAtual) return;
-
-            if (!auth.currentUser) {
-                mostrarNotificacao("Faça login antes de comprar");
-                document.getElementById('detalheModal').classList.add('hidden');
-                document.getElementById('loginModal').classList.remove('hidden');
-                return;
-            }
-
-            document.getElementById('compraTitulo').innerText = filmeAtual.titulo;
-            document.getElementById('compraPreco').innerText = formatarPreco(filmeAtual.preco);
-            document.getElementById('erroCompra').innerText = "";
-            document.getElementById('modalCompra').classList.remove('hidden');
-        });
-
-        document.getElementById('btnIrPagar').addEventListener('click', async () => {
-            const erro = document.getElementById('erroCompra');
-            erro.innerText = "";
-            if (!filmeAtual || !auth.currentUser) return;
-
-            try {
-                const resp = await fetch('/criar-compra', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        uid: auth.currentUser.uid,
-                        email: auth.currentUser.email,
-                        colecao: filmeAtual.colecao,
-                        itemId: filmeAtual.id
-                    })
-                });
-                const dados = await resp.json();
-                if (dados.init_point) {
-                    window.location.href = dados.init_point;
-                } else {
-                    erro.innerText = dados.error || "Não foi possível iniciar o pagamento.";
-                }
-            } catch (e) {
-                erro.innerText = "Erro de conexão com o pagamento.";
-            }
-        });
-
-        carregarFilmes();
+        carregarCatalogo();
     </script>
 </body>
 </html>
