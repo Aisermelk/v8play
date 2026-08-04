@@ -100,6 +100,7 @@
             <h2 id="formTitulo"><i class="fa-solid fa-plus-circle"></i> Cadastrar Novo Conteúdo</h2>
             <form id="formConteudo">
                 <input type="hidden" id="itemId">
+                <input type="hidden" id="originalColecao">
 
                 <div class="form-grid">
                     <div class="form-group">
@@ -383,6 +384,7 @@
             e.preventDefault();
 
             const itemId = document.getElementById('itemId').value;
+            const originalColecao = document.getElementById('originalColecao').value;
             const colecao = document.getElementById('colecao').value;
             const tag = document.getElementById('tag').value;
             const preco = parseFloat(document.getElementById('preco').value) || (tag === 'gratis' ? 0 : precosAtuais[tag]);
@@ -410,6 +412,10 @@
 
             try {
                 if (itemId) {
+                    // Se a coleção foi alterada na edição, exclui o documento antigo para não duplicar em coleções erradas
+                    if (originalColecao && originalColecao !== colecao) {
+                        await deleteDoc(doc(db, originalColecao, itemId));
+                    }
                     await setDoc(doc(db, colecao, itemId), itemData, { merge: true });
                     mostrarNotificacao("Conteúdo atualizado com sucesso!");
                 } else {
@@ -429,6 +435,7 @@
 
         function prepararEdicao(item) {
             document.getElementById('itemId').value = item.id;
+            document.getElementById('originalColecao').value = item.colecao;
             document.getElementById('titulo').value = item.titulo || "";
             document.getElementById('colecao').value = item.colecao;
             document.getElementById('categoria').value = item.categoria || "";
@@ -468,6 +475,7 @@
         function resetarFormulario() {
             document.getElementById('formConteudo').reset();
             document.getElementById('itemId').value = "";
+            document.getElementById('originalColecao').value = "";
             document.getElementById('formTitulo').innerHTML = `<i class="fa-solid fa-plus-circle"></i> Cadastrar Novo Conteúdo`;
             document.getElementById('btnCancelarEdicao').classList.add('hidden');
         }
