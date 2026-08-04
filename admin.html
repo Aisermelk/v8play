@@ -1,433 +1,483 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>V8 Play+ Admin</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - V8 Play+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --primary-hover: #00a2c7;
+            --bg-dark: #0a0a0b;
+            --bg-card: #16161a;
+            --bg-modal: #121214;
+            --text: #ffffff;
+            --text-secondary: #aaaaaa;
+            --danger: #ff4757;
+            --success: #2ed573;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; padding-bottom: 50px; }
 
-<style>
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: #121216; border-bottom: 1px solid #222; }
+        .logo { font-size: 1.4rem; font-weight: 800; color: white; text-decoration: none; }
+        .logo span { color: var(--primary); }
+        .user-status { font-size: 0.9rem; color: var(--text-secondary); }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Poppins,Arial;
-}
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
 
-body{
-    background:#050505;
-    color:white;
-    padding:40px;
-}
+        .card-box { background: var(--bg-card); border-radius: 10px; padding: 25px; border: 1px solid #222; margin-bottom: 25px; }
+        .card-box h2 { font-size: 1.2rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #2b2b36; padding-bottom: 10px; color: var(--primary); }
 
-.container{
-    max-width:700px;
-    margin:auto;
-    background:#111;
-    padding:35px;
-    border-radius:15px;
-}
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full { grid-column: 1 / -1; }
 
-h1{
-    text-align:center;
-    margin-bottom:30px;
-}
+        label { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; }
+        input, select, textarea { background: #1c1c22; border: 1px solid #333; color: white; padding: 10px 14px; border-radius: 6px; font-family: inherit; font-size: 0.9rem; outline: none; transition: 0.2s; }
+        input:focus, select:focus, textarea:focus { border-color: var(--primary); }
+        textarea { resize: vertical; min-height: 80px; }
 
-.logo{
-    text-align:center;
-    font-size:35px;
-    font-weight:800;
-    margin-bottom:20px;
-}
+        .checkbox-group { display: flex; gap: 20px; align-items: center; margin-top: 10px; }
+        .checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; }
 
-.logo span{
-    color:#00d4ff;
-}
+        .btn-salvar { background: var(--primary); color: #000; border: none; padding: 12px 25px; font-weight: 700; border-radius: 6px; cursor: pointer; transition: 0.2s; margin-top: 15px; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-salvar:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn-cancelar { background: #333; color: white; border: none; padding: 12px 20px; font-weight: 600; border-radius: 6px; cursor: pointer; margin-top: 15px; margin-left: 10px; }
 
-input,
-select,
-textarea{
-    width:100%;
-    padding:15px;
-    margin-bottom:15px;
-    background:#222;
-    border:1px solid #333;
-    border-radius:8px;
-    color:white;
-}
+        /* TABELA DE CONTEÚDO */
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { text-align: left; padding: 12px 15px; border-bottom: 1px solid #222; font-size: 0.88rem; }
+        th { background: #121216; color: var(--text-secondary); font-weight: 600; }
+        tr:hover { background: rgba(255,255,255,0.02); }
 
-textarea{
-    height:120px;
-    resize:none;
-}
+        .badge-tag { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .badge-tag.gratis { background: rgba(0, 212, 255, 0.15); color: #00d4ff; border: 1px solid #00d4ff; }
+        .badge-tag.prime { background: rgba(255, 170, 0, 0.2); color: #ffaa00; border: 1px solid #ffaa00; }
+        .badge-tag.premium { background: rgba(0, 114, 255, 0.2); color: #0072ff; border: 1px solid #0072ff; }
 
-button{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:8px;
-    background:#00d4ff;
-    font-weight:bold;
-    cursor:pointer;
-}
+        .btn-acao { background: none; border: none; color: #aaa; cursor: pointer; font-size: 1rem; padding: 5px; margin-right: 8px; transition: 0.2s; }
+        .btn-acao.editar:hover { color: var(--primary); }
+        .btn-acao.excluir:hover { color: var(--danger); }
 
-button:hover{
-    background:white;
-}
-
-.checkbox{
-    display:flex;
-    gap:10px;
-    margin-bottom:15px;
-}
-
-#mensagem{
-    margin-top:20px;
-    text-align:center;
-}
-
-/* A classe .hidden não existia em nenhum lugar do projeto original
-   (index.html também usa classList "hidden" sem ela estar definida) */
-.hidden{
-    display:none;
-}
-
-#topoAdmin{
-    max-width:700px;
-    margin:0 auto 15px auto;
-    display:flex;
-    justify-content:flex-end;
-}
-
-#topoAdmin button{
-    width:auto;
-    padding:8px 16px;
-    font-size:13px;
-    background:#222;
-    color:white;
-    border:1px solid #333;
-}
-
-#acessoNegado{
-    max-width:700px;
-    margin:80px auto;
-    text-align:center;
-}
-
-#mensagemLogin{
-    text-align:center;
-    margin-top:10px;
-    min-height:20px;
-}
-
-</style>
+        #notification { position: fixed; bottom: 25px; right: 25px; background: #1f1f24; color: white; padding: 12px 24px; border-radius: 8px; z-index: 4000; border: 1px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-size: 0.9rem; }
+        .hidden { display: none !important; }
+    </style>
 </head>
 <body>
 
-<!-- ===================================
-     TELA DE LOGIN (mostrada por padrão)
-     Só ela fica visível até confirmarmos
-     que o usuário está logado E é admin
-==================================== -->
-<div class="container" id="telaLogin">
+    <header>
+        <a href="index.html" class="logo">V8 Play+ <span>Admin</span></a>
+        <div class="user-status" id="adminStatus">Verificando permissões...</div>
+    </header>
 
-    <div class="logo">V8 <span>Play+</span></div>
-    <h1>Painel Administrativo</h1>
+    <div class="container">
 
-    <input id="loginEmail" type="email" placeholder="E-mail">
-    <input id="loginSenha" type="password" placeholder="Senha">
-
-    <button id="btnEntrarAdmin">Entrar</button>
-
-    <button id="btnEsqueciSenha" style="background:none; color:#00d4ff; margin-top:10px; text-decoration:underline; font-weight:normal;">Esqueci minha senha</button>
-
-    <p id="mensagemLogin"></p>
-
-</div>
-
-
-<!-- ===================================
-     ACESSO NEGADO
-     Usuário logou mas não é admin
-==================================== -->
-<div class="container hidden" id="acessoNegado">
-
-    <div class="logo">V8 <span>Play+</span></div>
-    <h1>Acesso restrito</h1>
-    <p style="text-align:center; margin-bottom:20px;">
-        Essa conta não tem permissão de administrador.
-    </p>
-    <button id="btnSairNegado">Sair</button>
-
-</div>
-
-
-<!-- ===================================
-     PAINEL (só aparece se for admin)
-==================================== -->
-<div id="painelAdmin" class="hidden">
-
-    <div id="topoAdmin">
-        <button id="btnSairAdmin">Sair</button>
-    </div>
-
-    <div class="container" id="formConteudo">
-
-        <div class="logo">V8 <span>Play+</span></div>
-        <h1>Painel Administrativo</h1>
-
-        <input id="titulo" placeholder="Título do filme">
-        <input id="capa" placeholder="URL da capa">
-        <input id="banner" placeholder="URL do banner">
-
-        <textarea id="descricao" placeholder="Descrição"></textarea>
-
-        <input id="trailer" placeholder="URL do trailer (YouTube) - liberado sem comprar">
-        <input id="video" placeholder="URL do filme completo (YouTube ou .mp4) - liberado após compra">
-        <input id="arquivoDownload" placeholder="URL do arquivo pra download (.mp4) - opcional, deixe vazio pra usar o mesmo link do vídeo">
-
-        <select id="tipo">
-            <option value="filme">Filme</option>
-            <option value="serie">Série</option>
-            <option value="anime">Anime</option>
-            <option value="dorama">Dorama</option>
-        </select>
-
-        <select id="categoria">
-            <option value="">Selecione o gênero</option>
-            <option value="Ação">Ação</option>
-            <option value="Comédia">Comédia</option>
-            <option value="Drama">Drama</option>
-            <option value="Terror">Terror</option>
-            <option value="Suspense">Suspense</option>
-            <option value="Romance">Romance</option>
-            <option value="Ficção Científica">Ficção Científica</option>
-            <option value="Fantasia">Fantasia</option>
-            <option value="Animação">Animação</option>
-            <option value="Documentário">Documentário</option>
-            <option value="Aventura">Aventura</option>
-            <option value="Crime">Crime</option>
-        </select>
-        <input id="ano" placeholder="Ano">
-
-        <!-- Selo visual (não controla preço nem acesso) -->
-        <select id="nivel">
-            <option value="free">Selo: FREE</option>
-            <option value="prime">Selo: PRIME</option>
-            <option value="premium">Selo: PREMIUM</option>
-        </select>
-
-        <!-- Preço individual do título -- é isso que controla o desbloqueio -->
-        <input id="preco" type="number" step="0.01" min="0" placeholder="Preço (R$) - deixe 0 ou vazio pra ser grátis">
-
-        <div class="checkbox">
-            <input type="checkbox" id="destaque">
-            <label>Destaque principal</label>
+        <!-- PAINEL 1: CONFIGURAÇÃO DE VALORES DAS TAGS -->
+        <div class="card-box">
+            <h2><i class="fa-solid fa-tags"></i> Valoração dos Planos / Tags (Geral)</h2>
+            <form id="formPlanos" class="form-grid">
+                <div class="form-group">
+                    <label for="precoPrime">Preço Tag PRIME (R$):</label>
+                    <input type="number" step="0.01" id="precoPrime" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label for="precoPremium">Preço Tag PREMIUM (R$):</label>
+                    <input type="number" step="0.01" id="precoPremium" placeholder="0.00" required>
+                </div>
+                <div class="form-group full">
+                    <button type="submit" class="btn-salvar" style="width: fit-content;"><i class="fa-solid fa-floppy-disk"></i> Atualizar Preços dos Planos</button>
+                </div>
+            </form>
         </div>
 
-        <div class="checkbox">
-            <input type="checkbox" id="recomendado">
-            <label>Recomendado</label>
+        <!-- PAINEL 2: CADASTRO / EDIÇÃO DE ITEM -->
+        <div class="card-box">
+            <h2 id="formTitulo"><i class="fa-solid fa-plus-circle"></i> Cadastrar Novo Conteúdo</h2>
+            <form id="formConteudo">
+                <input type="hidden" id="itemId">
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="titulo">Título:</label>
+                        <input type="text" id="titulo" placeholder="Ex: Michael (2026)" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="colecao">Coleção / Tipo:</label>
+                        <select id="colecao" required>
+                            <option value="filmes">Filme</option>
+                            <option value="series">Série</option>
+                            <option value="animes">Anime</option>
+                            <option value="doramas">Dorama</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoria">Gênero / Categoria:</label>
+                        <select id="categoria" required>
+                            <option value="">Selecione a Categoria...</option>
+                            <option value="Ação">Ação</option>
+                            <option value="Comédia">Comédia</option>
+                            <option value="Terror">Terror</option>
+                            <option value="Drama">Drama</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Aventura">Aventura</option>
+                            <option value="Ficção Científica">Ficção Científica</option>
+                            <option value="Animação">Animação</option>
+                            <option value="Suspense">Suspense</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ano">Ano de Lançamento:</label>
+                        <input type="text" id="ano" placeholder="2026">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tag">Tag do Conteúdo:</label>
+                        <select id="tag" required>
+                            <option value="gratis">Grátis (Libera com Anúncio)</option>
+                            <option value="prime">Prime (Pago)</option>
+                            <option value="premium">Premium (Pago)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preco">Valor Individual (R$):</label>
+                        <input type="number" step="0.01" id="preco" placeholder="0.00">
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="capa">URL da Capa (Poster):</label>
+                        <input type="url" id="capa" placeholder="https://...">
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="banner">URL do Banner (Destaque Hero):</label>
+                        <input type="url" id="banner" placeholder="https://...">
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="video1">URL Player Principal (Opção 1):</label>
+                        <input type="url" id="video1" placeholder="https://... (.mp4 ou embed iframe)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="video2">URL Player Opção 2 (Opcional):</label>
+                        <input type="url" id="video2" placeholder="https://...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="video3">URL Player Opção 3 (Opcional):</label>
+                        <input type="url" id="video3" placeholder="https://...">
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="arquivoDownload">URL Link Direto de Download:</label>
+                        <input type="url" id="arquivoDownload" placeholder="https://... (deixe em branco para usar a Opção 1)">
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="trailer">URL Trailer (YouTube/Embed):</label>
+                        <input type="url" id="trailer" placeholder="https://www.youtube.com/watch?v=...">
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="descricao">Sinopse / Descrição:</label>
+                        <textarea id="descricao" placeholder="Escreva a descrição do conteúdo..."></textarea>
+                    </div>
+
+                    <div class="form-group full checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="destaque"> Colocar no Banner Principal (Hero / Em Alta)
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="recomendado"> Marcar como Recomendado
+                        </label>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <button type="submit" class="btn-salvar" id="btnSalvarItem"><i class="fa-solid fa-check"></i> Salvar Conteúdo</button>
+                    <button type="button" class="btn-cancelar hidden" id="btnCancelarEdicao">Cancelar Edição</button>
+                </div>
+            </form>
         </div>
 
-        <button id="salvar">Cadastrar Conteúdo</button>
-
-        <p id="mensagem"></p>
+        <!-- PAINEL 3: GERENCIAMENTO E LISTA DE ITENS -->
+        <div class="card-box">
+            <h2><i class="fa-solid fa-list-check"></i> Conteúdos Cadastrados</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Tipo</th>
+                            <th>Categoria</th>
+                            <th>Tag</th>
+                            <th>Valor</th>
+                            <th>Destaque</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaConteudo">
+                        <tr><td colspan="7" style="text-align: center; color: #666;">Carregando lista de itens...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
     </div>
 
-</div>
+    <div id="notification" class="hidden"><span id="notificationText"></span></div>
 
+    <!-- FIREBASE MODULES -->
+    <script type="module">
+        import { db, auth } from "./js/firebase.js";
+        import { collection, getDocs, doc, setDoc, getDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-<script type="module">
+        let todosItens = [];
+        let precosAtuais = { prime: 0.00, premium: 0.00 };
+        const COLECOES = ["filmes", "series", "animes", "doramas"];
 
-import { auth, db } from "./js/firebase.js";
+        // SEGURANÇA E AUTENTICAÇÃO DE ADMIN
+        onAuthStateChanged(auth, async (user) => {
+            const statusEl = document.getElementById('adminStatus');
+            if (!user) {
+                statusEl.innerHTML = "<span style='color: var(--danger);'>Acesso negado. Faça login no index.html</span>";
+                alert("Você precisa estar logado para acessar o Painel Admin.");
+                window.location.href = "index.html";
+                return;
+            }
 
-import {
-    signInWithEmailAndPassword,
-    sendPasswordResetEmail,
-    signOut,
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+            try {
+                const userDoc = await getDoc(doc(db, "usuarios", user.uid));
+                if (!userDoc.exists() || !userDoc.data().admin) {
+                    statusEl.innerHTML = `<span style='color: var(--danger);'>Conta (${user.email}) sem permissão de Administrador.</span>`;
+                    alert("Sua conta não possui permissão de Administrador.");
+                    window.location.href = "index.html";
+                    return;
+                }
 
-import {
-    doc,
-    getDoc,
-    setDoc,
-    collection,
-    addDoc,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+                statusEl.innerHTML = `<span style='color: var(--success);'><i class="fa-solid fa-user-shield"></i> Autenticado: ${user.email}</span>`;
+                carregarPrecosPlanos();
+                carregarListaConteudos();
 
+            } catch (e) {
+                console.error(e);
+                statusEl.innerHTML = "<span style='color: var(--danger);'>Erro ao validar permissões.</span>";
+            }
+        });
 
-const telaLogin   = document.getElementById("telaLogin");
-const acessoNegado = document.getElementById("acessoNegado");
-const painelAdmin = document.getElementById("painelAdmin");
-
-
-/* =====================================
-   CONTROLA QUAL TELA APARECE
-===================================== */
-function mostrarTela(nome){
-
-    telaLogin.classList.add("hidden");
-    acessoNegado.classList.add("hidden");
-    painelAdmin.classList.add("hidden");
-
-    if(nome === "login") telaLogin.classList.remove("hidden");
-    if(nome === "negado") acessoNegado.classList.remove("hidden");
-    if(nome === "painel") painelAdmin.classList.remove("hidden");
-}
-
-
-/* =====================================
-   VERIFICA SE O USUÁRIO LOGADO É ADMIN
-   (consulta o campo "admin" no documento
-   dele em usuarios/{uid})
-===================================== */
-async function verificarSeEhAdmin(usuario){
-
-    try{
-
-        const refUsuario = doc(db, "usuarios", usuario.uid);
-        const snap = await getDoc(refUsuario);
-
-        if(snap.exists() && snap.data().admin === true){
-            mostrarTela("painel");
-        } else {
-            mostrarTela("negado");
+        // 1. CARREGAR PREÇOS DAS TAGS
+        async function carregarPrecosPlanos() {
+            try {
+                const snap = await getDoc(doc(db, "configuracoes", "planos"));
+                if (snap.exists()) {
+                    const d = snap.data();
+                    if (d.prime !== undefined) precosAtuais.prime = Number(d.prime);
+                    if (d.premium !== undefined) precosAtuais.premium = Number(d.premium);
+                }
+                document.getElementById('precoPrime').value = precosAtuais.prime.toFixed(2);
+                document.getElementById('precoPremium').value = precosAtuais.premium.toFixed(2);
+            } catch (e) {
+                console.warn("Sem preços salvos. Usando padrão 0.00.");
+                document.getElementById('precoPrime').value = "0.00";
+                document.getElementById('precoPremium').value = "0.00";
+            }
         }
 
-    } catch(error){
-        console.error("Erro ao verificar admin:", error);
-        mostrarTela("negado");
-    }
+        // SALVAR PREÇOS DAS TAGS
+        document.getElementById('formPlanos').onsubmit = async (e) => {
+            e.preventDefault();
+            const pPrime = parseFloat(document.getElementById('precoPrime').value) || 0.00;
+            const pPremium = parseFloat(document.getElementById('precoPremium').value) || 0.00;
 
-}
+            try {
+                await setDoc(doc(db, "configuracoes", "planos"), {
+                    prime: pPrime,
+                    premium: pPremium,
+                    atualizadoEm: serverTimestamp()
+                }, { merge: true });
 
+                precosAtuais.prime = pPrime;
+                precosAtuais.premium = pPremium;
+                mostrarNotificacao("Preços atualizados com sucesso!");
+            } catch (err) {
+                mostrarNotificacao("Erro ao salvar preços das tags.");
+            }
+        };
 
-/* =====================================
-   OBSERVA ESTADO DE LOGIN
-===================================== */
-onAuthStateChanged(auth, (usuario)=>{
+        // AJUSTAR AUTOMATICAMENTE O CAMPO DE PREÇO QUANDO A TAG FOR ALTERADA
+        document.getElementById('tag').onchange = (e) => {
+            const val = e.target.value;
+            const campoPreco = document.getElementById('preco');
+            if (val === 'prime') campoPreco.value = precosAtuais.prime.toFixed(2);
+            else if (val === 'premium') campoPreco.value = precosAtuais.premium.toFixed(2);
+            else campoPreco.value = "0.00";
+        };
 
-    if(usuario){
-        verificarSeEhAdmin(usuario);
-    } else {
-        mostrarTela("login");
-    }
+        // 2. BUSCA E LISTAGEM DE CONTEÚDO
+        async function carregarListaConteudos() {
+            const tbody = document.getElementById('tabelaConteudo');
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #666;">Buscando itens...</td></tr>`;
+            todosItens = [];
 
-});
+            for (const col of COLECOES) {
+                try {
+                    const snap = await getDocs(collection(db, col));
+                    snap.forEach(d => {
+                        todosItens.push({ id: d.id, colecao: col, ...d.data() });
+                    });
+                } catch (e) {
+                    console.error(`Erro ao carregar coleção ${col}:`, e);
+                }
+            }
 
+            // Ordenação em memória por data
+            todosItens.sort((a, b) => {
+                const dataA = a.criadoEm?.toDate ? a.criadoEm.toDate() : new Date(0);
+                const dataB = b.criadoEm?.toDate ? b.criadoEm.toDate() : new Date(0);
+                return dataB - dataA;
+            });
 
-/* =====================================
-   LOGIN
-===================================== */
-document.getElementById("btnEntrarAdmin").addEventListener("click", async ()=>{
+            if (todosItens.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #666;">Nenhum item cadastrado.</td></tr>`;
+                return;
+            }
 
-    const email = document.getElementById("loginEmail").value;
-    const senha = document.getElementById("loginSenha").value;
-    const msg = document.getElementById("mensagemLogin");
+            tbody.innerHTML = "";
+            todosItens.forEach(item => {
+                const tag = (item.tag || item.plano || "gratis").toLowerCase();
+                const valorExibir = tag === 'gratis' ? 'Grátis' : `R$ ${Number(item.preco || precosAtuais[tag] || 0).toFixed(2)}`;
 
-    try{
-        await signInWithEmailAndPassword(auth, email, senha);
-        msg.innerText = "";
-    } catch(error){
-        msg.innerText = "E-mail ou senha incorretos";
-    }
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${item.titulo}</strong></td>
+                    <td>${item.colecao}</td>
+                    <td>${item.categoria || '-'}</td>
+                    <td><span class="badge-tag ${tag}">${tag}</span></td>
+                    <td>${valorExibir}</td>
+                    <td>${item.destaque ? '<i class="fa-solid fa-star" style="color: #ffaa00;"></i> Sim' : 'Não'}</td>
+                    <td>
+                        <button class="btn-acao editar" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-acao excluir" title="Excluir"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
 
-});
+                tr.querySelector('.editar').onclick = () => prepararEdicao(item);
+                tr.querySelector('.excluir').onclick = () => excluirItem(item);
 
+                tbody.appendChild(tr);
+            });
+        }
 
-document.getElementById("btnEsqueciSenha").addEventListener("click", async ()=>{
+        // 3. SALVAR OU ATUALIZAR ITEM
+        document.getElementById('formConteudo').onsubmit = async (e) => {
+            e.preventDefault();
 
-    const email = document.getElementById("loginEmail").value;
-    const msg = document.getElementById("mensagemLogin");
+            const itemId = document.getElementById('itemId').value;
+            const colecao = document.getElementById('colecao').value;
+            const tag = document.getElementById('tag').value;
+            const preco = parseFloat(document.getElementById('preco').value) || (tag === 'gratis' ? 0 : precosAtuais[tag]);
 
-    if(!email){
-        msg.innerText = "Digite seu e-mail no campo acima primeiro";
-        return;
-    }
+            const itemData = {
+                titulo: document.getElementById('titulo').value,
+                categoria: document.getElementById('categoria').value,
+                ano: document.getElementById('ano').value,
+                tag: tag,
+                plano: tag, // Retrocompatibilidade
+                preco: preco,
+                capa: document.getElementById('capa').value,
+                banner: document.getElementById('banner').value,
+                video1: document.getElementById('video1').value,
+                video2: document.getElementById('video2').value,
+                video3: document.getElementById('video3').value,
+                arquivoDownload: document.getElementById('arquivoDownload').value,
+                trailer: document.getElementById('trailer').value,
+                descricao: document.getElementById('descricao').value,
+                destaque: document.getElementById('destaque').checked,
+                recomendado: document.getElementById('recomendado').checked,
+                ativo: true,
+                atualizadoEm: serverTimestamp()
+            };
 
-    try{
-        await sendPasswordResetEmail(auth, email);
-        msg.innerText = "✅ E-mail de recuperação enviado! Confira sua caixa de entrada (e o spam).";
-    } catch(error){
-        msg.innerText = "❌ Não foi possível enviar: " + error.message;
-    }
+            try {
+                if (itemId) {
+                    await setDoc(doc(db, colecao, itemId), itemData, { merge: true });
+                    mostrarNotificacao("Conteúdo atualizado com sucesso!");
+                } else {
+                    itemData.criadoEm = serverTimestamp();
+                    const novoRef = doc(collection(db, colecao));
+                    await setDoc(novoRef, itemData);
+                    mostrarNotificacao("Novo conteúdo cadastrado com sucesso!");
+                }
 
-});
+                resetarFormulario();
+                carregarListaConteudos();
+            } catch (err) {
+                console.error(err);
+                mostrarNotificacao("Erro ao salvar conteúdo no Firestore.");
+            }
+        };
 
+        function prepararEdicao(item) {
+            document.getElementById('itemId').value = item.id;
+            document.getElementById('titulo').value = item.titulo || "";
+            document.getElementById('colecao').value = item.colecao;
+            document.getElementById('categoria').value = item.categoria || "";
+            document.getElementById('ano').value = item.ano || "";
+            document.getElementById('tag').value = (item.tag || item.plano || "gratis").toLowerCase();
+            document.getElementById('preco').value = item.preco !== undefined ? item.preco : "";
+            document.getElementById('capa').value = item.capa || "";
+            document.getElementById('banner').value = item.banner || "";
+            document.getElementById('video1').value = item.video1 || item.video || "";
+            document.getElementById('video2').value = item.video2 || "";
+            document.getElementById('video3').value = item.video3 || "";
+            document.getElementById('arquivoDownload').value = item.arquivoDownload || "";
+            document.getElementById('trailer').value = item.trailer || "";
+            document.getElementById('descricao').value = item.descricao || "";
+            document.getElementById('destaque').checked = !!item.destaque;
+            document.getElementById('recomendado').checked = !!item.recomendado;
 
-/* =====================================
-   LOGOUT
-===================================== */
-document.getElementById("btnSairAdmin").addEventListener("click", ()=>{
-    signOut(auth);
-});
+            document.getElementById('formTitulo').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Editando: ${item.titulo}`;
+            document.getElementById('btnCancelarEdicao').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-document.getElementById("btnSairNegado").addEventListener("click", ()=>{
-    signOut(auth);
-});
+        async function excluirItem(item) {
+            if (!confirm(`Tem certeza que deseja excluir "${item.titulo}"?`)) return;
 
+            try {
+                await deleteDoc(doc(db, item.colecao, item.id));
+                mostrarNotificacao("Item excluído com sucesso!");
+                carregarListaConteudos();
+            } catch (e) {
+                mostrarNotificacao("Erro ao excluir item.");
+            }
+        }
 
-/* =====================================
-   CADASTRAR FILME (mesma lógica de antes)
-===================================== */
-document.getElementById("salvar").onclick = async ()=>{
+        document.getElementById('btnCancelarEdicao').onclick = resetarFormulario;
 
-    const mensagem = document.getElementById("mensagem");
+        function resetarFormulario() {
+            document.getElementById('formConteudo').reset();
+            document.getElementById('itemId').value = "";
+            document.getElementById('formTitulo').innerHTML = `<i class="fa-solid fa-plus-circle"></i> Cadastrar Novo Conteúdo`;
+            document.getElementById('btnCancelarEdicao').classList.add('hidden');
+        }
 
-    const colecoes = {
-        filme: "filmes",
-        serie: "series",
-        anime: "animes",
-        dorama: "doramas"
-    };
-
-    const nomeColecao = colecoes[tipo.value] || "filmes";
-
-    try{
-
-        const docRef = await addDoc(collection(db, nomeColecao), {
-            titulo: titulo.value,
-            capa: capa.value,
-            banner: banner.value,
-            descricao: descricao.value,
-            trailer: trailer.value,
-            tipo: tipo.value,
-            categoria: categoria.value,
-            ano: ano.value,
-            nivel: nivel.value,
-            preco: parseFloat(preco.value) || 0,
-            destaque: destaque.checked,
-            recomendado: recomendado.checked,
-            ativo: true,
-            data: serverTimestamp()
-        });
-
-        // Vídeo completo e arquivo de download ficam separados,
-        // numa subcoleção só liberada pra quem comprou o título
-        await setDoc(doc(db, nomeColecao, docRef.id, "protegido", "dados"), {
-            video: video.value,
-            arquivoDownload: arquivoDownload.value || video.value
-        });
-
-        mensagem.innerHTML = "✅ Conteúdo cadastrado com sucesso!";
-
-        document.querySelectorAll("#formConteudo input, #formConteudo textarea").forEach(e=>{
-            if(e.type !== "checkbox") e.value = "";
-        });
-
-    } catch(error){
-        mensagem.innerHTML = "❌ Erro: " + error.message;
-    }
-
-};
-
-</script>
-
+        function mostrarNotificacao(msg) {
+            const box = document.getElementById('notification');
+            document.getElementById('notificationText').innerText = msg;
+            box.classList.remove('hidden');
+            setTimeout(() => box.classList.add('hidden'), 3500);
+        }
+    </script>
 </body>
 </html>
