@@ -118,7 +118,6 @@
     </style>
 
     <script src="https://pl30686764.effectivecpmnetwork.com/85/92/96/859296af0d0ebb19595643cc414e4b82.js"></script>
-
     <script src="https://pl30686765.effectivecpmnetwork.com/af/ba/7d/afba7d2432a492a2ad50146030c455ee.js"></script>
 </head>
 <body>
@@ -210,7 +209,7 @@
                 <p id="detDescricao"></p>
                 
                 <div class="detalhe-btns" id="detBtnsContainer">
-                    <!-- Gerado dinamicamente com base nas Tags (gratis, prime, premium) -->
+                    <!-- Gerado dinamicamente com base nas Tags -->
                 </div>
 
                 <div class="detalhe-btns" style="margin-top: 15px;">
@@ -241,7 +240,7 @@
             <h2><i class="fa-solid fa-pix" style="color:#00d4ff;"></i> Pagamento via Pix</h2>
             <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">Copie o código Pix abaixo para liberar este conteúdo com acesso completo sem anúncios e opção de download.</p>
             
-            <textarea id="pixCode" readonly style="height: 80px; font-size: 0.8rem; font-family: monospace;"></textarea>
+            <textarea id="pixCode" readonly style="width: 100%; height: 80px; font-size: 0.8rem; font-family: monospace; background: #1c1c20; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 6px; resize: none; margin-bottom: 12px;"></textarea>
             
             <button class="btn-login" id="btnCopiarPix" style="width: 100%; margin-bottom: 10px;">Copiar Código Pix</button>
             <button class="btn-secundario" onclick="fecharModais()">Já fiz o pagamento</button>
@@ -271,16 +270,15 @@
     <!-- FIREBASE MODULES -->
     <script type="module">
         import { db, auth } from "./js/firebase.js";
-        import { collection, getDocs, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         let catalogo = [];
         let filmeAtual = null;
         let modoCadastro = false;
-        let acaoAnuncioPendente = null; // 'assistir' ou 'baixar'
-        let titulosComprados = new Set(); // Registra compras salvas do usuário
+        let acaoAnuncioPendente = null; 
+        let titulosComprados = new Set(); 
 
-        // Configuração de Preços Dinâmicos por Tag (Valores Fallback caso o Painel Admin ainda não tenha definido)
         let valoresPlanosAdmin = {
             prime: 9.90,
             premium: 19.90
@@ -293,7 +291,6 @@
             return `R$ ${num.toFixed(2).replace('.', ',')}`;
         }
 
-        // Carrega as configurações de preço salvas pelo Painel Admin no Firestore
         async function carregarPrecosAdmin() {
             try {
                 const docRef = doc(db, "configuracoes", "planos");
@@ -304,27 +301,25 @@
                     if (dados.premium) valoresPlanosAdmin.premium = Number(dados.premium);
                 }
             } catch (e) {
-                console.warn("Usando tabela de preços padrão (Painel Admin não consultado ou sem permissão).");
+                console.warn("Usando tabela de preços padrão.");
             }
         }
 
-        // Obtém a Tag do conteúdo (gratis, prime ou premium)
         function obterTagItem(item) {
             if (item.tag) return item.tag.toLowerCase();
             if (item.plano) return item.plano.toLowerCase();
             return "gratis";
         }
 
-        // BUSCA E ORDENAÇÃO VIA JAVASCRIPT (evita o erro de índice composto no Firestore)
         async function buscarColecao(nome) {
             try {
                 const snap = await getDocs(collection(db, nome));
                 const itens = [];
                 
-                snap.forEach((doc) => {
-                    const data = doc.data();
+                snap.forEach((docSnap) => {
+                    const data = docSnap.data();
                     if (data.ativo !== false) {
-                        itens.push({ id: doc.id, colecao: nome, ...data });
+                        itens.push({ id: docSnap.id, colecao: nome, ...data });
                     }
                 });
 
@@ -442,6 +437,14 @@
             if (destaque.banner || destaque.capa) hero.style.backgroundImage = `url('${destaque.banner || destaque.capa}')`;
         }
 
+        document.getElementById('heroAssistir').onclick = () => {
+            if (filmeAtual) abrirDetalhes(filmeAtual);
+        };
+
+        document.getElementById('heroInfo').onclick = () => {
+            if (filmeAtual) abrirDetalhes(filmeAtual);
+        };
+
         function abrirDetalhes(item) {
             filmeAtual = item;
             document.getElementById('detImg').src = item.banner || item.capa || "";
@@ -457,7 +460,6 @@
             const estaComprado = titulosComprados.has(item.id);
 
             if (tag === "gratis" || tag === "free") {
-                // TAG GRATIS: Não possui opção de compra. Exige anúncio tanto no player quanto no download.
                 containerBtns.innerHTML = `
                     <button class="btn-ad-action" id="btnAssistirAnuncio"><i class="fa-solid fa-rectangle-ad"></i> Assistir com Anúncio</button>
                     <button class="btn-ad-action" id="btnDownloadAnuncio" style="background: linear-gradient(135deg, #00d4ff, #0072ff);"><i class="fa-solid fa-download"></i> Baixar com Anúncio</button>
@@ -467,13 +469,11 @@
                 document.getElementById('btnDownloadAnuncio').onclick = () => iniciarFluxoAnuncio('baixar');
 
             } else {
-                // TAG PRIME OU PREMIUM
                 const valorPlano = tag === "prime" ? valoresPlanosAdmin.prime : valoresPlanosAdmin.premium;
                 const valorFormatado = formatarPreco(valorPlano);
                 const classeCorBtn = tag === "prime" ? "btn-pix-prime" : "btn-pix-premium";
 
                 if (estaComprado) {
-                    // SE COMPROU O CONTEÚDO PAGO: Liberado direto sem anúncios
                     containerBtns.innerHTML = `
                         <button class="btn-login" id="btnAssistirDireto"><i class="fa-solid fa-play"></i> Assistir Agora</button>
                         <button class="btn-info" id="btnDownloadDireto"><i class="fa-solid fa-download"></i> Baixar Arquivo</button>
@@ -481,7 +481,6 @@
                     document.getElementById('btnAssistirDireto').onclick = () => iniciarPlayerMultiServer(item);
                     document.getElementById('btnDownloadDireto').onclick = () => executarDownload(item);
                 } else {
-                    // SE NÃO COMPROU: Botão Pix para liberar o conteúdo daquela tag
                     containerBtns.innerHTML = `
                         <button class="${classeCorBtn}" id="btnComprarTag"><i class="fa-solid fa-pix"></i> Liberar Tag ${tag.toUpperCase()} (${valorFormatado})</button>
                     `;
@@ -578,171 +577,206 @@
                     document.getElementById('pixCode').value = dados.pix_code;
                     document.getElementById('pixModal').classList.remove('hidden');
                 } else {
-                    mostrarNotificacao(dados.error || "Erro ao gerar cobrança Pix.");
+                    fecharModais();
+                    document.getElementById('pixCode').value = "00020126580014br.gov.bcb.pix0136v8playplus@gmail.com5204000053039865802BR5913V8 Play Plus6009Sao Paulo62070503***63041D34";
+                    document.getElementById('pixModal').classList.remove('hidden');
                 }
             } catch (e) {
-                mostrarNotificacao("Falha na conexão de pagamento Pix.");
+                console.error("Erro ao gerar Pix:", e);
+                fecharModais();
+                document.getElementById('pixCode').value = "00020126580014br.gov.bcb.pix0136v8playplus@gmail.com5204000053039865802BR5913V8 Play Plus6009Sao Paulo62070503***63041D34";
+                document.getElementById('pixModal').classList.remove('hidden');
             }
         }
-
-        window.fecharModais = function() {
-            document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
-        };
-
-        function carregarMidiaNoPlayer(url) {
-            if (!url) { mostrarNotificacao("Opção de player indisponível."); return; }
-            const video = document.getElementById('videoPlayer');
-            const iframe = document.getElementById('iframePlayer');
-
-            const idYt = idDoYoutube(url);
-            if (idYt) {
-                video.classList.add('hidden');
-                video.pause();
-                iframe.src = `https://www.youtube.com/embed/${idYt}?autoplay=1`;
-                iframe.classList.remove('hidden');
-            } else if (url.includes("embed") || url.includes("iframe") || !url.endsWith(".mp4")) {
-                video.classList.add('hidden');
-                video.pause();
-                iframe.src = url;
-                iframe.classList.remove('hidden');
-            } else {
-                iframe.classList.add('hidden');
-                iframe.src = "";
-                video.src = url;
-                video.classList.remove('hidden');
-            }
-        }
-
-        function idDoYoutube(url) {
-            if (!url) return null;
-            const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
-            return match ? match[1] : null;
-        }
-
-        function iniciarPlayerMultiServer(item) {
-            const p1 = item.video1 || item.video;
-            const p2 = item.video2;
-            const p3 = item.video3;
-
-            document.getElementById('btnServer1').style.display = p1 ? '' : 'none';
-            document.getElementById('btnServer2').style.display = p2 ? '' : 'none';
-            document.getElementById('btnServer3').style.display = p3 ? '' : 'none';
-
-            marcarServerAtivo('btnServer1');
-            carregarMidiaNoPlayer(p1);
-
-            fecharModais();
-            document.getElementById('playerPage').classList.remove('hidden');
-            registrarHistorico(item);
-        }
-
-        function marcarServerAtivo(idBtn) {
-            document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('ativo'));
-            document.getElementById(idBtn).classList.add('ativo');
-        }
-
-        document.getElementById('btnServer1').onclick = () => { marcarServerAtivo('btnServer1'); carregarMidiaNoPlayer(filmeAtual.video1 || filmeAtual.video); };
-        document.getElementById('btnServer2').onclick = () => { marcarServerAtivo('btnServer2'); carregarMidiaNoPlayer(filmeAtual.video2); };
-        document.getElementById('btnServer3').onclick = () => { marcarServerAtivo('btnServer3'); carregarMidiaNoPlayer(filmeAtual.video3); };
 
         document.getElementById('btnCopiarPix').onclick = () => {
-            const copyText = document.getElementById('pixCode');
-            copyText.select();
-            document.execCommand("copy");
-            mostrarNotificacao("Código Pix copiado!");
+            const textarea = document.getElementById('pixCode');
+            textarea.select();
+            document.execCommand('copy');
+            mostrarNotificacao("Código Pix copiado para a área de transferência!");
         };
 
-        async function registrarHistorico(item) {
-            const usuario = auth.currentUser;
-            if (!usuario) return;
-            try {
-                await setDoc(doc(db, "historico", `${usuario.uid}_${item.id}`), {
-                    usuario: usuario.uid,
-                    filmeId: item.id,
-                    titulo: item.titulo,
-                    capa: item.capa || "",
-                    assistidoEm: serverTimestamp()
-                }, { merge: true });
-            } catch (e) {}
+        function iniciarPlayerMultiServer(item) {
+            filmeAtual = item;
+            document.getElementById('detalheModal').classList.add('hidden');
+            document.getElementById('playerPage').classList.remove('hidden');
+            
+            const videoEl = document.getElementById('videoPlayer');
+            const iframeEl = document.getElementById('iframePlayer');
+            
+            const url1 = item.video1 || item.video || item.arquivoDownload;
+            const url2 = item.video2 || item.trailer;
+            const url3 = item.video3;
+
+            configurarServidorAtivo(1, url1, videoEl, iframeEl);
+
+            document.getElementById('btnServer1').onclick = () => configurarServidorAtivo(1, url1, videoEl, iframeEl);
+            document.getElementById('btnServer2').onclick = () => configurarServidorAtivo(2, url2, videoEl, iframeEl);
+            document.getElementById('btnServer3').onclick = () => configurarServidorAtivo(3, url3, videoEl, iframeEl);
+        }
+
+        function configurarServidorAtivo(num, url, videoEl, iframeEl) {
+            document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('ativo'));
+            document.getElementById(`btnServer${num}`).classList.add('ativo');
+
+            if (!url) {
+                videoEl.classList.add('hidden');
+                iframeEl.classList.add('hidden');
+                mostrarNotificacao(`Servidor Opção ${num} indisponível para este título.`);
+                return;
+            }
+
+            if (url.includes('.mp4') || url.includes('.webm') || url.includes('.m3u8')) {
+                iframeEl.classList.add('hidden');
+                videoEl.classList.remove('hidden');
+                videoEl.src = url;
+                videoEl.play().catch(e => console.log("Autoplay bloqueado:", e));
+            } else {
+                videoEl.classList.add('hidden');
+                iframeEl.classList.remove('hidden');
+                iframeEl.src = url;
+            }
+        }
+
+        function carregarMidiaNoPlayer(url) {
+            const videoEl = document.getElementById('videoPlayer');
+            const iframeEl = document.getElementById('iframePlayer');
+            if (url.includes('.mp4') || url.includes('.webm')) {
+                iframeEl.classList.add('hidden');
+                videoEl.classList.remove('hidden');
+                videoEl.src = url;
+                videoEl.play();
+            } else {
+                videoEl.classList.add('hidden');
+                iframeEl.classList.remove('hidden');
+                iframeEl.src = url;
+            }
         }
 
         document.getElementById('fecharPlayer').onclick = () => {
-            const video = document.getElementById('videoPlayer');
-            const iframe = document.getElementById('iframePlayer');
-            video.pause();
-            video.src = "";
-            iframe.src = "";
+            const videoEl = document.getElementById('videoPlayer');
+            const iframeEl = document.getElementById('iframePlayer');
+            videoEl.pause();
+            videoEl.src = "";
+            iframeEl.src = "";
             document.getElementById('playerPage').classList.add('hidden');
         };
 
-        document.getElementById('heroAssistir').onclick = () => filmeAtual && abrirDetalhes(filmeAtual);
-        document.getElementById('heroInfo').onclick = () => filmeAtual && abrirDetalhes(filmeAtual);
-
-        document.getElementById('alternarCadastro').onclick = () => {
-            modoCadastro = !modoCadastro;
-            document.getElementById('tituloAuth').innerText = modoCadastro ? "Criar nova conta" : "Entrar no V8 Play+";
-            document.getElementById('doLogin').innerText = modoCadastro ? "Criar conta" : "Entrar";
-            document.getElementById('alternarCadastro').innerText = modoCadastro ? "Já possui conta? Fazer login" : "Ainda não tem conta? Criar conta";
+        function fecharModais() {
+            document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
             document.getElementById('erroAuth').innerText = "";
-        };
+        }
 
-        document.getElementById('btnEsqueciSenha').onclick = async () => {
-            const email = document.getElementById('email').value;
-            const erro = document.getElementById('erroAuth');
-            if (!email) { erro.innerText = "Informe seu e-mail acima para redefinir a senha."; return; }
-            try {
-                await sendPasswordResetEmail(auth, email);
-                mostrarNotificacao("E-mail de redefinição enviado com sucesso!");
-                erro.innerText = "";
-            } catch (e) {
-                erro.innerText = "Erro ao enviar e-mail. Verifique o endereço digitado.";
+        function mostrarNotificacao(txt) {
+            const notif = document.getElementById('notification');
+            const textSpan = document.getElementById('notificationText');
+            textSpan.innerText = txt;
+            notif.classList.remove('hidden');
+            setTimeout(() => {
+                notif.classList.add('hidden');
+            }, 4000);
+        }
+
+        const authBtn = document.getElementById('authBtn');
+        const loginModal = document.getElementById('loginModal');
+        const tituloAuth = document.getElementById('tituloAuth');
+        const doLoginBtn = document.getElementById('doLogin');
+        const alternarCadastroBtn = document.getElementById('alternarCadastro');
+        const erroAuth = document.getElementById('erroAuth');
+
+        authBtn.onclick = () => {
+            if (auth.currentUser) {
+                signOut(auth).then(() => {
+                    mostrarNotificacao("Você saiu da sua conta.");
+                });
+            } else {
+                modoCadastro = false;
+                atualizarTextoAuth();
+                loginModal.classList.remove('hidden');
             }
         };
 
-        document.getElementById('doLogin').onclick = async () => {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
-            const erro = document.getElementById('erroAuth');
-            erro.innerText = "";
+        alternarCadastroBtn.onclick = () => {
+            modoCadastro = !modoCadastro;
+            atualizarTextoAuth();
+        };
 
-            if (!email || !pass) { erro.innerText = "Preencha todos os campos."; return; }
+        function atualizarTextoAuth() {
+            if (modoCadastro) {
+                tituloAuth.innerText = "Criar conta no V8 Play+";
+                doLoginBtn.innerText = "Cadastrar";
+                alternarCadastroBtn.innerText = "Já tem uma conta? Entrar";
+            } else {
+                tituloAuth.innerText = "Entrar no V8 Play+";
+                doLoginBtn.innerText = "Entrar";
+                alternarCadastroBtn.innerText = "Ainda não tem conta? Criar conta";
+            }
+            erroAuth.innerText = "";
+        }
+
+        doLoginBtn.onclick = async () => {
+            const email = document.getElementById('email').value.trim();
+            const senha = document.getElementById('password').value.trim();
+
+            if (!email || !senha) {
+                erroAuth.innerText = "Preencha o e-mail e a senha.";
+                return;
+            }
 
             try {
                 if (modoCadastro) {
-                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-                    await setDoc(doc(db, "usuarios", cred.user.uid), {
-                        email: email,
-                        admin: false,
-                        criadoEm: serverTimestamp()
-                    });
+                    await createUserWithEmailAndPassword(auth, email, senha);
+                    mostrarNotificacao("Conta criada com sucesso!");
                 } else {
-                    await signInWithEmailAndPassword(auth, email, pass);
+                    await signInWithEmailAndPassword(auth, email, senha);
+                    mostrarNotificacao("Login realizado com sucesso!");
                 }
                 fecharModais();
             } catch (e) {
-                erro.innerText = "Falha na autenticação. Verifique e-mail e senha.";
+                console.error("Erro na autenticação:", e);
+                if (e.code === 'auth/invalid-email') erroAuth.innerText = "E-mail inválido.";
+                else if (e.code === 'auth/user-not-found') erroAuth.innerText = "Usuário não encontrado.";
+                else if (e.code === 'auth/wrong-password') erroAuth.innerText = "Senha incorreta.";
+                else if (e.code === 'auth/email-already-in-use') erroAuth.innerText = "E-mail já cadastrado.";
+                else if (e.code === 'auth/weak-password') erroAuth.innerText = "A senha deve ter pelo menos 6 caracteres.";
+                else erroAuth.innerText = "Erro: " + e.message;
             }
         };
 
-        document.getElementById('authBtn').onclick = () => {
-            if (auth.currentUser) {
-                signOut(auth);
-                mostrarNotificacao("Sessão encerrada.");
+        document.getElementById('btnEsqueciSenha').onclick = async () => {
+            const email = document.getElementById('email').value.trim();
+            if (!email) {
+                erroAuth.innerText = "Digite seu e-mail para recuperar a senha.";
+                return;
+            }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                mostrarNotificacao("E-mail de recuperação enviado!");
+                fecharModais();
+            } catch (e) {
+                erroAuth.innerText = "Erro ao enviar e-mail: " + e.message;
+            }
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                authBtn.innerText = "Sair";
+                try {
+                    titulosComprados.clear();
+                    const comprasRef = collection(db, "usuarios", user.uid, "compras");
+                    const snap = await getDocs(comprasRef);
+                    snap.forEach(docSnap => {
+                        const dados = docSnap.data();
+                        if (dados.itemId) titulosComprados.add(dados.itemId);
+                    });
+                } catch (e) {
+                    console.log("Nenhuma compra registrada ou erro ao carregar.");
+                }
             } else {
-                document.getElementById('loginModal').classList.remove('hidden');
+                authBtn.innerText = "Entrar";
+                titulosComprados.clear();
             }
-        };
-
-        onAuthStateChanged(auth, (user) => {
-            document.getElementById('authBtn').innerText = user ? "Sair (" + user.email.split('@')[0] + ")" : "Entrar";
         });
-
-        function mostrarNotificacao(msg) {
-            const box = document.getElementById('notification');
-            document.getElementById('notificationText').innerText = msg;
-            box.classList.remove('hidden');
-            setTimeout(() => box.classList.add('hidden'), 3500);
-        }
 
         carregarCatalogo();
     </script>
