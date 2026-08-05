@@ -239,7 +239,7 @@
 
     <!-- FIREBASE MODULES -->
     <script type="module">
-        import { db, auth } from "./js/firebase.js";
+        import { db, auth } from "./firebase.js"; // Correção do caminho do import
         import { collection, getDocs, doc, setDoc, getDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
@@ -341,7 +341,6 @@
                 }
             }
 
-            // Ordenação em memória por data
             todosItens.sort((a, b) => {
                 const dataA = a.criadoEm?.toDate ? a.criadoEm.toDate() : new Date(0);
                 const dataB = b.criadoEm?.toDate ? b.criadoEm.toDate() : new Date(0);
@@ -394,7 +393,7 @@
                 categoria: document.getElementById('categoria').value,
                 ano: document.getElementById('ano').value,
                 tag: tag,
-                plano: tag, // Retrocompatibilidade
+                plano: tag,
                 preco: preco,
                 capa: document.getElementById('capa').value,
                 banner: document.getElementById('banner').value,
@@ -412,7 +411,6 @@
 
             try {
                 if (itemId) {
-                    // Se a coleção foi alterada na edição, exclui o documento antigo para não duplicar em coleções erradas
                     if (originalColecao && originalColecao !== colecao) {
                         await deleteDoc(doc(db, originalColecao, itemId));
                     }
