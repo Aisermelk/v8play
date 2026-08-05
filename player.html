@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistir - V8 Play+</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-[#0f1016] text-white min-h-screen font-sans flex flex-col">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between px-6 py-4 bg-[#14151f] border-b border-gray-800">
+        <a href="index.html" class="flex items-center space-x-2 text-white">
+            <i class="fa-solid fa-arrow-left text-xl"></i>
+            <span class="font-bold">Voltar ao Início</span>
+        </a>
+        <div id="tituloTopo" class="text-gray-300 font-medium text-sm truncate max-w-md">Carregando...</div>
+    </header>
+
+    <!-- Área do Player / Conteúdo -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-4 md:p-6 flex flex-col justify-center">
+        
+        <!-- Contêiner do Vídeo -->
+        <div id="playerContainer" class="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-800 flex items-center justify-center">
+            <p class="text-gray-400 animate-pulse">Carregando player...</p>
+        </div>
+
+        <!-- Informações do Vídeo -->
+        <div class="mt-6 bg-[#16161a] p-6 rounded-xl border border-gray-800" id="infoContainer">
+            <h1 id="tituloVideo" class="text-2xl font-bold mb-2">Carregando...</h1>
+            <div class="flex items-center gap-3 text-sm text-gray-400 mb-4">
+                <span id="anoVideo" class="bg-gray-800 px-2.5 py-0.5 rounded">--</span>
+                <span id="categoriaVideo" class="text-cyan-400 font-medium">--</span>
+                <span id="tagVideo" class="uppercase text-xs px-2 py-0.5 rounded font-bold">--</span>
+            </div>
+            <p id="descricaoVideo" class="text-gray-300 text-sm leading-relaxed">...</p>
+        </div>
+
+    </main>
+
+    <!-- Script de Carregamento -->
+    <script type="module">
+        import { db, auth } from "./js/firebase.js";
+        import { doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const COLECOES = ["filmes", "series", "animes", "doramas"]; //
+
+        async function carregarConteudo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const itemId = urlParams.get('v');
+
+            if (!itemId) {
+                mostrarErro("Nenhum conteúdo especificado.");
+                return;
+            }
+
+            let itemEncontrado = null;
+
+            // Varre as coleções do Firestore para achar o ID correspondente
+            for (const col of COLECOES) {
+                try {
+                    const docRef = doc(db, col, itemId);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        itemEncontrado = { id: docSnap.id, colecao: col, ...docSnap.data() };
+                        break;
+                    }
+                } catch (e) {
+                    console.error(`Erro ao buscar na coleção ${col}:`, e);
+                }
+            }
+
+            if (!itemEncontrado) {
+                mostrarErro("Conteúdo não encontrado ou removido.");
+                return;
+            }
+
+            // Validação simples de plano/tag paga vs grátis
+            const tag = (itemEncontrado.tag || itemEncontrado.plano || "gratis").toLowerCase();
+            if (tag !== 'gratis') {
+                // Aqui você pode integrar a verificação de compra do usuário no futuro
+                console.log("Conteúdo pago detectado.");
+            }
+
+            renderizarPlayer(itemEncontrado);
+        }
+
+        function renderizarPlayer(item) {
+            document.getElementById('tituloTopo').innerText = item.titulo;
+            document.getElementById('tituloVideo').innerText = item.titulo;
+            document.getElementById('anoVideo').innerText = item.ano || "N/A";
+            document.getElementById('categoriaVideo').innerText = item.categoria || item.colecao;
+            document.getElementById('descricaoVideo').innerText = item.descricao || "Sem sinopse disponível.";
+
+            const tagEl = document.getElementById('tagVideo');
+            const tag = (item.tag || item.plano || "gratis").toLowerCase();
+            tagEl.innerText = tag;
+            tagEl.className = `uppercase text-xs px-2.5 py-1 rounded font-bold ${
+                tag === 'gratis' ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+            }`;
+
+            const videoUrl = item.video1 || item.video || "";
+            const playerContainer = document.getElementById('playerContainer');
+
+            if (!videoUrl) {
+                playerContainer.innerHTML = `<p class="text-red-400">Nenhum link de vídeo cadastrado para este item.</p>`;
+                return;
+            }
+
+            // Verifica se é iframe/embed ou arquivo MP4 direto
+            if (videoUrl.includes('<iframe') || videoUrl.includes('http') && (videoUrl.includes('youtube') || videoUrl.includes('embed') || videoUrl.includes('player'))) {
+                // Se for link de embed ou iframe direto
+                if (videoUrl.startsWith('http')) {
+                    playerContainer.innerHTML = `<iframe src="${videoUrl}" class="w-full h-full border-0" allowfullscreen></iframe>`;
+                } else {
+                    playerContainer.innerHTML = videoUrl;
+                }
+            } else {
+                // Player nativo para arquivos diretos (.mp4, .m3u8, etc.)
+                playerContainer.innerHTML = `
+                    <video controls autoplay class="w-full h-full object-contain">
+                        <source src="${videoUrl}" type="video/mp4">
+                        Seu navegador não suporta reprodução de vídeo.
+                    </video>
+                `;
+            }
+        }
+
+        function mostrarErro(msg) {
+            document.getElementById('tituloTopo').innerText = "Erro";
+            document.getElementById('playerContainer').innerHTML = `<p class="text-red-500 font-medium">${msg}</p>`;
+            document.getElementById('infoContainer').style.display = 'none';
+        }
+
+        // Iniciar carregamento ao abrir a página
+        window.addEventListener('DOMContentLoaded', carregarConteudo);
+    </script>
+</body>
+</html>
