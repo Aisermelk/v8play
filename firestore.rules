@@ -1,43 +1,47 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    function estaLogado() {
-      return request.auth != null;
+    
+    // Função auxiliar para validar se o usuário autenticado é administrador
+    function isAdmin() {
+      return request.auth != null && 
+             exists(/databases/$(database)/documents/usuarios/$(request.auth.uid)) && 
+             get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.admin == true;
     }
 
-    function ehAdmin() {
-      return estaLogado() &&
-        get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.admin == true;
+    // 1. Configurações Públicas (Preços dos Planos)
+    match /configuracoes/planos {
+      allow read: if true; // Clientes e visitantes precisam ler os preços no catálogo
+      allow write: if isAdmin();
     }
 
-    // Perfil dos Usuários
+    // 2. Chaves de API de Pagamento (Altamente Confidencial)
+    match /configuracoes/chaves_pagamento {
+      allow read, write: if isAdmin(); // Apenas administradores podem ler ou alterar as chaves
+    }
+
+    // 3. Coleções de Conteúdo (Filmes, Séries, Animes, Doramas)
+    match /filmes/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /series/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /animes/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /doramas/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 4. Gerenciamento de Usuários
     match /usuarios/{userId} {
-      allow read, create: if estaLogado() && request.auth.uid == userId;
-      allow update: if estaLogado() && request.auth.uid == userId
-                    && request.resource.data.admin == resource.data.admin;
-      allow delete: if false;
-    }
-
-    // Registro das compras efetuadas via Pix
-    match /compras/{compraId} {
-      allow read: if estaLogado() && resource.data.usuario == request.auth.uid;
-      allow write: if false; // Gravado exclusivamente via Webhook da API
-    }
-
-    // Catálogo Público (Acesso direto para leitura rápida)
-    match /filmes/{id} { allow read: if true; allow write: if ehAdmin(); }
-    match /series/{id} { allow read: if true; allow write: if ehAdmin(); }
-    match /animes/{id} { allow read: if true; allow write: if ehAdmin(); }
-    match /doramas/{id} { allow read: if true; allow write: if ehAdmin(); }
-
-    // Histórico e Progresso de Reprodução
-    match /historico/{docId} {
-      allow read, write: if estaLogado() && request.resource.data.usuario == request.auth.uid;
-    }
-    match /progresso/{docId} {
-      allow read, write: if estaLogado() && request.resource.data.usuario == request.auth.uid;
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if isAdmin();
     }
   }
 }
