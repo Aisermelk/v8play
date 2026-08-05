@@ -31,6 +31,7 @@
 
         .card-box { background: var(--bg-card); border-radius: 10px; padding: 25px; border: 1px solid #222; margin-bottom: 25px; }
         .card-box h2 { font-size: 1.2rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #2b2b36; padding-bottom: 10px; color: var(--primary); }
+        .card-box h3 { font-size: 1.05rem; margin: 15px 0 10px 0; color: var(--text); display: flex; align-items: center; gap: 8px; }
 
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
         .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -77,20 +78,35 @@
 
     <div class="container">
 
-        <!-- PAINEL 1: CONFIGURAÇÃO DE VALORES DAS TAGS -->
+        <!-- PAINEL 1: CONFIGURAÇÃO DE VALORES E CHAVES DE API -->
         <div class="card-box">
-            <h2><i class="fa-solid fa-tags"></i> Valoração dos Planos / Tags (Geral)</h2>
-            <form id="formPlanos" class="form-grid">
-                <div class="form-group">
-                    <label for="precoPrime">Preço Tag PRIME (R$):</label>
-                    <input type="number" step="0.01" id="precoPrime" placeholder="0.00" required>
+            <h2><i class="fa-solid fa-tags"></i> Valoração e Chaves de API dos Planos</h2>
+            <form id="formPlanos">
+                <div class="form-grid" style="margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label for="precoPrime">Preço Tag PRIME (R$):</label>
+                        <input type="number" step="0.01" id="precoPrime" placeholder="0.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="precoPremium">Preço Tag PREMIUM (R$):</label>
+                        <input type="number" step="0.01" id="precoPremium" placeholder="0.00" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="precoPremium">Preço Tag PREMIUM (R$):</label>
-                    <input type="number" step="0.01" id="precoPremium" placeholder="0.00" required>
+
+                <h3><i class="fa-solid fa-key"></i> Chaves de API Individuais para Checkout</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="primeApiKey">Chave API Gateway - Prime:</label>
+                        <input type="password" id="primeApiKey" placeholder="Insira a chave API do plano Prime">
+                    </div>
+                    <div class="form-group">
+                        <label for="premiumApiKey">Chave API Gateway - Premium:</label>
+                        <input type="password" id="premiumApiKey" placeholder="Insira a chave API do plano Premium">
+                    </div>
                 </div>
+
                 <div class="form-group full">
-                    <button type="submit" class="btn-salvar" style="width: fit-content;"><i class="fa-solid fa-floppy-disk"></i> Atualizar Preços dos Planos</button>
+                    <button type="submit" class="btn-salvar" style="width: fit-content;"><i class="fa-solid fa-floppy-disk"></i> Salvar Preços e Chaves de API</button>
                 </div>
             </form>
         </div>
@@ -266,7 +282,7 @@
                 }
 
                 statusEl.innerHTML = `<span style='color: var(--success);'><i class="fa-solid fa-user-shield"></i> Autenticado: ${user.email}</span>`;
-                carregarPrecosPlanos();
+                carregarPrecosEChaves();
                 carregarListaConteudos();
 
             } catch (e) {
@@ -275,42 +291,62 @@
             }
         });
 
-        // 1. CARREGAR PREÇOS DAS TAGS
-        async function carregarPrecosPlanos() {
+        // 1. CARREGAR PREÇOS E CHAVES DE API SEPARADAMENTE
+        async function carregarPrecosEChaves() {
             try {
-                const snap = await getDoc(doc(db, "configuracoes", "planos"));
-                if (snap.exists()) {
-                    const d = snap.data();
+                // Carrega Preços
+                const snapPlanos = await getDoc(doc(db, "configuracoes", "planos"));
+                if (snapPlanos.exists()) {
+                    const d = snapPlanos.data();
                     if (d.prime !== undefined) precosAtuais.prime = Number(d.prime);
                     if (d.premium !== undefined) precosAtuais.premium = Number(d.premium);
                 }
                 document.getElementById('precoPrime').value = precosAtuais.prime.toFixed(2);
                 document.getElementById('precoPremium').value = precosAtuais.premium.toFixed(2);
+
+                // Carrega Chaves de API Protegidas
+                const snapChaves = await getDoc(doc(db, "configuracoes", "chaves_pagamento"));
+                if (snapChaves.exists()) {
+                    const c = snapChaves.data();
+                    document.getElementById('primeApiKey').value = c.primeApiKey || "";
+                    document.getElementById('premiumApiKey').value = c.premiumApiKey || "";
+                }
             } catch (e) {
-                console.warn("Sem preços salvos. Usando padrão 0.00.");
+                console.warn("Sem configurações salvas ou sem permissão de leitura nas chaves.");
                 document.getElementById('precoPrime').value = "0.00";
                 document.getElementById('precoPremium').value = "0.00";
             }
         }
 
-        // SALVAR PREÇOS DAS TAGS
+        // SALVAR PREÇOS E CHAVES DE API DE FORMA ISOLADA E SEGURA
         document.getElementById('formPlanos').onsubmit = async (e) => {
             e.preventDefault();
             const pPrime = parseFloat(document.getElementById('precoPrime').value) || 0.00;
             const pPremium = parseFloat(document.getElementById('precoPremium').value) || 0.00;
+            const primeApiKey = document.getElementById('primeApiKey').value.trim();
+            const premiumApiKey = document.getElementById('premiumApiKey').value.trim();
 
             try {
+                // 1. Salva os preços no documento público de planos
                 await setDoc(doc(db, "configuracoes", "planos"), {
                     prime: pPrime,
                     premium: pPremium,
                     atualizadoEm: serverTimestamp()
                 }, { merge: true });
 
+                // 2. Salva as chaves no documento restrito de chaves de pagamento
+                await setDoc(doc(db, "configuracoes", "chaves_pagamento"), {
+                    primeApiKey: primeApiKey,
+                    premiumApiKey: premiumApiKey,
+                    atualizadoEm: serverTimestamp()
+                }, { merge: true });
+
                 precosAtuais.prime = pPrime;
                 precosAtuais.premium = pPremium;
-                mostrarNotificacao("Preços atualizados com sucesso!");
+                mostrarNotificacao("Preços e chaves de API salvos com sucesso!");
             } catch (err) {
-                mostrarNotificacao("Erro ao salvar preços das tags.");
+                console.error(err);
+                mostrarNotificacao("Erro ao salvar configurações. Verifique as regras do Firestore.");
             }
         };
 
