@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistir - V8 Play+</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-[#0f1016] text-white min-h-screen font-sans">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between px-6 py-4 bg-[#14151f] border-b border-gray-800 sticky top-0 z-50 shadow-md">
+        <a href="index.html" class="flex items-center space-x-3">
+            <span class="bg-gradient-to-r from-red-600 to-orange-500 text-white font-extrabold px-3 py-1 rounded-lg text-lg tracking-wider shadow-lg">V8+</span>
+            <span class="text-xl font-bold tracking-wide">V8 Play+</span>
+        </a>
+        <a href="index.html" class="bg-gray-800 hover:bg-gray-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition-all">
+            <i class="fa-solid fa-arrow-left"></i> Voltar ao Início
+        </a>
+    </header>
+
+    <!-- Conteúdo do Player -->
+    <main class="max-w-5xl mx-auto px-4 py-8">
+        <div id="playerContainer" class="space-y-6">
+            <p class="text-gray-400 text-center py-20">Carregando player e conteúdos...</p>
+        </div>
+    </main>
+
+    <!-- Lógica para buscar o vídeo no Firebase -->
+    <script type="module">
+        import { db } from "./js/firebase.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const COLECOES = ["filmes", "series", "animes", "doramas"];
+
+        async function carregarConteudo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('v');
+            const container = document.getElementById('playerContainer');
+
+            if (!id) {
+                container.innerHTML = `<p class="text-center text-red-500 py-10">Nenhum conteúdo especificado.</p>`;
+                return;
+            }
+
+            let itemEncontrado = null;
+
+            // Procura o ID em todas as coleções do Firestore
+            for (const col of COLECOES) {
+                try {
+                    const docRef = doc(db, col, id);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        itemEncontrado = { id: docSnap.id, colecao: col, ...docSnap.data() };
+                        break;
+                    }
+                } catch (e) {
+                    console.error(`Erro ao buscar na coleção ${col}:`, e);
+                }
+            }
+
+            if (!itemEncontrado) {
+                container.innerHTML = `<p class="text-center text-red-500 py-10">Conteúdo não encontrado ou removido.</p>`;
+                return;
+            }
+
+            // Define a URL do vídeo (suporta video1, video ou link direto)
+            const videoUrl = itemEncontrado.video1 || itemEncontrado.video || "";
+            
+            // Renderiza a interface do player e detalhes
+            container.innerHTML = `
+                <!-- Bloco do Vídeo -->
+                <div class="relative aspect-video w-full bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-800">
+                    ${videoUrl ? `
+                        <iframe src="${videoUrl}" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+                    ` : `
+                        <div class="flex items-center justify-center h-full text-gray-500">
+                            <p>Nenhum link de vídeo cadastrado para este item.</p>
+                        </div>
+                    `}
+                </div>
+
+                <!-- Detalhes do Conteúdo -->
+                <div class="bg-[#16161a] border border-gray-800 p-6 rounded-xl shadow-lg space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-4">
+                        <h1 class="text-2xl font-bold text-white">${itemEncontrado.titulo || 'Sem Título'}</h1>
+                        <span class="bg-cyan-500 text-black font-bold text-xs px-3 py-1 rounded-md uppercase">${itemEncontrado.tag || itemEncontrado.plano || 'Grátis'}</span>
+                    </div>
+                    <p class="text-sm text-gray-400 uppercase tracking-wide">
+                        ${itemEncontrado.categoria || itemEncontrado.colecao} • ${itemEncontrado.ano || 'N/A'}
+                    </p>
+                    <hr class="border-gray-800">
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-300 mb-2">Sinopse</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">${itemEncontrado.descricao || 'Nenhuma descrição informada.'}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.addEventListener('DOMContentLoaded', carregarConteudo);
+    </script>
+</body>
+</html>
