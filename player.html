@@ -35,10 +35,10 @@
         .video-wrapper video, .video-wrapper iframe { width: 100%; height: 100%; border: none; outline: none; }
 
         /* BLOQUEIO DE PAGAMENTO */
-        .paywall-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,10,11,0.95); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; z-index: 10; }
-        .paywall-overlay h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
+        .paywall-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,10,11,0.96); backdrop-filter: blur(12px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 25px; z-index: 10; }
+        .paywall-overlay h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; color: #ffaa00; }
         .paywall-overlay p { color: var(--text-secondary); max-width: 500px; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5; }
-        .btn-checkout { background: #ffaa00; color: #000; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .btn-checkout { background: #ffaa00; color: #000; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(255,170,0,0.3); }
         .btn-checkout:hover { background: #e09600; transform: translateY(-2px); }
 
         /* METADADOS DO VÍDEO */
@@ -69,45 +69,67 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const itemId = urlParams.get('id');
-        const colecao = urlParams.get('colecao');
+        const colecaoParam = urlParams.get('colecao');
         const isTrailer = urlParams.get('trailer') === 'true';
 
         async function inicializarPlayer() {
             const container = document.getElementById('mainContainer');
 
-            if (!itemId || !colecao) {
-                container.innerHTML = `<h2 style="color:#ff6b6b; text-align:center; margin-top:50px;">Parâmetros inválidos para reprodução.</h2>`;
+            if (!itemId) {
+                container.innerHTML = `<h2 style="color:#ff6b6b; text-align:center; margin-top:50px;">ID do conteúdo não informado na URL.</h2>`;
                 return;
             }
 
             try {
-                const docRef = doc(db, colecao, itemId);
-                const docSnap = await getDoc(docRef);
+                let item = null;
+                let colecaoEncontrada = colecaoParam;
 
-                if (!docSnap.exists()) {
-                    container.innerHTML = `<h2 style="color:#ff6b6b; text-align:center; margin-top:50px;">Conteúdo não encontrado.</h2>`;
+                // 1. Tenta buscar na coleção informada na URL (se houver)
+                if (colecaoEncontrada) {
+                    const docRef = doc(db, colecaoEncontrada, itemId);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        item = docSnap.data();
+                    }
+                }
+
+                // 2. Se não encontrou, varre automaticamente todas as coleções possíveis
+                if (!item) {
+                    const colecoesPossiveis = ['filmes', 'series', 'catalogo'];
+                    for (const col of colecoesPossiveis) {
+                        try {
+                            const docRef = doc(db, col, itemId);
+                            const docSnap = await getDoc(docRef);
+                            if (docSnap.exists()) {
+                                item = docSnap.data();
+                                colecaoEncontrada = col;
+                                break;
+                            }
+                        } catch (err) {
+                            // Ignora erro individual e tenta a próxima
+                        }
+                    }
+                }
+
+                if (!item) {
+                    container.innerHTML = `<h2 style="color:#ff6b6b; text-align:center; margin-top:50px;">Conteúdo não encontrado no banco de dados.</h2>`;
                     return;
                 }
 
-                const item = docSnap.data();
                 const tag = (item.tag || item.tipoAcesso || 'gratuito').toLowerCase();
                 const preco = item.preco || 1.00;
-                
                 const linkMidia = isTrailer ? item.trailer : (item.videoUrl || item.url || item.link);
                 const precisaPagar = tag !== 'gratuito' && !isTrailer;
 
-                console.log("Link de mídia carregado:", linkMidia);
-
-                let checkoutUrl = "https://checkout.infinitepay.io/aisermelquisedec/Im3ug7KDw0";
+                let checkoutUrl = "https://checkout.infinitepay.io/aisermelquisedec/Im3ug7KDw0"; // Prime
                 if (tag === 'premium') {
-                    checkoutUrl = "https://checkout.infinitepay.io/aisermelquisedec/OcUlwaNq5H";
+                    checkoutUrl = "https://checkout.infinitepay.io/aisermelquisedec/OcUlwaNq5H"; // Premium
                 }
 
                 let elementoMidia = '';
                 if (linkMidia && (linkMidia.includes('youtube.com') || linkMidia.includes('youtu.be'))) {
                     elementoMidia = `<iframe src="${converterYoutubeUrl(linkMidia)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
                 } else if (linkMidia && linkMidia.includes('abyssplayer.com')) {
-                    // Iframe com todas as permissões necessárias para o AbyssPlayer executar
                     elementoMidia = `<iframe src="${linkMidia}" frameborder="0" scrolling="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
                 } else {
                     elementoMidia = `<video controls autoplay src="${linkMidia || ''}"></video>`;
@@ -130,7 +152,7 @@
                     <div class="video-info">
                         <h1>${item.titulo || 'Título do Vídeo'} ${isTrailer ? '(Trailer)' : ''}</h1>
                         <div class="video-meta">
-                            <span>${item.ano || '2026'}</span> • <span>${item.categoria || item.tipo || 'Geral'}</span>
+                            <span>${item.ano || '2026'}</span> • <span>${item.categoria || item.tipo || colecaoEncontrada || 'Geral'}</span>
                         </div>
                         <p class="video-desc">${item.descricao || 'Sem descrição cadastrada.'}</p>
                     </div>
