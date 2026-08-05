@@ -31,7 +31,7 @@
         .btn-auth { background: var(--primary); color: #000; border: none; padding: 8px 18px; border-radius: 20px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
         .btn-auth:hover { background: var(--primary-hover); transform: translateY(-1px); }
 
-        /* BANNER / HERO COM DESTAQUE */
+        /* BANNER E BUSCA */
         .hero-banner { position: relative; width: 100%; height: 380px; background: linear-gradient(rgba(10,10,11,0.3), var(--bg-dark)), url('assets/banner-bg.jpg') center/cover no-repeat; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 5%; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .hero-banner h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
         .hero-banner p { color: var(--text-secondary); font-size: 1rem; margin-bottom: 25px; max-width: 600px; text-shadow: 0 1px 5px rgba(0,0,0,0.8); }
@@ -41,7 +41,7 @@
         .search-box input:focus { border-color: var(--primary); }
         .search-box i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
 
-        /* FILTRO DE TAGS / CATEGORIAS */
+        /* FILTRO DE TAGS */
         .tags-filter { display: flex; gap: 10px; padding: 20px 5% 10px; max-width: 1400px; margin: 0 auto; width: 100%; overflow-x: auto; scrollbar-width: none; }
         .tags-filter::-webkit-scrollbar { display: none; }
         .tag-pill { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); color: var(--text-secondary); padding: 8px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: 0.2s; }
@@ -237,7 +237,6 @@
         function filtrarEExibir() {
             let filtrados = listaMidias;
 
-            // Filtro por Tag/Categoria
             if (tagSelecionada !== 'todos') {
                 filtrados = filtrados.filter(m => {
                     const tagItem = (m.tag || m.tipoAcesso || 'gratuito').toLowerCase();
@@ -245,7 +244,6 @@
                 });
             }
 
-            // Filtro por Texto de Pesquisa
             if (termoPesquisa) {
                 filtrados = filtrados.filter(m => (m.titulo || '').toLowerCase().includes(termoPesquisa));
             }
@@ -278,13 +276,11 @@
             });
         }
 
-        // EVENTO DE PESQUISA
         document.getElementById('searchInput').oninput = (e) => {
             termoPesquisa = e.target.value.toLowerCase();
             filtrarEExibir();
         };
 
-        // EVENTO DE CLIQUE NAS TAGS
         document.querySelectorAll('.tag-pill').forEach(btn => {
             btn.onclick = (e) => {
                 document.querySelectorAll('.tag-pill').forEach(b => b.classList.remove('active'));
@@ -294,7 +290,6 @@
             };
         });
 
-        // MODAL DE DETALHES
         function abrirDetalhes(item) {
             document.getElementById('modalCapa').src = item.capa || '';
             document.getElementById('modalTitulo').innerText = item.titulo || 'Título';
@@ -333,6 +328,7 @@
             document.getElementById('detalhesModal').classList.remove('hidden');
         }
 
+        // REDIRECIONAMENTO SEPARADO POR PLANO (PRIME x PREMIUM)
         function solicitarPix(item, tag, valor) {
             if (!auth.currentUser) {
                 mostrarNotificacao(`Faça login para adquirir o acesso ${tag.toUpperCase()}.`);
@@ -342,8 +338,15 @@
             }
 
             mostrarNotificacao("Redirecionando para o pagamento seguro...");
+
+            // Seleciona o link de checkout correto com base na tag do item
+            let checkoutUrl = "https://checkout.infinitepay.io/aisermelquisedec/Im3ug7KDw0"; // Padrão Prime
+            if (tag === 'premium') {
+                checkoutUrl = "https://checkout.infinitepay.io/aisermelquisedec/OcUlwaNq5H"; // Link específico Premium
+            }
+
             setTimeout(() => {
-                window.location.href = "https://checkout.infinitepay.io/aisermelquisedec/41LiGTWFBb";
+                window.location.href = checkoutUrl;
             }, 800);
         }
 
