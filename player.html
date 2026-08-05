@@ -36,7 +36,7 @@
 
         /* BLOQUEIO DE PAGAMENTO */
         .paywall-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,10,11,0.92); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; z-index: 10; }
-        .paywall-overlay h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; }
+        .paywall-overlay h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
         .paywall-overlay p { color: var(--text-secondary); max-width: 500px; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5; }
         .btn-checkout { background: #ffaa00; color: #000; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
         .btn-checkout:hover { background: #e09600; transform: translateY(-2px); }
@@ -94,20 +94,23 @@
                 const tag = (item.tag || item.tipoAcesso || 'gratuito').toLowerCase();
                 const preco = item.preco || 1.00;
                 
-                // Determinar qual link tocar (vídeo completo ou trailer)
                 const linkMidia = isTrailer ? item.trailer : (item.videoUrl || item.url || item.link);
-
-                // Verificar se precisa bloquear (se for pago e não for trailer)
                 const precisaPagar = tag !== 'gratuito' && !isTrailer;
+
+                // Define o link de checkout específico com base na tag (Prime vs Premium)
+                let checkoutUrl = "https://checkout.infinitepay.io/aisermelquisedec/Im3ug7KDw0"; // Padrão Prime
+                if (tag === 'premium') {
+                    checkoutUrl = "https://checkout.infinitepay.io/aisermelquisedec/OcUlwaNq5H"; // Premium
+                }
 
                 container.innerHTML = `
                     <div class="video-wrapper" id="videoWrapper">
                         ${precisaPagar ? `
                             <div class="paywall-overlay">
                                 <h2>Conteúdo Exclusivo ${tag.toUpperCase()}</h2>
-                                <p>Para assistir a este título completo e desfrutar de alta qualidade, libere seu acesso agora mesmo por apenas R$ ${Number(preco).toFixed(2)}.</p>
-                                <a href="https://checkout.infinitepay.io/aisermelquisedec/41LiGTWFBb" class="btn-checkout" target="_blank">
-                                    <i class="fa-solid fa-lock-open"></i> Liberar Acesso (Checkout Seguro)
+                                <p>Para assistir a este título completo, libere seu acesso ao plano ${tag.toUpperCase()} agora mesmo por R$ ${Number(preco).toFixed(2)}.</p>
+                                <a href="${checkoutUrl}" class="btn-checkout" target="_blank">
+                                    <i class="fa-solid fa-lock-open"></i> Liberar Acesso (${tag.toUpperCase()})
                                 </a>
                             </div>
                         ` : ''}
