@@ -1,36 +1,11 @@
 /* =====================================
-   V8 PLAY+
-   FIREBASE CONFIG
+   V8 PLAY+ - FIREBASE CONFIG
 ===================================== */
 
-
-// Firebase SDK
-
-import { initializeApp } 
-from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-
-
-import { getFirestore } 
-from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-
-import { getAuth } 
-from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-
-import { getStorage } 
-from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-
-
-
-
-
-/* =====================================
-   CONFIGURAÇÃO DO SEU PROJETO FIREBASE
-
-   SUBSTITUA PELOS DADOS DO SEU FIREBASE
-===================================== */
-
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCj00E3qCzJJEIFnTVcvRC97f4HgERvaoI",
@@ -42,64 +17,11 @@ const firebaseConfig = {
   measurementId: "G-7C60RJTW8S"
 };
 
-
-
-
-/* =====================================
-   INICIALIZAÇÃO
-===================================== */
-
-
 const app = initializeApp(firebaseConfig);
-
-
-
-
-
-/* =====================================
-   SERVIÇOS
-===================================== */
-
-
 const db = getFirestore(app);
-
-
 const auth = getAuth(app);
-
-
 const storage = getStorage(app);
 
+export { app, db, auth, storage };
 
-
-
-
-/* =====================================
-   EXPORTAÇÃO
-
-   Outros arquivos usarão:
-
-   import {db,auth,storage}
-   from "./firebase.js"
-
-===================================== */
-
-
-export {
-
-    app,
-
-    db,
-
-    auth,
-
-    storage
-
-};
-
-
-
-
-
-console.log(
-"🔥 Firebase conectado ao V8 Play+"
-);
+console.log("🔥 Firebase conectado ao V8 Play+ com sucesso!");
