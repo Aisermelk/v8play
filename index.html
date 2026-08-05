@@ -68,11 +68,11 @@
 
     <!-- Firebase e Lógica da Página -->
     <script type="module">
-        import { db, auth } from "./firebase.js";[cite: 4]
+        import { db, auth } from "./firebase.js";
         import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        const COLECOES = ["filmes", "series", "animes", "doramas"];[cite: 1, 2]
+        const COLECOES = ["filmes", "series", "animes", "doramas"];
 
         // Verificar permissão de admin para exibir o link do painel no header
         onAuthStateChanged(auth, async (user) => {
@@ -101,13 +101,13 @@
                         todosItens.push({ id: d.id, colecao: col, ...d.data() });
                     });
                 } catch (e) {
-                    console.error(`Erro ao buscar coleção ${col}:`, e);
+                    console.error("Erro ao buscar coleção " + col + ":", e);
                 }
             }
 
             if (todosItens.length === 0) {
-                heroContainer.innerHTML = `<p class="text-gray-500 text-sm">Nenhum destaque disponível.</p>`;
-                moviesGrid.innerHTML = `<p class="text-gray-500 text-sm col-span-full text-center py-10">Nenhum conteúdo cadastrado no painel.</p>`;
+                heroContainer.innerHTML = '<p class="text-gray-500 text-sm">Nenhum destaque disponível.</p>';
+                moviesGrid.innerHTML = '<p class="text-gray-500 text-sm col-span-full text-center py-10">Nenhum conteúdo cadastrado no painel.</p>';
                 return;
             }
 
@@ -120,7 +120,7 @@
                     heroContainer.innerHTML += criarCardHTML(item, tag);
                 });
             } else {
-                heroContainer.innerHTML = `<p class="text-gray-500 text-sm">Nenhum item marcado como destaque.</p>`;
+                heroContainer.innerHTML = '<p class="text-gray-500 text-sm">Nenhum item marcado como destaque.</p>';
             }
 
             // Renderizar todos os itens no grid do catálogo
