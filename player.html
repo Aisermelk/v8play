@@ -31,11 +31,19 @@
         /* CONTAINER DO PLAYER */
         .player-container { flex: 1; max-width: 1200px; margin: 0 auto; width: 100%; padding: 30px 5%; display: flex; flex-direction: column; gap: 20px; }
         
-        .video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; }
-        .video-wrapper video, .video-wrapper iframe { width: 100%; height: 100%; border: none; outline: none; object-fit: contain; }
+        .video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: #16161a; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+        .video-wrapper video, .video-wrapper iframe { width: 100%; height: 100%; border: none; outline: none; }
+
+        /* CAIXA DE ACESSO AO ABYSSPLAYER */
+        .external-player-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; padding: 20px; }
+        .external-player-box i { font-size: 3.5rem; color: var(--primary); margin-bottom: 5px; }
+        .external-player-box h3 { font-size: 1.5rem; font-weight: 700; }
+        .external-player-box p { color: var(--text-secondary); max-width: 450px; font-size: 0.9rem; line-height: 1.4; }
+        .btn-abrir-player { background: var(--primary); color: #000; border: none; padding: 14px 32px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,212,255,0.3); }
+        .btn-abrir-player:hover { background: var(--primary-hover); transform: translateY(-2px); }
 
         /* BLOQUEIO DE PAGAMENTO */
-        .paywall-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,10,11,0.92); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; z-index: 10; }
+        .paywall-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,10,11,0.95); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; z-index: 10; }
         .paywall-overlay h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
         .paywall-overlay p { color: var(--text-secondary); max-width: 500px; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5; }
         .btn-checkout { background: #ffaa00; color: #000; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
@@ -46,7 +54,6 @@
         .video-meta { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 15px; display: flex; gap: 12px; }
         .video-desc { color: #ccc; font-size: 0.95rem; line-height: 1.6; max-width: 900px; }
 
-        /* ESTADO DE CARREGAMENTO */
         .loading-screen { display: flex; align-items: center; justify-content: center; height: 60vh; font-size: 1.1rem; color: var(--text-secondary); gap: 10px; }
     </style>
 </head>
@@ -97,25 +104,26 @@
                 const linkMidia = isTrailer ? item.trailer : (item.videoUrl || item.url || item.link);
                 const precisaPagar = tag !== 'gratuito' && !isTrailer;
 
-                // Define o link de checkout específico com base na tag (Prime vs Premium)
-                let checkoutUrl = "https://checkout.infinitepay.io/aisermelquisedec/Im3ug7KDw0"; // Padrão Prime
+                let checkoutUrl = "https://checkout.infinitepay.io/aisermelquisedec/Im3ug7KDw0";
                 if (tag === 'premium') {
-                    checkoutUrl = "https://checkout.infinitepay.io/aisermelquisedec/OcUlwaNq5H"; // Premium
+                    checkoutUrl = "https://checkout.infinitepay.io/aisermelquisedec/OcUlwaNq5H";
                 }
-
-                // Verifica se deve usar iframe (YouTube, AbyssPlayer ou links web)
-                const usaIframe = linkMidia && (
-                    linkMidia.includes('youtube.com') || 
-                    linkMidia.includes('youtu.be') || 
-                    linkMidia.includes('abyssplayer.com') || 
-                    linkMidia.startsWith('http')
-                );
 
                 let elementoMidia = '';
                 if (linkMidia && (linkMidia.includes('youtube.com') || linkMidia.includes('youtu.be'))) {
                     elementoMidia = `<iframe src="${converterYoutubeUrl(linkMidia)}" allowfullscreen></iframe>`;
                 } else if (linkMidia && linkMidia.includes('abyssplayer.com')) {
-                    elementoMidia = `<iframe src="${linkMidia}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+                    // Como o AbyssPlayer bloqueia iframes externos, disponibilizamos um botão direto altamente profissional e seguro
+                    elementoMidia = `
+                        <div class="external-player-box">
+                            <i class="fa-solid fa-circle-play"></i>
+                            <h3>Player Pronto para Reprodução</h3>
+                            <p>Este conteúdo está hospedado no player seguro. Clique no botão abaixo para iniciar o filme/série em tela cheia.</p>
+                            <a href="${linkMidia}" target="_blank" class="btn-abrir-player">
+                                <i class="fa-solid fa-play"></i> Assistir Agora no Player
+                            </a>
+                        </div>
+                    `;
                 } else {
                     elementoMidia = `<video controls autoplay src="${linkMidia || ''}"></video>`;
                 }
