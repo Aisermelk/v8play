@@ -3,30 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V8 Play+ - Assistir</title>
+    <title>V8 Play+ - Assistir Conteúdo</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
         :root {
             --primary: #00d4ff;
+            --primary-hover: #00a2c7;
             --bg-dark: #0a0a0b;
             --bg-card: #16161a;
+            --bg-modal: rgba(10, 10, 11, 0.95);
             --text: #ffffff;
             --text-secondary: #aaaaaa;
+            --danger: #ff4757;
+            --success: #2ed573;
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; }
+        body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; padding-bottom: 40px; }
+
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: #121216; border-bottom: 1px solid #222; }
         .logo { font-size: 1.4rem; font-weight: 800; color: white; text-decoration: none; }
         .logo span { color: var(--primary); }
         .user-area { display: flex; align-items: center; gap: 15px; }
-        .btn-admin { background: var(--primary); color: #000; padding: 8px 15px; border-radius: 6px; font-weight: 600; text-decoration: none; font-size: 0.85rem; display: none; }
+        .btn-admin { background: var(--primary); color: #000; padding: 8px 15px; border-radius: 6px; font-weight: 600; text-decoration: none; font-size: 0.85rem; display: none; transition: 0.2s; }
+        .btn-admin:hover { background: var(--primary-hover); }
+        .user-status { font-size: 0.85rem; color: var(--text-secondary); }
+
         .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
-        .video-container { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
-        .video-container iframe, .video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        .info-box { background: var(--bg-card); padding: 20px; border-radius: 10px; border: 1px solid #222; }
+
+        .video-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; border-radius: 10px; overflow: hidden; border: 1px solid #222; margin-bottom: 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.6); }
+        .video-wrapper iframe, .video-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        /* MODAL DE PROPAGANDA / ANÚNCIO PARA CONTEÚDO GRÁTIS */
+        #adOverlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-modal); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; text-align: center; padding: 20px; }
+        #adOverlay h3 { font-size: 1.3rem; margin-bottom: 10px; color: var(--primary); }
+        #adOverlay p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px; max-width: 400px; }
+        .btn-assistir-anuncio { background: var(--primary); color: #000; border: none; padding: 12px 25px; font-weight: 700; border-radius: 6px; cursor: pointer; font-size: 0.95rem; transition: 0.2s; }
+        .btn-assistir-anuncio:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+        .info-box { background: var(--bg-card); padding: 25px; border-radius: 10px; border: 1px solid #222; }
         .info-box h1 { font-size: 1.5rem; margin-bottom: 10px; }
-        .info-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; }
+        .info-box .meta { display: flex; gap: 15px; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px; }
+        .info-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+
+        .badge-tag { padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .badge-tag.gratis { background: rgba(0, 212, 255, 0.15); color: #00d4ff; border: 1px solid #00d4ff; }
+        .badge-tag.prime { background: rgba(255, 170, 0, 0.2); color: #ffaa00; border: 1px solid #ffaa00; }
+        .badge-tag.premium { background: rgba(0, 114, 255, 0.2); color: #0072ff; border: 1px solid #0072ff; }
+
         .hidden { display: none !important; }
     </style>
 </head>
@@ -35,22 +60,36 @@
     <header>
         <a href="index.html" class="logo">V8 <span>Play+</span></a>
         <div class="user-area">
-            <!-- Botão de Admin exibido apenas se o usuário logado for administrador -->
             <a href="admin.html" id="linkAdmin" class="btn-admin"><i class="fa-solid fa-user-shield"></i> Painel Admin</a>
-            <span id="userEmail" style="font-size: 0.9rem; color: var(--text-secondary);">Carregando...</span>
+            <span class="user-status" id="userStatus">Verificando...</span>
         </div>
     </header>
 
     <div class="container">
-        <!-- PLAYER DE VÍDEO -->
-        <div class="video-container" id="playerWrapper">
+        <!-- PLAYER E OVERLAY DE ANÚNCIO -->
+        <div class="video-wrapper" id="videoWrapper">
+            <!-- Overlay de Propaganda para vídeos Grátis -->
+            <div id="adOverlay" class="hidden">
+                <i class="fa-solid fa-rectangle-ad" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 15px;"></i>
+                <h3>Anúncio Patrocinado</h3>
+                <p id="adText">Assista ao breve anúncio para liberar seu conteúdo gratuito instantaneamente.</p>
+                <button class="btn-assistir-anuncio" id="btnPularAnuncio" onclick="liberarConteudoAposAnuncio()">
+                    <i class="fa-solid fa-play"></i> Continuar para o Vídeo (<span id="countdown">5</span>s)
+                </button>
+            </div>
+
             <iframe id="videoPlayer" src="" allowfullscreen></iframe>
         </div>
 
-        <!-- INFORMAÇÕES DO CONTEÚDO -->
+        <!-- DETALHES -->
         <div class="info-box">
-            <h1 id="tituloConteúdo">Carregando título...</h1>
-            <p id="descricaoConteúdo">Aguarde enquanto carregamos as informações do vídeo...</p>
+            <h1 id="tituloConteudo">Carregando título...</h1>
+            <div class="meta">
+                <span id="tagBadge" class="badge-tag gratis">Grátis</span>
+                <span id="categoriaConteudo">-</span>
+                <span id="anoConteudo">-</span>
+            </div>
+            <p id="descricaoConteudo">Aguarde enquanto carregamos os dados do vídeo...</p>
         </div>
     </div>
 
@@ -60,69 +99,115 @@
         import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // 1. GERENCIAMENTO DE AUTENTICAÇÃO E PERMISSÕES (SEM REDIRECIONAR O USUÁRIO COMUM)
+        let urlVideoGlobal = "";
+        let timerAnuncio = null;
+
+        // 1. VERIFICAÇÃO DE AUTENTICAÇÃO E PERMISSÃO DE ADMIN NO HEADER
         onAuthStateChanged(auth, async (user) => {
-            const emailSpan = document.getElementById('userEmail');
+            const statusEl = document.getElementById('userStatus');
             const linkAdmin = document.getElementById('linkAdmin');
 
             if (!user) {
-                emailSpan.innerText = "Visitante";
-                // Opcional: Se quiser exigir login para assistir, redirecione para o login/index, NUNCA para o admin.
-                // window.location.href = "index.html";
+                statusEl.innerText = "Visitante";
                 return;
             }
 
-            emailSpan.innerText = user.email;
+            statusEl.innerText = user.email;
 
             try {
-                // Verifica no Firestore se o usuário é administrador apenas para mostrar o atalho do painel
                 const userDoc = await getDoc(doc(db, "usuarios", user.uid));
                 if (userDoc.exists() && userDoc.data().admin === true) {
-                    linkAdmin.classList.remove('hidden'); // Exibe o botão do painel admin apenas para admins
+                    linkAdmin.classList.remove('hidden'); // Exibe atalho do admin somente para administradores
                 }
             } catch (e) {
-                console.error("Erro ao verificar privilégios de admin:", e);
+                console.error("Erro ao validar privilégios:", e);
             }
         });
 
-        // 2. Lógica para carregar o vídeo com base nos parâmetros da URL (ex: player.html?id=XYZ&col=filmes)
-        async function carregarConteudoPlayer() {
+        // 2. CARREGAR CONTEÚDO DA URL (?id=...&col=...)
+        async function carregarPlayer() {
             const params = new URLSearchParams(window.location.search);
             const id = params.get('id');
             const colecao = params.get('col') || 'filmes';
 
             if (!id) {
-                document.getElementById('tituloConteúdo').innerText = "Conteúdo não especificado.";
-                document.getElementById('descricaoConteúdo').innerText = "Volte à página inicial e selecione um título válido.";
+                document.getElementById('tituloConteudo').innerText = "Conteúdo não especificado";
+                document.getElementById('descricaoConteudo').innerText = "Retorne à página inicial e selecione um título válido.";
                 return;
             }
 
             try {
-                const docRef = doc(db, colecao, id);
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    document.getElementById('tituloConteúdo').innerText = data.titulo || "Sem Título";
-                    document.getElementById('descricaoConteúdo').innerText = data.descricao || "Sem descrição disponível.";
-                    
-                    const urlVideo = data.video1 || data.video || "";
-                    if (urlVideo) {
-                        document.getElementById('videoPlayer').src = urlVideo;
-                    } else {
-                        document.getElementById('videoPlayer').style.display = 'none';
-                        alert("Link de vídeo indisponível.");
-                    }
-                } else {
-                    document.getElementById('tituloConteúdo').innerText = "Conteúdo não encontrado.";
+                const docSnap = await getDoc(doc(db, colecao, id));
+                if (!docSnap.exists()) {
+                    document.getElementById('tituloConteudo').innerText = "Conteúdo não encontrado.";
+                    return;
                 }
+
+                const data = docSnap.data();
+                document.getElementById('tituloConteudo').innerText = data.titulo || "Sem Título";
+                document.getElementById('descricaoConteudo').innerText = data.descricao || "Sem sinopse cadastrada.";
+                document.getElementById('categoriaConteudo').innerText = data.categoria || "Geral";
+                document.getElementById('anoConteudo').innerText = data.ano || "";
+                
+                const tag = (data.tag || data.plano || "gratis").toLowerCase();
+                const badge = document.getElementById('tagBadge');
+                badge.className = `badge-tag ${tag}`;
+                badge.innerText = tag.toUpperCase();
+
+                urlVideoGlobal = data.video1 || data.video || "";
+
+                // Regra de Exibição: Se for grátis com anúncio, ativa o overlay de anúncio
+                if (tag === 'gratis') {
+                    iniciarAnuncioPropaganda();
+                } else {
+                    // Para conteúdos Prime/Premium (ou sem anúncio)
+                    verificarAcessoPago(tag, data);
+                }
+
             } catch (error) {
-                console.error("Erro ao carregar o vídeo:", error);
-                document.getElementById('tituloConteúdo').innerText = "Erro ao carregar o conteúdo.";
+                console.error("Erro ao buscar dados:", error);
+                document.getElementById('tituloConteudo').innerText = "Erro ao carregar o player.";
             }
         }
 
-        carregarConteudoPlayer();
+        function iniciarAnuncioPropaganda() {
+            const overlay = document.getElementById('adOverlay');
+            const btnPular = document.getElementById('btnPularAnuncio');
+            overlay.classList.remove('hidden');
+            
+            let segundos = 5;
+            btnPular.disabled = true;
+            btnPular.style.opacity = "0.6";
+
+            timerAnuncio = setInterval(() => {
+                segundos--;
+                document.getElementById('countdown').innerText = segundos;
+                if (segundos <= 0) {
+                    clearInterval(timerAnuncio);
+                    btnPular.disabled = false;
+                    btnPular.style.opacity = "1";
+                    document.getElementById('countdown').parentElement.innerHTML = '<i class="fa-solid fa-play"></i> Assistir Vídeo Agora';
+                }
+            }, 1000);
+        }
+
+        window.liberarConteudoAposAnuncio = function() {
+            if (timerAnuncio) clearInterval(timerAnuncio);
+            document.getElementById('adOverlay').classList.add('hidden');
+            if (urlVideoGlobal) {
+                document.getElementById('videoPlayer').src = urlVideoGlobal;
+            } else {
+                alert("URL do vídeo não configurada.");
+            }
+        };
+
+        function verificarAcessoPago(tag, data) {
+            // Aqui você pode validar se o usuário comprou o item ou plano. 
+            // Caso já tenha acesso liberado, basta carregar o vídeo direto:
+            document.getElementById('videoPlayer').src = urlVideoGlobal;
+        }
+
+        carregarPlayer();
     </script>
 </body>
 </html>
