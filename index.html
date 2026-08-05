@@ -601,31 +601,58 @@
                     await signInWithEmailAndPassword(auth, email, pass);
                 }
                 fecharModais();
+                mostrarNotificacao(modoCadastro ? "Conta criada com sucesso!" : "Login realizado com sucesso!");
             } catch (e) {
-                erro.innerText = "Falha na autenticação. Verifique e-mail e senha.";
+                erro.innerText = e.message.includes("invalid-credential") ? "E-mail ou senha incorretos." : e.message;
             }
         };
 
-        document.getElementById('authBtn').onclick = () => {
-            if (auth.currentUser) {
-                signOut(auth);
-                mostrarNotificacao("Sessão encerrada.");
+        onAuthStateChanged(auth, async (user) => {
+            const authBtn = document.getElementById('authBtn');
+            if (user) {
+                authBtn.innerText = "Sair";
+                authBtn.onclick = async () => {
+                    await signOut(auth);
+                    titulosComprados.clear();
+                    mostrarNotificacao("Você saiu da sua conta.");
+                };
+                try {
+                    const comprasSnap = await getDocs(collection(db, "usuarios", user.uid, "compras"));
+                    titulosComprados.clear();
+                    comprasSnap.forEach(docSnap => {
+                        titulosComprados.add(docSnap.data().itemId);
+                    });
+                } catch (e) {
+                    console.warn("Erro ao carregar compras do usuário.");
+                }
             } else {
-                document.getElementById('loginModal').classList.remove('hidden');
+                authBtn.innerText = "Entrar";
+                authBtn.onclick = () => {
+                    modoCadastro = false;
+                    document.getElementById('tituloAuth').innerText = "Entrar no V8 Play+";
+                    document.getElementById('doLogin').innerText = "Entrar";
+                    document.getElementById('alternarCadastro').innerText = "Ainda não tem conta? Criar conta";
+                    document.getElementById('erroAuth').innerText = "";
+                    document.getElementById('email').value = "";
+                    document.getElementById('password').value = "";
+                    document.getElementById('loginModal').classList.remove('hidden');
+                };
+                titulosComprados.clear();
             }
-        };
-
-        onAuthStateChanged(auth, (user) => {
-            document.getElementById('authBtn').innerText = user ? "Sair (" + user.email.split('@')[0] + ")" : "Entrar";
         });
 
-        function mostrarNotificacao(msg) {
-            const box = document.getElementById('notification');
-            document.getElementById('notificationText').innerText = msg;
-            box.classList.remove('hidden');
-            setTimeout(() => box.classList.add('hidden'), 3500);
+        function mostrarNotificacao(texto) {
+            const notif = document.getElementById('notification');
+            const textoSpan = document.getElementById('notificationText');
+            if (!notif || !textoSpan) return;
+            textoSpan.innerText = texto;
+            notif.classList.remove('hidden');
+            setTimeout(() => {
+                notif.classList.add('hidden');
+            }, 3500);
         }
 
+        // Inicializar aplicação
         carregarCatalogo();
     </script>
 </body>
