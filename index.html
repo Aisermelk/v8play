@@ -30,7 +30,7 @@
 
         <div class="flex items-center gap-4">
             <!-- Botão do Painel Admin (aparece apenas se logado como admin) -->
-            <a href="admin" id="adminLink" class="hidden bg-gray-800 hover:bg-gray-700 text-cyan-400 text-xs font-bold px-3 py-2 rounded-lg transition-all border border-cyan-500/30">
+            <a href="admin.html" id="adminLink" class="hidden bg-gray-800 hover:bg-gray-700 text-cyan-400 text-xs font-bold px-3 py-2 rounded-lg transition-all border border-cyan-500/30">
                 <i class="fa-solid fa-user-shield"></i> Painel Admin
             </a>
             <button onclick="logout()" class="bg-cyan-500 hover:bg-cyan-600 text-black font-bold px-5 py-2 rounded-full text-sm transition-all shadow-md">
@@ -68,7 +68,7 @@
 
     <!-- Firebase e Lógica da Página -->
     <script type="module">
-        import { db, auth } from "./js/firebase.js";
+        import { db, auth } from "./firebase.js";
         import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
@@ -183,7 +183,6 @@
             window.location.href = "index.html";
         }
 
-        // Executar carregamento ao abrir a página
         window.addEventListener('DOMContentLoaded', carregarCatalogo);
     </script>
 </body>
