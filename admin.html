@@ -17,21 +17,22 @@
             --text-secondary: #aaaaaa;
             --danger: #ff4757;
             --success: #2ed573;
+            --warning: #ffaa00;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; padding-bottom: 50px; }
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: #121216; border-bottom: 1px solid #222; }
-        .logo { font-size: 1.4rem; font-weight: 800; color: white; text-decoration: none; }
+        .logo { font-size: 1.4rem; font-weight: 800; color: white; text-decoration: none; display: flex; align-items: center; gap: 8px; }
         .logo span { color: var(--primary); }
-        .user-status { font-size: 0.9rem; color: var(--text-secondary); }
+        .user-status { font-size: 0.9rem; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
 
         .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
 
-        .card-box { background: var(--bg-card); border-radius: 10px; padding: 25px; border: 1px solid #222; margin-bottom: 25px; }
+        .card-box { background: var(--bg-card); border-radius: 10px; padding: 25px; border: 1px solid #222; margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         .card-box h2 { font-size: 1.2rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #2b2b36; padding-bottom: 10px; color: var(--primary); }
-        .card-box h3 { font-size: 1.05rem; margin: 15px 0 10px 0; color: var(--text); display: flex; align-items: center; gap: 8px; }
+        .card-box h3 { font-size: 1.05rem; margin: 20px 0 10px 0; color: var(--text); display: flex; align-items: center; gap: 8px; }
 
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
         .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -39,15 +40,16 @@
 
         label { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; }
         input, select, textarea { background: #1c1c22; border: 1px solid #333; color: white; padding: 10px 14px; border-radius: 6px; font-family: inherit; font-size: 0.9rem; outline: none; transition: 0.2s; }
-        input:focus, select:focus, textarea:focus { border-color: var(--primary); }
+        input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 5px rgba(0,212,255,0.2); }
         textarea { resize: vertical; min-height: 80px; }
 
-        .checkbox-group { display: flex; gap: 20px; align-items: center; margin-top: 10px; }
+        .checkbox-group { display: flex; gap: 20px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
         .checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; }
 
         .btn-salvar { background: var(--primary); color: #000; border: none; padding: 12px 25px; font-weight: 700; border-radius: 6px; cursor: pointer; transition: 0.2s; margin-top: 15px; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; }
         .btn-salvar:hover { background: var(--primary-hover); transform: translateY(-1px); }
-        .btn-cancelar { background: #333; color: white; border: none; padding: 12px 20px; font-weight: 600; border-radius: 6px; cursor: pointer; margin-top: 15px; margin-left: 10px; }
+        .btn-cancelar { background: #333; color: white; border: none; padding: 12px 20px; font-weight: 600; border-radius: 6px; cursor: pointer; margin-top: 15px; margin-left: 10px; transition: 0.2s; }
+        .btn-cancelar:hover { background: #444; }
 
         /* TABELA DE CONTEÚDO */
         .table-responsive { overflow-x: auto; }
@@ -65,24 +67,25 @@
         .btn-acao.editar:hover { color: var(--primary); }
         .btn-acao.excluir:hover { color: var(--danger); }
 
-        #notification { position: fixed; bottom: 25px; right: 25px; background: #1f1f24; color: white; padding: 12px 24px; border-radius: 8px; z-index: 4000; border: 1px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-size: 0.9rem; }
+        #notification { position: fixed; bottom: 25px; right: 25px; background: #1f1f24; color: white; padding: 12px 24px; border-radius: 8px; z-index: 4000; border: 1px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-size: 0.9rem; transition: 0.3s ease; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="logo">V8 Play+ <span>Admin</span></a>
-        <div class="user-status" id="adminStatus">Verificando permissões...</div>
+        <a href="index.html" class="logo"><i class="fa-solid fa-play-circle" style="color: var(--primary);"></i> V8 Play+ <span>Admin</span></a>
+        <div class="user-status" id="adminStatus"><i class="fa-solid fa-spinner fa-spin"></i> Verificando permissões...</div>
     </header>
 
     <div class="container">
 
-        <!-- PAINEL 1: CONFIGURAÇÃO DE VALORES E CHAVES DE API -->
+        <!-- PAINEL 1: CONFIGURAÇÃO DE VALORES, CHAVES DE API E SERVIDOR IPTV -->
         <div class="card-box">
-            <h2><i class="fa-solid fa-tags"></i> Valoração e Chaves de API dos Planos</h2>
+            <h2><i class="fa-solid fa-sliders"></i> Configurações Gerais, Planos e Servidor</h2>
             <form id="formPlanos">
-                <div class="form-grid" style="margin-bottom: 20px;">
+                <h3><i class="fa-solid fa-tags"></i> Valoração dos Planos</h3>
+                <div class="form-grid" style="margin-bottom: 15px;">
                     <div class="form-group">
                         <label for="precoPrime">Preço Tag PRIME (R$):</label>
                         <input type="number" step="0.01" id="precoPrime" placeholder="0.00" required>
@@ -90,6 +93,14 @@
                     <div class="form-group">
                         <label for="precoPremium">Preço Tag PREMIUM (R$):</label>
                         <input type="number" step="0.01" id="precoPremium" placeholder="0.00" required>
+                    </div>
+                </div>
+
+                <h3><i class="fa-solid fa-server"></i> Configuração de Servidor / API IPTV</h3>
+                <div class="form-grid" style="margin-bottom: 15px;">
+                    <div class="form-group full">
+                        <label for="iptvServerUrl">URL Base do Servidor / Painel Xtream:</label>
+                        <input type="url" id="iptvServerUrl" placeholder="https://seu-servidor-iptv.com:8080">
                     </div>
                 </div>
 
@@ -105,8 +116,8 @@
                     </div>
                 </div>
 
-                <div class="form-group full">
-                    <button type="submit" class="btn-salvar" style="width: fit-content;"><i class="fa-solid fa-floppy-disk"></i> Salvar Preços e Chaves de API</button>
+                <div class="form-group full" style="margin-top: 15px;">
+                    <button type="submit" class="btn-salvar" style="width: fit-content;"><i class="fa-solid fa-floppy-disk"></i> Salvar Configurações Gerais</button>
                 </div>
             </form>
         </div>
@@ -266,7 +277,7 @@
         onAuthStateChanged(auth, async (user) => {
             const statusEl = document.getElementById('adminStatus');
             if (!user) {
-                statusEl.innerHTML = "<span style='color: var(--danger);'>Acesso negado. Faça login no index.html</span>";
+                statusEl.innerHTML = "<span style='color: var(--danger);'><i class='fa-solid fa-triangle-exclamation'></i> Acesso negado. Faça login no index.html</span>";
                 alert("Você precisa estar logado para acessar o Painel Admin.");
                 window.location.href = "index.html";
                 return;
@@ -282,7 +293,7 @@
                 }
 
                 statusEl.innerHTML = `<span style='color: var(--success);'><i class="fa-solid fa-user-shield"></i> Autenticado: ${user.email}</span>`;
-                carregarPrecosEChaves();
+                carregarConfiguracoesGerais();
                 carregarListaConteudos();
 
             } catch (e) {
@@ -291,10 +302,10 @@
             }
         });
 
-        // 1. CARREGAR PREÇOS E CHAVES DE API SEPARADAMENTE
-        async function carregarPrecosEChaves() {
+        // 1. CARREGAR PREÇOS, CHAVES DE API E CONFIGURAÇÕES DE SERVIDOR
+        async function carregarConfiguracoesGerais() {
             try {
-                // Carrega Preços
+                // Carrega Planos
                 const snapPlanos = await getDoc(doc(db, "configuracoes", "planos"));
                 if (snapPlanos.exists()) {
                     const d = snapPlanos.data();
@@ -304,6 +315,12 @@
                 document.getElementById('precoPrime').value = precosAtuais.prime.toFixed(2);
                 document.getElementById('precoPremium').value = precosAtuais.premium.toFixed(2);
 
+                // Carrega Servidor IPTV
+                const snapServidor = await getDoc(doc(db, "configuracoes", "servidor_iptv"));
+                if (snapServidor.exists()) {
+                    document.getElementById('iptvServerUrl').value = snapServidor.data().serverUrl || "";
+                }
+
                 // Carrega Chaves de API Protegidas
                 const snapChaves = await getDoc(doc(db, "configuracoes", "chaves_pagamento"));
                 if (snapChaves.exists()) {
@@ -312,29 +329,36 @@
                     document.getElementById('premiumApiKey').value = c.premiumApiKey || "";
                 }
             } catch (e) {
-                console.warn("Sem configurações salvas ou sem permissão de leitura nas chaves.");
+                console.warn("Sem configurações salvas ou sem permissão de leitura.");
                 document.getElementById('precoPrime').value = "0.00";
                 document.getElementById('precoPremium').value = "0.00";
             }
         }
 
-        // SALVAR PREÇOS E CHAVES DE API DE FORMA ISOLADA E SEGURA
+        // SALVAR CONFIGURAÇÕES GERAIS, PREÇOS E CHAVES
         document.getElementById('formPlanos').onsubmit = async (e) => {
             e.preventDefault();
             const pPrime = parseFloat(document.getElementById('precoPrime').value) || 0.00;
             const pPremium = parseFloat(document.getElementById('precoPremium').value) || 0.00;
+            const iptvServerUrl = document.getElementById('iptvServerUrl').value.trim();
             const primeApiKey = document.getElementById('primeApiKey').value.trim();
             const premiumApiKey = document.getElementById('premiumApiKey').value.trim();
 
             try {
-                // 1. Salva os preços no documento público de planos
+                // 1. Salva os preços
                 await setDoc(doc(db, "configuracoes", "planos"), {
                     prime: pPrime,
                     premium: pPremium,
                     atualizadoEm: serverTimestamp()
                 }, { merge: true });
 
-                // 2. Salva as chaves no documento restrito de chaves de pagamento
+                // 2. Salva o Servidor IPTV
+                await setDoc(doc(db, "configuracoes", "servidor_iptv"), {
+                    serverUrl: iptvServerUrl,
+                    atualizadoEm: serverTimestamp()
+                }, { merge: true });
+
+                // 3. Salva as chaves de pagamento
                 await setDoc(doc(db, "configuracoes", "chaves_pagamento"), {
                     primeApiKey: primeApiKey,
                     premiumApiKey: premiumApiKey,
@@ -343,7 +367,7 @@
 
                 precosAtuais.prime = pPrime;
                 precosAtuais.premium = pPremium;
-                mostrarNotificacao("Preços e chaves de API salvos com sucesso!");
+                mostrarNotificacao("Configurações salvas com sucesso!");
             } catch (err) {
                 console.error(err);
                 mostrarNotificacao("Erro ao salvar configurações. Verifique as regras do Firestore.");
@@ -362,7 +386,7 @@
         // 2. BUSCA E LISTAGEM DE CONTEÚDO
         async function carregarListaConteudos() {
             const tbody = document.getElementById('tabelaConteudo');
-            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #666;">Buscando itens...</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #666;"><i class="fa-solid fa-spinner fa-spin"></i> Buscando itens...</td></tr>`;
             todosItens = [];
 
             for (const col of COLECOES) {
@@ -396,7 +420,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><strong>${item.titulo}</strong></td>
-                    <td>${item.colecao}</td>
+                    <td style="text-transform: capitalize;">${item.colecao}</td>
                     <td>${item.categoria || '-'}</td>
                     <td><span class="badge-tag ${tag}">${tag}</span></td>
                     <td>${valorExibir}</td>
@@ -428,7 +452,7 @@
                 categoria: document.getElementById('categoria').value,
                 ano: document.getElementById('ano').value,
                 tag: tag,
-                plano: tag, // Retrocompatibilidade
+                plano: tag,
                 preco: preco,
                 capa: document.getElementById('capa').value,
                 banner: document.getElementById('banner').value,
