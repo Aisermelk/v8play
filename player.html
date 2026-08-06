@@ -110,6 +110,9 @@
                 if (directTitle) tituloFinal = decodeURIComponent(directTitle);
             }
 
+            // RASTREIO NO CONSOLE
+            console.log("🔗 LINK CAPTURADO DO BANCO:", linkMidia);
+
             titleEl.innerText = tituloFinal;
             document.title = `${tituloFinal} - V8 Play+`;
 
@@ -121,10 +124,8 @@
             const linkLimpo = linkMidia.trim();
             const ehArquivoDireto = linkLimpo.endsWith('.mp4') || linkLimpo.endsWith('.mkv') || linkLimpo.endsWith('.webm') || linkLimpo.endsWith('.mov');
 
-            // LIMPA O CONTAINER ANTES DE INSERIR O NOVO PLAYER
             container.innerHTML = '';
 
-            // TRATAMENTO ROBUSTO PARA IFRAME / ABYSS
             if (linkLimpo.includes('<iframe')) {
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = linkLimpo;
@@ -166,7 +167,6 @@
                 container.appendChild(videoEl);
             }
 
-            // Configurar botão de download
             btnDownload.onclick = () => {
                 if (downloadUrl && !downloadUrl.includes('abyss')) {
                     const a = document.createElement('a');
