@@ -4,7 +4,268 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V8 Play+ - Streaming</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d0e15;
+            color: #f1f1f1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Utilitários */
+        .hidden {
+            display: none !important;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-muted {
+            color: #888;
+        }
+        .text-sm {
+            font-size: 0.85rem;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #12141d;
+            border-bottom: 1px solid #222638;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ff007f, #00d2ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .search-container input {
+            background-color: #1a1d2d;
+            border: 1px solid #2a2e45;
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #fff;
+            width: 300px;
+            outline: none;
+        }
+        .search-container input:focus {
+            border-color: #00d2ff;
+        }
+
+        .user-menu span, .btn-voltar {
+            color: #ccc;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .user-menu span:hover, .btn-voltar:hover {
+            color: #fff;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(13,14,21,0.7), rgba(13,14,21,0.9)), #161925;
+            padding: 80px 30px;
+            display: flex;
+            align-items: center;
+            min-height: 350px;
+            border-bottom: 1px solid #222638;
+        }
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        .hero-content p {
+            font-size: 1.1rem;
+            color: #aaa;
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+
+        /* Catálogo e Carrosséis */
+        .catalog-container {
+            padding: 30px;
+            flex: 1;
+        }
+        .category-row {
+            margin-bottom: 40px;
+        }
+        .category-row h2 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff007f;
+            padding-left: 10px;
+        }
+        .carousel {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: #ff007f #1a1d2d;
+        }
+        .carousel::-webkit-scrollbar {
+            height: 6px;
+        }
+        .carousel::-webkit-scrollbar-thumb {
+            background-color: #ff007f;
+            border-radius: 3px;
+        }
+
+        /* Cards */
+        .card {
+            min-width: 180px;
+            width: 180px;
+            background-color: #161925;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #222638;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 210, 255, 0.2);
+            border-color: #00d2ff;
+        }
+        .card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .card-info {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .card-info h3 {
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Badges */
+        .badge, .badge-free, .badge-prime, .badge-premium {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            width: fit-content;
+        }
+        .badge-free { background-color: #28a745; color: #fff; }
+        .badge-prime { background-color: #ffc107; color: #000; }
+        .badge-premium { background-color: #ff007f; color: #fff; }
+
+        /* Modals */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #161925;
+            border: 1px solid #2a2e45;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #aaa;
+        }
+        .close-btn:hover { color: #fff; }
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Botões */
+        .btn-primary, .btn-secondary {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: opacity 0.2s;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #ff007f, #9900ff);
+            color: #fff;
+        }
+        .btn-secondary {
+            background-color: #222638;
+            color: #00d2ff;
+            border: 1px solid #00d2ff;
+        }
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-secondary:hover { background-color: #00d2ff; color: #0d0e15; }
+
+        /* Timer */
+        .timer-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff007f;
+            margin: 20px 0;
+        }
+
+        /* Pix Container */
+        .pix-qr-container {
+            margin: 15px 0;
+        }
+        .pix-qr-container textarea {
+            background-color: #0d0e15;
+            color: #00d2ff;
+            border: 1px solid #2a2e45;
+            padding: 10px;
+            border-radius: 6px;
+            resize: none;
+            font-family: monospace;
+            margin: 10px 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body class="bg-dark text-white">
 
@@ -94,12 +355,10 @@
         import { db, auth } from './firebase.js';
         import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Função global para fechar modales
         window.closeModal = function(modalId) {
             document.getElementById(modalId).classList.add('hidden');
         };
 
-        // Carregar itens do catálogo do Firestore
         async function loadCatalog() {
             const categories = ['filmes', 'series', 'animes', 'doramas'];
             
@@ -130,7 +389,6 @@
             }
         }
 
-        // Abrir modal de detalhes e gerenciar regras de acesso (Free vs Pago)
         function openDetailsModal(item, category) {
             document.getElementById('modal-title').innerText = item.title;
             document.getElementById('modal-type-badge').innerText = `Tipo: ${item.type.toUpperCase()} (Acesso Vitalício)`;
@@ -139,27 +397,22 @@
             const btnWatch = document.getElementById('btn-watch');
             const btnDownload = document.getElementById('btn-download');
 
-            // Limpar eventos anteriores
             btnWatch.onclick = () => handleAccess(item, 'stream');
             btnDownload.onclick = () => handleAccess(item, 'download');
         }
 
-        // Lógica de liberação de acesso
         async function handleAccess(item, actionType) {
             closeModal('modal-details');
 
             if (item.type === 'free') {
-                // Conteúdo Free: Exibe anúncio com temporizador
                 triggerAdModal(() => {
                     executePlayerOrDownload(item, actionType);
                 });
             } else {
-                // Conteúdo Prime ou Premium: Busca preço atualizado e gera cobrança Pix
                 await initiatePixCheckout(item, actionType);
             }
         }
 
-        // Simulação de Temporizador de Anúncio
         function triggerAdModal(callback) {
             const adModal = document.getElementById('modal-ad');
             const timerDisplay = document.getElementById('ad-timer');
@@ -179,16 +432,13 @@
             }, 1000);
         }
 
-        // Iniciar pagamento Pix via API utilizando o handle e preço do Firestore
         async function initiatePixCheckout(item, actionType) {
             try {
-                // Buscar preço configurado no painel admin (Firestore)
                 const pricingDoc = await getDoc(doc(db, "config", "pricing"));
                 const pricingData = pricingDoc.exists() ? pricingDoc.data() : { prime: 100, premium: 200 };
                 
                 const priceInCents = item.type === 'prime' ? pricingData.prime : pricingData.premium;
 
-                // Payload estruturado com o handle fixo e preço dinâmico
                 const payload = {
                     handle: "aisermelquisedec",
                     items: [
@@ -200,13 +450,10 @@
                     ]
                 };
 
-                // Exibir modal Pix aguardando simulação/integração do backend
                 document.getElementById('pix-plan-desc').innerText = `Plano ${item.type.toUpperCase()} - R$ ${(priceInCents / 100).toFixed(2)}`;
                 document.getElementById('pix-brcode').value = "Gerando código Pix via API...";
                 document.getElementById('modal-pix').classList.remove('hidden');
 
-                // Aqui o backend processará o payload e retornará o br_code da InfinitePay
-                // Exemplo simulado de retorno para demonstração da interface:
                 setTimeout(() => {
                     document.getElementById('pix-brcode').value = "00020126580014br.gov.bcb.pix... (Código Pix Gerado com Sucesso)";
                 }, 1000);
