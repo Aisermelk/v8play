@@ -3,656 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V8 Play+</title>
+    <title>V8 Play+ - Streaming Oficial</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
     <style>
         :root {
             --primary: #00d4ff;
             --primary-hover: #00a2c7;
             --bg-dark: #0a0a0b;
             --bg-card: #16161a;
-            --bg-modal: #121214;
             --text: #ffffff;
             --text-secondary: #aaaaaa;
+            --danger: #ff4757;
+            --success: #2ed573;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+        body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; padding-bottom: 60px; }
 
         /* HEADER */
-        header { display: flex; justify-content: space-between; gap: 15px; padding: 15px 5%; position: fixed; top: 0; width: 100%; z-index: 1000; background: linear-gradient(to bottom, rgba(10,10,11,0.95), rgba(10,10,11,0)); backdrop-filter: blur(8px); align-items: center; }
-        .logo { display: flex; align-items: center; text-decoration: none; font-size: 1.5rem; font-weight: 800; color: white; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(18, 18, 22, 0.95); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #222; backdrop-filter: blur(10px); }
+        .logo { font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; display: flex; align-items: center; gap: 8px; }
         .logo span { color: var(--primary); }
-        .logo-img { height: 42px; width: auto; object-fit: contain; }
-
-        .search-box { flex: 1; max-width: 360px; position: relative; }
-        #busca { width: 100%; padding: 10px 16px 10px 38px; border-radius: 20px; border: 1px solid #2a2a30; background: rgba(255,255,255,0.06); color: white; outline: none; transition: 0.3s; font-size: 0.9rem; }
-        #busca:focus { border-color: var(--primary); background: rgba(0,0,0,0.4); box-shadow: 0 0 10px rgba(0,212,255,0.2); }
-        .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 0.85rem; }
-
-        .btn-login { background: var(--primary); color: #000; border: none; padding: 8px 22px; border-radius: 20px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; font-size: 0.9rem; }
-        .btn-login:hover { background: var(--primary-hover); transform: translateY(-1px); }
-
-        /* ADS CONTAINERS */
-        .ad-banner-container { width: 100%; display: flex; justify-content: center; align-items: center; padding: 10px 5%; margin-top: 75px; }
-        .ad-box { width: 100%; max-width: 970px; height: 90px; background: #1a1a20; border: 1px dashed #333; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #666; font-size: 0.8rem; text-align: center; }
-
-        /* HERO */
-        #hero { height: 70vh; position: relative; display: flex; align-items: flex-end; padding: 0 5% 50px; background-size: cover; background-position: center; background-color: #111; transition: background-image 0.5s ease-in-out; }
-        #hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, var(--bg-dark) 5%, transparent 60%), linear-gradient(to right, rgba(10,10,11,0.9), transparent 70%); }
-        .hero-content { position: relative; z-index: 1; max-width: 650px; }
-        .hero-content h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 12px; line-height: 1.1; }
-        .hero-content p { color: #ddd; margin-bottom: 22px; line-height: 1.6; font-size: 0.95rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        .hero-btns button { padding: 12px 28px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; margin-right: 12px; transition: 0.2s; font-size: 0.95rem; }
-        .btn-assistir { background: #fff; color: #000; }
-        .btn-assistir:hover { background: #e0e0e0; transform: translateY(-2px); }
-        .btn-info { background: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(5px); }
-        .btn-info:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
-
-        /* CONTAINERS & CARDS */
-        .container { padding: 30px 5%; }
-        .section-title { font-size: 1.3rem; margin: 25px 0 12px; display: flex; align-items: center; gap: 8px; font-weight: 600; }
-
-        .filtros { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; }
-        .filtros::-webkit-scrollbar { display: none; }
-        .chip { padding: 8px 18px; border-radius: 20px; border: 1px solid #2a2a30; background: rgba(255,255,255,0.03); color: var(--text-secondary); cursor: pointer; font-size: 0.85rem; white-space: nowrap; transition: 0.2s; }
-        .chip:hover { border-color: var(--primary); color: white; }
-        .chip.ativo { background: var(--primary); color: #000; border-color: var(--primary); font-weight: 600; }
-
-        .cards { display: flex; gap: 16px; overflow-x: auto; padding: 10px 0 25px; scrollbar-width: thin; scrollbar-color: #333 transparent; }
-        .movie-card { min-width: 165px; width: 165px; height: 245px; background: var(--bg-card); border-radius: 10px; cursor: pointer; transition: transform 0.25s, box-shadow 0.25s; flex-shrink: 0; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.05); }
-        .movie-card:hover { transform: translateY(-6px); box-shadow: 0 8px 20px rgba(0,212,255,0.25); border-color: var(--primary); }
-        .movie-card img { width: 100%; height: 100%; object-fit: cover; }
-        .movie-card .titulo-fallback { padding: 15px; font-size: 0.9rem; text-align: center; height: 100%; display: flex; align-items: center; justify-content: center; background: #1a1a20; }
         
-        .selo-card { position: absolute; top: 10px; right: 10px; padding: 4px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.5); text-transform: uppercase; }
-        .selo-card.gratis { background: rgba(0,0,0,0.7); color: #00d4ff; border: 1px solid #00d4ff; }
-        .selo-card.prime { background: linear-gradient(135deg, #ffaa00, #ff5500); color: #000; }
-        .selo-card.premium { background: linear-gradient(135deg, #00d4ff, #0072ff); color: #000; }
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
 
-        .vazio { color: var(--text-secondary); font-size: 0.9rem; padding: 20px 0; }
+        .user-area { display: flex; align-items: center; gap: 15px; }
+        .btn-auth { background: var(--primary); color: #000; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem; text-decoration: none; transition: 0.2s; }
+        .btn-auth:hover { background: var(--primary-hover); }
+        .user-info { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text-secondary); }
 
-        /* MODAIS */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); padding: 20px; }
+        /* HERO BANNER */
+        .hero { position: relative; width: 100%; height: 500px; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 50px 5%; margin-bottom: 40px; }
+        .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, var(--bg-dark) 0%, rgba(10,10,11,0.4) 60%, rgba(10,10,11,0.8) 100%); }
+        .hero-content { position: relative; z-index: 2; max-width: 600px; }
+        .hero-title { font-size: 2.8rem; font-weight: 800; margin-bottom: 12px; line-height: 1.1; color: #fff; }
+        .hero-desc { font-size: 0.95rem; color: #ddd; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .hero-buttons { display: flex; gap: 12px; }
+        .btn-hero-play { background: var(--primary); color: #000; padding: 12px 28px; border-radius: 6px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .btn-hero-play:hover { background: var(--primary-hover); transform: scale(1.02); }
+
+        /* SEÇÕES E CARrossel DE CONTEÚDO */
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 5%; }
+        .section-title { font-size: 1.3rem; font-weight: 700; margin: 30px 0 15px 0; display: flex; align-items: center; gap: 10px; border-left: 4px solid var(--primary); padding-left: 10px; }
+
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .card { background: var(--bg-card); border-radius: 10px; overflow: hidden; border: 1px solid #222; transition: 0.3s; text-decoration: none; color: inherit; display: flex; flex-direction: column; position: relative; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 8px 25px rgba(0,212,255,0.15); }
+        
+        .card-img-wrapper { position: width; width: 100%; height: 280px; background: #1c1c22; overflow: hidden; }
+        .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+        .card:hover .card-img-wrapper img { transform: scale(1.05); }
+
+        .card-badge { position: absolute; top: 10px; right: 10px; padding: 3px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; z-index: 2; }
+        .card-badge.gratis { background: rgba(0,212,255,0.85); color: #000; }
+        .card-badge.prime { background: rgba(255,170,0,0.9); color: #000; }
+        .card-badge.premium { background: rgba(0,114,255,0.9); color: #fff; }
+
+        .card-body { padding: 12px; display: flex; flex-direction: column; gap: 4px; flex-grow: 1; justify-content: space-between; }
+        .card-title { font-size: 0.95rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-info { font-size: 0.8rem; color: var(--text-secondary); display: flex; justify-content: space-between; }
+
+        /* MODAL DE LOGIN RÁPIDO */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(5px); }
+        .modal-box { background: var(--bg-card); padding: 30px; border-radius: 12px; width: 100%; max-width: 400px; border: 1px solid #333; position: relative; }
+        .modal-box h3 { margin-bottom: 20px; font-size: 1.3rem; color: var(--primary); }
+        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 0.85rem; color: var(--text-secondary); }
+        .form-group input { background: #1c1c22; border: 1px solid #333; color: white; padding: 10px; border-radius: 6px; font-size: 0.9rem; outline: none; }
+        .form-group input:focus { border-color: var(--primary); }
+        .btn-submit { background: var(--primary); color: #000; border: none; padding: 12px; width: 100%; font-weight: 700; border-radius: 6px; cursor: pointer; margin-top: 10px; }
+        .close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #aaa; font-size: 1.2rem; cursor: pointer; }
+
         .hidden { display: none !important; }
-        
-        .login-box { background: var(--bg-modal); padding: 35px; border-radius: 12px; width: 100%; max-width: 400px; text-align: center; border: 1px solid #222; }
-        .login-box h2 { margin-bottom: 15px; font-weight: 700; }
-        .login-box input { width: 100%; padding: 12px; margin-bottom: 12px; background: #1c1c20; border: 1px solid #333; color: white; border-radius: 6px; outline: none; }
-        .login-box input:focus { border-color: var(--primary); }
-        .login-box .btn-secundario { background: none; color: var(--text-secondary); border: none; margin-top: 10px; cursor: pointer; font-size: 0.85rem; display: block; width: 100%; text-align: center; }
-        .login-box .btn-secundario:hover { color: white; text-decoration: underline; }
-        .erro-msg { color: #ff6b6b; font-size: 0.85rem; min-height: 20px; margin-bottom: 8px; }
-
-        .detalhe-box { background: var(--bg-modal); border-radius: 12px; max-width: 650px; width: 100%; overflow: hidden; border: 1px solid #222; position: relative; }
-        .detalhe-box img { width: 100%; max-height: 300px; object-fit: cover; }
-        .detalhe-info { padding: 25px; }
-        .detalhe-info h2 { margin-bottom: 6px; font-size: 1.6rem; }
-        .detalhe-meta { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 14px; display: flex; gap: 10px; }
-        .detalhe-info p { color: #ccc; line-height: 1.6; margin-bottom: 20px; font-size: 0.92rem; }
-        .detalhe-btns { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-        .detalhe-btns button { padding: 10px 20px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
-
-        .btn-ad-action { background: linear-gradient(135deg, #ff9900, #ff5500); color: white; }
-        .btn-ad-action:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-pix-prime { background: linear-gradient(135deg, #ffaa00, #ff5500); color: #000; }
-        .btn-pix-premium { background: linear-gradient(135deg, #00d4ff, #0072ff); color: #ffffff; }
-
-        /* NOTIFICAÇÃO */
-        #notification { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: #1f1f24; color: white; padding: 12px 28px; border-radius: 30px; z-index: 4000; border: 1px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-size: 0.9rem; text-align: center; }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#" class="logo"><img src="assets/v8p.png" alt="V8 Play+" class="logo-img" onerror="this.style.display='none'"> <span>V8 Play+</span></a>
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="busca" placeholder="Buscar filmes, séries e doramas..." autocomplete="off">
+        <a href="index.html" class="logo"><i class="fa-solid fa-play-circle" style="color: var(--primary);"></i> V8 Play+</a>
+        <nav class="nav-links">
+            <a href="index.html" class="active">Início</a>
+            <a href="#filmes">Filmes</a>
+            <a href="#series">Séries</a>
+            <a href="#animes">Animes</a>
+            <a href="#doramas">Doramas</a>
+            <a href="admin.html" id="linkAdmin" class="hidden" style="color: var(--primary);"><i class="fa-solid fa-user-shield"></i> Painel Admin</a>
+        </nav>
+        <div class="user-area" id="userArea">
+            <button class="btn-auth" id="btnLoginModal">Entrar</button>
         </div>
-        <button class="btn-login" id="authBtn">Entrar</button>
     </header>
 
-    <!-- BANNER DE ANÚNCIO SUPERIOR -->
-    <div class="ad-banner-container">
-        <div class="ad-box">
-            <span>ESPAÇO PUBLICITÁRIO (ADSENSE / BANNER)</span>
-            <small>Anúncio patrocinado</small>
-        </div>
-    </div>
-
-    <section id="hero">
+    <!-- HERO BANNER DINÂMICO -->
+    <div class="hero" id="heroBanner" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1400&q=80');">
         <div class="hero-content">
-            <h1 id="heroTitle">Carregando...</h1>
-            <p id="heroDesc">Sua nova experiência em streaming em alta definição.</p>
-            <div class="hero-btns">
-                <button class="btn-assistir" id="heroAssistir"><i class="fa-solid fa-play"></i> Ver Opções</button>
-                <button class="btn-info" id="heroInfo"><i class="fa-solid fa-circle-info"></i> Mais detalhes</button>
+            <h1 class="hero-title" id="heroTitle">Carregando Destaques...</h1>
+            <p class="hero-desc" id="heroDesc">Explore o melhor do cinema, séries, animes e doramas com alta qualidade e rapidez.</p>
+            <div class="hero-buttons">
+                <a href="#" id="heroBtnAssistir" class="btn-hero-play hidden"><i class="fa-solid fa-play"></i> Assistir Agora</a>
             </div>
         </div>
-    </section>
+    </div>
 
     <div class="container">
-        <div class="filtros" id="filtros">
-            <button class="chip ativo" data-genero="Todos">Todos</button>
-        </div>
-
-        <h2 class="section-title">🔥 Em Alta</h2>
-        <div class="cards" id="emAlta"></div>
-
-        <h2 class="section-title">🎬 Filmes</h2>
-        <div class="cards" id="filmes"></div>
-
-        <!-- BANNER DE ANÚNCIO MID-PAGE -->
-        <div class="ad-banner-container" style="margin: 20px 0;">
-            <div class="ad-box" style="height: 120px;">
-                <span>ESPAÇO PUBLICITÁRIO MID-PAGE</span>
-                <small>Monetização V8 Play+</small>
+        <!-- SEÇÃO FILMES -->
+        <div id="secaoFilmes">
+            <h2 class="section-title"><i class="fa-solid fa-film"></i> Filmes</h2>
+            <div class="grid-cards" id="gridFilmes">
+                <p style="color: #666;">Carregando filmes...</p>
             </div>
         </div>
 
-        <h2 class="section-title">📺 Séries</h2>
-        <div class="cards" id="series"></div>
+        <!-- SEÇÃO SÉRIES -->
+        <div id="secaoSeries" style="margin-top: 40px;">
+            <h2 class="section-title"><i class="fa-solid fa-tv"></i> Séries</h2>
+            <div class="grid-cards" id="gridSeries">
+                <p style="color: #666;">Carregando séries...</p>
+            </div>
+        </div>
 
-        <h2 class="section-title">🎌 Animes</h2>
-        <div class="cards" id="animes"></div>
+        <!-- SEÇÃO ANIMES -->
+        <div id="secaoAnimes" style="margin-top: 40px;">
+            <h2 class="section-title"><i class="fa-solid fa-dragon"></i> Animes</h2>
+            <div class="grid-cards" id="gridAnimes">
+                <p style="color: #666;">Carregando animes...</p>
+            </div>
+        </div>
 
-        <h2 class="section-title">🎭 Doramas</h2>
-        <div class="cards" id="doramas"></div>
-
-        <h2 class="section-title">⭐ Recomendados</h2>
-        <div class="cards" id="recomendados"></div>
-    </div>
-
-    <!-- MODAL AUTHENTICATION -->
-    <div id="loginModal" class="modal hidden">
-        <div class="login-box">
-            <h2 id="tituloAuth">Entrar no V8 Play+</h2>
-            <p class="erro-msg" id="erroAuth"></p>
-            
-            <input type="email" id="email" placeholder="E-mail" autocomplete="username">
-            <input type="password" id="password" placeholder="Senha" autocomplete="current-password">
-            
-            <button class="btn-login" style="width: 100%; border-radius: 6px; padding: 12px; margin-top: 5px;" id="doLogin">Entrar</button>
-            
-            <button class="btn-secundario" id="btnEsqueciSenha">Esqueci minha senha</button>
-            <button class="btn-secundario" id="alternarCadastro">Ainda não tem conta? Criar conta</button>
-            <button class="btn-secundario" onclick="fecharModais()" style="margin-top: 15px; color: #666;">Cancelar</button>
+        <!-- SEÇÃO DORAMAS -->
+        <div id="secaoDoramas" style="margin-top: 40px;">
+            <h2 class="section-title"><i class="fa-solid fa-heart"></i> Doramas</h2>
+            <div class="grid-cards" id="gridDoramas">
+                <p style="color: #666;">Carregando doramas...</p>
+            </div>
         </div>
     </div>
 
-    <!-- MODAL DETALHES DO TÍTULO -->
-    <div id="detalheModal" class="modal hidden">
-        <div class="detalhe-box">
-            <img id="detImg" src="" alt="">
-            <div class="detalhe-info">
-                <h2 id="detTitulo"></h2>
-                <div class="detalhe-meta"><span id="detAno"></span> • <span id="detCategoria"></span></div>
-                <p id="detDescricao"></p>
-                
-                <div class="detalhe-btns" id="detBtnsContainer">
-                    <!-- Gerado dinamicamente com base nas Tags -->
+    <!-- MODAL DE LOGIN -->
+    <div id="loginModal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <button class="close-modal" id="btnCloseModal">&times;</button>
+            <h3>Acessar V8 Play+</h3>
+            <form id="formLogin">
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email5" id="loginEmail" placeholder="seu@email.com" required>
                 </div>
-
-                <div class="detalhe-btns" style="margin-top: 15px;">
-                    <button class="btn-info" style="background: transparent; border: 1px solid #333;" onclick="fecharModais()">Fechar</button>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="loginSenha" placeholder="********" required>
                 </div>
-            </div>
+                <button type="submit" class="btn-submit">Entrar na Conta</button>
+            </form>
         </div>
     </div>
-
-    <!-- MODAL ASSISTIR ANÚNCIO (TIMER ADS) -->
-    <div id="adModal" class="modal hidden">
-        <div class="login-box" style="max-width: 450px;">
-            <h2>Anúncio Patrocinado</h2>
-            <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">Aguarde o anúncio para liberar sua ação gratuita.</p>
-            
-            <div class="ad-box" style="height: 180px; margin-bottom: 20px;">
-                <span>[ ANÚNCIO PUBLICITÁRIO ]</span>
-                <small>Monetag / Google AdSense / Banner</small>
-            </div>
-
-            <button id="btnConfirmarAd" class="btn-login" style="width: 100%; opacity: 0.5;" disabled>Aguarde <span id="adTimerCount">5</span>s...</button>
-        </div>
-    </div>
-
-    <!-- MODAL PIX INFINITEPAY -->
-    <div id="pixModal" class="modal hidden">
-        <div class="login-box" style="max-width: 420px;">
-            <h2><i class="fa-solid fa-pix" style="color:#00d4ff;"></i> Pagamento via Pix</h2>
-            <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 15px;">Copie o código Pix abaixo para liberar este conteúdo com acesso completo sem anúncios e opção de download.</p>
-            
-            <textarea id="pixCode" readonly style="height: 80px; font-size: 0.8rem; font-family: monospace;"></textarea>
-            
-            <button class="btn-login" id="btnCopiarPix" style="width: 100%; margin-bottom: 10px;">Copiar Código Pix</button>
-            <button class="btn-secundario" onclick="fecharModais()">Já fiz o pagamento</button>
-        </div>
-    </div>
-
-    <div id="notification" class="hidden"><span id="notificationText"></span></div>
 
     <!-- FIREBASE MODULES -->
     <script type="module">
         import { db, auth } from "./js/firebase.js";
-        import { collection, getDocs, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        let catalogo = [];
-        let filmeAtual = null;
-        let modoCadastro = false;
-        let acaoAnuncioPendente = null; 
-        let titulosComprados = new Set(); 
+        const COLECOES = [
+            { nome: "filmes", gridId: "gridFilmes", secaoId: "secaoFilmes" },
+            { nome: "series", gridId: "gridSeries", secaoId: "secaoSeries" },
+            { nome: "animes", gridId: "gridAnimes", secaoId: "secaoAnimes" },
+            { nome: "doramas", gridId: "gridDoramas", secaoId: "secaoDoramas" }
+        ];
 
-        let valoresPlanosAdmin = {
-            prime: 9.90,
-            premium: 19.90
-        };
+        let todosOsItens = [];
 
-        const COLECOES = ["filmes", "series", "animes", "doramas"];
-
-        function formatarPreco(valor) {
-            const num = Number(valor) || 0;
-            return `R$ ${num.toFixed(2).replace('.', ',')}`;
-        }
-
-        async function carregarPrecosAdmin() {
-            try {
-                const docRef = doc(db, "configuracoes", "planos");
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const dados = docSnap.data();
-                    if (dados.prime) valoresPlanosAdmin.prime = Number(dados.prime);
-                    if (dados.premium) valoresPlanosAdmin.premium = Number(dados.premium);
-                }
-            } catch (e) {
-                console.warn("Usando tabela de preços padrão.");
-            }
-        }
-
-        function obterTagItem(item) {
-            if (item.tag) return item.tag.toLowerCase();
-            if (item.plano) return item.plano.toLowerCase();
-            return "gratis";
-        }
-
-        async function buscarColecao(nome) {
-            try {
-                const snap = await getDocs(collection(db, nome));
-                const itens = [];
-                
-                snap.forEach((doc) => {
-                    const data = doc.data();
-                    if (data.ativo !== false) {
-                        itens.push({ id: doc.id, colecao: nome, ...data });
-                    }
-                });
-
-                itens.sort((a, b) => {
-                    const dataA = a.data?.toDate ? a.data.toDate() : new Date(a.data || 0);
-                    const dataB = b.data?.toDate ? b.data.toDate() : new Date(b.data || 0);
-                    return dataB - dataA;
-                });
-
-                return itens;
-            } catch (e) {
-                console.error(`Erro ao buscar coleção "${nome}":`, e);
-                return [];
-            }
-        }
-
-        async function carregarCatalogo() {
-            await carregarPrecosAdmin();
-
-            const containerIds = ['emAlta', 'filmes', 'series', 'animes', 'doramas', 'recomendados'];
-            containerIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.innerHTML = "";
-            });
-
-            const resultados = await Promise.all(COLECOES.map(buscarColecao));
-            catalogo = resultados.flat();
-
-            if (catalogo.length === 0) {
-                const filmesEl = document.getElementById('filmes');
-                if (filmesEl) filmesEl.innerHTML = "<p class='vazio'>Nenhum título disponível no momento.</p>";
-                return;
-            }
-
-            catalogo.forEach((item) => {
-                if (item.destaque && document.getElementById('emAlta')) document.getElementById('emAlta').appendChild(criarCard(item));
-                if (item.tipo === "serie" && document.getElementById('series')) document.getElementById('series').appendChild(criarCard(item));
-                else if (item.tipo === "anime" && document.getElementById('animes')) document.getElementById('animes').appendChild(criarCard(item));
-                else if (item.tipo === "dorama" && document.getElementById('doramas')) document.getElementById('doramas').appendChild(criarCard(item));
-                else if (document.getElementById('filmes')) document.getElementById('filmes').appendChild(criarCard(item));
-
-                if (item.recomendado && document.getElementById('recomendados')) document.getElementById('recomendados').appendChild(criarCard(item));
-            });
-
-            carregarDestaque();
-            montarFiltros();
-        }
-
-        function criarCard(item) {
-            const card = document.createElement('div');
-            card.className = 'movie-card';
-            card.dataset.categoria = item.categoria || "";
-            card.dataset.titulo = (item.titulo || "").toLowerCase();
-
-            const tag = obterTagItem(item);
-            let rotuloSelo = "GRÁTIS";
-            if (tag === "prime") rotuloSelo = `PRIME (${formatarPreco(valoresPlanosAdmin.prime)})`;
-            else if (tag === "premium") rotuloSelo = `PREMIUM (${formatarPreco(valoresPlanosAdmin.premium)})`;
-
-            const selo = `<span class="selo-card ${tag}">${rotuloSelo}</span>`;
-
-            if (item.capa) {
-                card.innerHTML = `${selo}<img src="${item.capa}" alt="${item.titulo}" loading="lazy">`;
-            } else {
-                card.innerHTML = `${selo}<div class="titulo-fallback">${item.titulo}</div>`;
-            }
-            card.onclick = () => abrirDetalhes(item);
-            return card;
-        }
-
-        function montarFiltros() {
-            const container = document.getElementById('filtros');
-            if (!container) return;
-            const generos = [...new Set(catalogo.map(i => i.categoria).filter(Boolean))].sort();
-            container.querySelectorAll('.chip:not([data-genero="Todos"])').forEach(c => c.remove());
-
-            generos.forEach(genero => {
-                const chip = document.createElement('button');
-                chip.className = 'chip';
-                chip.dataset.genero = genero;
-                chip.innerText = genero;
-                container.appendChild(chip);
-            });
-        }
-
-        function aplicarFiltrosEBusca() {
-            const texto = document.getElementById('busca').value.toLowerCase().trim();
-            const generoAtivo = document.querySelector('#filtros .chip.ativo')?.dataset.genero || 'Todos';
-
-            document.querySelectorAll('.movie-card').forEach(card => {
-                const titulo = card.dataset.titulo || "";
-                const categoria = card.dataset.categoria || "";
-                const combinaBusca = texto === "" || titulo.includes(texto);
-                const combinaGenero = generoAtivo === 'Todos' || categoria === generoAtivo;
-                card.style.display = (combinaBusca && combinaGenero) ? "" : "none";
-            });
-        }
-
-        document.getElementById('filtros')?.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('chip')) return;
-            document.querySelectorAll('#filtros .chip').forEach(c => c.classList.remove('ativo'));
-            e.target.classList.add('ativo');
-            aplicarFiltrosEBusca();
-        });
-
-        document.getElementById('busca')?.addEventListener('input', aplicarFiltrosEBusca);
-
-        function carregarDestaque() {
-            const destaque = catalogo.find(i => i.destaque === true) || catalogo[0];
-            if (!destaque) return;
-            filmeAtual = destaque;
-            document.getElementById('heroTitle').innerText = destaque.titulo;
-            document.getElementById('heroDesc').innerText = destaque.descricao || "Assista agora em alta definição no V8 Play+!";
-            const hero = document.getElementById('hero');
-            if (destaque.banner || destaque.capa) hero.style.backgroundImage = `url('${destaque.banner || destaque.capa}')`;
-        }
-
-        function abrirDetalhes(item) {
-            filmeAtual = item;
-            document.getElementById('detImg').src = item.banner || item.capa || "";
-            document.getElementById('detTitulo').innerText = item.titulo;
-            document.getElementById('detAno').innerText = item.ano || "2026";
-            document.getElementById('detCategoria').innerText = item.categoria || item.tipo;
-            document.getElementById('detDescricao').innerText = item.descricao || "Sem descrição disponível.";
-
-            const containerBtns = document.getElementById('detBtnsContainer');
-            containerBtns.innerHTML = "";
-
-            const tag = obterTagItem(item);
-            const estaComprado = titulosComprados.has(item.id);
-
-            if (tag === "gratis" || tag === "free") {
-                containerBtns.innerHTML = `
-                    <button class="btn-ad-action" id="btnAssistirAnuncio"><i class="fa-solid fa-rectangle-ad"></i> Assistir com Anúncio</button>
-                    <button class="btn-ad-action" id="btnDownloadAnuncio" style="background: linear-gradient(135deg, #00d4ff, #0072ff);"><i class="fa-solid fa-download"></i> Baixar com Anúncio</button>
-                `;
-
-                document.getElementById('btnAssistirAnuncio').onclick = () => iniciarFluxoAnuncio('assistir');
-                document.getElementById('btnDownloadAnuncio').onclick = () => iniciarFluxoAnuncio('baixar');
-
-            } else {
-                const valorPlano = tag === "prime" ? valoresPlanosAdmin.prime : valoresPlanosAdmin.premium;
-                const valorFormatado = formatarPreco(valorPlano);
-                const classeCorBtn = tag === "prime" ? "btn-pix-prime" : "btn-pix-premium";
-
-                if (estaComprado) {
-                    containerBtns.innerHTML = `
-                        <button class="btn-login" id="btnAssistirDireto"><i class="fa-solid fa-play"></i> Assistir Agora</button>
-                        <button class="btn-info" id="btnDownloadDireto"><i class="fa-solid fa-download"></i> Baixar Arquivo</button>
-                    `;
-                    document.getElementById('btnAssistirDireto').onclick = () => irParaPlayer(item);
-                    document.getElementById('btnDownloadDireto').onclick = () => executarDownload(item);
-                } else {
-                    containerBtns.innerHTML = `
-                        <button class="${classeCorBtn}" id="btnComprarTag"><i class="fa-solid fa-pix"></i> Liberar Tag ${tag.toUpperCase()} (${valorFormatado})</button>
-                    `;
-                    document.getElementById('btnComprarTag').onclick = () => solicitarPix(item, tag, valorPlano);
-                }
-            }
-
-            if (item.trailer) {
-                const btnTrailer = document.createElement('button');
-                btnTrailer.className = 'btn-info';
-                btnTrailer.innerHTML = `<i class="fa-solid fa-film"></i> Trailer`;
-                btnTrailer.onclick = () => {
-                    fecharModais();
-                    window.location.href = `player.html?id=${item.id}&colecao=${item.colecao}&trailer=true`;
-                };
-                containerBtns.appendChild(btnTrailer);
-            }
-
-            document.getElementById('detalheModal').classList.remove('hidden');
-        }
-
-        function irParaPlayer(item) {
-            fecharModais();
-            window.location.href = `player.html?id=${item.id}&colecao=${item.colecao}`;
-        }
-
-        function iniciarFluxoAnuncio(tipoAcao) {
-            acaoAnuncioPendente = tipoAcao;
-            document.getElementById('detalheModal').classList.add('hidden');
-            document.getElementById('adModal').classList.remove('hidden');
-
-            let count = 5;
-            const btnConfirmar = document.getElementById('btnConfirmarAd');
-            const timerSpan = document.getElementById('adTimerCount');
-            
-            btnConfirmar.disabled = true;
-            btnConfirmar.style.opacity = "0.5";
-            btnConfirmar.innerText = `Aguarde ${count}s...`;
-
-            const interval = setInterval(() => {
-                count--;
-                if (timerSpan) timerSpan.innerText = count;
-                btnConfirmar.innerText = count > 0 ? `Aguarde ${count}s...` : (tipoAcao === 'assistir' ? "Assistir Vídeo Agora" : "Iniciar Download");
-
-                if (count <= 0) {
-                    clearInterval(interval);
-                    btnConfirmar.disabled = false;
-                    btnConfirmar.style.opacity = "1";
-                }
-            }, 1000);
-        }
-
-        document.getElementById('btnConfirmarAd').onclick = () => {
-            if (!filmeAtual) return;
-            fecharModais();
-            if (acaoAnuncioPendente === 'assistir') {
-                irParaPlayer(filmeAtual);
-            } else if (acaoAnuncioPendente === 'baixar') {
-                executarDownload(filmeAtual);
-            }
-        };
-
-        function executarDownload(item) {
-            const url = item.arquivoDownload || item.video1 || item.video;
-            if (!url) {
-                mostrarNotificacao("Link de download não disponível para este item.");
-                return;
-            }
-            window.open(url, '_blank');
-        }
-
-        async function solicitarPix(item, tag, valor) {
-            if (!auth.currentUser) {
-                mostrarNotificacao(`Faça login para adquirir o acesso ${tag.toUpperCase()}.`);
-                fecharModais();
-                document.getElementById('loginModal').classList.remove('hidden');
-                return;
-            }
-
-            try {
-                mostrarNotificacao("Gerando chave Pix para liberação...");
-                const resp = await fetch('/criar-compra-pix', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        uid: auth.currentUser.uid,
-                        email: auth.currentUser.email,
-                        itemId: item.id,
-                        colecao: item.colecao,
-                        tag: tag,
-                        valor: valor
-                    })
-                });
-                const dados = await resp.json();
-                
-                if (dados.pix_code) {
-                    fecharModais();
-                    document.getElementById('pixCode').value = dados.pix_code;
-                    document.getElementById('pixModal').classList.remove('hidden');
-                } else {
-                    mostrarNotificacao(dados.error || "Erro ao gerar cobrança Pix.");
-                }
-            } catch (e) {
-                mostrarNotificacao("Falha na conexão de pagamento Pix.");
-            }
-        }
-
-        window.fecharModais = function() {
-            document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
-        };
-
-        document.getElementById('btnCopiarPix').onclick = () => {
-            const copyText = document.getElementById('pixCode');
-            copyText.select();
-            document.execCommand("copy");
-            mostrarNotificacao("Código Pix copiado!");
-        };
-
-        document.getElementById('heroAssistir').onclick = () => filmeAtual && abrirDetalhes(filmeAtual);
-        document.getElementById('heroInfo').onclick = () => filmeAtual && abrirDetalhes(filmeAtual);
-
-        document.getElementById('alternarCadastro').onclick = () => {
-            modoCadastro = !modoCadastro;
-            document.getElementById('tituloAuth').innerText = modoCadastro ? "Criar nova conta" : "Entrar no V8 Play+";
-            document.getElementById('doLogin').innerText = modoCadastro ? "Criar conta" : "Entrar";
-            document.getElementById('alternarCadastro').innerText = modoCadastro ? "Já possui conta? Fazer login" : "Ainda não tem conta? Criar conta";
-            document.getElementById('erroAuth').innerText = "";
-        };
-
-        document.getElementById('btnEsqueciSenha').onclick = async () => {
-            const email = document.getElementById('email').value;
-            const erro = document.getElementById('erroAuth');
-            if (!email) { erro.innerText = "Informe seu e-mail acima para redefinir a senha."; return; }
-            try {
-                await sendPasswordResetEmail(auth, email);
-                mostrarNotificacao("E-mail de redefinição enviado com sucesso!");
-                erro.innerText = "";
-            } catch (e) {
-                erro.innerText = "Erro ao enviar e-mail. Verifique o endereço digitado.";
-            }
-        };
-
-        document.getElementById('doLogin').onclick = async () => {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
-            const erro = document.getElementById('erroAuth');
-            erro.innerText = "";
-
-            if (!email || !pass) { erro.innerText = "Preencha todos os campos."; return; }
-
-            try {
-                if (modoCadastro) {
-                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-                    await setDoc(doc(db, "usuarios", cred.user.uid), {
-                        email: email,
-                        admin: false,
-                        criadoEm: serverTimestamp()
-                    });
-                } else {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                }
-                fecharModais();
-                mostrarNotificacao(modoCadastro ? "Conta criada com sucesso!" : "Login realizado com sucesso!");
-            } catch (e) {
-                erro.innerText = e.message.includes("invalid-credential") ? "E-mail ou senha incorretos." : e.message;
-            }
-        };
-
+        // AUTH STATE
         onAuthStateChanged(auth, async (user) => {
-            const authBtn = document.getElementById('authBtn');
+            const userArea = document.getElementById('userArea');
+            const linkAdmin = document.getElementById('linkAdmin');
+
             if (user) {
-                authBtn.innerText = "Sair";
-                authBtn.onclick = async () => {
-                    await signOut(auth);
-                    titulosComprados.clear();
-                    mostrarNotificacao("Você saiu da sua conta.");
-                };
+                let isAdmin = false;
                 try {
-                    const comprasSnap = await getDocs(collection(db, "usuarios", user.uid, "compras"));
-                    titulosComprados.clear();
-                    comprasSnap.forEach(docSnap => {
-                        titulosComprados.add(docSnap.data().itemId);
-                    });
-                } catch (e) {
-                    console.warn("Erro ao carregar compras do usuário.");
+                    const userDoc = await getDoc(doc(db, "usuarios", user.uid));
+                    if (userDoc.exists() && userDoc.data().admin) {
+                        isAdmin = true;
+                    }
+                } catch (e) { console.error(e); }
+
+                if (isAdmin) {
+                    linkAdmin.classList.remove('hidden');
                 }
+
+                userArea.innerHTML = `
+                    <div class="user-info"><i class="fa-solid fa-user-circle" style="font-size: 1.2rem; color: var(--primary);"></i> ${user.email.split('@')[0]}</div>
+                    <button class="btn-auth" id="btnSair" style="background: #333; color: white;">Sair</button>
+                `;
+                document.getElementById('btnSair').onclick = () => signOut(auth);
             } else {
-                authBtn.innerText = "Entrar";
-                authBtn.onclick = () => {
-                    modoCadastro = false;
-                    document.getElementById('tituloAuth').innerText = "Entrar no V8 Play+";
-                    document.getElementById('doLogin').innerText = "Entrar";
-                    document.getElementById('alternarCadastro').innerText = "Ainda não tem conta? Criar conta";
-                    document.getElementById('erroAuth').innerText = "";
-                    document.getElementById('email').value = "";
-                    document.getElementById('password').value = "";
-                    document.getElementById('loginModal').classList.remove('hidden');
-                };
-                titulosComprados.clear();
+                linkAdmin.classList.add('hidden');
+                userArea.innerHTML = `<button class="btn-auth" id="btnLoginModal">Entrar</button>`;
+                document.getElementById('btnLoginModal').onclick = abrirModalLogin;
             }
         });
 
-        function mostrarNotificacao(texto) {
-            const notif = document.getElementById('notification');
-            const textoSpan = document.getElementById('notificationText');
-            if (!notif || !textoSpan) return;
-            textoSpan.innerText = texto;
-            notif.classList.remove('hidden');
-            setTimeout(() => {
-                notif.classList.add('hidden');
-            }, 3500);
+        // MODAL DE LOGIN CONTROLES
+        const modal = document.getElementById('loginModal');
+        function abrirModalLogin() { modal.classList.remove('hidden'); }
+        document.getElementById('btnCloseModal').onclick = () => modal.classList.add('hidden');
+
+        document.getElementById('formLogin').onsubmit = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const senha = document.getElementById('loginSenha').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, senha);
+                modal.classList.add('hidden');
+            } catch (err) {
+                alert("Erro ao entrar: Verifique suas credenciais.");
+            }
+        };
+
+        // CARREGAR CONTEÚDOS DO FIRESTORE
+        async function carregarCatalogo() {
+            let itemDestaque = null;
+
+            for (const colInfo of COLECOES) {
+                const gridEl = document.getElementById(colInfo.gridId);
+                const secaoEl = document.getElementById(colInfo.secaoId);
+                
+                try {
+                    const snap = await getDocs(collection(db, colInfo.nome));
+                    const itens = [];
+                    snap.forEach(d => {
+                        const data = { id: d.id, colecao: colInfo.nome, ...d.data() };
+                        itens.push(data);
+                        todosOsItens.push(data);
+                        if (data.destaque && !itemDestaque) {
+                            itemDestaque = data;
+                        }
+                    });
+
+                    if (itens.length === 0) {
+                        secaoEl.classList.add('hidden');
+                        continue;
+                    }
+
+                    secaoEl.classList.remove('hidden');
+                    gridEl.innerHTML = "";
+
+                    itens.forEach(item => {
+                        const tag = (item.tag || item.plano || "gratis").toLowerCase();
+                        const card = document.createElement('a');
+                        card.className = 'card';
+                        card.href = `player.html?id=${item.id}&colecao=${item.colecao}`;
+                        card.innerHTML = `
+                            <div class="card-badge ${tag}">${tag}</div>
+                            <div class="card-img-wrapper">
+                                <img src="${item.capa || 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=500&q=80'}" alt="${item.titulo}">
+                            </div>
+                            <div class="card-body">
+                                <div class="card-title">${item.titulo}</div>
+                                <div class="card-info">
+                                    <span>${item.ano || ''}</span>
+                                    <span style="text-transform: capitalize;">${item.categoria || item.colecao}</span>
+                                </div>
+                            </div>
+                        `;
+                        gridEl.appendChild(card);
+                    });
+
+                } catch (e) {
+                    console.error(`Erro ao carregar ${colInfo.nome}:`, e);
+                }
+            }
+
+            // Configurar Hero Banner se houver item em destaque
+            if (!itemDestaque && todosOsItens.length > 0) {
+                itemDestaque = todosOsItens[0];
+            }
+
+            if (itemDestaque) {
+                const hero = document.getElementById('heroBanner');
+                if (itemDestaque.banner || itemDestaque.capa) {
+                    hero.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.3), rgba(10,10,11,0.9)), url('${itemDestaque.banner || itemDestaque.capa}')`;
+                }
+                document.getElementById('heroTitle').innerText = itemDestaque.titulo;
+                document.getElementById('heroDesc').innerText = itemDestaque.descricao || "Assista agora com alta performance.";
+                const btnH = document.getElementById('heroBtnAssistir');
+                btnH.href = `player.html?id=${itemDestaque.id}&colecao=${itemDestaque.colecao}`;
+                btnH.classList.remove('hidden');
+            }
         }
 
-        // Inicializar aplicação
         carregarCatalogo();
     </script>
 </body>
