@@ -98,7 +98,7 @@
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         tituloFinal = data.titulo || tituloFinal;
-                        linkMidia = data.embed || data.video1 || data.video || data.arquivoDownload;
+                        linkMidia = data.video1 || data.embed || data.video || data.arquivoDownload;
                         downloadUrl = data.arquivoDownload || data.video1 || data.video;
                     }
                 } catch (e) {
