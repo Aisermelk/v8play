@@ -98,8 +98,8 @@
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         tituloFinal = data.titulo || tituloFinal;
-                        linkMidia = data.video1 || data.embed || data.video || data.arquivoDownload;
-                        downloadUrl = data.arquivoDownload || data.video1 || data.video;
+                        linkMidia = data.video1 || data.video2 || data.video3 || data.embed || data.video || data.arquivoDownload;
+                        downloadUrl = data.arquivoDownload || data.video1 || data.video2 || data.video3 || data.video;
                     }
                 } catch (e) {
                     console.error("Erro ao buscar dados do vídeo:", e);
