@@ -6,13 +6,32 @@
     <title>Player - V8 Play+</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        :root {
+            --primary: #00d4ff;
+            --bg-dark: #0a0a0b;
+            --text: #ffffff;
+            --text-secondary: #aaaaaa;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: #121214; }
+        .logo { font-weight: 800; font-size: 1.5rem; color: var(--primary); }
+        .btn-voltar { color: #fff; text-decoration: none; background: #222; padding: 8px 16px; border-radius: 6px; font-size: 0.9rem; transition: 0.2s; }
+        .btn-voltar:hover { background: #333; }
+
+        .player-container { padding: 30px 5%; max-width: 1000px; margin: 0 auto; }
+        .player-title { margin-bottom: 20px; font-size: 1.8rem; font-weight: 700; }
+
         .video-wrapper {
             position: relative;
             width: 100%;
-            padding-top: 56.25%;
+            padding-top: 56.25%; /* Proporção 16:9 perfeita */
             background: #000;
             border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
         }
         .video-wrapper iframe,
         .video-wrapper video {
@@ -23,27 +42,31 @@
             height: 100%;
             border: none;
         }
+
+        .player-actions { margin-top: 20px; display: flex; gap: 10px; }
+        .btn-secondary { background: var(--primary); color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-secondary:hover { opacity: 0.9; transform: translateY(-1px); }
     </style>
 </head>
-<body class="bg-dark text-white">
+<body>
 
     <!-- CABEÇALHO DO PLAYER -->
-    <header class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: #121214;">
-        <div class="logo" style="font-weight: 800; font-size: 1.5rem; color: #00d4ff;">V8 Play+</div>
-        <a href="index.html" class="btn-voltar" style="color: #fff; text-decoration: none; background: #222; padding: 8px 16px; border-radius: 6px;">Voltar ao Catálogo</a>
+    <header class="navbar">
+        <div class="logo">V8 Play+</div>
+        <a href="index.html" class="btn-voltar">Voltar ao Catálogo</a>
     </header>
 
     <!-- CONTAINER PRINCIPAL DO VÍDEO -->
-    <main class="player-container" style="padding: 30px 5%; max-width: 1000px; margin: 0 auto;">
-        <h1 id="player-title" class="player-title" style="margin-bottom: 20px; font-size: 1.8rem;">Carregando título...</h1>
+    <main class="player-container">
+        <h1 id="player-title" class="player-title">Carregando título...</h1>
         
         <div class="video-wrapper" id="video-container">
-            <!-- O player será inserido aqui dinamicamente -->
+            <!-- O player (vídeo ou iframe do Abyss) será inserido aqui dinamicamente -->
         </div>
 
         <!-- AÇÕES DO PLAYER -->
-        <div class="player-actions" style="margin-top: 20px;">
-            <button id="btn-download-file" class="btn-secondary" style="background: #00d4ff; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer;">Baixar Conteúdo</button>
+        <div class="player-actions">
+            <button id="btn-download-file" class="btn-secondary">Baixar Conteúdo</button>
         </div>
     </main>
 
@@ -75,7 +98,6 @@
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         tituloFinal = data.titulo || tituloFinal;
-                        // Pega o link do embed, video1, video ou arquivo de download
                         linkMidia = data.embed || data.video1 || data.video || data.arquivoDownload;
                         downloadUrl = data.arquivoDownload || data.video1 || data.video;
                     }
@@ -92,22 +114,35 @@
             document.title = `${tituloFinal} - V8 Play+`;
 
             if (!linkMidia) {
-                container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ff6b6b;">Endereço do vídeo não encontrado.</div>`;
+                container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ff6b6b;font-size:0.95rem;">Endereço do vídeo não encontrado.</div>`;
                 return;
             }
 
-            // LÓGICA INTELIGENTE: Verifica se é um arquivo de vídeo direto ou um link web/iframe
             const linkLimpo = linkMidia.trim();
             const ehArquivoDireto = linkLimpo.endsWith('.mp4') || linkLimpo.endsWith('.mkv') || linkLimpo.endsWith('.webm') || linkLimpo.endsWith('.mov');
 
+            // TRATAMENTO ROBUSTO PARA IFRAME / ABYSS
             if (linkLimpo.includes('<iframe')) {
-                container.innerHTML = linkLimpo;
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = linkLimpo;
+                const iframeEl = tempDiv.querySelector('iframe');
+                if (iframeEl) {
+                    iframeEl.style.width = '100%';
+                    iframeEl.style.height = '100%';
+                    iframeEl.style.position = 'absolute';
+                    iframeEl.style.top = '0';
+                    iframeEl.style.left = '0';
+                    iframeEl.style.border = 'none';
+                    iframeEl.setAttribute('allowfullscreen', 'true');
+                    iframeEl.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
+                    container.innerHTML = tempDiv.innerHTML;
+                } else {
+                    container.innerHTML = linkLimpo;
+                }
             } else if (!ehArquivoDireto) {
-                // Se NÃO for arquivo de vídeo direto (ex: Abyss, embeds, URLs web), renderiza como iframe perfeitamente!
-                container.innerHTML = `<iframe src="${linkLimpo}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+                container.innerHTML = `<iframe src="${linkLimpo}" style="width:100%;height:100%;position:absolute;top:0;left:0;border:none;" allowfullscreen="true" allow="autoplay; fullscreen; picture-in-picture; encrypted-media"></iframe>`;
             } else {
-                // Apenas se for link direto de arquivo .mp4/.mkv
-                container.innerHTML = `<video id="main-video" controls autoplay class="video-element" src="${linkLimpo}"></video>`;
+                container.innerHTML = `<video id="main-video" controls autoplay class="video-element" src="${linkLimpo}" style="width:100%;height:100%;position:absolute;top:0;left:0;"></video>`;
             }
 
             // Configurar botão de download
