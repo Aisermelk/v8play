@@ -80,9 +80,9 @@
 
     <div class="container">
 
-        <!-- PAINEL 1: CONFIGURAÇÃO DE VALORES, CHAVES DE API E SERVIDOR IPTV -->
+        <!-- PAINEL 1: CONFIGURAÇÃO DE VALORES E CHAVES DE API -->
         <div class="card-box">
-            <h2><i class="fa-solid fa-sliders"></i> Configurações Gerais, Planos e Servidor</h2>
+            <h2><i class="fa-solid fa-sliders"></i> Configurações Gerais e Planos</h2>
             <form id="formPlanos">
                 <h3><i class="fa-solid fa-tags"></i> Valoração dos Planos</h3>
                 <div class="form-grid" style="margin-bottom: 15px;">
@@ -93,14 +93,6 @@
                     <div class="form-group">
                         <label for="precoPremium">Preço Tag PREMIUM (R$):</label>
                         <input type="number" step="0.01" id="precoPremium" placeholder="0.00" required>
-                    </div>
-                </div>
-
-                <h3><i class="fa-solid fa-server"></i> Configuração de Servidor / API IPTV</h3>
-                <div class="form-grid" style="margin-bottom: 15px;">
-                    <div class="form-group full">
-                        <label for="iptvServerUrl">URL Base do Servidor / Painel Xtream:</label>
-                        <input type="url" id="iptvServerUrl" placeholder="https://seu-servidor-iptv.com:8080">
                     </div>
                 </div>
 
@@ -131,7 +123,7 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="titulo">Título:</label>
-                        <input type="text" id="titulo" placeholder="Ex: Michael (2026)" required>
+                        <input type="text" id="titulo" placeholder="Ex: Filme ou Série" required>
                     </div>
 
                     <div class="form-group">
@@ -206,7 +198,7 @@
 
                     <div class="form-group full">
                         <label for="arquivoDownload">URL Link Direto de Download:</label>
-                        <input type="url" id="arquivoDownload" placeholder="https://... (deixe em branco para usar a Opção 1)">
+                        <input type="url" id="arquivoDownload" placeholder="https://...">
                     </div>
 
                     <div class="form-group full">
@@ -302,10 +294,9 @@
             }
         });
 
-        // 1. CARREGAR PREÇOS, CHAVES DE API E CONFIGURAÇÕES DE SERVIDOR
+        // 1. CARREGAR PREÇOS E CHAVES DE API
         async function carregarConfiguracoesGerais() {
             try {
-                // Carrega Planos
                 const snapPlanos = await getDoc(doc(db, "configuracoes", "planos"));
                 if (snapPlanos.exists()) {
                     const d = snapPlanos.data();
@@ -315,13 +306,6 @@
                 document.getElementById('precoPrime').value = precosAtuais.prime.toFixed(2);
                 document.getElementById('precoPremium').value = precosAtuais.premium.toFixed(2);
 
-                // Carrega Servidor IPTV
-                const snapServidor = await getDoc(doc(db, "configuracoes", "servidor_iptv"));
-                if (snapServidor.exists()) {
-                    document.getElementById('iptvServerUrl').value = snapServidor.data().serverUrl || "";
-                }
-
-                // Carrega Chaves de API Protegidas
                 const snapChaves = await getDoc(doc(db, "configuracoes", "chaves_pagamento"));
                 if (snapChaves.exists()) {
                     const c = snapChaves.data();
@@ -335,30 +319,21 @@
             }
         }
 
-        // SALVAR CONFIGURAÇÕES GERAIS, PREÇOS E CHAVES
+        // SALVAR CONFIGURAÇÕES GERAIS E CHAVES
         document.getElementById('formPlanos').onsubmit = async (e) => {
             e.preventDefault();
             const pPrime = parseFloat(document.getElementById('precoPrime').value) || 0.00;
             const pPremium = parseFloat(document.getElementById('precoPremium').value) || 0.00;
-            const iptvServerUrl = document.getElementById('iptvServerUrl').value.trim();
             const primeApiKey = document.getElementById('primeApiKey').value.trim();
             const premiumApiKey = document.getElementById('premiumApiKey').value.trim();
 
             try {
-                // 1. Salva os preços
                 await setDoc(doc(db, "configuracoes", "planos"), {
                     prime: pPrime,
                     premium: pPremium,
                     atualizadoEm: serverTimestamp()
                 }, { merge: true });
 
-                // 2. Salva o Servidor IPTV
-                await setDoc(doc(db, "configuracoes", "servidor_iptv"), {
-                    serverUrl: iptvServerUrl,
-                    atualizadoEm: serverTimestamp()
-                }, { merge: true });
-
-                // 3. Salva as chaves de pagamento
                 await setDoc(doc(db, "configuracoes", "chaves_pagamento"), {
                     primeApiKey: primeApiKey,
                     premiumApiKey: premiumApiKey,
@@ -370,11 +345,11 @@
                 mostrarNotificacao("Configurações salvas com sucesso!");
             } catch (err) {
                 console.error(err);
-                mostrarNotificacao("Erro ao salvar configurações. Verifique as regras do Firestore.");
+                mostrarNotificacao("Erro ao salvar configurações.");
             }
         };
 
-        // AJUSTAR AUTOMATICAMENTE O CAMPO DE PREÇO QUANDO A TAG FOR ALTERADA
+        // AJUSTAR PREÇO AUTOMATICAMENTE AO MUDAR A TAG
         document.getElementById('tag').onchange = (e) => {
             const val = e.target.value;
             const campoPreco = document.getElementById('preco');
@@ -400,7 +375,6 @@
                 }
             }
 
-            // Ordenação em memória por data
             todosItens.sort((a, b) => {
                 const dataA = a.criadoEm?.toDate ? a.criadoEm.toDate() : new Date(0);
                 const dataB = b.criadoEm?.toDate ? b.criadoEm.toDate() : new Date(0);
@@ -483,7 +457,7 @@
                 carregarListaConteudos();
             } catch (err) {
                 console.error(err);
-                mostrarNotificacao("Erro ao salvar conteúdo no Firestore.");
+                mostrarNotificacao("Erro ao salvar conteúdo.");
             }
         };
 
