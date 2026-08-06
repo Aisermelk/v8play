@@ -1,138 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Administrativo - V8 Play+</title>
-    <!-- Estilos e Fontes -->
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="bg-dark text-white">
+import { db } from "./firebase.js";
+import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    <header class="admin-header">
-        <h1>Painel Administrativo - V8 Play+</h1>
-        <a href="index.html" class="btn-voltar">Voltar ao Site</a>
-    </header>
+// Função para salvar a alteração do título
+async function salvarTituloItem(colecao, idItem, novoTitulo) {
+    if (!novoTitulo || !idItem || !colecao) {
+        alert("Preencha o título e certifique-se de que o item é válido.");
+        return;
+    }
 
-    <main class="admin-container">
-        
-        <!-- SEÇÃO 1: CONFIGURAÇÃO DE PREÇOS DOS PLANOS -->
-        <section class="admin-section">
-            <h2>Configuração de Preços (Planos Vitalícios)</h2>
-            <p>Defina abaixo os valores em Reais (R$) para os acessos Prime e Premium. As alterações serão salvas globalmente.</p>
-            
-            <form id="pricing-form" class="admin-form">
-                <div class="form-group">
-                    <label for="prime-price">Preço do Plano Prime (R$):</label>
-                    <input type="number" id="prime-price" step="0.01" min="0" required placeholder="Ex: 1.00">
-                </div>
+    try {
+        // Aponta para o documento específico na coleção correta (filmes, series, animes, doramas)
+        const itemRef = doc(db, colecao, idItem);
 
-                <div class="form-group">
-                    <label for="premium-price">Preço do Plano Premium (R$):</label>
-                    <input type="number" id="premium-price" step="0.01" min="0" required placeholder="Ex: 2.00">
-                </div>
-
-                <button type="submit" class="btn-salvar">Salvar Preços</button>
-            </form>
-        </section>
-
-        <hr class="admin-divider">
-
-        <!-- SEÇÃO 2: GERENCIAMENTO DO CATÁLOGO (Filmes, Séries, etc.) -->
-        <section class="admin-section">
-            <h2>Gerenciamento de Conteúdo do Catálogo</h2>
-            <p>Adicione, edite ou remova conteúdos e defina se são Free, Prime ou Premium.</p>
-            
-            <!-- Formulário de cadastro/edição de itens -->
-            <form id="catalog-form" class="admin-form">
-                <input type="hidden" id="item-id">
-                
-                <div class="form-group">
-                    <label for="item-title">Título:</label>
-                    <input type="text" id="item-title" required placeholder="Nome do Filme/Série">
-                </div>
-
-                <div class="form-group">
-                    <label for="item-category">Categoria / Coleção:</label>
-                    <select id="item-category" required>
-                        <option value="filmes">Filmes</option>
-                        <option value="series">Séries</option>
-                        <option value="animes">Animes</option>
-                        <option value="doramas">Doramas</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="item-type">Tipo de Acesso:</label>
-                    <select id="item-type" required>
-                        <option value="free">Free (Exibe anúncio)</option>
-                        <option value="prime">Prime (Pago - R$ configurado acima)</option>
-                        <option value="premium">Premium (Pago - R$ configurado acima)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="item-banner">URL da Capa / Banner:</label>
-                    <input type="url" id="item-banner" required placeholder="https://exemplo.com/imagem.jpg">
-                </div>
-
-                <div class="form-group">
-                    <label for="item-video">URL do Player / Vídeo:</label>
-                    <input type="url" id="item-video" required placeholder="Link do vídeo ou embed">
-                </div>
-
-                <button type="submit" class="btn-salvar">Salvar Conteúdo</button>
-            </form>
-        </section>
-
-    </main>
-
-    <!-- Scripts do Firebase e Lógica do Admin -->
-    <script type="module">
-        import { db } from './firebase.js';
-        import { doc, getDoc, setDoc, collection, addDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // Carregar preços atuais salvos no Firestore ao abrir a página
-        async function loadPrices() {
-            try {
-                const docRef = doc(db, "config", "pricing");
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    document.getElementById('prime-price').value = data.prime ? (data.prime / 100).toFixed(2) : '1.00';
-                    document.getElementById('premium-price').value = data.premium ? (data.premium / 100).toFixed(2) : '2.00';
-                }
-            } catch (error) {
-                console.error("Erro ao carregar preços:", error);
-            }
-        }
-
-        // Salvar novos preços no Firestore (convertidos para centavos para a API)
-        document.getElementById('pricing-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const primeReais = parseFloat(document.getElementById('prime-price').value);
-            const premiumReais = parseFloat(document.getElementById('premium-price').value);
-
-            // Convertendo para centavos (ex: R$ 1.00 vira 100) para compatibilidade com o payload da API
-            const primeCentavos = Math.round(primeReais * 100);
-            const premiumCentavos = Math.round(premiumReais * 100);
-
-            try {
-                await setDoc(doc(db, "config", "pricing"), {
-                    prime: primeCentavos,
-                    premium: premiumCentavos,
-                    updatedAt: new Date()
-                }, { merge: true });
-
-                alert("Preços atualizados com sucesso!");
-            } catch (error) {
-                console.error("Erro ao salvar preços:", error);
-                alert("Erro ao salvar os preços.");
-            }
+        // Atualiza apenas o campo 'titulo' no Firestore
+        await updateDoc(itemRef, {
+            titulo: novoTitulo
         });
 
-        // Executar carregamento inicial
-        window.addEventListener('DOMContentLoaded', loadPrices);
-    </script>
-</body>
-</html>
+        alert("Título atualizado com sucesso!");
+        
+        // Recarrega a listagem do admin para refletir a mudança
+        if (typeof carregarCatalogoAdmin === "function") {
+            carregarCatalogoAdmin();
+        }
+    } catch (error) {
+        console.error("Erro ao atualizar o título no Firestore:", error);
+        alert("Erro ao salvar alterações. Verifique o console ou as regras do Firebase.");
+    }
+}
