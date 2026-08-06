@@ -5,71 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player - V8 Play+</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Garante proporção 16:9 perfeita para vídeos e iframes */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .video-wrapper iframe,
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
 </head>
 <body class="bg-dark text-white">
 
     <!-- CABEÇALHO DO PLAYER -->
-    <header class="navbar">
-        <div class="logo">V8 Play+</div>
-        <a href="index.html" class="btn-voltar">Voltar ao Catálogo</a>
+    <header class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: #121214;">
+        <div class="logo" style="font-weight: 800; font-size: 1.5rem; color: #00d4ff;">V8 Play+</div>
+        <a href="index.html" class="btn-voltar" style="color: #fff; text-decoration: none; background: #222; padding: 8px 16px; border-radius: 6px;">Voltar ao Catálogo</a>
     </header>
 
     <!-- CONTAINER PRINCIPAL DO VÍDEO -->
-    <main class="player-container">
-        <h1 id="player-title" class="player-title">Carregando título...</h1>
+    <main class="player-container" style="padding: 30px 5%; max-width: 1000px; margin: 0 auto;">
+        <h1 id="player-title" class="player-title" style="margin-bottom: 20px; font-size: 1.8rem;">Carregando título...</h1>
         
-        <div class="video-wrapper">
-            <video id="main-video" controls autoplay class="video-element">
-                Seu navegador não suporta a tag de vídeo.
-            </video>
+        <div class="video-wrapper" id="video-container">
+            <!-- O player (vídeo ou iframe do Abyss) será inserido aqui dinamicamente -->
         </div>
 
         <!-- AÇÕES DO PLAYER (VISUALIZAÇÃO / DOWNLOAD) -->
-        <div class="player-actions">
-            <button id="btn-download-file" class="btn-secondary">Baixar Conteúdo (Acesso Vitalício)</button>
+        <div class="player-actions" style="margin-top: 20px;">
+            <button id="btn-download-file" class="btn-secondary" style="background: #00d4ff; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer;">Baixar Conteúdo</button>
         </div>
     </main>
 
-    <!-- SCRIPT DE MANIPULAÇÃO DA URL E DOWNLOAD -->
-    <script>
-        // Capturar parâmetros enviados pela URL (vídeo e título)
+    <!-- SCRIPT DE MANIPULAÇÃO DO PLAYER (SUPORTE AO ABYSS E ARQUIVOS DIRETOS) -->
+    <script type="module">
+        import { db } from "./js/firebase.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
         const urlParams = new URLSearchParams(window.location.search);
-        const videoUrl = urlParams.get('video');
-        const videoTitle = urlParams.get('title');
+        const itemId = urlParams.get('id');
+        const colecao = urlParams.get('colecao');
+        const directVideoUrl = urlParams.get('video');
+        const directTitle = urlParams.get('title');
 
-        // Exibir título na tela e na aba do navegador
-        if (videoTitle) {
-            const decodedTitle = decodeURIComponent(videoTitle);
-            document.getElementById('player-title').innerText = decodedTitle;
-            document.title = `${decodedTitle} - V8 Play+`;
-        }
+        const container = document.getElementById('video-container');
+        const titleEl = document.getElementById('player-title');
+        const btnDownload = document.getElementById('btn-download-file');
 
-        // Configurar a fonte do player de vídeo
-        const videoElement = document.getElementById('main-video');
-        if (videoUrl) {
-            videoElement.src = decodeURIComponent(videoUrl);
-        } else {
-            alert("Endereço do vídeo não encontrado.");
-        }
+        let downloadUrl = "";
 
-        // Funcionalidade do botão de download direto
-        document.getElementById('btn-download-file').onclick = () => {
-            if (videoUrl) {
-                const decodedUrl = decodeURIComponent(videoUrl);
-                const safeTitle = videoTitle ? decodeURIComponent(videoTitle) : 'conteudo-v8play';
-                
-                // Criação de elemento temporário para disparar o download
-                const a = document.createElement('a');
-                a.href = decodedUrl;
-                a.download = `${safeTitle}.mp4`;
-                a.target = '_blank';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } else {
-                alert("Link de download indisponível no momento.");
+        async function inicializarPlayer() {
+            let tituloFinal = "Vídeo V8 Play+";
+            let linkMidia = "";
+
+            // Se veio do catálogo via ID e Coleção (padrão Firestore)
+            if (itemId && colecao) {
+                try {
+                    const docRef = doc(db, colecao, itemId);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        tituloFinal = data.titulo || tituloFinal;
+                        // Busca o link do Abyss (seja .embed, .video1, .video ou .arquivoDownload)
+                        linkMidia = data.embed || data.video1 || data.video || data.arquivoDownload;
+                        downloadUrl = data.arquivoDownload || data.video1 || data.video;
+                    }
+                } catch (e) {
+                    console.error("Erro ao buscar dados do vídeo:", e);
+                }
+            } else if (directVideoUrl) {
+                linkMidia = decodeURIComponent(directVideoUrl);
+                downloadUrl = linkMidia;
+                if (directTitle) tituloFinal = decodeURIComponent(directTitle);
             }
-        };
+
+            titleEl.innerText = tituloFinal;
+            document.title = `${tituloFinal} - V8 Play+`;
+
+            if (!linkMidia) {
+                container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ff6b6b;">Endereço do vídeo não encontrado.</div>`;
+                return;
+            }
+
+            // DETECÇÃO AUTOMÁTICA: Se for Abyss ou iframe, renderiza via Iframe. Se for arquivo, usa tag video.
+            if (linkMidia.includes('<iframe')) {
+                container.innerHTML = linkMidia;
+            } else if (linkMidia.includes('abysssplayer.com') || linkMidia.includes('embed')) {
+                container.innerHTML = `<iframe src="${linkMidia}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+            } else {
+                container.innerHTML = `<video id="main-video" controls autoplay class="video-element" src="${linkMidia}">Seu navegador não suporta a tag de vídeo.</video>`;
+            }
+
+            // Configurar botão de download
+            btnDownload.onclick = () => {
+                if (downloadUrl && !downloadUrl.includes('abysssplayer.com')) {
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = `${tituloFinal}.mp4`;
+                    a.target = '_blank';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    alert("O download direto não está disponível para players externos do Abyss.");
+                }
+            };
+        }
+
+        inicializarPlayer();
     </script>
 </body>
 </html>
