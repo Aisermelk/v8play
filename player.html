@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V8 Play+ - Assistir Conteúdo</title>
+    <title>Assistir - V8 Play+</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
@@ -12,45 +12,58 @@
             --primary-hover: #00a2c7;
             --bg-dark: #0a0a0b;
             --bg-card: #16161a;
-            --bg-modal: rgba(10, 10, 11, 0.95);
             --text: #ffffff;
             --text-secondary: #aaaaaa;
             --danger: #ff4757;
             --success: #2ed573;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; padding-bottom: 40px; }
-
+        body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; padding-bottom: 50px; }
+        
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: #121216; border-bottom: 1px solid #222; }
-        .logo { font-size: 1.4rem; font-weight: 800; color: white; text-decoration: none; }
+        .logo { font-size: 1.4rem; font-weight: 800; color: white; text-decoration: none; display: flex; align-items: center; gap: 8px; }
         .logo span { color: var(--primary); }
-        .user-area { display: flex; align-items: center; gap: 15px; }
-        .btn-admin { background: var(--primary); color: #000; padding: 8px 15px; border-radius: 6px; font-weight: 600; text-decoration: none; font-size: 0.85rem; display: none; transition: 0.2s; }
-        .btn-admin:hover { background: var(--primary-hover); }
-        .user-status { font-size: 0.85rem; color: var(--text-secondary); }
+        .btn-voltar { background: #222; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; text-decoration: none; transition: 0.2s; }
+        .btn-voltar:hover { background: #333; }
 
         .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
 
-        .video-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; background: #000; border-radius: 10px; overflow: hidden; border: 1px solid #222; margin-bottom: 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.6); }
-        .video-wrapper iframe, .video-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        /* Player Container */
+        .player-wrapper { position: relative; width: 100%; padding-top: 56.25%; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.6); border: 1px solid #222; margin-bottom: 20px; }
+        .player-wrapper iframe, .player-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-        /* MODAL DE PROPAGANDA / ANÚNCIO PARA CONTEÚDO GRÁTIS */
-        #adOverlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-modal); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; text-align: center; padding: 20px; }
-        #adOverlay h3 { font-size: 1.3rem; margin-bottom: 10px; color: var(--primary); }
-        #adOverlay p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px; max-width: 400px; }
-        .btn-assistir-anuncio { background: var(--primary); color: #000; border: none; padding: 12px 25px; font-weight: 700; border-radius: 6px; cursor: pointer; font-size: 0.95rem; transition: 0.2s; }
-        .btn-assistir-anuncio:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        /* Opções de Servidores / Players */
+        .server-options { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; align-items: center; }
+        .server-btn { background: #1c1c22; border: 1px solid #333; color: var(--text-secondary); padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .server-btn.active { background: var(--primary); color: #000; border-color: var(--primary); font-weight: 600; }
+        .server-btn:hover:not(.active) { border-color: #555; color: #fff; }
 
-        .info-box { background: var(--bg-card); padding: 25px; border-radius: 10px; border: 1px solid #222; }
-        .info-box h1 { font-size: 1.5rem; margin-bottom: 10px; }
-        .info-box .meta { display: flex; gap: 15px; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px; }
-        .info-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+        /* Detalhes do Conteúdo */
+        .content-info { background: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid #222; }
+        .content-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+        .content-title { font-size: 1.8rem; font-weight: 700; color: #fff; }
+        .badge { padding: 5px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+        .badge.gratis { background: rgba(0,212,255,0.15); color: #00d4ff; border: 1px solid #00d4ff; }
+        .badge.prime { background: rgba(255,170,0,0.2); color: #ffaa00; border: 1px solid #ffaa00; }
+        .badge.premium { background: rgba(0,114,255,0.2); color: #0072ff; border: 1px solid #0072ff; }
 
-        .badge-tag { padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
-        .badge-tag.gratis { background: rgba(0, 212, 255, 0.15); color: #00d4ff; border: 1px solid #00d4ff; }
-        .badge-tag.prime { background: rgba(255, 170, 0, 0.2); color: #ffaa00; border: 1px solid #ffaa00; }
-        .badge-tag.premium { background: rgba(0, 114, 255, 0.2); color: #0072ff; border: 1px solid #0072ff; }
+        .meta-details { display: flex; gap: 15px; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 15px; flex-wrap: wrap; }
+        .meta-details span { display: flex; align-items: center; gap: 5px; }
+
+        .synopsis { color: #ccc; font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
+
+        .action-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+        .btn-action { background: #262630; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .btn-action:hover { background: #363645; }
+        .btn-action.download { background: var(--success); color: #000; }
+        .btn-action.download:hover { background: #26b35d; }
+
+        /* Paywall / Bloqueio */
+        .paywall-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,10,11,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; z-index: 10; }
+        .paywall-overlay h3 { font-size: 1.5rem; margin-bottom: 10px; color: var(--primary); }
+        .paywall-overlay p { color: var(--text-secondary); margin-bottom: 20px; max-width: 400px; font-size: 0.95rem; }
+        .btn-unlock { background: var(--primary); color: #000; padding: 12px 25px; border-radius: 6px; font-weight: 700; text-decoration: none; border: none; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .btn-unlock:hover { background: var(--primary-hover); }
 
         .hidden { display: none !important; }
     </style>
@@ -58,38 +71,45 @@
 <body>
 
     <header>
-        <a href="index.html" class="logo">V8 <span>Play+</span></a>
-        <div class="user-area">
-            <a href="admin.html" id="linkAdmin" class="btn-admin"><i class="fa-solid fa-user-shield"></i> Painel Admin</a>
-            <span class="user-status" id="userStatus">Verificando...</span>
-        </div>
+        <a href="index.html" class="logo"><i class="fa-solid fa-play-circle" style="color: var(--primary);"></i> V8 Play+</a>
+        <a href="index.html" class="btn-voltar"><i class="fa-solid fa-arrow-left"></i> Voltar ao Início</a>
     </header>
 
     <div class="container">
-        <!-- PLAYER E OVERLAY DE ANÚNCIO -->
-        <div class="video-wrapper" id="videoWrapper">
-            <!-- Overlay de Propaganda para vídeos Grátis -->
-            <div id="adOverlay" class="hidden">
-                <i class="fa-solid fa-rectangle-ad" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 15px;"></i>
-                <h3>Anúncio Patrocinado</h3>
-                <p id="adText">Assista ao breve anúncio para liberar seu conteúdo gratuito instantaneamente.</p>
-                <button class="btn-assistir-anuncio" id="btnPularAnuncio" onclick="liberarConteudoAposAnuncio()">
-                    <i class="fa-solid fa-play"></i> Continuar para o Vídeo (<span id="countdown">5</span>s)
-                </button>
+        <!-- PLAYER DE VÍDEO -->
+        <div class="player-wrapper" id="playerWrapper">
+            <div id="videoContainer"></div>
+            <!-- Tela de Bloqueio Paywall -->
+            <div id="paywallModal" class="paywall-overlay hidden">
+                <i class="fa-solid fa-lock" style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
+                <h3>Conteúdo Exclusivo</h3>
+                <p id="paywallText">Este conteúdo exige uma assinatura ou compra para ser reproduzido.</p>
+                <button class="btn-unlock" id="btnDesbloquear"><i class="fa-solid fa-crown"></i> Desbloquear Acesso</button>
             </div>
-
-            <iframe id="videoPlayer" src="" allowfullscreen></iframe>
         </div>
 
-        <!-- DETALHES -->
-        <div class="info-box">
-            <h1 id="tituloConteudo">Carregando título...</h1>
-            <div class="meta">
-                <span id="tagBadge" class="badge-tag gratis">Grátis</span>
-                <span id="categoriaConteudo">-</span>
-                <span id="anoConteudo">-</span>
+        <!-- OPÇÕES DE SERVIDORES / PLAYERS -->
+        <div class="server-options" id="serverOptions"></div>
+
+        <!-- DETALHES DO CONTEÚDO -->
+        <div class="content-info">
+            <div class="content-header">
+                <div>
+                    <h1 class="content-title" id="contentTitle">Carregando...</h1>
+                    <div class="meta-details" id="metaDetails">
+                        <span><i class="fa-solid fa-calendar"></i> <span id="contentYear">-</span></span>
+                        <span><i class="fa-solid fa-film"></i> <span id="contentCategory">-</span></span>
+                    </div>
+                </div>
+                <span id="contentBadge" class="badge gratis">Grátis</span>
             </div>
-            <p id="descricaoConteudo">Aguarde enquanto carregamos os dados do vídeo...</p>
+
+            <p class="synopsis" id="contentSynopsis">Carregando sinopse do conteúdo...</p>
+
+            <div class="action-buttons">
+                <a href="#" id="btnDownload" class="btn-action download hidden" target="_blank"><i class="fa-solid fa-download"></i> Baixar Conteúdo</a>
+                <a href="#" id="btnTrailer" class="btn-action hidden" target="_blank"><i class="fa-solid fa-clapperboard"></i> Ver Trailer</a>
+            </div>
         </div>
     </div>
 
@@ -99,115 +119,147 @@
         import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        let urlVideoGlobal = "";
-        let timerAnuncio = null;
+        const urlParams = new URLSearchParams(window.location.search);
+        const itemId = urlParams.get('id');
+        const colecao = urlParams.get('colecao') || 'filmes';
 
-        // 1. VERIFICAÇÃO DE AUTENTICAÇÃO E PERMISSÃO DE ADMIN NO HEADER
+        let itemData = null;
+        let currentUser = null;
+
         onAuthStateChanged(auth, async (user) => {
-            const statusEl = document.getElementById('userStatus');
-            const linkAdmin = document.getElementById('linkAdmin');
-
-            if (!user) {
-                statusEl.innerText = "Visitante";
-                return;
-            }
-
-            statusEl.innerText = user.email;
-
-            try {
-                const userDoc = await getDoc(doc(db, "usuarios", user.uid));
-                if (userDoc.exists() && userDoc.data().admin === true) {
-                    linkAdmin.classList.remove('hidden'); // Exibe atalho do admin somente para administradores
-                }
-            } catch (e) {
-                console.error("Erro ao validar privilégios:", e);
-            }
+            currentUser = user;
+            await carregarConteudo();
         });
 
-        // 2. CARREGAR CONTEÚDO DA URL (?id=...&col=...)
-        async function carregarPlayer() {
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
-            const colecao = params.get('col') || 'filmes';
-
-            if (!id) {
-                document.getElementById('tituloConteudo').innerText = "Conteúdo não especificado";
-                document.getElementById('descricaoConteudo').innerText = "Retorne à página inicial e selecione um título válido.";
+        async function carregarConteudo() {
+            if (!itemId) {
+                document.getElementById('contentTitle').innerText = "Conteúdo não encontrado.";
+                document.getElementById('contentSynopsis').innerText = "Nenhum ID de conteúdo foi fornecido na URL.";
                 return;
             }
 
             try {
-                const docSnap = await getDoc(doc(db, colecao, id));
+                const docRef = doc(db, colecao, itemId);
+                const docSnap = await getDoc(docRef);
+
                 if (!docSnap.exists()) {
-                    document.getElementById('tituloConteudo').innerText = "Conteúdo não encontrado.";
+                    document.getElementById('contentTitle').innerText = "Conteúdo Indisponível";
+                    document.getElementById('contentSynopsis').innerText = "O item solicitado não existe ou foi removido.";
                     return;
                 }
 
-                const data = docSnap.data();
-                document.getElementById('tituloConteudo').innerText = data.titulo || "Sem Título";
-                document.getElementById('descricaoConteudo').innerText = data.descricao || "Sem sinopse cadastrada.";
-                document.getElementById('categoriaConteudo').innerText = data.categoria || "Geral";
-                document.getElementById('anoConteudo').innerText = data.ano || "";
-                
-                const tag = (data.tag || data.plano || "gratis").toLowerCase();
-                const badge = document.getElementById('tagBadge');
-                badge.className = `badge-tag ${tag}`;
-                badge.innerText = tag.toUpperCase();
-
-                urlVideoGlobal = data.video1 || data.video || "";
-
-                // Regra de Exibição: Se for grátis com anúncio, ativa o overlay de anúncio
-                if (tag === 'gratis') {
-                    iniciarAnuncioPropaganda();
-                } else {
-                    // Para conteúdos Prime/Premium (ou sem anúncio)
-                    verificarAcessoPago(tag, data);
-                }
-
-            } catch (error) {
-                console.error("Erro ao buscar dados:", error);
-                document.getElementById('tituloConteudo').innerText = "Erro ao carregar o player.";
+                itemData = docSnap.data();
+                renderizarPagina();
+            } catch (e) {
+                console.error("Erro ao buscar conteúdo:", e);
+                document.getElementById('contentTitle').innerText = "Erro ao carregar";
             }
         }
 
-        function iniciarAnuncioPropaganda() {
-            const overlay = document.getElementById('adOverlay');
-            const btnPular = document.getElementById('btnPularAnuncio');
-            overlay.classList.remove('hidden');
-            
-            let segundos = 5;
-            btnPular.disabled = true;
-            btnPular.style.opacity = "0.6";
+        async function renderizarPagina() {
+            document.getElementById('contentTitle').innerText = itemData.titulo || "Sem Título";
+            document.getElementById('contentYear').innerText = itemData.ano || "N/D";
+            document.getElementById('contentCategory').innerText = itemData.categoria || itemData.colecao || "-";
+            document.getElementById('contentSynopsis').innerText = itemData.descricao || "Nenhuma sinopse disponível.";
 
-            timerAnuncio = setInterval(() => {
-                segundos--;
-                document.getElementById('countdown').innerText = segundos;
-                if (segundos <= 0) {
-                    clearInterval(timerAnuncio);
-                    btnPular.disabled = false;
-                    btnPular.style.opacity = "1";
-                    document.getElementById('countdown').parentElement.innerHTML = '<i class="fa-solid fa-play"></i> Assistir Vídeo Agora';
+            const tag = (itemData.tag || itemData.plano || "gratis").toLowerCase();
+            const badgeEl = document.getElementById('contentBadge');
+            badgeEl.className = `badge ${tag}`;
+            badgeEl.innerText = tag.toUpperCase();
+
+            // Verificação de Acesso / Paywall
+            let temAcesso = true;
+            if (tag !== 'gratis') {
+                temAcesso = false; 
+                if (currentUser) {
+                    try {
+                        const userDoc = await getDoc(doc(db, "usuarios", currentUser.uid));
+                        if (userDoc.exists()) {
+                            const userData = userDoc.data();
+                            if (userData.admin || userData.plano === tag || (userData.compras && userData.compras.includes(itemId))) {
+                                temAcesso = true;
+                            }
+                        }
+                    } catch (err) {
+                        console.error("Erro ao verificar permissão do usuário", err);
+                    }
                 }
-            }, 1000);
-        }
+            }
 
-        window.liberarConteudoAposAnuncio = function() {
-            if (timerAnuncio) clearInterval(timerAnuncio);
-            document.getElementById('adOverlay').classList.add('hidden');
-            if (urlVideoGlobal) {
-                document.getElementById('videoPlayer').src = urlVideoGlobal;
+            if (!temAcesso && tag !== 'gratis') {
+                document.getElementById('paywallModal').classList.remove('hidden');
+                document.getElementById('paywallText').innerText = `Este conteúdo requer o plano ${tag.toUpperCase()} ou compra individual.`;
+                document.getElementById('btnDesbloquear').onclick = () => {
+                    window.location.href = `checkout.html?id=${itemId}&colecao=${colecao}&plano=${tag}`;
+                };
             } else {
-                alert("URL do vídeo não configurada.");
+                carregarOpcoesPlayer();
             }
-        };
 
-        function verificarAcessoPago(tag, data) {
-            // Aqui você pode validar se o usuário comprou o item ou plano. 
-            // Caso já tenha acesso liberado, basta carregar o vídeo direto:
-            document.getElementById('videoPlayer').src = urlVideoGlobal;
+            // Botão Download
+            if (itemData.arquivoDownload || itemData.video1) {
+                const btnDl = document.getElementById('btnDownload');
+                btnDl.href = itemData.arquivoDownload || itemData.video1;
+                btnDl.classList.remove('hidden');
+            }
+
+            // Botão Trailer
+            if (itemData.trailer) {
+                const btnTr = document.getElementById('btnTrailer');
+                btnTr.href = itemData.trailer;
+                btnTr.classList.remove('hidden');
+            }
         }
 
-        carregarPlayer();
+        function carregarOpcoesPlayer() {
+            const videoContainer = document.getElementById('videoContainer');
+            const serverOptions = document.getElementById('serverOptions');
+            serverOptions.innerHTML = "";
+
+            const fontes = [];
+            if (itemData.video1 || itemData.video) fontes.push({ nome: "Player Principal", url: itemData.video1 || itemData.video });
+            if (itemData.video2) fontes.push({ nome: "Opção 2", url: itemData.video2 });
+            if (itemData.video3) fontes.push({ nome: "Opção 3", url: itemData.video3 });
+
+            if (fontes.length === 0) {
+                videoContainer.innerHTML = `<div style="display:flex; align-items:center; justify-content:center; height:100%; color:#aaa;">Nenhum player disponível para este item.</div>`;
+                return;
+            }
+
+            fontes.forEach((fonte, index) => {
+                const btn = document.createElement('button');
+                btn.className = `server-btn ${index === 0 ? 'active' : ''}`;
+                btn.innerHTML = `<i class="fa-solid fa-server"></i> ${fonte.nome}`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    reproduzirVideo(fonte.url);
+                };
+                serverOptions.appendChild(btn);
+            });
+
+            reproduzirVideo(fontes[0].url);
+        }
+
+        function reproduzirVideo(url) {
+            const videoContainer = document.getElementById('videoContainer');
+            if (!url) {
+                videoContainer.innerHTML = `<div style="display:flex; align-items:center; justify-content:center; height:100%; color:#aaa;">Link de vídeo inválido.</div>`;
+                return;
+            }
+
+            if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('iframe') || (url.startsWith('http') && !url.endsWith('.mp4') && !url.endsWith('.webm'))) {
+                let embedUrl = url;
+                if (url.includes('watch?v=')) {
+                    embedUrl = url.replace('watch?v=', 'embed/');
+                } else if (url.includes('youtu.be/')) {
+                    embedUrl = url.replace('youtu.be/', 'www.youtube.com/embed/');
+                }
+                videoContainer.innerHTML = `<iframe src="${embedUrl}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+            } else {
+                videoContainer.innerHTML = `<video controls autoplay style="width:100%; height:100%;"><source src="${url}" type="video/mp4">Seu navegador não suporta a tag de vídeo.</video>`;
+            }
+        }
     </script>
 </body>
 </html>
