@@ -121,6 +121,9 @@
             const linkLimpo = linkMidia.trim();
             const ehArquivoDireto = linkLimpo.endsWith('.mp4') || linkLimpo.endsWith('.mkv') || linkLimpo.endsWith('.webm') || linkLimpo.endsWith('.mov');
 
+            // LIMPA O CONTAINER ANTES DE INSERIR O NOVO PLAYER
+            container.innerHTML = '';
+
             // TRATAMENTO ROBUSTO PARA IFRAME / ABYSS
             if (linkLimpo.includes('<iframe')) {
                 const tempDiv = document.createElement('div');
@@ -133,16 +136,34 @@
                     iframeEl.style.top = '0';
                     iframeEl.style.left = '0';
                     iframeEl.style.border = 'none';
-                    iframeEl.setAttribute('allowfullscreen', 'true');
                     iframeEl.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
-                    container.innerHTML = tempDiv.innerHTML;
+                    container.appendChild(iframeEl);
                 } else {
                     container.innerHTML = linkLimpo;
                 }
             } else if (!ehArquivoDireto) {
-                container.innerHTML = `<iframe src="${linkLimpo}" style="width:100%;height:100%;position:absolute;top:0;left:0;border:none;" allowfullscreen="true" allow="autoplay; fullscreen; picture-in-picture; encrypted-media"></iframe>`;
+                const iframeEl = document.createElement('iframe');
+                iframeEl.src = linkLimpo;
+                iframeEl.style.width = '100%';
+                iframeEl.style.height = '100%';
+                iframeEl.style.position = 'absolute';
+                iframeEl.style.top = '0';
+                iframeEl.style.left = '0';
+                iframeEl.style.border = 'none';
+                iframeEl.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
+                container.appendChild(iframeEl);
             } else {
-                container.innerHTML = `<video id="main-video" controls autoplay class="video-element" src="${linkLimpo}" style="width:100%;height:100%;position:absolute;top:0;left:0;"></video>`;
+                const videoEl = document.createElement('video');
+                videoEl.id = 'main-video';
+                videoEl.controls = true;
+                videoEl.autoplay = true;
+                videoEl.src = linkLimpo;
+                videoEl.style.width = '100%';
+                videoEl.style.height = '100%';
+                videoEl.style.position = 'absolute';
+                videoEl.style.top = '0';
+                videoEl.style.left = '0';
+                container.appendChild(videoEl);
             }
 
             // Configurar botão de download
