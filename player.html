@@ -6,7 +6,6 @@
     <title>Player - V8 Play+</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Garante proporção 16:9 perfeita para vídeos e iframes */
         .video-wrapper {
             position: relative;
             width: 100%;
@@ -39,16 +38,16 @@
         <h1 id="player-title" class="player-title" style="margin-bottom: 20px; font-size: 1.8rem;">Carregando título...</h1>
         
         <div class="video-wrapper" id="video-container">
-            <!-- O player (vídeo ou iframe do Abyss) será inserido aqui dinamicamente -->
+            <!-- O player será inserido aqui dinamicamente -->
         </div>
 
-        <!-- AÇÕES DO PLAYER (VISUALIZAÇÃO / DOWNLOAD) -->
+        <!-- AÇÕES DO PLAYER -->
         <div class="player-actions" style="margin-top: 20px;">
             <button id="btn-download-file" class="btn-secondary" style="background: #00d4ff; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer;">Baixar Conteúdo</button>
         </div>
     </main>
 
-    <!-- SCRIPT DE MANIPULAÇÃO DO PLAYER (SUPORTE AO ABYSS E ARQUIVOS DIRETOS) -->
+    <!-- SCRIPT DE MANIPULAÇÃO DO PLAYER -->
     <script type="module">
         import { db } from "./js/firebase.js";
         import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -69,7 +68,6 @@
             let tituloFinal = "Vídeo V8 Play+";
             let linkMidia = "";
 
-            // Se veio do catálogo via ID e Coleção (padrão Firestore)
             if (itemId && colecao) {
                 try {
                     const docRef = doc(db, colecao, itemId);
@@ -77,7 +75,7 @@
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         tituloFinal = data.titulo || tituloFinal;
-                        // Busca o link do Abyss (seja .embed, .video1, .video ou .arquivoDownload)
+                        // Pega o link do embed, video1, video ou arquivo de download
                         linkMidia = data.embed || data.video1 || data.video || data.arquivoDownload;
                         downloadUrl = data.arquivoDownload || data.video1 || data.video;
                     }
@@ -98,18 +96,23 @@
                 return;
             }
 
-            // DETECÇÃO AUTOMÁTICA: Se for Abyss ou iframe, renderiza via Iframe. Se for arquivo, usa tag video.
-            if (linkMidia.includes('<iframe')) {
-                container.innerHTML = linkMidia;
-            } else if (linkMidia.includes('abysssplayer.com') || linkMidia.includes('embed')) {
-                container.innerHTML = `<iframe src="${linkMidia}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+            // LÓGICA INTELIGENTE: Verifica se é um arquivo de vídeo direto ou um link web/iframe
+            const linkLimpo = linkMidia.trim();
+            const ehArquivoDireto = linkLimpo.endsWith('.mp4') || linkLimpo.endsWith('.mkv') || linkLimpo.endsWith('.webm') || linkLimpo.endsWith('.mov');
+
+            if (linkLimpo.includes('<iframe')) {
+                container.innerHTML = linkLimpo;
+            } else if (!ehArquivoDireto) {
+                // Se NÃO for arquivo de vídeo direto (ex: Abyss, embeds, URLs web), renderiza como iframe perfeitamente!
+                container.innerHTML = `<iframe src="${linkLimpo}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
             } else {
-                container.innerHTML = `<video id="main-video" controls autoplay class="video-element" src="${linkMidia}">Seu navegador não suporta a tag de vídeo.</video>`;
+                // Apenas se for link direto de arquivo .mp4/.mkv
+                container.innerHTML = `<video id="main-video" controls autoplay class="video-element" src="${linkLimpo}"></video>`;
             }
 
             // Configurar botão de download
             btnDownload.onclick = () => {
-                if (downloadUrl && !downloadUrl.includes('abysssplayer.com')) {
+                if (downloadUrl && !downloadUrl.includes('abyss')) {
                     const a = document.createElement('a');
                     a.href = downloadUrl;
                     a.download = `${tituloFinal}.mp4`;
