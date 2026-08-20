@@ -272,30 +272,23 @@ export async function onRequestPost(context) {
 
         if (!respostaGateway.ok) {
 
-            console.error(
-                "InfinitePay retornou erro:",
-                respostaGateway.status,
-                dadosGateway
-            );
+    console.error(
+        "InfinitePay retornou erro:",
+        respostaGateway.status,
+        dadosGateway
+    );
 
-            return jsonResponse(
-                {
-                    success: false,
-
-                    error:
-                        "A InfinitePay não conseguiu criar o checkout.",
-
-                    status:
-                        respostaGateway.status,
-
-                    details:
-                        dadosGateway
-                },
-                400,
-                corsHeaders
-            );
-        }
-
+    return jsonResponse(
+        {
+            success: false,
+            error: "A InfinitePay recusou a criação do checkout.",
+            status: respostaGateway.status,
+            details: dadosGateway
+        },
+        400,
+        corsHeaders
+    );
+}
         // ==========================================
         // OBTÉM LINK DO CHECKOUT
         // ==========================================
