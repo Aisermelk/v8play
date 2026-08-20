@@ -8,9 +8,9 @@ export async function onRequestPost(context) {
         "Content-Type": "application/json"
     };
 
-    // ==============================
+    // ==========================================
     // CORS
-    // ==============================
+    // ==========================================
 
     if (request.method === "OPTIONS") {
         return new Response(null, {
@@ -20,9 +20,9 @@ export async function onRequestPost(context) {
     }
 
     try {
-        // ==============================
+        // ==========================================
         // RECEBE OS DADOS DO SITE
-        // ==============================
+        // ==========================================
 
         const body = await request.json();
 
@@ -30,17 +30,29 @@ export async function onRequestPost(context) {
         const email = body.email;
         const itemId = body.itemId;
         const colecao = body.colecao;
+        const tag = body.tag;
         const valor = body.valor;
 
-        // ==============================
-        // VALIDAÇÃO
-        // ==============================
+        // ==========================================
+        // VALIDAÇÕES
+        // ==========================================
 
         if (!uid) {
             return jsonResponse(
                 {
                     success: false,
                     error: "Usuário não informado."
+                },
+                400,
+                corsHeaders
+            );
+        }
+
+        if (!itemId) {
+            return jsonResponse(
+                {
+                    success: false,
+                    error: "Produto não informado."
                 },
                 400,
                 corsHeaders
@@ -74,31 +86,20 @@ export async function onRequestPost(context) {
             );
         }
 
-        // ==============================
-        // CONVERTE PARA CENTAVOS
-        // ==============================
+        // ==========================================
+        // CONVERTE REAIS PARA CENTAVOS
+        // ==========================================
 
         const valorEmCentavos = Math.round(
             valorNumerico * 100
         );
 
-        // ==============================
+        // ==========================================
         // CONFIGURAÇÃO INFINITEPAY
-        // ==============================
+        // ==========================================
 
-        /*
-         * Configure no Cloudflare:
-         *
-         * INFINITEPAY_HANDLE
-         *
-         * Exemplo:
-         *
-         * INFINITEPAY_HANDLE = minha_infinite_tag
-         *
-         * NÃO coloque o símbolo $
-         */
-
-        const handle = env.INFINITEPAY_HANDLE;
+        const handle =
+            env.INFINITEPAY_HANDLE;
 
         if (!handle) {
             console.error(
@@ -111,16 +112,16 @@ export async function onRequestPost(context) {
                     error:
                         "InfinitePay não configurada no servidor.",
                     details:
-                        "Configure a variável INFINITEPAY_HANDLE no Cloudflare."
+                        "Configure INFINITEPAY_HANDLE nas variáveis do Cloudflare."
                 },
                 500,
                 corsHeaders
             );
         }
 
-        // ==============================
-        // GERA IDENTIFICADOR DO PEDIDO
-        // ==============================
+        // ==========================================
+        // IDENTIFICADOR ÚNICO DA COMPRA
+        // ==========================================
 
         const orderNsu = [
             "V8",
@@ -128,49 +129,56 @@ export async function onRequestPost(context) {
             crypto.randomUUID()
         ].join("-");
 
-        // ==============================
+        // ==========================================
         // URL DO SITE
-        // ==============================
+        // ==========================================
 
-        const url = new URL(request.url);
+        const requestUrl =
+            new URL(request.url);
 
         const siteUrl =
             env.SITE_URL ||
-            `${url.protocol}//${url.host}`;
+            `${requestUrl.protocol}//${requestUrl.host}`;
 
-        /*
-         * Página para onde o cliente volta
-         * depois de finalizar o pagamento.
-         */
+        // ==========================================
+        // URL DE RETORNO
+        // ==========================================
 
         const redirectUrl =
             `${siteUrl}/pagamento-concluido`;
 
-        /*
-         * Endpoint que futuramente receberá
-         * a confirmação automática.
-         */
+        // ==========================================
+        // WEBHOOK
+        // ==========================================
 
         const webhookUrl =
             `${siteUrl}/webhook-infinitepay`;
 
-        // ==============================
-        // DESCRIÇÃO DO PRODUTO
-        // ==============================
+        // ==========================================
+        // DESCRIÇÃO
+        // ==========================================
 
-        let descricao = "Acesso V8+";
+        let descricao =
+            "Acesso V8 Play+";
+
+        if (tag) {
+            descricao +=
+                ` - Plano ${String(tag).toUpperCase()}`;
+        }
 
         if (itemId) {
-            descricao = `Acesso V8+ - ${itemId}`;
+            descricao +=
+                ` - Item ${itemId}`;
         }
 
         if (colecao) {
-            descricao += ` - ${colecao}`;
+            descricao +=
+                ` - ${colecao}`;
         }
 
-        // ==============================
+        // ==========================================
         // PAYLOAD INFINITEPAY
-        // ==============================
+        // ==========================================
 
         const payload = {
             handle: handle,
@@ -190,9 +198,9 @@ export async function onRequestPost(context) {
             ]
         };
 
-        // ==============================
-        // DADOS DO CLIENTE
-        // ==============================
+        // ==========================================
+        // CLIENTE
+        // ==========================================
 
         if (email) {
             payload.customer = {
@@ -200,36 +208,46 @@ export async function onRequestPost(context) {
             };
         }
 
-        // ==============================
-        // ENVIA PARA A INFINITEPAY
-        // ==============================
+        // ==========================================
+        // LOG
+        // ==========================================
 
         console.log(
             "Criando checkout InfinitePay:",
             {
                 order_nsu: orderNsu,
                 valor: valorEmCentavos,
+                uid: uid,
+                email: email || null,
                 itemId: itemId,
-                colecao: colecao
+                colecao: colecao || null,
+                tag: tag || null
             }
         );
 
-        const respostaGateway = await fetch(
-            "https://api.checkout.infinitepay.io/links",
-            {
-                method: "POST",
+        // ==========================================
+        // ENVIA PARA INFINITEPAY
+        // ==========================================
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+        const respostaGateway =
+            await fetch(
+                "https://api.checkout.infinitepay.io/links",
+                {
+                    method: "POST",
 
-                body: JSON.stringify(payload)
-            }
-        );
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-        // ==============================
+                    body:
+                        JSON.stringify(payload)
+                }
+            );
+
+        // ==========================================
         // LÊ RESPOSTA
-        // ==============================
+        // ==========================================
 
         const respostaTexto =
             await respostaGateway.text();
@@ -238,16 +256,19 @@ export async function onRequestPost(context) {
 
         try {
             dadosGateway =
-                JSON.parse(respostaTexto);
+                JSON.parse(
+                    respostaTexto
+                );
         } catch {
             dadosGateway = {
-                raw: respostaTexto
+                raw:
+                    respostaTexto
             };
         }
 
-        // ==============================
-        // ERRO DA INFINITEPAY
-        // ==============================
+        // ==========================================
+        // ERRO INFINITEPAY
+        // ==========================================
 
         if (!respostaGateway.ok) {
 
@@ -260,23 +281,29 @@ export async function onRequestPost(context) {
             return jsonResponse(
                 {
                     success: false,
+
                     error:
                         "A InfinitePay não conseguiu criar o checkout.",
+
                     status:
                         respostaGateway.status,
-                    details: dadosGateway
+
+                    details:
+                        dadosGateway
                 },
                 400,
                 corsHeaders
             );
         }
 
-        // ==============================
-        // PEGA URL DO CHECKOUT
-        // ==============================
+        // ==========================================
+        // OBTÉM LINK DO CHECKOUT
+        // ==========================================
 
         const checkoutUrl =
-            dadosGateway.url;
+            dadosGateway.url ||
+            dadosGateway.checkout_url ||
+            dadosGateway.link;
 
         if (!checkoutUrl) {
 
@@ -288,24 +315,43 @@ export async function onRequestPost(context) {
             return jsonResponse(
                 {
                     success: false,
+
                     error:
                         "A InfinitePay não retornou o link de pagamento.",
-                    details: dadosGateway
+
+                    details:
+                        dadosGateway
                 },
                 502,
                 corsHeaders
             );
         }
 
-        // ==============================
-        // RESPOSTA PARA O FRONTEND
-        // ==============================
+        // ==========================================
+        // RESPOSTA PARA O SITE
+        // ==========================================
+
+        /*
+         * IMPORTANTE:
+         *
+         * O seu index.html espera:
+         *
+         * dados.pix_code
+         *
+         * Entretanto, a resposta dessa integração
+         * é um checkout da InfinitePay.
+         *
+         * Portanto enviamos também checkout_url.
+         */
 
         return jsonResponse(
             {
                 success: true,
 
                 checkout_url:
+                    checkoutUrl,
+
+                pix_code:
                     checkoutUrl,
 
                 order_nsu:
@@ -320,11 +366,17 @@ export async function onRequestPost(context) {
                 uid:
                     uid,
 
+                email:
+                    email || null,
+
                 itemId:
-                    itemId || null,
+                    itemId,
 
                 colecao:
-                    colecao || null
+                    colecao || null,
+
+                tag:
+                    tag || null
             },
             200,
             corsHeaders
@@ -340,8 +392,10 @@ export async function onRequestPost(context) {
         return jsonResponse(
             {
                 success: false,
+
                 error:
                     "Erro interno ao criar o pagamento.",
+
                 details:
                     error?.message ||
                     String(error)
@@ -354,7 +408,7 @@ export async function onRequestPost(context) {
 
 
 // ==========================================
-// FUNÇÃO AUXILIAR DE RESPOSTA JSON
+// RESPOSTA JSON
 // ==========================================
 
 function jsonResponse(
@@ -365,8 +419,9 @@ function jsonResponse(
     return new Response(
         JSON.stringify(data),
         {
-            status,
-            headers
+            status: status,
+
+            headers: headers
         }
     );
 }
