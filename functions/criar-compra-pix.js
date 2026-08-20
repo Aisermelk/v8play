@@ -19,24 +19,50 @@ export async function onRequestPost(context) {
         });
     }
 
+    // ==========================================
+    // SOMENTE POST
+    // ==========================================
+
+    if (request.method !== "POST") {
+        return jsonResponse(
+            {
+                success: false,
+                error: "Método não permitido."
+            },
+            405,
+            corsHeaders
+        );
+    }
+
     try {
 
         // ==========================================
-        // RECEBER DADOS
+        // RECEBER DADOS DO SITE
         // ==========================================
 
         const body = await request.json();
 
         const uid = body.uid;
-        const email = body.email;
+        const email = body.email || "";
         const itemId = body.itemId;
-        const colecao = body.colecao;
-        const tag = body.tag;
-        const valor = body.valor;
+        const colecao = body.colecao || "";
+        const tag = body.tag || "";
+        const valor = Number(body.valor);
 
+        console.log(
+            "Dados recebidos do site:",
+            {
+                uid,
+                email,
+                itemId,
+                colecao,
+                tag,
+                valor
+            }
+        );
 
         // ==========================================
-        // VALIDAÇÕES
+        // VALIDAÇÃO DO USUÁRIO
         // ==========================================
 
         if (!uid) {
@@ -50,6 +76,10 @@ export async function onRequestPost(context) {
             );
         }
 
+        // ==========================================
+        // VALIDAÇÃO DO PRODUTO
+        // ==========================================
+
         if (!itemId) {
             return jsonResponse(
                 {
@@ -61,55 +91,37 @@ export async function onRequestPost(context) {
             );
         }
 
-        if (
-            valor === undefined ||
-            valor === null ||
-            valor === ""
-        ) {
+        // ==========================================
+        // VALIDAÇÃO DO VALOR
+        // ==========================================
+
+        if (!Number.isFinite(valor)) {
             return jsonResponse(
                 {
                     success: false,
-                    error: "Valor não informado."
+                    error: "Valor inválido."
                 },
                 400,
                 corsHeaders
             );
         }
 
-
-        const valorNumerico = Number(valor);
-
-
-        if (
-            !Number.isFinite(valorNumerico) ||
-            valorNumerico <= 0
-        ) {
+        if (valor <= 0) {
             return jsonResponse(
                 {
                     success: false,
-                    error: "Valor do pagamento inválido."
+                    error: "O valor do pagamento deve ser maior que zero."
                 },
                 400,
                 corsHeaders
             );
         }
 
-
         // ==========================================
-        // CENTAVOS
-        // ==========================================
-
-        const valorEmCentavos =
-            Math.round(valorNumerico * 100);
-
-
-        // ==========================================
-        // INFINITEPAY HANDLE
+        // HANDLE INFINITEPAY
         // ==========================================
 
-        let handle =
-            env.INFINITEPAY_HANDLE;
-
+        const handle = env.INFINITEPAY_HANDLE;
 
         if (!handle) {
 
@@ -120,142 +132,103 @@ export async function onRequestPost(context) {
             return jsonResponse(
                 {
                     success: false,
+
                     error:
                         "InfinitePay não configurada no servidor.",
+
                     details:
-                        "Configure INFINITEPAY_HANDLE no Cloudflare."
+                        "Configure a variável INFINITEPAY_HANDLE no Cloudflare."
                 },
                 500,
                 corsHeaders
             );
         }
 
+        // ==========================================
+        // CONVERTER REAIS PARA CENTAVOS
+        // ==========================================
 
-        /*
-         * Remove espaços acidentais
-         * e o símbolo $ caso tenha sido colocado.
-         */
+        const price = Math.round(
+            valor * 100
+        );
 
-        handle =
-            String(handle)
-                .trim()
-                .replace(/^\$/, "");
-
-
-        if (!handle) {
+        if (!Number.isInteger(price) || price <= 0) {
 
             return jsonResponse(
                 {
                     success: false,
-                    error:
-                        "InfiniteTag inválida."
+                    error: "Valor convertido para centavos é inválido."
                 },
-                500,
+                400,
                 corsHeaders
             );
         }
 
-
         // ==========================================
-        // ORDER NSU
-        // ==========================================
-
-        const orderNsu =
-            `V8-${Date.now()}-${crypto.randomUUID()}`;
-
-
-        // ==========================================
-        // URL DO SITE
+        // DESCRIÇÃO DO PRODUTO
         // ==========================================
 
-        const requestUrl =
-            new URL(request.url);
-
-
-        const siteUrl =
-            env.SITE_URL ||
-            `${requestUrl.protocol}//${requestUrl.host}`;
-
-
-        // ==========================================
-        // URLs
-        // ==========================================
-
-        const redirectUrl =
-            `${siteUrl}/pagamento-concluido`;
-
-
-        const webhookUrl =
-            `${siteUrl}/webhook-infinitepay`;
-
-
-        // ==========================================
-        // DESCRIÇÃO
-        // ==========================================
-
-        let descricao =
-            "Acesso V8 Play+";
-
+        let descricao = "V8 Play+";
 
         if (tag) {
-
             descricao +=
                 ` - Plano ${String(tag).toUpperCase()}`;
-
         }
-
 
         if (itemId) {
-
             descricao +=
                 ` - Item ${String(itemId)}`;
-
         }
 
+        if (colecao) {
+            descricao +=
+                ` - ${String(colecao)}`;
+        }
 
         // ==========================================
-        // PAYLOAD
+        // LIMITAR TAMANHO DA DESCRIÇÃO
+        // ==========================================
+
+        descricao =
+            descricao.substring(0, 200);
+
+        // ==========================================
+        // PAYLOAD INFINITEPAY
+        //
+        // FORMATO:
+        //
+        // {
+        //   "handle": "...",
+        //   "items": [
+        //      {
+        //          "quantity": 1,
+        //          "price": 1000,
+        //          "description": "Produto"
+        //      }
+        //   ]
+        // }
+        //
         // ==========================================
 
         const payload = {
 
             handle: handle,
 
-            order_nsu: orderNsu,
-
-            redirect_url: redirectUrl,
-
-            webhook_url: webhookUrl,
-
             items: [
+
                 {
                     quantity: 1,
 
-                    price:
-                        valorEmCentavos,
+                    price: price,
 
-                    description:
-                        descricao
+                    description: descricao
                 }
+
             ]
         };
 
-
         // ==========================================
-        // CLIENTE
-        // ==========================================
-
-        if (email) {
-
-            payload.customer = {
-                email: String(email).trim()
-            };
-
-        }
-
-
-        // ==========================================
-        // LOG
+        // LOG DO PAYLOAD
         // ==========================================
 
         console.log(
@@ -267,32 +240,19 @@ export async function onRequestPost(context) {
         );
 
         console.log(
-            "HANDLE:",
-            handle
-        );
-
-        console.log(
-            "VALOR:",
-            valorEmCentavos
-        );
-
-        console.log(
-            "ORDER NSU:",
-            orderNsu
-        );
-
-        console.log(
-            "PAYLOAD:",
-            JSON.stringify(payload)
-        );
-
-        console.log(
             "=========================================="
         );
 
+        console.log(
+            JSON.stringify(
+                payload,
+                null,
+                2
+            )
+        );
 
         // ==========================================
-        // CHAMADA INFINITEPAY
+        // ENVIO PARA INFINITEPAY
         // ==========================================
 
         const respostaGateway =
@@ -310,21 +270,20 @@ export async function onRequestPost(context) {
                     },
 
                     body:
-                        JSON.stringify(payload)
+                        JSON.stringify(
+                            payload
+                        )
                 }
             );
 
-
         // ==========================================
-        // RESPOSTA
+        // LER RESPOSTA DA INFINITEPAY
         // ==========================================
 
         const respostaTexto =
             await respostaGateway.text();
 
-
         let dadosGateway;
-
 
         try {
 
@@ -336,30 +295,53 @@ export async function onRequestPost(context) {
         } catch {
 
             dadosGateway = {
+
                 raw:
                     respostaTexto
+
             };
 
         }
 
+        // ==========================================
+        // LOG DA RESPOSTA
+        // ==========================================
 
         console.log(
-            "STATUS INFINITEPAY:",
+            "=========================================="
+        );
+
+        console.log(
+            "RESPOSTA INFINITEPAY"
+        );
+
+        console.log(
+            "Status:",
             respostaGateway.status
         );
 
-
         console.log(
-            "RESPOSTA INFINITEPAY:",
-            JSON.stringify(dadosGateway)
+            "Dados:",
+            JSON.stringify(
+                dadosGateway,
+                null,
+                2
+            )
         );
 
+        console.log(
+            "=========================================="
+        );
 
         // ==========================================
-        // ERRO
+        // INFINITEPAY RECUSOU
         // ==========================================
 
         if (!respostaGateway.ok) {
+
+            console.error(
+                "InfinitePay recusou o checkout."
+            );
 
             return jsonResponse(
                 {
@@ -374,40 +356,40 @@ export async function onRequestPost(context) {
                     details:
                         dadosGateway,
 
-                    enviado: {
-                        handle:
-                            handle,
-
-                        order_nsu:
-                            orderNsu,
-
-                        amount:
-                            valorEmCentavos,
-
-                        description:
-                            descricao
-                    }
+                    payload_enviado:
+                        payload
                 },
-                400,
+
+                respostaGateway.status,
+
                 corsHeaders
             );
         }
 
-
         // ==========================================
-        // LINK DO CHECKOUT
+        // PROCURAR LINK DO CHECKOUT
         // ==========================================
 
         const checkoutUrl =
-            dadosGateway.url ||
-            dadosGateway.checkout_url ||
-            dadosGateway.link;
 
+            dadosGateway.url ||
+
+            dadosGateway.checkout_url ||
+
+            dadosGateway.link ||
+
+            dadosGateway.checkoutLink ||
+
+            dadosGateway.checkout_url_web;
+
+        // ==========================================
+        // SEM LINK
+        // ==========================================
 
         if (!checkoutUrl) {
 
             console.error(
-                "Checkout sem URL:",
+                "InfinitePay não retornou URL.",
                 dadosGateway
             );
 
@@ -416,19 +398,32 @@ export async function onRequestPost(context) {
                     success: false,
 
                     error:
-                        "A InfinitePay não retornou o link de pagamento.",
+                        "A InfinitePay criou uma resposta, mas não retornou o link do checkout.",
 
                     details:
                         dadosGateway
                 },
+
                 502,
+
                 corsHeaders
             );
         }
 
-
         // ==========================================
         // SUCESSO
+        // ==========================================
+
+        console.log(
+            "Checkout criado com sucesso:"
+        );
+
+        console.log(
+            checkoutUrl
+        );
+
+        // ==========================================
+        // RETORNAR PARA O INDEX
         // ==========================================
 
         return jsonResponse(
@@ -439,13 +434,13 @@ export async function onRequestPost(context) {
                     checkoutUrl,
 
                 order_nsu:
-                    orderNsu,
+                    null,
 
                 amount:
-                    valorEmCentavos,
+                    price,
 
                 amount_reais:
-                    valorNumerico,
+                    valor,
 
                 uid:
                     uid,
@@ -462,18 +457,35 @@ export async function onRequestPost(context) {
                 tag:
                     tag || null
             },
+
             200,
+
             corsHeaders
         );
 
+    }
 
-    } catch (error) {
+    // ==========================================
+    // ERRO GERAL
+    // ==========================================
+
+    catch (error) {
 
         console.error(
-            "ERRO INTERNO:",
+            "=========================================="
+        );
+
+        console.error(
+            "ERRO INTERNO"
+        );
+
+        console.error(
             error
         );
 
+        console.error(
+            "=========================================="
+        );
 
         return jsonResponse(
             {
@@ -486,7 +498,9 @@ export async function onRequestPost(context) {
                     error?.message ||
                     String(error)
             },
+
             500,
+
             corsHeaders
         );
     }
@@ -500,15 +514,20 @@ export async function onRequestPost(context) {
 function jsonResponse(
     data,
     status,
-    headers
+    corsHeaders
 ) {
 
     return new Response(
-        JSON.stringify(data),
+
+        JSON.stringify(
+            data
+        ),
+
         {
             status: status,
-            headers: headers
+
+            headers:
+                corsHeaders
         }
     );
-
 }
