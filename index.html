@@ -1904,30 +1904,21 @@
                 await resp.json();
 
 
-            if (dados.pix_code) {
+            if (dados.success && dados.checkout_url) {
 
-                fecharModais();
+    fecharModais();
 
-                document
-                    .getElementById(
-                        "pixCode"
-                    )
-                    .value =
-                    dados.pix_code;
+    // Abre o checkout da InfinitePay
+    window.location.href = dados.checkout_url;
 
-                document
-                    .getElementById(
-                        "pixModal"
-                    )
-                    .classList.remove(
-                        "hidden"
-                    );
+} else {
 
-                iniciarVerificacaoPagamento(
-                    item.id
-                );
+    mostrarNotificacao(
+        dados.error ||
+        "Erro ao gerar o pagamento."
+    );
 
-            }
+}
 
             else {
 
