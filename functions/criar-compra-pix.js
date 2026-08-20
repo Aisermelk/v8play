@@ -20,8 +20,9 @@ export async function onRequestPost(context) {
     }
 
     try {
+
         // ==========================================
-        // RECEBE OS DADOS DO SITE
+        // RECEBER DADOS
         // ==========================================
 
         const body = await request.json();
@@ -32,6 +33,7 @@ export async function onRequestPost(context) {
         const colecao = body.colecao;
         const tag = body.tag;
         const valor = body.valor;
+
 
         // ==========================================
         // VALIDAÇÕES
@@ -59,7 +61,11 @@ export async function onRequestPost(context) {
             );
         }
 
-        if (!valor) {
+        if (
+            valor === undefined ||
+            valor === null ||
+            valor === ""
+        ) {
             return jsonResponse(
                 {
                     success: false,
@@ -70,7 +76,9 @@ export async function onRequestPost(context) {
             );
         }
 
+
         const valorNumerico = Number(valor);
+
 
         if (
             !Number.isFinite(valorNumerico) ||
@@ -86,22 +94,25 @@ export async function onRequestPost(context) {
             );
         }
 
-        // ==========================================
-        // CONVERTE REAIS PARA CENTAVOS
-        // ==========================================
-
-        const valorEmCentavos = Math.round(
-            valorNumerico * 100
-        );
 
         // ==========================================
-        // CONFIGURAÇÃO INFINITEPAY
+        // CENTAVOS
         // ==========================================
 
-        const handle =
+        const valorEmCentavos =
+            Math.round(valorNumerico * 100);
+
+
+        // ==========================================
+        // INFINITEPAY HANDLE
+        // ==========================================
+
+        let handle =
             env.INFINITEPAY_HANDLE;
 
+
         if (!handle) {
+
             console.error(
                 "INFINITEPAY_HANDLE não configurado."
             );
@@ -112,22 +123,46 @@ export async function onRequestPost(context) {
                     error:
                         "InfinitePay não configurada no servidor.",
                     details:
-                        "Configure INFINITEPAY_HANDLE nas variáveis do Cloudflare."
+                        "Configure INFINITEPAY_HANDLE no Cloudflare."
                 },
                 500,
                 corsHeaders
             );
         }
 
+
+        /*
+         * Remove espaços acidentais
+         * e o símbolo $ caso tenha sido colocado.
+         */
+
+        handle =
+            String(handle)
+                .trim()
+                .replace(/^\$/, "");
+
+
+        if (!handle) {
+
+            return jsonResponse(
+                {
+                    success: false,
+                    error:
+                        "InfiniteTag inválida."
+                },
+                500,
+                corsHeaders
+            );
+        }
+
+
         // ==========================================
-        // IDENTIFICADOR ÚNICO DA COMPRA
+        // ORDER NSU
         // ==========================================
 
-        const orderNsu = [
-            "V8",
-            Date.now(),
-            crypto.randomUUID()
-        ].join("-");
+        const orderNsu =
+            `V8-${Date.now()}-${crypto.randomUUID()}`;
+
 
         // ==========================================
         // URL DO SITE
@@ -136,23 +171,23 @@ export async function onRequestPost(context) {
         const requestUrl =
             new URL(request.url);
 
+
         const siteUrl =
             env.SITE_URL ||
             `${requestUrl.protocol}//${requestUrl.host}`;
 
+
         // ==========================================
-        // URL DE RETORNO
+        // URLs
         // ==========================================
 
         const redirectUrl =
             `${siteUrl}/pagamento-concluido`;
 
-        // ==========================================
-        // WEBHOOK
-        // ==========================================
 
         const webhookUrl =
             `${siteUrl}/webhook-infinitepay`;
+
 
         // ==========================================
         // DESCRIÇÃO
@@ -161,26 +196,29 @@ export async function onRequestPost(context) {
         let descricao =
             "Acesso V8 Play+";
 
+
         if (tag) {
+
             descricao +=
                 ` - Plano ${String(tag).toUpperCase()}`;
+
         }
+
 
         if (itemId) {
+
             descricao +=
-                ` - Item ${itemId}`;
+                ` - Item ${String(itemId)}`;
+
         }
 
-        if (colecao) {
-            descricao +=
-                ` - ${colecao}`;
-        }
 
         // ==========================================
-        // PAYLOAD INFINITEPAY
+        // PAYLOAD
         // ==========================================
 
         const payload = {
+
             handle: handle,
 
             order_nsu: orderNsu,
@@ -192,41 +230,69 @@ export async function onRequestPost(context) {
             items: [
                 {
                     quantity: 1,
-                    price: valorEmCentavos,
-                    description: descricao
+
+                    price:
+                        valorEmCentavos,
+
+                    description:
+                        descricao
                 }
             ]
         };
+
 
         // ==========================================
         // CLIENTE
         // ==========================================
 
         if (email) {
+
             payload.customer = {
-                email: email
+                email: String(email).trim()
             };
+
         }
+
 
         // ==========================================
         // LOG
         // ==========================================
 
         console.log(
-            "Criando checkout InfinitePay:",
-            {
-                order_nsu: orderNsu,
-                valor: valorEmCentavos,
-                uid: uid,
-                email: email || null,
-                itemId: itemId,
-                colecao: colecao || null,
-                tag: tag || null
-            }
+            "=========================================="
         );
 
+        console.log(
+            "CRIANDO CHECKOUT INFINITEPAY"
+        );
+
+        console.log(
+            "HANDLE:",
+            handle
+        );
+
+        console.log(
+            "VALOR:",
+            valorEmCentavos
+        );
+
+        console.log(
+            "ORDER NSU:",
+            orderNsu
+        );
+
+        console.log(
+            "PAYLOAD:",
+            JSON.stringify(payload)
+        );
+
+        console.log(
+            "=========================================="
+        );
+
+
         // ==========================================
-        // ENVIA PARA INFINITEPAY
+        // CHAMADA INFINITEPAY
         // ==========================================
 
         const respostaGateway =
@@ -237,6 +303,9 @@ export async function onRequestPost(context) {
 
                     headers: {
                         "Content-Type":
+                            "application/json",
+
+                        "Accept":
                             "application/json"
                     },
 
@@ -245,52 +314,88 @@ export async function onRequestPost(context) {
                 }
             );
 
+
         // ==========================================
-        // LÊ RESPOSTA
+        // RESPOSTA
         // ==========================================
 
         const respostaTexto =
             await respostaGateway.text();
 
+
         let dadosGateway;
 
+
         try {
+
             dadosGateway =
                 JSON.parse(
                     respostaTexto
                 );
+
         } catch {
+
             dadosGateway = {
                 raw:
                     respostaTexto
             };
+
         }
 
+
+        console.log(
+            "STATUS INFINITEPAY:",
+            respostaGateway.status
+        );
+
+
+        console.log(
+            "RESPOSTA INFINITEPAY:",
+            JSON.stringify(dadosGateway)
+        );
+
+
         // ==========================================
-        // ERRO INFINITEPAY
+        // ERRO
         // ==========================================
 
         if (!respostaGateway.ok) {
 
-    console.error(
-        "InfinitePay retornou erro:",
-        respostaGateway.status,
-        dadosGateway
-    );
+            return jsonResponse(
+                {
+                    success: false,
 
-    return jsonResponse(
-        {
-            success: false,
-            error: "A InfinitePay recusou a criação do checkout.",
-            status: respostaGateway.status,
-            details: dadosGateway
-        },
-        400,
-        corsHeaders
-    );
-}
+                    error:
+                        "A InfinitePay recusou a criação do checkout.",
+
+                    status:
+                        respostaGateway.status,
+
+                    details:
+                        dadosGateway,
+
+                    enviado: {
+                        handle:
+                            handle,
+
+                        order_nsu:
+                            orderNsu,
+
+                        amount:
+                            valorEmCentavos,
+
+                        description:
+                            descricao
+                    }
+                },
+                400,
+                corsHeaders
+            );
+        }
+
+
         // ==========================================
-        // OBTÉM LINK DO CHECKOUT
+        // LINK DO CHECKOUT
         // ==========================================
 
         const checkoutUrl =
@@ -298,10 +403,11 @@ export async function onRequestPost(context) {
             dadosGateway.checkout_url ||
             dadosGateway.link;
 
+
         if (!checkoutUrl) {
 
             console.error(
-                "InfinitePay não retornou URL:",
+                "Checkout sem URL:",
                 dadosGateway
             );
 
@@ -320,31 +426,16 @@ export async function onRequestPost(context) {
             );
         }
 
-        // ==========================================
-        // RESPOSTA PARA O SITE
-        // ==========================================
 
-        /*
-         * IMPORTANTE:
-         *
-         * O seu index.html espera:
-         *
-         * dados.pix_code
-         *
-         * Entretanto, a resposta dessa integração
-         * é um checkout da InfinitePay.
-         *
-         * Portanto enviamos também checkout_url.
-         */
+        // ==========================================
+        // SUCESSO
+        // ==========================================
 
         return jsonResponse(
             {
                 success: true,
 
                 checkout_url:
-                    checkoutUrl,
-
-                pix_code:
                     checkoutUrl,
 
                 order_nsu:
@@ -375,12 +466,14 @@ export async function onRequestPost(context) {
             corsHeaders
         );
 
+
     } catch (error) {
 
         console.error(
-            "Erro interno em criar-compra-pix:",
+            "ERRO INTERNO:",
             error
         );
+
 
         return jsonResponse(
             {
@@ -409,12 +502,13 @@ function jsonResponse(
     status,
     headers
 ) {
+
     return new Response(
         JSON.stringify(data),
         {
             status: status,
-
             headers: headers
         }
     );
+
 }
