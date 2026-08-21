@@ -1,10 +1,15 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Player - V8 Play+</title>
-    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
     <style>
         :root {
             --primary: #00d4ff;
@@ -13,209 +18,1079 @@
             --text-secondary: #aaaaaa;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: #121214; }
-        .logo { font-weight: 800; font-size: 1.5rem; color: var(--primary); }
-        .btn-voltar { color: #fff; text-decoration: none; background: #222; padding: 8px 16px; border-radius: 6px; font-size: 0.9rem; transition: 0.2s; }
-        .btn-voltar:hover { background: #333; }
+        body {
+            background: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-        .player-container { padding: 30px 5%; max-width: 1000px; margin: 0 auto; }
-        .player-title { margin-bottom: 20px; font-size: 1.8rem; font-weight: 700; }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: #121214;
+            border-bottom: 1px solid #222;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .btn-voltar {
+            color: #fff;
+            text-decoration: none;
+            background: #222;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .btn-voltar:hover {
+            background: #333;
+        }
+
+        .player-container {
+            padding: 30px 5%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .player-title {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
 
         .video-wrapper {
             position: relative;
             width: 100%;
-            padding-top: 56.25%; /* Proporção 16:9 perfeita */
+            aspect-ratio: 16 / 9;
             background: #000;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
         }
+
         .video-wrapper iframe,
         .video-wrapper video {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
-            border: none;
+            border: 0;
         }
 
-        .player-actions { margin-top: 20px; display: flex; gap: 10px; }
-        .btn-secondary { background: var(--primary); color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .btn-secondary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+            background: #000;
+            color: #aaa;
+            z-index: 5;
+        }
+
+        .spinner {
+            width: 38px;
+            height: 38px;
+            border: 4px solid #333;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: girar 0.8s linear infinite;
+        }
+
+        @keyframes girar {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .erro-player {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+            padding: 30px;
+            text-align: center;
+            background: #050505;
+            color: #ff6b6b;
+        }
+
+        .erro-player small {
+            color: #888;
+            max-width: 700px;
+            word-break: break-word;
+        }
+
+        .player-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-secondary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .info-player {
+            margin-top: 15px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 700px) {
+            .navbar {
+                padding: 12px 4%;
+            }
+
+            .logo {
+                font-size: 1.15rem;
+            }
+
+            .player-container {
+                padding: 20px 4%;
+            }
+
+            .player-title {
+                font-size: 1.35rem;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-    <!-- CABEÇALHO DO PLAYER -->
-    <header class="navbar">
-        <div class="logo">V8 Play+</div>
-        <a href="index.html" class="btn-voltar">Voltar ao Catálogo</a>
-    </header>
+<header class="navbar">
+    <div class="logo">V8 Play+</div>
 
-    <!-- CONTAINER PRINCIPAL DO VÍDEO -->
-    <main class="player-container">
-        <h1 id="player-title" class="player-title">Carregando título...</h1>
-        
-        <div class="video-wrapper" id="video-container">
-            <!-- O player (vídeo ou iframe do Abyss) será inserido aqui dinamicamente -->
+    <a href="index.html" class="btn-voltar">
+        Voltar ao Catálogo
+    </a>
+</header>
+
+<main class="player-container">
+
+    <h1 id="player-title" class="player-title">
+        Carregando título...
+    </h1>
+
+    <div class="video-wrapper" id="video-container">
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <span>Carregando vídeo...</span>
         </div>
 
-        <!-- AÇÕES DO PLAYER -->
-        <div class="player-actions">
-            <button id="btn-download-file" class="btn-secondary">Baixar Conteúdo</button>
-        </div>
-    </main>
+    </div>
 
-    <!-- SCRIPT DE MANIPULAÇÃO DO PLAYER -->
-    <script type="module">
-        import { db } from "./js/firebase.js";
-        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <div class="player-actions">
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const itemId = urlParams.get('id');
-        const colecao = urlParams.get('colecao');
-        const directVideoUrl = urlParams.get('video');
-        const directTitle = urlParams.get('title');
-        const modoTrailer = urlParams.get('trailer') === 'true';
+        <button
+            id="btn-download-file"
+            class="btn-secondary"
+            disabled
+        >
+            Baixar Conteúdo
+        </button>
 
-        const container = document.getElementById('video-container');
-        const titleEl = document.getElementById('player-title');
-        const btnDownload = document.getElementById('btn-download-file');
+    </div>
 
-        let downloadUrl = "";
+    <div class="info-player" id="player-info">
+        V8 Play+
+    </div>
 
-        function converterParaEmbedSeNecessario(url) {
-            if (!url) return url;
+</main>
 
-            // youtube.com/watch?v=ID  ou  m.youtube.com/watch?v=ID
-            let match = url.match(/(?:youtube\.com\/watch\?v=)([\w-]+)/);
-            if (match) {
-                return `https://www.youtube.com/embed/${match[1]}`;
+
+<script type="module">
+
+    // =========================================================
+    // FIREBASE
+    // =========================================================
+
+    import { db } from "./js/firebase.js";
+
+    import {
+        doc,
+        getDoc
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+    // =========================================================
+    // ELEMENTOS
+    // =========================================================
+
+    const container =
+        document.getElementById("video-container");
+
+    const titleEl =
+        document.getElementById("player-title");
+
+    const btnDownload =
+        document.getElementById("btn-download-file");
+
+    const loading =
+        document.getElementById("loading");
+
+    const playerInfo =
+        document.getElementById("player-info");
+
+
+    // =========================================================
+    // PARÂMETROS DA URL
+    // =========================================================
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const itemId =
+        params.get("id");
+
+    const colecao =
+        params.get("colecao");
+
+    const directVideoUrl =
+        params.get("video");
+
+    const directTitle =
+        params.get("title");
+
+    const modoTrailer =
+        params.get("trailer") === "true";
+
+
+    // =========================================================
+    // VARIÁVEIS
+    // =========================================================
+
+    let downloadUrl = "";
+
+    let tituloAtual = "Vídeo V8 Play+";
+
+
+    // =========================================================
+    // LIMPAR URL
+    // =========================================================
+
+    function limparUrl(url) {
+
+        if (!url) {
+            return "";
+        }
+
+        return String(url)
+            .trim()
+            .replace(/^["']|["']$/g, "");
+
+    }
+
+
+    // =========================================================
+    // EXTRAIR ID DO YOUTUBE
+    // =========================================================
+
+    function extrairYoutubeId(url) {
+
+        if (!url) {
+            return null;
+        }
+
+        const valor =
+            limparUrl(url);
+
+        try {
+
+            const urlObj =
+                new URL(valor);
+
+            const host =
+                urlObj.hostname
+                    .toLowerCase()
+                    .replace("www.", "")
+                    .replace("m.", "");
+
+            // youtube.com/watch?v=ID
+            if (
+                host === "youtube.com" ||
+                host === "youtube-nocookie.com"
+            ) {
+
+                const id =
+                    urlObj.searchParams.get("v");
+
+                if (id) {
+                    return id;
+                }
+
+                // /embed/ID
+                const embedMatch =
+                    urlObj.pathname.match(
+                        /\/embed\/([^/?]+)/
+                    );
+
+                if (embedMatch) {
+                    return embedMatch[1];
+                }
+
+                // /shorts/ID
+                const shortsMatch =
+                    urlObj.pathname.match(
+                        /\/shorts\/([^/?]+)/
+                    );
+
+                if (shortsMatch) {
+                    return shortsMatch[1];
+                }
+
+                // /live/ID
+                const liveMatch =
+                    urlObj.pathname.match(
+                        /\/live\/([^/?]+)/
+                    );
+
+                if (liveMatch) {
+                    return liveMatch[1];
+                }
             }
 
             // youtu.be/ID
-            match = url.match(/youtu\.be\/([\w-]+)/);
-            if (match) {
-                return `https://www.youtube.com/embed/${match[1]}`;
+            if (host === "youtu.be") {
+
+                const id =
+                    urlObj.pathname
+                        .split("/")
+                        .filter(Boolean)[0];
+
+                if (id) {
+                    return id;
+                }
             }
 
-            // já é link de embed (youtube.com/embed/... ou player.vimeo.com/...)
-            return url;
         }
 
-        async function inicializarPlayer() {
-            let tituloFinal = "Vídeo V8 Play+";
-            let linkMidia = "";
+        catch (erro) {
 
-            if (itemId && colecao) {
-                try {
-                    const docRef = doc(db, colecao, itemId);
-                    const docSnap = await getDoc(docRef);
-                    if (docSnap.exists()) {
-                        const data = docSnap.data();
-                        tituloFinal = data.titulo || tituloFinal;
+            console.warn(
+                "URL do vídeo não pôde ser analisada:",
+                erro
+            );
 
-                        if (modoTrailer) {
-                            // No modo trailer, usa SOMENTE o campo "trailer".
-                            // Não cai para o filme/episódio completo — evita
-                            // vazar o conteúdo pago para quem não comprou.
-                            linkMidia = data.trailer || "";
-                            tituloFinal = `${tituloFinal} - Trailer`;
-                            downloadUrl = ""; // não oferece download do trailer
-                        } else {
-                            linkMidia = data.video1 || data.video2 || data.video3 || data.embed || data.video || data.arquivoDownload;
-                            downloadUrl = data.arquivoDownload || data.video1 || data.video2 || data.video3 || data.video;
-                        }
-                    }
-                } catch (e) {
-                    console.error("Erro ao buscar dados do vídeo:", e);
-                }
-            } else if (directVideoUrl) {
-                linkMidia = decodeURIComponent(directVideoUrl);
-                downloadUrl = linkMidia;
-                if (directTitle) tituloFinal = decodeURIComponent(directTitle);
+        }
+
+        return null;
+
+    }
+
+
+    // =========================================================
+    // VERIFICAR SE É ARQUIVO DE VÍDEO
+    // =========================================================
+
+    function ehArquivoDeVideo(url) {
+
+        if (!url) {
+            return false;
+        }
+
+        try {
+
+            const urlObj =
+                new URL(url);
+
+            const caminho =
+                urlObj.pathname
+                    .toLowerCase();
+
+            return (
+                caminho.endsWith(".mp4") ||
+                caminho.endsWith(".webm") ||
+                caminho.endsWith(".ogg") ||
+                caminho.endsWith(".mov") ||
+                caminho.endsWith(".m4v")
+            );
+
+        }
+
+        catch {
+
+            const semQuery =
+                url.split("?")[0]
+                    .split("#")[0]
+                    .toLowerCase();
+
+            return (
+                semQuery.endsWith(".mp4") ||
+                semQuery.endsWith(".webm") ||
+                semQuery.endsWith(".ogg") ||
+                semQuery.endsWith(".mov") ||
+                semQuery.endsWith(".m4v")
+            );
+
+        }
+
+    }
+
+
+    // =========================================================
+    // VERIFICAR SE É CÓDIGO IFRAME
+    // =========================================================
+
+    function ehCodigoIframe(valor) {
+
+        if (!valor) {
+            return false;
+        }
+
+        return (
+            /<iframe[\s\S]*?>/i.test(valor)
+        );
+
+    }
+
+
+    // =========================================================
+    // CRIAR IFRAME
+    // =========================================================
+
+    function criarIframe(url) {
+
+        const iframe =
+            document.createElement("iframe");
+
+        iframe.src =
+            url;
+
+        iframe.allow =
+            "autoplay; fullscreen; picture-in-picture; encrypted-media";
+
+        iframe.allowFullscreen =
+            true;
+
+        iframe.referrerPolicy =
+            "strict-origin-when-cross-origin";
+
+        iframe.setAttribute(
+            "title",
+            tituloAtual
+        );
+
+        return iframe;
+
+    }
+
+
+    // =========================================================
+    // MOSTRAR ERRO
+    // =========================================================
+
+    function mostrarErro(mensagem, detalhe = "") {
+
+        loading?.remove();
+
+        container.innerHTML = "";
+
+        const erro =
+            document.createElement("div");
+
+        erro.className =
+            "erro-player";
+
+        erro.innerHTML = `
+            <strong>⚠️ ${mensagem}</strong>
+            ${
+                detalhe
+                    ? `<small>${detalhe}</small>`
+                    : ""
             }
+        `;
 
-            // RASTREIO NO CONSOLE
-            console.log("🔗 LINK CAPTURADO DO BANCO:", linkMidia);
+        container.appendChild(erro);
 
-            titleEl.innerText = tituloFinal;
-            document.title = `${tituloFinal} - V8 Play+`;
+    }
 
-            if (!linkMidia) {
-                const msgErro = modoTrailer
+
+    // =========================================================
+    // YOUTUBE
+    // =========================================================
+
+    function abrirYoutube(id) {
+
+        const embedUrl =
+            `https://www.youtube.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0&modestbranding=1`;
+
+        console.log(
+            "▶️ YouTube detectado:",
+            embedUrl
+        );
+
+        loading?.remove();
+
+        container.innerHTML = "";
+
+        const iframe =
+            criarIframe(embedUrl);
+
+        container.appendChild(
+            iframe
+        );
+
+        playerInfo.innerText =
+            "Player YouTube";
+
+    }
+
+
+    // =========================================================
+    // ARQUIVO DIRETO
+    // =========================================================
+
+    function abrirVideoDireto(url) {
+
+        console.log(
+            "🎬 Arquivo de vídeo detectado:",
+            url
+        );
+
+        loading?.remove();
+
+        container.innerHTML = "";
+
+        const video =
+            document.createElement("video");
+
+        video.controls =
+            true;
+
+        video.autoplay =
+            true;
+
+        video.playsInline =
+            true;
+
+        video.preload =
+            "metadata";
+
+        video.src =
+            url;
+
+        video.addEventListener(
+            "error",
+            () => {
+
+                console.error(
+                    "Erro ao carregar arquivo de vídeo:",
+                    video.error
+                );
+
+                mostrarErro(
+                    "Não foi possível reproduzir este arquivo.",
+                    url
+                );
+
+            }
+        );
+
+        container.appendChild(
+            video
+        );
+
+        playerInfo.innerText =
+            "Vídeo direto";
+
+    }
+
+
+    // =========================================================
+    // IFRAME EXISTENTE
+    // =========================================================
+
+    function abrirIframeHtml(html) {
+
+        loading?.remove();
+
+        container.innerHTML = "";
+
+        const div =
+            document.createElement("div");
+
+        div.innerHTML =
+            html;
+
+        const iframe =
+            div.querySelector("iframe");
+
+        if (!iframe) {
+
+            mostrarErro(
+                "Código de player inválido."
+            );
+
+            return;
+
+        }
+
+        iframe.style.position =
+            "absolute";
+
+        iframe.style.inset =
+            "0";
+
+        iframe.style.width =
+            "100%";
+
+        iframe.style.height =
+            "100%";
+
+        iframe.style.border =
+            "0";
+
+        iframe.setAttribute(
+            "allow",
+            "autoplay; fullscreen; picture-in-picture; encrypted-media"
+        );
+
+        iframe.setAttribute(
+            "allowfullscreen",
+            ""
+        );
+
+        container.appendChild(
+            iframe
+        );
+
+        playerInfo.innerText =
+            "Player externo";
+
+    }
+
+
+    // =========================================================
+    // ABRIR MÍDIA
+    // =========================================================
+
+    function abrirMidia(url) {
+
+        const link =
+            limparUrl(url);
+
+        if (!link) {
+
+            mostrarErro(
+                modoTrailer
                     ? "Trailer não cadastrado para este título."
-                    : "Endereço do vídeo não encontrado.";
-                container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ff6b6b;font-size:0.95rem;">${msgErro}</div>`;
-                return;
-            }
+                    : "Endereço do vídeo não encontrado."
+            );
 
-            const linkLimpo = converterParaEmbedSeNecessario(linkMidia.trim());
-            const ehArquivoDireto = linkLimpo.endsWith('.mp4') || linkLimpo.endsWith('.mkv') || linkLimpo.endsWith('.webm') || linkLimpo.endsWith('.mov');
+            return;
 
-            container.innerHTML = '';
-
-            if (linkLimpo.includes('<iframe')) {
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = linkLimpo;
-                const iframeEl = tempDiv.querySelector('iframe');
-                if (iframeEl) {
-                    iframeEl.style.width = '100%';
-                    iframeEl.style.height = '100%';
-                    iframeEl.style.position = 'absolute';
-                    iframeEl.style.top = '0';
-                    iframeEl.style.left = '0';
-                    iframeEl.style.border = 'none';
-                    iframeEl.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
-                    container.appendChild(iframeEl);
-                } else {
-                    container.innerHTML = linkLimpo;
-                }
-            } else if (!ehArquivoDireto) {
-                const iframeEl = document.createElement('iframe');
-                iframeEl.src = linkLimpo;
-                iframeEl.style.width = '100%';
-                iframeEl.style.height = '100%';
-                iframeEl.style.position = 'absolute';
-                iframeEl.style.top = '0';
-                iframeEl.style.left = '0';
-                iframeEl.style.border = 'none';
-                iframeEl.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
-                container.appendChild(iframeEl);
-            } else {
-                const videoEl = document.createElement('video');
-                videoEl.id = 'main-video';
-                videoEl.controls = true;
-                videoEl.autoplay = true;
-                videoEl.src = linkLimpo;
-                videoEl.style.width = '100%';
-                videoEl.style.height = '100%';
-                videoEl.style.position = 'absolute';
-                videoEl.style.top = '0';
-                videoEl.style.left = '0';
-                container.appendChild(videoEl);
-            }
-
-            btnDownload.onclick = () => {
-                if (downloadUrl && !downloadUrl.includes('abyss')) {
-                    const a = document.createElement('a');
-                    a.href = downloadUrl;
-                    a.download = `${tituloFinal}.mp4`;
-                    a.target = '_blank';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                } else {
-                    alert("O download direto não está disponível para players externos do Abyss.");
-                }
-            };
         }
 
-        inicializarPlayer();
-    </script>
+
+        console.log(
+            "🔗 LINK CAPTURADO DO BANCO:",
+            link
+        );
+
+
+        // -----------------------------------------------------
+        // IFRAME HTML
+        // -----------------------------------------------------
+
+        if (ehCodigoIframe(link)) {
+
+            console.log(
+                "🖼️ Código iframe detectado."
+            );
+
+            abrirIframeHtml(
+                link
+            );
+
+            return;
+
+        }
+
+
+        // -----------------------------------------------------
+        // YOUTUBE
+        // -----------------------------------------------------
+
+        const youtubeId =
+            extrairYoutubeId(link);
+
+        if (youtubeId) {
+
+            abrirYoutube(
+                youtubeId
+            );
+
+            return;
+
+        }
+
+
+        // -----------------------------------------------------
+        // ARQUIVO DIRETO
+        // -----------------------------------------------------
+
+        if (
+            ehArquivoDeVideo(link)
+        ) {
+
+            abrirVideoDireto(
+                link
+            );
+
+            return;
+
+        }
+
+
+        // -----------------------------------------------------
+        // PLAYER EXTERNO
+        // -----------------------------------------------------
+
+        console.log(
+            "🌐 Player externo detectado:",
+            link
+        );
+
+        loading?.remove();
+
+        container.innerHTML = "";
+
+        const iframe =
+            criarIframe(link);
+
+        container.appendChild(
+            iframe
+        );
+
+        playerInfo.innerText =
+            "Player externo";
+
+    }
+
+
+    // =========================================================
+    // DOWNLOAD
+    // =========================================================
+
+    function configurarDownload() {
+
+        if (
+            !downloadUrl ||
+            modoTrailer
+        ) {
+
+            btnDownload.disabled =
+                true;
+
+            return;
+
+        }
+
+
+        btnDownload.disabled =
+            false;
+
+
+        btnDownload.onclick =
+            () => {
+
+                const url =
+                    limparUrl(
+                        downloadUrl
+                    );
+
+                if (!url) {
+                    return;
+                }
+
+                window.open(
+                    url,
+                    "_blank",
+                    "noopener,noreferrer"
+                );
+
+            };
+
+    }
+
+
+    // =========================================================
+    // INICIALIZAR
+    // =========================================================
+
+    async function inicializarPlayer() {
+
+        console.log(
+            "🚀 Inicializando V8 Play+ Player..."
+        );
+
+        console.log(
+            "ID:",
+            itemId
+        );
+
+        console.log(
+            "Coleção:",
+            colecao
+        );
+
+        console.log(
+            "Trailer:",
+            modoTrailer
+        );
+
+
+        let linkMidia =
+            "";
+
+        tituloAtual =
+            "Vídeo V8 Play+";
+
+
+        // =====================================================
+        // FIRESTORE
+        // =====================================================
+
+        if (
+            itemId &&
+            colecao
+        ) {
+
+            try {
+
+                const docRef =
+                    doc(
+                        db,
+                        colecao,
+                        itemId
+                    );
+
+                console.log(
+                    "📡 Buscando documento:",
+                    colecao,
+                    itemId
+                );
+
+
+                const docSnap =
+                    await getDoc(
+                        docRef
+                    );
+
+
+                if (
+                    !docSnap.exists()
+                ) {
+
+                    mostrarErro(
+                        "Título não encontrado.",
+                        `Documento: ${itemId}`
+                    );
+
+                    return;
+
+                }
+
+
+                const data =
+                    docSnap.data();
+
+
+                console.log(
+                    "📦 Dados recebidos do Firestore:",
+                    data
+                );
+
+
+                tituloAtual =
+                    data.titulo ||
+                    tituloAtual;
+
+
+                // =================================================
+                // TRAILER
+                // =================================================
+
+                if (
+                    modoTrailer
+                ) {
+
+                    linkMidia =
+                        data.trailer ||
+                        "";
+
+                    tituloAtual =
+                        `${tituloAtual} - Trailer`;
+
+                    downloadUrl =
+                        "";
+
+                }
+
+
+                // =================================================
+                // CONTEÚDO PRINCIPAL
+                // =================================================
+
+                else {
+
+                    linkMidia =
+                        data.video1 ||
+                        data.video2 ||
+                        data.video3 ||
+                        data.embed ||
+                        data.video ||
+                        data.arquivoDownload ||
+                        "";
+
+                    downloadUrl =
+                        data.arquivoDownload ||
+                        "";
+
+                }
+
+            }
+
+            catch (erro) {
+
+                console.error(
+                    "❌ Erro ao buscar vídeo no Firestore:",
+                    erro
+                );
+
+                mostrarErro(
+                    "Erro ao carregar o conteúdo.",
+                    erro.message || String(erro)
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        // =====================================================
+        // LINK DIRETO
+        // =====================================================
+
+        else if (
+            directVideoUrl
+        ) {
+
+            linkMidia =
+                decodeURIComponent(
+                    directVideoUrl
+                );
+
+            downloadUrl =
+                linkMidia;
+
+
+            if (
+                directTitle
+            ) {
+
+                tituloAtual =
+                    decodeURIComponent(
+                        directTitle
+                    );
+
+            }
+
+        }
+
+
+        else {
+
+            mostrarErro(
+                "Parâmetros do player ausentes.",
+                "O endereço precisa conter id e colecao."
+            );
+
+            return;
+
+        }
+
+
+        // =====================================================
+        // TÍTULO
+        // =====================================================
+
+        titleEl.innerText =
+            tituloAtual;
+
+        document.title =
+            `${tituloAtual} - V8 Play+`;
+
+
+        // =====================================================
+        // MOSTRAR VÍDEO
+        // =====================================================
+
+        abrirMidia(
+            linkMidia
+        );
+
+
+        // =====================================================
+        // DOWNLOAD
+        // =====================================================
+
+        configurarDownload();
+
+    }
+
+
+    // =========================================================
+    // INICIAR
+    // =========================================================
+
+    inicializarPlayer();
+
+</script>
+
 </body>
 </html>
+```
