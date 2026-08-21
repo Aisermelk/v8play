@@ -34,8 +34,8 @@
             --surface: #121216;
             --surface2: #18181d;
 
-            --text: #fff;
-            --text2: #aaa;
+            --text: #ffffff;
+            --text2: #aaaaaa;
 
             --danger: #ff4d4d;
 
@@ -48,14 +48,15 @@
             box-sizing: border-box;
         }
 
-        html {
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
             background: var(--bg);
-            scroll-behavior: smooth;
         }
 
         body {
             min-height: 100vh;
-            background: var(--bg);
             color: var(--text);
             font-family: "Poppins", sans-serif;
             overflow-x: hidden;
@@ -65,12 +66,17 @@
             font-family: inherit;
         }
 
+        .hidden {
+            display: none !important;
+        }
+
         /* =====================================================
            HEADER
         ===================================================== */
 
         header {
             position: fixed;
+
             top: 0;
             left: 0;
 
@@ -89,8 +95,8 @@
             background:
                 linear-gradient(
                     to bottom,
-                    rgba(8, 8, 9, .98),
-                    rgba(8, 8, 9, .82)
+                    rgba(8,8,9,.98),
+                    rgba(8,8,9,.82)
                 );
 
             backdrop-filter: blur(10px);
@@ -127,7 +133,9 @@
         .btn-voltar:hover {
             background: var(--primary);
             color: #000;
-            transform: translateX(-2px);
+
+            transform:
+                translateX(-2px);
         }
 
         .logo {
@@ -161,7 +169,6 @@
 
         main {
             width: 100%;
-
             min-height: 100vh;
 
             padding-top: 70px;
@@ -203,8 +210,9 @@
                 rgba(0,0,0,.6);
         }
 
-        video,
-        iframe {
+        #videoPlayer,
+        #youtubePlayer,
+        #iframePlayer {
             position: absolute;
 
             inset: 0;
@@ -219,7 +227,7 @@
             background: #000;
         }
 
-        video {
+        #videoPlayer {
             object-fit: contain;
         }
 
@@ -243,11 +251,8 @@
 
             gap: 15px;
 
-            background: #000;
-        }
-
-        #loading.hidden {
-            display: none;
+            background:
+                rgba(0,0,0,.92);
         }
 
         .spinner {
@@ -268,15 +273,21 @@
         }
 
         @keyframes girar {
+
             to {
-                transform: rotate(360deg);
+                transform:
+                    rotate(360deg);
             }
+
         }
 
         #loadingText {
             color: #aaa;
+
             font-size: .9rem;
+
             text-align: center;
+
             padding: 0 20px;
         }
 
@@ -301,11 +312,7 @@
             text-align: center;
 
             background:
-                rgba(0,0,0,.96);
-        }
-
-        #erroPlayer.hidden {
-            display: none;
+                rgba(0,0,0,.97);
         }
 
         .erro-box {
@@ -325,6 +332,7 @@
 
         .erro-box h2 {
             font-size: 1.35rem;
+
             margin-bottom: 10px;
         }
 
@@ -358,8 +366,11 @@
         }
 
         .btn-retry:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
+            background:
+                var(--primary-hover);
+
+            transform:
+                translateY(-1px);
         }
 
         /* =====================================================
@@ -479,19 +490,17 @@
                 rgba(0,0,0,.5);
         }
 
-        .hidden {
-            display: none !important;
-        }
-
         /* =====================================================
            MOBILE
         ===================================================== */
 
-        @media (max-width: 700px) {
+        @media (max-width:700px) {
 
             header {
                 height: 60px;
-                padding: 8px 4%;
+
+                padding:
+                    8px 4%;
             }
 
             main {
@@ -535,9 +544,10 @@
             .descricao {
                 font-size: .85rem;
             }
+
         }
 
-        @media (max-width: 430px) {
+        @media (max-width:430px) {
 
             .logo span {
                 display: none;
@@ -546,16 +556,14 @@
             .logo-img {
                 margin-right: 0;
             }
+
         }
 
     </style>
+
 </head>
 
 <body>
-
-<!-- =========================================================
-     HEADER
-========================================================= -->
 
 <header>
 
@@ -563,8 +571,8 @@
         class="btn-voltar"
         id="btnVoltar"
         type="button"
-        title="Voltar"
         aria-label="Voltar"
+        title="Voltar"
     >
         <i class="fa-solid fa-arrow-left"></i>
     </button>
@@ -588,10 +596,6 @@
 </header>
 
 
-<!-- =========================================================
-     MAIN
-========================================================= -->
-
 <main>
 
     <div class="player-wrapper">
@@ -605,13 +609,13 @@
                 <div class="spinner"></div>
 
                 <div id="loadingText">
-                    Carregando vídeo...
+                    Carregando conteúdo...
                 </div>
 
             </div>
 
 
-            <!-- PLAYER MP4 -->
+            <!-- VIDEO HTML5 -->
 
             <video
                 id="videoPlayer"
@@ -619,15 +623,37 @@
                 controls
                 playsinline
                 preload="metadata"
+                crossorigin="anonymous"
             ></video>
 
 
-            <!-- PLAYER IFRAME / YOUTUBE -->
+            <!-- YOUTUBE -->
 
             <iframe
                 id="youtubePlayer"
                 class="hidden"
-                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                allow="
+                    autoplay;
+                    encrypted-media;
+                    picture-in-picture;
+                    fullscreen
+                "
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+
+
+            <!-- IFRAME GENÉRICO -->
+
+            <iframe
+                id="iframePlayer"
+                class="hidden"
+                allow="
+                    autoplay;
+                    encrypted-media;
+                    picture-in-picture;
+                    fullscreen
+                "
                 allowfullscreen
                 referrerpolicy="strict-origin-when-cross-origin"
             ></iframe>
@@ -642,7 +668,9 @@
 
                 <div class="erro-box">
 
-                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <i
+                        class="fa-solid fa-circle-exclamation"
+                    ></i>
 
                     <h2>
                         Não foi possível carregar o vídeo
@@ -658,8 +686,13 @@
                         id="btnRetry"
                         type="button"
                     >
-                        <i class="fa-solid fa-rotate"></i>
+
+                        <i
+                            class="fa-solid fa-rotate"
+                        ></i>
+
                         Tentar novamente
+
                     </button>
 
                 </div>
@@ -677,8 +710,11 @@
                 id="trailerBadge"
                 class="trailer-badge hidden"
             >
+
                 <i class="fa-solid fa-film"></i>
+
                 Trailer
+
             </div>
 
             <h1 id="titulo">
@@ -689,9 +725,7 @@
 
                 <span id="ano"></span>
 
-                <span
-                    id="separadorAno"
-                >
+                <span id="separadorAno">
                     •
                 </span>
 
@@ -713,21 +747,17 @@
 </main>
 
 
-<!-- NOTIFICAÇÃO -->
-
 <div
     id="notification"
     class="hidden"
     role="status"
     aria-live="polite"
 >
+
     <span id="notificationText"></span>
+
 </div>
 
-
-<!-- =========================================================
-     FIREBASE
-========================================================= -->
 
 <script type="module">
 
@@ -736,7 +766,8 @@
     import {
         doc,
         getDoc
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    } from
+    "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
     /* =====================================================
@@ -744,41 +775,68 @@
     ===================================================== */
 
     const videoPlayer =
-        document.getElementById("videoPlayer");
+        document.getElementById(
+            "videoPlayer"
+        );
 
     const youtubePlayer =
-        document.getElementById("youtubePlayer");
+        document.getElementById(
+            "youtubePlayer"
+        );
+
+    const iframePlayer =
+        document.getElementById(
+            "iframePlayer"
+        );
 
     const loading =
-        document.getElementById("loading");
+        document.getElementById(
+            "loading"
+        );
 
     const loadingText =
-        document.getElementById("loadingText");
+        document.getElementById(
+            "loadingText"
+        );
 
     const erroPlayer =
-        document.getElementById("erroPlayer");
+        document.getElementById(
+            "erroPlayer"
+        );
 
     const erroTexto =
-        document.getElementById("erroTexto");
+        document.getElementById(
+            "erroTexto"
+        );
 
     const titulo =
-        document.getElementById("titulo");
+        document.getElementById(
+            "titulo"
+        );
 
     const ano =
-        document.getElementById("ano");
+        document.getElementById(
+            "ano"
+        );
 
     const categoria =
-        document.getElementById("categoria");
+        document.getElementById(
+            "categoria"
+        );
 
     const descricao =
-        document.getElementById("descricao");
+        document.getElementById(
+            "descricao"
+        );
 
     const trailerBadge =
-        document.getElementById("trailerBadge");
+        document.getElementById(
+            "trailerBadge"
+        );
 
 
     /* =====================================================
-       PARÂMETROS DA URL
+       URL
     ===================================================== */
 
     const params =
@@ -810,7 +868,7 @@
 
 
     /* =====================================================
-       NORMALIZAR URL
+       UTILITÁRIOS
     ===================================================== */
 
     function limparUrl(url) {
@@ -823,24 +881,39 @@
     }
 
 
+    function escaparTexto(valor) {
+
+        return String(
+            valor ?? ""
+        );
+
+    }
+
+
     /* =====================================================
-       YOUTUBE ID
+       YOUTUBE
     ===================================================== */
 
     function extrairYoutubeID(url) {
 
-        url = limparUrl(url);
+        url =
+            limparUrl(url);
 
         if (!url)
             return null;
 
 
-        /* ID direto */
+        /*
+         * ID direto
+         */
 
         if (
-            /^[a-zA-Z0-9_-]{11}$/.test(url)
+            /^[a-zA-Z0-9_-]{11}$/
+                .test(url)
         ) {
+
             return url;
+
         }
 
 
@@ -849,40 +922,80 @@
             const parsed =
                 new URL(url);
 
-
-            const hostname =
+            const host =
                 parsed.hostname
                     .toLowerCase();
 
 
-            /* youtube.com */
+            /*
+             * youtu.be
+             */
 
             if (
-                hostname === "youtube.com" ||
-                hostname.endsWith(".youtube.com")
+                host === "youtu.be"
             ) {
-
-                const videoId =
-                    parsed.searchParams.get("v");
-
-                if (videoId) {
-
-                    return videoId
-                        .substring(0, 11);
-
-                }
-
 
                 const partes =
                     parsed.pathname
                         .split("/")
                         .filter(Boolean);
 
+                if (
+                    partes[0]
+                ) {
+
+                    return partes[0]
+                        .substring(0,11);
+
+                }
+
+            }
+
+
+            /*
+             * youtube.com
+             */
+
+            if (
+                host === "youtube.com" ||
+                host === "www.youtube.com" ||
+                host.endsWith(
+                    ".youtube.com"
+                )
+            ) {
+
+                /*
+                 * watch?v=
+                 */
+
+                const v =
+                    parsed.searchParams
+                        .get("v");
+
+                if (v) {
+
+                    return v
+                        .substring(0,11);
+
+                }
+
+
+                /*
+                 * embed
+                 * shorts
+                 * live
+                 */
+
+                const partes =
+                    parsed.pathname
+                        .split("/")
+                        .filter(Boolean);
 
                 const tipos = [
                     "embed",
                     "shorts",
-                    "live"
+                    "live",
+                    "v"
                 ];
 
 
@@ -891,37 +1004,22 @@
                 ) {
 
                     const index =
-                        partes.indexOf(tipo);
+                        partes.indexOf(
+                            tipo
+                        );
 
                     if (
-                        index !== -1 &&
+                        index >= 0 &&
                         partes[index + 1]
                     ) {
 
                         return partes[
                             index + 1
-                        ].substring(0, 11);
+                        ].substring(0,11);
 
                     }
 
                 }
-
-            }
-
-
-            /* youtu.be */
-
-            if (
-                hostname === "youtu.be"
-            ) {
-
-                const id =
-                    parsed.pathname
-                        .split("/")
-                        .filter(Boolean)[0];
-
-                if (id)
-                    return id.substring(0, 11);
 
             }
 
@@ -930,14 +1028,16 @@
         catch (erro) {
 
             console.warn(
-                "URL não pôde ser analisada:",
+                "URL inválida:",
                 url
             );
 
         }
 
 
-        /* Regex final */
+        /*
+         * Última tentativa
+         */
 
         const match =
             url.match(
@@ -956,9 +1056,10 @@
        DETECTAR TIPO
     ===================================================== */
 
-    function detectarTipoVideo(url) {
+    function detectarTipo(url) {
 
-        url = limparUrl(url);
+        url =
+            limparUrl(url);
 
         if (!url)
             return "nenhum";
@@ -977,12 +1078,13 @@
             url.toLowerCase();
 
 
-        /* Iframes conhecidos */
+        /*
+         * Iframe
+         */
 
         if (
-            lower.includes("embed") ||
-            lower.includes("iframe") ||
-            lower.includes("player")
+            lower.includes("<iframe") ||
+            lower.includes("iframe")
         ) {
 
             return "iframe";
@@ -990,13 +1092,13 @@
         }
 
 
-        /* Vídeos */
+        /*
+         * Arquivos de vídeo
+         */
 
         if (
-            lower.includes(".mp4") ||
-            lower.includes(".webm") ||
-            lower.includes(".ogg") ||
-            lower.includes(".m3u8")
+            /\.(mp4|webm|ogg)(\?|#|$)/i
+                .test(url)
         ) {
 
             return "video";
@@ -1005,9 +1107,22 @@
 
 
         /*
-         * Se não sabemos exatamente
-         * o formato, tentamos como
-         * vídeo HTML5 primeiro.
+         * HLS
+         */
+
+        if (
+            /\.m3u8(\?|#|$)/i
+                .test(url)
+        ) {
+
+            return "video";
+
+        }
+
+
+        /*
+         * Links desconhecidos:
+         * tentamos HTML5.
          */
 
         return "video";
@@ -1020,11 +1135,12 @@
     ===================================================== */
 
     function mostrarLoading(
-        mensagem = "Carregando vídeo..."
+        mensagem
     ) {
 
         loadingText.textContent =
-            mensagem;
+            mensagem ||
+            "Carregando...";
 
         loading.classList.remove(
             "hidden"
@@ -1057,7 +1173,8 @@
         esconderLoading();
 
         erroTexto.textContent =
-            mensagem;
+            mensagem ||
+            "Erro ao carregar vídeo.";
 
         erroPlayer.classList.remove(
             "hidden"
@@ -1072,7 +1189,17 @@
 
     function esconderPlayers() {
 
-        videoPlayer.pause();
+        /*
+         * HTML5
+         */
+
+        try {
+
+            videoPlayer.pause();
+
+        }
+
+        catch {}
 
         videoPlayer.removeAttribute(
             "src"
@@ -1085,10 +1212,24 @@
         );
 
 
-        youtubePlayer.src =
-            "";
+        /*
+         * YouTube
+         */
+
+        youtubePlayer.src = "";
 
         youtubePlayer.classList.add(
+            "hidden"
+        );
+
+
+        /*
+         * Iframe
+         */
+
+        iframePlayer.src = "";
+
+        iframePlayer.classList.add(
             "hidden"
         );
 
@@ -1096,10 +1237,12 @@
 
 
     /* =====================================================
-       CARREGAR YOUTUBE
+       YOUTUBE PLAYER
     ===================================================== */
 
-    function carregarYoutube(url) {
+    function carregarYoutube(
+        url
+    ) {
 
         const id =
             extrairYoutubeID(url);
@@ -1108,7 +1251,7 @@
         if (!id) {
 
             mostrarErro(
-                "O endereço do YouTube não é válido."
+                "O link do YouTube não é válido."
             );
 
             return;
@@ -1118,28 +1261,32 @@
 
         esconderPlayers();
 
+        mostrarLoading(
+            "Carregando YouTube..."
+        );
+
 
         youtubePlayer.classList.remove(
             "hidden"
         );
 
 
-        mostrarLoading(
-            "Carregando YouTube..."
-        );
+        const query =
+            new URLSearchParams({
 
+                autoplay: "1",
 
-        const parametros =
-            [
-                "autoplay=1",
-                "rel=0",
-                "modestbranding=1",
-                "playsinline=1"
-            ].join("&");
+                rel: "0",
+
+                playsinline: "1",
+
+                modestbranding: "1"
+
+            });
 
 
         youtubePlayer.src =
-            `https://www.youtube.com/embed/${id}?${parametros}`;
+            `https://www.youtube.com/embed/${id}?${query.toString()}`;
 
 
         youtubePlayer.onload =
@@ -1151,27 +1298,37 @@
 
 
         /*
-         * Alguns navegadores podem
-         * não disparar onload do iframe.
+         * Fallback para navegadores
+         * que não disparam corretamente
+         * o evento do iframe.
          */
 
         setTimeout(
             () => {
 
-                esconderLoading();
+                if (
+                    !youtubePlayer.classList
+                        .contains("hidden")
+                ) {
+
+                    esconderLoading();
+
+                }
 
             },
-            3000
+            3500
         );
 
     }
 
 
     /* =====================================================
-       CARREGAR IFRAME
+       IFRAME
     ===================================================== */
 
-    function carregarIframe(url) {
+    function carregarIframe(
+        url
+    ) {
 
         if (!url) {
 
@@ -1184,24 +1341,59 @@
         }
 
 
+        /*
+         * Caso o Firebase tenha
+         * armazenado literalmente
+         * um iframe HTML.
+         */
+
+        if (
+            url.includes("<iframe")
+        ) {
+
+            const match =
+                url.match(
+                    /src=["']([^"']+)["']/i
+                );
+
+
+            if (match) {
+
+                url =
+                    match[1];
+
+            }
+
+            else {
+
+                mostrarErro(
+                    "Código iframe inválido."
+                );
+
+                return;
+
+            }
+
+        }
+
+
         esconderPlayers();
-
-
-        youtubePlayer.classList.remove(
-            "hidden"
-        );
-
 
         mostrarLoading(
             "Carregando player..."
         );
 
 
-        youtubePlayer.src =
+        iframePlayer.classList.remove(
+            "hidden"
+        );
+
+
+        iframePlayer.src =
             url;
 
 
-        youtubePlayer.onload =
+        iframePlayer.onload =
             () => {
 
                 esconderLoading();
@@ -1215,17 +1407,19 @@
                 esconderLoading();
 
             },
-            3000
+            3500
         );
 
     }
 
 
     /* =====================================================
-       CARREGAR VÍDEO HTML5
+       HTML5 VIDEO
     ===================================================== */
 
-    function carregarVideo(url) {
+    function carregarVideo(
+        url
+    ) {
 
         if (!url) {
 
@@ -1240,29 +1434,37 @@
 
         esconderPlayers();
 
+        mostrarLoading(
+            "Carregando vídeo..."
+        );
+
 
         videoPlayer.classList.remove(
             "hidden"
         );
 
 
-        mostrarLoading(
-            "Carregando vídeo..."
-        );
-
-
-        videoPlayer.src =
-            url;
-
-
-        videoPlayer.load();
-
+        /*
+         * Eventos
+         */
 
         videoPlayer.onloadedmetadata =
             () => {
 
                 console.log(
                     "✅ Metadata carregada"
+                );
+
+                esconderLoading();
+
+            };
+
+
+        videoPlayer.onloadeddata =
+            () => {
+
+                console.log(
+                    "✅ Dados carregados"
                 );
 
                 esconderLoading();
@@ -1291,23 +1493,20 @@
                 );
 
                 mostrarErro(
-                    "Este vídeo não pôde ser reproduzido. O link pode estar indisponível, protegido ou não ser compatível com o navegador."
+                    "O vídeo não pôde ser reproduzido. Verifique se o endereço está correto e se o servidor permite reprodução no navegador."
                 );
 
             };
 
 
         /*
-         * Não forçamos autoplay
-         * para evitar bloqueio do navegador.
+         * Definir fonte
          */
 
-        videoPlayer.onloadeddata =
-            () => {
+        videoPlayer.src =
+            url;
 
-                esconderLoading();
-
-            };
+        videoPlayer.load();
 
     }
 
@@ -1316,7 +1515,9 @@
        ABRIR VÍDEO
     ===================================================== */
 
-    function abrirVideo(url) {
+    function abrirVideo(
+        url
+    ) {
 
         url =
             limparUrl(url);
@@ -1325,7 +1526,9 @@
         if (!url) {
 
             mostrarErro(
-                "Nenhum vídeo foi informado para este conteúdo."
+                isTrailer
+                    ? "Este título não possui trailer disponível."
+                    : "Este título não possui vídeo disponível."
             );
 
             return;
@@ -1334,49 +1537,57 @@
 
 
         console.log(
-            "🎬 Abrindo vídeo:",
+            "🎬 URL:",
             url
         );
 
 
-        mostrarLoading(
-            "Preparando vídeo..."
-        );
-
-
         const tipo =
-            detectarTipoVideo(url);
+            detectarTipo(url);
 
 
         console.log(
-            "🎥 Tipo detectado:",
+            "🎥 Tipo:",
             tipo
         );
 
 
-        if (
-            tipo === "youtube"
-        ) {
+        switch (tipo) {
 
-            carregarYoutube(url);
+            case "youtube":
 
-            return;
+                carregarYoutube(
+                    url
+                );
+
+                break;
+
+
+            case "iframe":
+
+                carregarIframe(
+                    url
+                );
+
+                break;
+
+
+            case "video":
+
+                carregarVideo(
+                    url
+                );
+
+                break;
+
+
+            default:
+
+                mostrarErro(
+                    "Formato de vídeo não reconhecido."
+                );
 
         }
-
-
-        if (
-            tipo === "iframe"
-        ) {
-
-            carregarIframe(url);
-
-            return;
-
-        }
-
-
-        carregarVideo(url);
 
     }
 
@@ -1385,7 +1596,7 @@
        FIRESTORE
     ===================================================== */
 
-    async function carregarDadosFirestore() {
+    async function carregarFirestore() {
 
         if (
             !itemId ||
@@ -1393,7 +1604,7 @@
         ) {
 
             console.warn(
-                "Firestore: ID ou coleção ausentes."
+                "ID ou coleção não informados."
             );
 
             return null;
@@ -1404,7 +1615,7 @@
         try {
 
             console.log(
-                "🔥 Buscando:",
+                "🔥 Firestore:",
                 colecao,
                 itemId
             );
@@ -1427,7 +1638,7 @@
             if (!snap.exists()) {
 
                 console.warn(
-                    "Firestore: documento não encontrado."
+                    "Documento não encontrado."
                 );
 
                 return null;
@@ -1435,23 +1646,15 @@
             }
 
 
-            const dados =
-                snap.data();
-
-
-            console.log(
-                "✅ Conteúdo encontrado:",
-                dados
-            );
-
-
             return {
 
-                id: snap.id,
+                id:
+                    snap.id,
 
-                colecao,
+                colecao:
+                    colecao,
 
-                ...dados
+                ...snap.data()
 
             };
 
@@ -1472,10 +1675,78 @@
 
 
     /* =====================================================
+       VÍDEO DO ITEM
+    ===================================================== */
+
+    function obterVideo(
+        item
+    ) {
+
+        if (!item)
+            return "";
+
+
+        /*
+         * TRAILER
+         */
+
+        if (isTrailer) {
+
+            return limparUrl(
+
+                item.trailer ||
+
+                item.videoTrailer ||
+
+                item.trailerUrl ||
+
+                item.urlTrailer ||
+
+                item.video_trailer ||
+
+                videoURL
+
+            );
+
+        }
+
+
+        /*
+         * VÍDEO PRINCIPAL
+         */
+
+        return limparUrl(
+
+            item.video ||
+
+            item.video1 ||
+
+            item.video2 ||
+
+            item.video3 ||
+
+            item.embed ||
+
+            item.urlVideo ||
+
+            item.videoUrl ||
+
+            item.url ||
+
+            videoURL
+
+        );
+
+    }
+
+
+    /* =====================================================
        INFORMAÇÕES
     ===================================================== */
 
-    function preencherInformacoes(item) {
+    function preencherInformacoes(
+        item
+    ) {
 
         if (!item)
             return;
@@ -1486,19 +1757,25 @@
 
 
         titulo.textContent =
-            item.titulo ||
-            tituloURL ||
-            "V8 Play+";
+            escaparTexto(
+                item.titulo ||
+                tituloURL ||
+                "V8 Play+"
+            );
 
 
         ano.textContent =
-            item.ano || "";
+            escaparTexto(
+                item.ano || ""
+            );
 
 
         categoria.textContent =
-            item.categoria ||
-            item.tipo ||
-            "";
+            escaparTexto(
+                item.categoria ||
+                item.tipo ||
+                ""
+            );
 
 
         const separador =
@@ -1517,10 +1794,19 @@
 
         }
 
+        else {
+
+            separador.style.display =
+                "";
+
+        }
+
 
         descricao.textContent =
-            item.descricao ||
-            "Sem descrição disponível.";
+            escaparTexto(
+                item.descricao ||
+                "Sem descrição disponível."
+            );
 
 
         if (isTrailer) {
@@ -1530,41 +1816,6 @@
             );
 
         }
-
-    }
-
-
-    /* =====================================================
-       OBTER VÍDEO DO ITEM
-    ===================================================== */
-
-    function obterVideoDoItem(item) {
-
-        if (!item)
-            return "";
-
-
-        if (isTrailer) {
-
-            return limparUrl(
-                item.trailer ||
-                item.videoTrailer ||
-                item.trailerUrl ||
-                videoURL
-            );
-
-        }
-
-
-        return limparUrl(
-            item.video ||
-            item.video1 ||
-            item.video2 ||
-            item.video3 ||
-            item.embed ||
-            item.urlVideo ||
-            videoURL
-        );
 
     }
 
@@ -1580,7 +1831,6 @@
             () => {
 
                 if (
-                    document.referrer &&
                     window.history.length > 1
                 ) {
 
@@ -1615,21 +1865,23 @@
 
 
                 const url =
-                    obterVideoDoItem(
+                    obterVideo(
                         itemAtual
                     );
 
 
                 if (url) {
 
-                    abrirVideo(url);
+                    abrirVideo(
+                        url
+                    );
 
                 }
 
                 else {
 
                     mostrarErro(
-                        "Não foi possível localizar o endereço do vídeo."
+                        "Não foi possível localizar o vídeo."
                     );
 
                 }
@@ -1645,7 +1897,7 @@
     async function iniciar() {
 
         console.log(
-            "================================="
+            "======================================"
         );
 
         console.log(
@@ -1663,36 +1915,27 @@
         );
 
         console.log(
-            "Vídeo URL:",
-            videoURL
-        );
-
-        console.log(
-            "Título:",
-            tituloURL
-        );
-
-        console.log(
             "Trailer:",
             isTrailer
         );
 
         console.log(
-            "================================="
+            "======================================"
         );
 
 
         mostrarLoading(
-            "Carregando conteúdo..."
+            "Buscando conteúdo..."
         );
 
 
         /*
-         * Primeiro tenta Firestore.
+         * 1.
+         * Tenta Firebase
          */
 
         const item =
-            await carregarDadosFirestore();
+            await carregarFirestore();
 
 
         if (item) {
@@ -1703,7 +1946,7 @@
 
 
             const url =
-                obterVideoDoItem(
+                obterVideo(
                     item
                 );
 
@@ -1712,8 +1955,8 @@
 
                 mostrarErro(
                     isTrailer
-                        ? "Este título não possui trailer disponível."
-                        : "Este título não possui vídeo disponível."
+                        ? "Este conteúdo não possui trailer."
+                        : "Este conteúdo não possui vídeo."
                 );
 
                 return;
@@ -1721,7 +1964,9 @@
             }
 
 
-            abrirVideo(url);
+            abrirVideo(
+                url
+            );
 
             return;
 
@@ -1729,8 +1974,8 @@
 
 
         /*
-         * Se o Firestore não encontrou,
-         * usamos a URL enviada pelo index.
+         * 2.
+         * Fallback pela URL
          */
 
         if (videoURL) {
@@ -1750,7 +1995,8 @@
 
 
         /*
-         * Nenhuma fonte encontrada.
+         * 3.
+         * Nada encontrado
          */
 
         mostrarErro(
@@ -1760,16 +2006,12 @@
     }
 
 
-    /* =====================================================
-       INICIAR PLAYER
-    ===================================================== */
-
     iniciar()
         .catch(
             erro => {
 
                 console.error(
-                    "❌ Erro fatal no player:",
+                    "❌ Erro fatal:",
                     erro
                 );
 
@@ -1783,4 +2025,5 @@
 </script>
 
 </body>
+
 </html>
