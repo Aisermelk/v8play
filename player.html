@@ -60,15 +60,12 @@ button {
     display:none!important;
 }
 
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 
 header {
     position:fixed;
     top:0;
     left:0;
-
     width:100%;
     height:70px;
 
@@ -105,11 +102,9 @@ header {
     justify-content:center;
 
     background:rgba(255,255,255,.08);
-
-    color:#fff;
+    color:white;
 
     cursor:pointer;
-
     transition:.2s;
 }
 
@@ -121,10 +116,8 @@ header {
 .logo {
     display:flex;
     align-items:center;
-
     text-decoration:none;
-
-    color:#fff;
+    color:white;
 
     font-size:1.35rem;
     font-weight:800;
@@ -137,47 +130,36 @@ header {
 .logo-img {
     height:40px;
     width:auto;
-
     object-fit:contain;
-
     margin-right:8px;
 }
 
-/* =========================
-   MAIN
-========================= */
+/* MAIN */
 
 main {
     width:100%;
     min-height:100vh;
-
     padding-top:70px;
 }
 
 .player-wrapper {
     width:100%;
     max-width:1400px;
-
     margin:0 auto;
-
     padding:20px 4% 50px;
 }
 
-/* =========================
-   PLAYER
-========================= */
+/* PLAYER */
 
 .player-container {
     position:relative;
 
     width:100%;
-
     aspect-ratio:16/9;
 
     background:#000;
 
     border-radius:var(--radius);
-
     overflow:hidden;
 
     border:1px solid rgba(255,255,255,.07);
@@ -208,19 +190,15 @@ main {
     object-fit:contain;
 }
 
-/* =========================
-   LOADING
-========================= */
+/* LOADING */
 
 #loading {
     position:absolute;
-
     inset:0;
 
     z-index:50;
 
     display:flex;
-
     flex-direction:column;
 
     align-items:center;
@@ -245,30 +223,22 @@ main {
 }
 
 @keyframes girar {
-
     to {
         transform:rotate(360deg);
     }
-
 }
 
 #loadingText {
     color:#aaa;
-
     font-size:.9rem;
-
     text-align:center;
-
     padding:0 20px;
 }
 
-/* =========================
-   ERRO
-========================= */
+/* ERRO */
 
 #erroPlayer {
     position:absolute;
-
     inset:0;
 
     z-index:60;
@@ -302,7 +272,6 @@ main {
 
 .erro-box h2 {
     font-size:1.35rem;
-
     margin-bottom:10px;
 }
 
@@ -321,7 +290,7 @@ main {
 
     background:var(--primary);
 
-    color:#fff;
+    color:white;
 
     padding:11px 22px;
 
@@ -336,13 +305,9 @@ main {
 
 .btn-retry:hover {
     background:var(--primary-hover);
-
-    transform:translateY(-1px);
 }
 
-/* =========================
-   INFORMAÇÕES
-========================= */
+/* INFO */
 
 .info {
     padding:25px 0 0;
@@ -350,19 +315,14 @@ main {
 
 .info h1 {
     font-size:1.8rem;
-
     font-weight:700;
-
     margin-bottom:8px;
-
     line-height:1.2;
 }
 
 .meta {
     display:flex;
-
     gap:10px;
-
     flex-wrap:wrap;
 
     color:var(--text2);
@@ -386,7 +346,6 @@ main {
     display:inline-flex;
 
     align-items:center;
-
     gap:7px;
 
     padding:5px 10px;
@@ -408,15 +367,12 @@ main {
     text-transform:uppercase;
 }
 
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 
 @media(max-width:700px) {
 
     header {
         height:60px;
-
         padding:8px 4%;
     }
 
@@ -443,7 +399,6 @@ main {
 
     .player-container {
         border-radius:0;
-
         border-left:none;
         border-right:none;
     }
@@ -459,7 +414,6 @@ main {
     .descricao {
         font-size:.85rem;
     }
-
 }
 
 @media(max-width:430px) {
@@ -471,11 +425,9 @@ main {
     .logo-img {
         margin-right:0;
     }
-
 }
 
 </style>
-
 </head>
 
 <body>
@@ -488,9 +440,7 @@ id="btnVoltar"
 type="button"
 title="Voltar"
 >
-
 <i class="fa-solid fa-arrow-left"></i>
-
 </button>
 
 <a href="index.html" class="logo">
@@ -507,7 +457,6 @@ onerror="this.style.display='none'"
 </a>
 
 </header>
-
 
 <main>
 
@@ -527,8 +476,7 @@ Carregando conteúdo...
 
 </div>
 
-
-<!-- HTML5 -->
+<!-- MP4 -->
 
 <video
 id="videoPlayer"
@@ -537,7 +485,6 @@ controls
 playsinline
 preload="metadata"
 ></video>
-
 
 <!-- YOUTUBE -->
 
@@ -549,8 +496,7 @@ allowfullscreen
 referrerpolicy="strict-origin-when-cross-origin"
 ></iframe>
 
-
-<!-- EXTERNO -->
+<!-- PLAYER EXTERNO -->
 
 <iframe
 id="iframePlayer"
@@ -561,13 +507,9 @@ referrerpolicy="strict-origin-when-cross-origin"
 sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-same-origin allow-scripts"
 ></iframe>
 
-
 <!-- ERRO -->
 
-<div
-id="erroPlayer"
-class="hidden"
->
+<div id="erroPlayer" class="hidden">
 
 <div class="erro-box">
 
@@ -599,8 +541,7 @@ Tentar novamente
 
 </div>
 
-
-<!-- INFO -->
+<!-- INFORMAÇÕES -->
 
 <div class="info">
 
@@ -623,9 +564,7 @@ Carregando...
 
 <span id="ano"></span>
 
-<span id="separadorAno">
-•
-</span>
+<span id="separadorAno">•</span>
 
 <span id="categoria"></span>
 
@@ -644,7 +583,6 @@ Carregando informações...
 
 </main>
 
-
 <script type="module">
 
 import { db } from "./js/firebase.js";
@@ -652,14 +590,30 @@ import { db } from "./js/firebase.js";
 import {
     doc,
     getDoc
-}
-from
+} from
 "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
 /* =====================================================
-   CONFIGURAÇÃO ABYSS
+   CONFIGURAÇÃO
 ===================================================== */
+
+/*
+   IMPORTANTE:
+
+   O Firebase pode armazenar:
+
+   1. URL completa
+      https://player.abyssplayer.com/P8Gb3PlIes
+
+   2. iframe completo
+      <iframe src="https://player.abyssplayer.com/P8Gb3PlIes"></iframe>
+
+   3. somente slug
+      P8Gb3PlIes
+
+   Para slug, usamos este endereço.
+*/
 
 const ABYSS_PLAYER_URL =
     "https://player.abyssplayer.com";
@@ -707,7 +661,7 @@ const trailerBadge =
 
 
 /* =====================================================
-   PARÂMETROS
+   URL
 ===================================================== */
 
 const params =
@@ -731,15 +685,7 @@ const isTrailer =
     params.get("trailer") === "true";
 
 
-/* =====================================================
-   ESTADO
-===================================================== */
-
 let itemAtual = null;
-
-let tentativaIframe = 0;
-
-let iframeTimer = null;
 
 
 /* =====================================================
@@ -756,27 +702,20 @@ function limparUrl(valor) {
 }
 
 
-function mostrarLoading(texto) {
+function mostrarLoading(texto="Carregando...") {
 
-    loadingText.textContent =
-        texto || "Carregando...";
+    loadingText.textContent = texto;
 
-    loading.classList.remove(
-        "hidden"
-    );
+    loading.classList.remove("hidden");
 
-    erroPlayer.classList.add(
-        "hidden"
-    );
+    erroPlayer.classList.add("hidden");
 
 }
 
 
 function esconderLoading() {
 
-    loading.classList.add(
-        "hidden"
-    );
+    loading.classList.add("hidden");
 
 }
 
@@ -789,9 +728,7 @@ function mostrarErro(texto) {
         texto ||
         "Não foi possível carregar o conteúdo.";
 
-    erroPlayer.classList.remove(
-        "hidden"
-    );
+    erroPlayer.classList.remove("hidden");
 
 }
 
@@ -802,11 +739,11 @@ function mostrarErro(texto) {
 
 function extrairYoutubeID(valor) {
 
-    valor =
-        limparUrl(valor);
-
     if (!valor)
         return null;
+
+    valor =
+        limparUrl(valor);
 
     if (
         /^[a-zA-Z0-9_-]{11}$/.test(valor)
@@ -887,7 +824,7 @@ function extrairYoutubeID(valor) {
 
 
 /* =====================================================
-   IFRAME
+   EXTRAIR SRC DO IFRAME
 ===================================================== */
 
 function extrairSrcIframe(valor) {
@@ -900,10 +837,9 @@ function extrairSrcIframe(valor) {
             /<iframe[^>]+src\s*=\s*["']([^"']+)["']/i
         );
 
-    if (match)
-        return match[1];
-
-    return null;
+    return match
+        ? match[1]
+        : null;
 
 }
 
@@ -917,6 +853,12 @@ function pareceSlug(valor) {
     if (!valor)
         return false;
 
+    /*
+       Exemplo:
+
+       P8Gb3PlIes
+    */
+
     return /^[a-zA-Z0-9_-]{6,100}$/.test(
         valor
     );
@@ -924,17 +866,20 @@ function pareceSlug(valor) {
 }
 
 
-function construirAbyss(slug) {
+function construirAbyss(valor) {
+
+    valor =
+        limparUrl(valor);
+
+    if (!valor)
+        return "";
 
     return (
-        ABYSS_PLAYER_URL.replace(
-            /\/+$/,
-            ""
-        )
+        ABYSS_PLAYER_URL.replace(/\/+$/,"")
         +
         "/"
         +
-        encodeURIComponent(slug)
+        encodeURIComponent(valor)
     );
 
 }
@@ -954,7 +899,7 @@ function normalizarPlayer(valor) {
 
 
     /*
-       IFRAME
+       1. IFRAME COMPLETO
     */
 
     const iframe =
@@ -965,7 +910,7 @@ function normalizarPlayer(valor) {
 
 
     /*
-       URL
+       2. URL
     */
 
     if (
@@ -978,7 +923,7 @@ function normalizarPlayer(valor) {
 
 
     /*
-       SLUG
+       3. SLUG
     */
 
     if (
@@ -996,7 +941,7 @@ function normalizarPlayer(valor) {
 
 
 /* =====================================================
-   DETECTAR TIPO
+   TIPO
 ===================================================== */
 
 function detectarTipo(valor) {
@@ -1070,7 +1015,7 @@ function detectarTipo(valor) {
 
 
 /* =====================================================
-   ESCONDER
+   ESCONDER PLAYERS
 ===================================================== */
 
 function esconderPlayers() {
@@ -1087,23 +1032,17 @@ function esconderPlayers() {
 
     videoPlayer.load();
 
-    videoPlayer.classList.add(
-        "hidden"
-    );
+    videoPlayer.classList.add("hidden");
 
 
     youtubePlayer.src = "";
 
-    youtubePlayer.classList.add(
-        "hidden"
-    );
+    youtubePlayer.classList.add("hidden");
 
 
     iframePlayer.src = "";
 
-    iframePlayer.classList.add(
-        "hidden"
-    );
+    iframePlayer.classList.add("hidden");
 
 }
 
@@ -1120,7 +1059,7 @@ function carregarYoutube(valor) {
     if (!id) {
 
         mostrarErro(
-            "O link do YouTube é inválido."
+            "O endereço do YouTube não é válido."
         );
 
         return;
@@ -1137,21 +1076,19 @@ function carregarYoutube(valor) {
         "hidden"
     );
 
-    const query =
+    const params =
         new URLSearchParams({
 
             autoplay:"1",
-
             rel:"0",
-
             playsinline:"1",
-
             modestbranding:"1"
 
         });
 
     youtubePlayer.src =
-        `https://www.youtube.com/embed/${id}?${query}`;
+        `https://www.youtube.com/embed/${id}?${params}`;
+
 
     youtubePlayer.onload =
         () => {
@@ -1159,6 +1096,7 @@ function carregarYoutube(valor) {
             esconderLoading();
 
         };
+
 
     setTimeout(
         esconderLoading,
@@ -1169,7 +1107,7 @@ function carregarYoutube(valor) {
 
 
 /* =====================================================
-   ABYSS / IFRAME
+   IFRAME EXTERNO
 ===================================================== */
 
 function carregarIframe(valor) {
@@ -1180,28 +1118,23 @@ function carregarIframe(valor) {
     if (!url) {
 
         mostrarErro(
-            "Não foi possível identificar o player."
+            "Não foi possível identificar o endereço do player."
         );
 
         return;
 
     }
 
-
     console.log(
-        "🎬 URL do player:",
+        "🎬 IFRAME:",
         url
     );
-
 
     esconderPlayers();
 
     mostrarLoading(
-        tentativaIframe === 0
-        ? "Carregando player..."
-        : "Tentando novamente..."
+        "Carregando player externo..."
     );
-
 
     iframePlayer.classList.remove(
         "hidden"
@@ -1209,30 +1142,17 @@ function carregarIframe(valor) {
 
 
     /*
-       Limpa timer anterior
-    */
-
-    if (iframeTimer) {
-
-        clearTimeout(
-            iframeTimer
-        );
-
-    }
-
-
-    /*
        IMPORTANTE:
 
-       primeira tentativa
+       src é colocado somente depois
+       do iframe estar preparado.
     */
 
     iframePlayer.onload =
         () => {
 
             console.log(
-                "✅ Iframe carregado - tentativa",
-                tentativaIframe + 1
+                "✅ iframe carregado"
             );
 
             esconderLoading();
@@ -1243,12 +1163,8 @@ function carregarIframe(valor) {
     iframePlayer.onerror =
         () => {
 
-            console.warn(
-                "⚠️ Erro no iframe"
-            );
-
-            tentarNovamenteIframe(
-                url
+            mostrarErro(
+                "O servidor externo recusou o carregamento do player."
             );
 
         };
@@ -1259,98 +1175,17 @@ function carregarIframe(valor) {
 
 
     /*
-       O Abyss pode carregar a página
-       mas redirecionar para propaganda.
-
-       Depois de alguns segundos fazemos
-       automaticamente UMA nova tentativa.
-    */
-
-    iframeTimer =
-        setTimeout(
-            () => {
-
-                if (
-                    tentativaIframe < 1
-                ) {
-
-                    console.log(
-                        "🔄 Recarregando player automaticamente..."
-                    );
-
-                    tentarNovamenteIframe(
-                        url
-                    );
-
-                }
-
-                else {
-
-                    esconderLoading();
-
-                }
-
-            },
-            3500
-        );
-
-}
-
-
-/* =====================================================
-   SEGUNDA TENTATIVA
-===================================================== */
-
-function tentarNovamenteIframe(url) {
-
-    tentativaIframe++;
-
-    console.log(
-        "🔄 Segunda tentativa do player:",
-        tentativaIframe
-    );
-
-
-    /*
-       Remove completamente
-       o iframe anterior.
-    */
-
-    iframePlayer.src = "";
-
-    iframePlayer.classList.add(
-        "hidden"
-    );
-
-
-    /*
-       Pequena pausa antes
-       de recriar o carregamento.
+       Alguns servidores não enviam
+       evento de carregamento corretamente.
     */
 
     setTimeout(
         () => {
 
-            iframePlayer.classList.remove(
-                "hidden"
-            );
-
-            mostrarLoading(
-                "Iniciando player..."
-            );
-
-
-            iframePlayer.src =
-                url;
-
-
-            setTimeout(
-                esconderLoading,
-                5000
-            );
+            esconderLoading();
 
         },
-        500
+        7000
     );
 
 }
@@ -1393,7 +1228,7 @@ function carregarVideo(url) {
         () => {
 
             mostrarErro(
-                "O vídeo não pôde ser reproduzido."
+                "O arquivo de vídeo não pôde ser reproduzido. Verifique a URL e as permissões do servidor."
             );
 
         };
@@ -1420,8 +1255,8 @@ function abrirVideo(valor) {
 
         mostrarErro(
             isTrailer
-            ? "Este título não possui trailer."
-            : "Este título não possui vídeo."
+            ? "Este conteúdo não possui trailer."
+            : "Este conteúdo não possui vídeo."
         );
 
         return;
@@ -1429,11 +1264,8 @@ function abrirVideo(valor) {
     }
 
 
-    tentativaIframe = 0;
-
-
     console.log(
-        "🎬 Conteúdo:",
+        "🎬 Valor:",
         valor
     );
 
@@ -1448,42 +1280,36 @@ function abrirVideo(valor) {
     );
 
 
-    switch(tipo) {
+    if (tipo === "youtube") {
 
-        case "youtube":
+        carregarYoutube(valor);
 
-            carregarYoutube(
-                valor
-            );
-
-            break;
-
-
-        case "iframe":
-
-            carregarIframe(
-                valor
-            );
-
-            break;
-
-
-        case "video":
-
-            carregarVideo(
-                valor
-            );
-
-            break;
-
-
-        default:
-
-            mostrarErro(
-                "Formato de vídeo não reconhecido."
-            );
+        return;
 
     }
+
+
+    if (tipo === "iframe") {
+
+        carregarIframe(valor);
+
+        return;
+
+    }
+
+
+    if (tipo === "video") {
+
+        carregarVideo(valor);
+
+        return;
+
+    }
+
+
+    mostrarErro(
+        "Formato de vídeo não reconhecido."
+    );
 
 }
 
@@ -1503,15 +1329,7 @@ async function carregarFirestore() {
 
     }
 
-
     try {
-
-        console.log(
-            "🔥 Firestore:",
-            colecao,
-            itemId
-        );
-
 
         const referencia =
             doc(
@@ -1520,23 +1338,13 @@ async function carregarFirestore() {
                 itemId
             );
 
-
         const snap =
             await getDoc(
                 referencia
             );
 
-
-        if (!snap.exists()) {
-
-            console.warn(
-                "Documento não encontrado."
-            );
-
+        if (!snap.exists())
             return null;
-
-        }
-
 
         return {
 
@@ -1574,6 +1382,10 @@ function obterVideo(item) {
         return "";
 
 
+    /*
+       TRAILER
+    */
+
     if (isTrailer) {
 
         return limparUrl(
@@ -1591,16 +1403,14 @@ function obterVideo(item) {
 
 
     /*
-       ORDEM:
+       PRIORIDADE:
 
        embed
        video1
        video
        video2
        video3
-       urlVideo
-       videoUrl
-       url
+       etc.
     */
 
     return limparUrl(
@@ -1628,7 +1438,6 @@ function preencherInformacoes(item) {
 
     if (!item)
         return;
-
 
     itemAtual =
         item;
@@ -1720,7 +1529,7 @@ document
 
 
 /* =====================================================
-   RETRY MANUAL
+   RETRY
 ===================================================== */
 
 document
@@ -1733,18 +1542,12 @@ document
             "hidden"
         );
 
-
         const video =
-            obterVideo(
-                itemAtual
-            );
-
+            obterVideo(itemAtual);
 
         if (video) {
 
-            abrirVideo(
-                video
-            );
+            abrirVideo(video);
 
         }
 
@@ -1775,6 +1578,16 @@ async function iniciar() {
     );
 
     console.log(
+        "ID:",
+        itemId
+    );
+
+    console.log(
+        "COLEÇÃO:",
+        colecao
+    );
+
+    console.log(
         "================================"
     );
 
@@ -1785,8 +1598,7 @@ async function iniciar() {
 
 
     /*
-       1.
-       FIREBASE
+       FIRESTORE
     */
 
     const item =
@@ -1801,9 +1613,7 @@ async function iniciar() {
 
 
         const video =
-            obterVideo(
-                item
-            );
+            obterVideo(item);
 
 
         if (!video) {
@@ -1819,9 +1629,7 @@ async function iniciar() {
         }
 
 
-        abrirVideo(
-            video
-        );
+        abrirVideo(video);
 
         return;
 
@@ -1829,7 +1637,6 @@ async function iniciar() {
 
 
     /*
-       2.
        URL DIRETA
     */
 
@@ -1839,20 +1646,12 @@ async function iniciar() {
             tituloURL ||
             "V8 Play+";
 
-
-        abrirVideo(
-            videoURL
-        );
+        abrirVideo(videoURL);
 
         return;
 
     }
 
-
-    /*
-       3.
-       ERRO
-    */
 
     mostrarErro(
         "Não foi possível localizar o conteúdo solicitado."
