@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Painel Admin - V8 Play+</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    >
+
     <style>
         :root {
             --primary: #00d4ff;
@@ -17,482 +28,2169 @@
             --text-secondary: #aaaaaa;
             --danger: #ff4757;
             --success: #2ed573;
+            --border: #292930;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; padding-bottom: 50px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: #121216; border-bottom: 1px solid #222; }
-        .logo { font-size: 1.4rem; font-weight: 800; color: white; text-decoration: none; }
-        .logo span { color: var(--primary); }
-        .user-status { font-size: 0.9rem; color: var(--text-secondary); }
+        body {
+            background: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            padding-bottom: 50px;
+        }
 
-        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: #121216;
+            border-bottom: 1px solid #222;
+        }
 
-        .card-box { background: var(--bg-card); border-radius: 10px; padding: 25px; border: 1px solid #222; margin-bottom: 25px; }
-        .card-box h2 { font-size: 1.2rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #2b2b36; padding-bottom: 10px; color: var(--primary); }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
 
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-group.full { grid-column: 1 / -1; }
+        .logo span {
+            color: var(--primary);
+        }
 
-        label { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; }
-        input, select, textarea { background: #1c1c22; border: 1px solid #333; color: white; padding: 10px 14px; border-radius: 6px; font-family: inherit; font-size: 0.9rem; outline: none; transition: 0.2s; }
-        input:focus, select:focus, textarea:focus { border-color: var(--primary); }
-        input:disabled, select:disabled { opacity: 0.6; cursor: not-allowed; }
-        textarea { resize: vertical; min-height: 80px; }
+        .user-status {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
 
-        .checkbox-group { display: flex; gap: 20px; align-items: center; margin-top: 10px; }
-        .checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; }
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
 
-        .btn-salvar { background: var(--primary); color: #000; border: none; padding: 12px 25px; font-weight: 700; border-radius: 6px; cursor: pointer; transition: 0.2s; margin-top: 15px; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; }
-        .btn-salvar:hover { background: var(--primary-hover); transform: translateY(-1px); }
-        .btn-cancelar { background: #333; color: white; border: none; padding: 12px 20px; font-weight: 600; border-radius: 6px; cursor: pointer; margin-top: 15px; margin-left: 10px; }
+        .card-box {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 25px;
+            border: 1px solid #222;
+            margin-bottom: 25px;
+        }
 
-        /* TABELA DE CONTEÚDO */
-        .table-responsive { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { text-align: left; padding: 12px 15px; border-bottom: 1px solid #222; font-size: 0.88rem; }
-        th { background: #121216; color: var(--text-secondary); font-weight: 600; }
-        tr:hover { background: rgba(255,255,255,0.02); }
+        .card-box h2 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #2b2b36;
+            padding-bottom: 10px;
+            color: var(--primary);
+        }
 
-        .badge-tag { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
-        .badge-tag.gratis { background: rgba(0, 212, 255, 0.15); color: #00d4ff; border: 1px solid #00d4ff; }
-        .badge-tag.prime { background: rgba(255, 170, 0, 0.2); color: #ffaa00; border: 1px solid #ffaa00; }
-        .badge-tag.premium { background: rgba(0, 114, 255, 0.2); color: #0072ff; border: 1px solid #0072ff; }
+        .form-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
 
-        .btn-acao { background: none; border: none; color: #aaa; cursor: pointer; font-size: 1rem; padding: 5px; margin-right: 8px; transition: 0.2s; }
-        .btn-acao.editar:hover { color: var(--primary); }
-        .btn-acao.excluir:hover { color: var(--danger); }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
 
-        #notification { position: fixed; bottom: 25px; right: 25px; background: #1f1f24; color: white; padding: 12px 24px; border-radius: 8px; z-index: 4000; border: 1px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-size: 0.9rem; }
-        .hidden { display: none !important; }
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        input,
+        select,
+        textarea {
+            background: #1c1c22;
+            border: 1px solid #333;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.2s;
+            width: 100%;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.08);
+        }
+
+        input:disabled,
+        select:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .player-help {
+            background: rgba(0, 212, 255, 0.06);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: 7px;
+            padding: 12px 14px;
+            margin-top: 4px;
+            color: #aaa;
+            font-size: 0.78rem;
+            line-height: 1.6;
+        }
+
+        .player-help strong {
+            color: var(--primary);
+        }
+
+        .player-example {
+            margin-top: 8px;
+            background: #101014;
+            border: 1px solid #292930;
+            border-radius: 5px;
+            padding: 9px 10px;
+            color: #ccc;
+            font-family: monospace;
+            font-size: 0.75rem;
+            word-break: break-all;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-label input {
+            width: auto;
+        }
+
+        .btn-salvar {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-salvar:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-salvar:disabled {
+            opacity: 0.6;
+            cursor: wait;
+            transform: none;
+        }
+
+        .btn-cancelar {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            margin-left: 10px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid #222;
+            font-size: 0.88rem;
+        }
+
+        th {
+            background: #121216;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .badge-tag {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-tag.gratis {
+            background: rgba(0, 212, 255, 0.15);
+            color: #00d4ff;
+            border: 1px solid #00d4ff;
+        }
+
+        .badge-tag.prime {
+            background: rgba(255, 170, 0, 0.2);
+            color: #ffaa00;
+            border: 1px solid #ffaa00;
+        }
+
+        .badge-tag.premium {
+            background: rgba(0, 114, 255, 0.2);
+            color: #0072ff;
+            border: 1px solid #0072ff;
+        }
+
+        .btn-acao {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 5px;
+            margin-right: 8px;
+            transition: 0.2s;
+        }
+
+        .btn-acao.editar:hover {
+            color: var(--primary);
+        }
+
+        .btn-acao.excluir:hover {
+            color: var(--danger);
+        }
+
+        #notification {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #1f1f24;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            z-index: 4000;
+            border: 1px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            font-size: 0.9rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 15px 4%;
+            }
+
+            .user-status {
+                font-size: 0.72rem;
+                text-align: right;
+            }
+
+            .container {
+                margin-top: 20px;
+                padding: 0 10px;
+            }
+
+            .card-box {
+                padding: 18px;
+            }
+
+            .btn-cancelar {
+                margin-left: 0;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-    <header>
-        <a href="index.html" class="logo">V8 Play+ <span>Admin</span></a>
-        <div class="user-status" id="adminStatus">Verificando permissões...</div>
-    </header>
+<header>
 
-    <div class="container">
+    <a href="index.html" class="logo">
+        V8 Play+ <span>Admin</span>
+    </a>
 
-        <!-- PAINEL 1: CONFIGURAÇÃO DE VALORES DAS TAGS -->
-        <div class="card-box">
-            <h2><i class="fa-solid fa-tags"></i> Valoração dos Planos / Tags (Geral)</h2>
-            <form id="formPlanos" class="form-grid">
-                <div class="form-group">
-                    <label for="precoPrime">Preço Tag PRIME (R$):</label>
-                    <input type="number" step="0.01" min="1.00" id="precoPrime" placeholder="0.00" required>
-                </div>
-                <div class="form-group">
-                    <label for="precoPremium">Preço Tag PREMIUM (R$):</label>
-                    <input type="number" step="0.01" min="1.00" id="precoPremium" placeholder="0.00" required>
-                </div>
-                <div class="form-group full">
-                    <button type="submit" class="btn-salvar" style="width: fit-content;"><i class="fa-solid fa-floppy-disk"></i> Atualizar Preços dos Planos</button>
-                </div>
-            </form>
-        </div>
+    <div class="user-status" id="adminStatus">
+        Verificando permissões...
+    </div>
 
-        <!-- PAINEL 2: CADASTRO / EDIÇÃO DE ITEM -->
-        <div class="card-box">
-            <h2 id="formTitulo"><i class="fa-solid fa-plus-circle"></i> Cadastrar Novo Conteúdo</h2>
-            <form id="formConteudo">
-                <input type="hidden" id="itemId">
+</header>
 
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="titulo">Título:</label>
-                        <input type="text" id="titulo" placeholder="Ex: Michael (2026)" required>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="colecao">Coleção / Tipo:</label>
-                        <select id="colecao" required>
-                            <option value="filmes">Filme</option>
-                            <option value="series">Série</option>
-                            <option value="animes">Anime</option>
-                            <option value="doramas">Dorama</option>
-                        </select>
-                    </div>
+<div class="container">
 
-                    <div class="form-group">
-                        <label for="categoria">Gênero / Categoria:</label>
-                        <select id="categoria" required>
-                            <option value="">Selecione a Categoria...</option>
-                            <option value="Ação">Ação</option>
-                            <option value="Comédia">Comédia</option>
-                            <option value="Terror">Terror</option>
-                            <option value="Drama">Drama</option>
-                            <option value="Romance">Romance</option>
-                            <option value="Aventura">Aventura</option>
-                            <option value="Ficção Científica">Ficção Científica</option>
-                            <option value="Animação">Animação</option>
-                            <option value="Suspense">Suspense</option>
-                        </select>
-                    </div>
+    <!-- =====================================================
+         PAINEL 1 - PREÇOS
+    ====================================================== -->
 
-                    <div class="form-group">
-                        <label for="ano">Ano de Lançamento:</label>
-                        <input type="text" id="ano" placeholder="2026">
-                    </div>
+    <div class="card-box">
 
-                    <div class="form-group">
-                        <label for="tag">Tag do Conteúdo:</label>
-                        <select id="tag" required>
-                            <option value="gratis">Grátis (Libera com Anúncio)</option>
-                            <option value="prime">Prime (Pago)</option>
-                            <option value="premium">Premium (Pago)</option>
-                        </select>
-                    </div>
+        <h2>
+            <i class="fa-solid fa-tags"></i>
+            Valoração das Tags
+        </h2>
 
-                    <div class="form-group">
-                        <label for="preco">Valor Individual (R$):</label>
-                        <input type="number" step="0.01" id="preco" placeholder="0.00">
-                    </div>
+        <form id="formPlanos" class="form-grid">
 
-                    <div class="form-group full">
-                        <label for="capa">URL da Capa (Poster):</label>
-                        <input type="url" id="capa" placeholder="https://...">
-                    </div>
+            <div class="form-group">
 
-                    <div class="form-group full">
-                        <label for="banner">URL do Banner (Destaque Hero):</label>
-                        <input type="url" id="banner" placeholder="https://...">
-                    </div>
+                <label for="precoPrime">
+                    Preço Tag PRIME (R$):
+                </label>
 
-                    <div class="form-group full">
-                        <label for="video1">URL Player Principal (Opção 1):</label>
-                        <input type="url" id="video1" placeholder="https://... (.mp4 ou embed iframe)">
-                    </div>
+                <input
+                    type="number"
+                    step="0.01"
+                    min="1.00"
+                    id="precoPrime"
+                    placeholder="0.00"
+                    required
+                >
 
-                    <div class="form-group">
-                        <label for="video2">URL Player Opção 2 (Opcional):</label>
-                        <input type="url" id="video2" placeholder="https://...">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="video3">URL Player Opção 3 (Opcional):</label>
-                        <input type="url" id="video3" placeholder="https://...">
-                    </div>
-
-                    <div class="form-group full">
-                        <label for="arquivoDownload">URL Link Direto de Download:</label>
-                        <input type="url" id="arquivoDownload" placeholder="https://... (deixe em branco para usar a Opção 1)">
-                    </div>
-
-                    <div class="form-group full">
-                        <label for="trailer">URL Trailer (YouTube/Embed):</label>
-                        <input type="url" id="trailer" placeholder="https://www.youtube.com/embed/ID_DO_VIDEO">
-                    </div>
-
-                    <div class="form-group full">
-                        <label for="descricao">Sinopse / Descrição:</label>
-                        <textarea id="descricao" placeholder="Escreva a descrição do conteúdo..."></textarea>
-                    </div>
-
-                    <div class="form-group full checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="destaque"> Colocar no Banner Principal (Hero / Em Alta)
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="recomendado"> Marcar como Recomendado
-                        </label>
-                    </div>
-                </div>
-
-                <div style="margin-top: 20px;">
-                    <button type="submit" class="btn-salvar" id="btnSalvarItem"><i class="fa-solid fa-check"></i> Salvar Conteúdo</button>
-                    <button type="button" class="btn-cancelar hidden" id="btnCancelarEdicao">Cancelar Edição</button>
-                </div>
-            </form>
-        </div>
-
-        <!-- PAINEL 3: GERENCIAMENTO E LISTA DE ITENS -->
-        <div class="card-box">
-            <h2><i class="fa-solid fa-list-check"></i> Conteúdos Cadastrados</h2>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Título</th>
-                            <th>Tipo</th>
-                            <th>Categoria</th>
-                            <th>Tag</th>
-                            <th>Valor</th>
-                            <th>Destaque</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelaConteudo">
-                        <tr><td colspan="7" style="text-align: center; color: #666;">Carregando lista de itens...</td></tr>
-                    </tbody>
-                </table>
             </div>
+
+
+            <div class="form-group">
+
+                <label for="precoPremium">
+                    Preço Tag PREMIUM (R$):
+                </label>
+
+                <input
+                    type="number"
+                    step="0.01"
+                    min="1.00"
+                    id="precoPremium"
+                    placeholder="0.00"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <button
+                    type="submit"
+                    class="btn-salvar"
+                >
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Atualizar Preços
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         PAINEL 2 - CONTEÚDO
+    ====================================================== -->
+
+    <div class="card-box">
+
+        <h2 id="formTitulo">
+
+            <i class="fa-solid fa-plus-circle"></i>
+
+            Cadastrar Novo Conteúdo
+
+        </h2>
+
+
+        <form id="formConteudo">
+
+            <input
+                type="hidden"
+                id="itemId"
+            >
+
+
+            <div class="form-grid">
+
+                <!-- TÍTULO -->
+
+                <div class="form-group">
+
+                    <label for="titulo">
+                        Título:
+                    </label>
+
+                    <input
+                        type="text"
+                        id="titulo"
+                        placeholder="Ex: Michael (2026)"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- COLEÇÃO -->
+
+                <div class="form-group">
+
+                    <label for="colecao">
+                        Coleção / Tipo:
+                    </label>
+
+                    <select
+                        id="colecao"
+                        required
+                    >
+
+                        <option value="filmes">
+                            Filme
+                        </option>
+
+                        <option value="series">
+                            Série
+                        </option>
+
+                        <option value="animes">
+                            Anime
+                        </option>
+
+                        <option value="doramas">
+                            Dorama
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- CATEGORIA -->
+
+                <div class="form-group">
+
+                    <label for="categoria">
+                        Gênero / Categoria:
+                    </label>
+
+                    <select
+                        id="categoria"
+                        required
+                    >
+
+                        <option value="">
+                            Selecione...
+                        </option>
+
+                        <option value="Ação">
+                            Ação
+                        </option>
+
+                        <option value="Comédia">
+                            Comédia
+                        </option>
+
+                        <option value="Terror">
+                            Terror
+                        </option>
+
+                        <option value="Drama">
+                            Drama
+                        </option>
+
+                        <option value="Romance">
+                            Romance
+                        </option>
+
+                        <option value="Aventura">
+                            Aventura
+                        </option>
+
+                        <option value="Ficção Científica">
+                            Ficção Científica
+                        </option>
+
+                        <option value="Animação">
+                            Animação
+                        </option>
+
+                        <option value="Suspense">
+                            Suspense
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ANO -->
+
+                <div class="form-group">
+
+                    <label for="ano">
+                        Ano:
+                    </label>
+
+                    <input
+                        type="text"
+                        id="ano"
+                        placeholder="2026"
+                    >
+
+                </div>
+
+
+                <!-- TAG -->
+
+                <div class="form-group">
+
+                    <label for="tag">
+                        Tag do Conteúdo:
+                    </label>
+
+                    <select
+                        id="tag"
+                        required
+                    >
+
+                        <option value="gratis">
+                            Grátis
+                        </option>
+
+                        <option value="prime">
+                            Prime
+                        </option>
+
+                        <option value="premium">
+                            Premium
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PREÇO -->
+
+                <div class="form-group">
+
+                    <label for="preco">
+                        Valor Individual (R$):
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        id="preco"
+                        placeholder="0.00"
+                    >
+
+                </div>
+
+
+                <!-- CAPA -->
+
+                <div class="form-group full">
+
+                    <label for="capa">
+                        URL da Capa:
+                    </label>
+
+                    <input
+                        type="url"
+                        id="capa"
+                        placeholder="https://..."
+                    >
+
+                </div>
+
+
+                <!-- BANNER -->
+
+                <div class="form-group full">
+
+                    <label for="banner">
+                        URL do Banner:
+                    </label>
+
+                    <input
+                        type="url"
+                        id="banner"
+                        placeholder="https://..."
+                    >
+
+                </div>
+
+
+                <!-- =================================================
+                     PLAYER PRINCIPAL
+                ================================================== -->
+
+                <div class="form-group full">
+
+                    <label for="video1">
+                        <i class="fa-solid fa-circle-play"></i>
+                        Player Principal — URL ou Embed
+                    </label>
+
+                    <textarea
+                        id="video1"
+                        rows="5"
+                        placeholder="Cole aqui a URL do player ou o código <iframe>...</iframe>"
+                    ></textarea>
+
+
+                    <div class="player-help">
+
+                        <strong>
+                            Aceita 2 formatos:
+                        </strong>
+
+                        <br>
+
+                        1. URL do player:
+
+                        <div class="player-example">
+                            https://player.abyssplayer.com/P8Gb3PlIes
+                        </div>
+
+                        <br>
+
+                        2. Código iframe:
+
+                        <div class="player-example">
+                            &lt;iframe src="https://player.abyssplayer.com/P8Gb3PlIes"
+                            width="640" height="360"
+                            frameborder="0"
+                            allowfullscreen&gt;&lt;/iframe&gt;
+                        </div>
+
+                        <br>
+
+                        O player do V8 Play+ identifica automaticamente o formato.
+
+                    </div>
+
+                </div>
+
+
+                <!-- PLAYER 2 -->
+
+                <div class="form-group">
+
+                    <label for="video2">
+                        Player Opção 2
+                    </label>
+
+                    <textarea
+                        id="video2"
+                        rows="4"
+                        placeholder="URL ou iframe"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- PLAYER 3 -->
+
+                <div class="form-group">
+
+                    <label for="video3">
+                        Player Opção 3
+                    </label>
+
+                    <textarea
+                        id="video3"
+                        rows="4"
+                        placeholder="URL ou iframe"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- DOWNLOAD -->
+
+                <div class="form-group full">
+
+                    <label for="arquivoDownload">
+                        URL Link Direto de Download:
+                    </label>
+
+                    <input
+                        type="url"
+                        id="arquivoDownload"
+                        placeholder="https://..."
+                    >
+
+                </div>
+
+
+                <!-- TRAILER -->
+
+                <div class="form-group full">
+
+                    <label for="trailer">
+                        URL Trailer:
+                    </label>
+
+                    <input
+                        type="url"
+                        id="trailer"
+                        placeholder="https://www.youtube.com/watch?v=..."
+                    >
+
+                </div>
+
+
+                <!-- DESCRIÇÃO -->
+
+                <div class="form-group full">
+
+                    <label for="descricao">
+                        Sinopse / Descrição:
+                    </label>
+
+                    <textarea
+                        id="descricao"
+                        rows="5"
+                        placeholder="Escreva a descrição..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- CHECKBOXES -->
+
+                <div class="form-group full checkbox-group">
+
+                    <label class="checkbox-label">
+
+                        <input
+                            type="checkbox"
+                            id="destaque"
+                        >
+
+                        Colocar no Banner Principal
+
+                    </label>
+
+
+                    <label class="checkbox-label">
+
+                        <input
+                            type="checkbox"
+                            id="recomendado"
+                        >
+
+                        Marcar como Recomendado
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <div style="margin-top:20px;">
+
+                <button
+                    type="submit"
+                    class="btn-salvar"
+                    id="btnSalvarItem"
+                >
+
+                    <i class="fa-solid fa-check"></i>
+
+                    Salvar Conteúdo
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn-cancelar hidden"
+                    id="btnCancelarEdicao"
+                >
+
+                    Cancelar Edição
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         PAINEL 3 - LISTA
+    ====================================================== -->
+
+    <div class="card-box">
+
+        <h2>
+
+            <i class="fa-solid fa-list-check"></i>
+
+            Conteúdos Cadastrados
+
+        </h2>
+
+
+        <div class="table-responsive">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Título</th>
+                        <th>Tipo</th>
+                        <th>Categoria</th>
+                        <th>Tag</th>
+                        <th>Valor</th>
+                        <th>Destaque</th>
+                        <th>Ações</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="tabelaConteudo">
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            style="text-align:center;color:#666;"
+                        >
+                            Carregando...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
         </div>
 
     </div>
 
-    <div id="notification" class="hidden"><span id="notificationText"></span></div>
+</div>
 
-    <!-- FIREBASE MODULES -->
-    <script type="module">
-        import { db, auth } from "./js/firebase.js";
-        import { collection, getDocs, doc, setDoc, getDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        let todosItens = [];
-        let precosAtuais = { prime: 0.00, premium: 0.00 };
-        const COLECOES = ["filmes", "series", "animes", "doramas"];
+<!-- NOTIFICAÇÃO -->
 
-        // SEGURANÇA E AUTENTICAÇÃO DE ADMIN
-        onAuthStateChanged(auth, async (user) => {
-            const statusEl = document.getElementById('adminStatus');
+<div
+    id="notification"
+    class="hidden"
+>
+
+    <span id="notificationText"></span>
+
+</div>
+
+
+<!-- =====================================================
+     FIREBASE
+====================================================== -->
+
+<script type="module">
+
+    import {
+        db,
+        auth
+    } from "./js/firebase.js";
+
+
+    import {
+        collection,
+        getDocs,
+        doc,
+        setDoc,
+        getDoc,
+        deleteDoc,
+        serverTimestamp
+    }
+    from
+    "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+    import {
+        onAuthStateChanged
+    }
+    from
+    "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+
+    /* =====================================================
+       ESTADO
+    ===================================================== */
+
+    let todosItens = [];
+
+    let precosAtuais = {
+        prime: 0,
+        premium: 0
+    };
+
+
+    const COLECOES = [
+        "filmes",
+        "series",
+        "animes",
+        "doramas"
+    ];
+
+
+    /* =====================================================
+       ELEMENTOS
+    ===================================================== */
+
+    const formConteudo =
+        document.getElementById(
+            "formConteudo"
+        );
+
+    const formPlanos =
+        document.getElementById(
+            "formPlanos"
+        );
+
+    const btnSalvarItem =
+        document.getElementById(
+            "btnSalvarItem"
+        );
+
+
+    /* =====================================================
+       AUTENTICAÇÃO ADMIN
+    ===================================================== */
+
+    onAuthStateChanged(
+        auth,
+        async user => {
+
+            const statusEl =
+                document.getElementById(
+                    "adminStatus"
+                );
+
+
             if (!user) {
-                statusEl.innerHTML = "<span style='color: var(--danger);'>Acesso negado. Faça login no index.html</span>";
-                alert("Você precisa estar logado para acessar o Painel Admin.");
-                window.location.href = "index.html";
+
+                statusEl.innerHTML =
+                    "<span style='color:var(--danger)'>" +
+                    "Acesso negado. Faça login." +
+                    "</span>";
+
+                alert(
+                    "Você precisa estar logado para acessar o Painel Admin."
+                );
+
+                window.location.href =
+                    "index.html";
+
                 return;
+
             }
 
+
             try {
-                const userDoc = await getDoc(doc(db, "usuarios", user.uid));
-                if (!userDoc.exists() || !userDoc.data().admin) {
-                    statusEl.innerHTML = `<span style='color: var(--danger);'>Conta (${user.email}) sem permissão de Administrador.</span>`;
-                    alert("Sua conta não possui permissão de Administrador.");
-                    window.location.href = "index.html";
+
+                const userDoc =
+                    await getDoc(
+                        doc(
+                            db,
+                            "usuarios",
+                            user.uid
+                        )
+                    );
+
+
+                if (
+                    !userDoc.exists() ||
+                    !userDoc.data().admin
+                ) {
+
+                    statusEl.innerHTML =
+                        "<span style='color:var(--danger)'>" +
+                        "Sem permissão de administrador." +
+                        "</span>";
+
+                    alert(
+                        "Sua conta não possui permissão de Administrador."
+                    );
+
+                    window.location.href =
+                        "index.html";
+
                     return;
+
                 }
 
-                statusEl.innerHTML = `<span style='color: var(--success);'><i class="fa-solid fa-user-shield"></i> Autenticado: ${user.email}</span>`;
+
+                statusEl.innerHTML =
+                    "<span style='color:var(--success)'>" +
+                    "<i class='fa-solid fa-user-shield'></i> " +
+                    "Autenticado: " +
+                    (user.email || "") +
+                    "</span>";
+
+
                 carregarPrecosPlanos();
+
                 carregarListaConteudos();
 
-            } catch (e) {
-                console.error(e);
-                statusEl.innerHTML = "<span style='color: var(--danger);'>Erro ao validar permissões.</span>";
             }
-        });
 
-        // 1. CARREGAR PREÇOS DAS TAGS
-        async function carregarPrecosPlanos() {
-            try {
-                const snap = await getDoc(doc(db, "configuracoes", "planos"));
-                if (snap.exists()) {
-                    const d = snap.data();
-                    if (d.prime !== undefined) precosAtuais.prime = Number(d.prime);
-                    if (d.premium !== undefined) precosAtuais.premium = Number(d.premium);
-                }
-                document.getElementById('precoPrime').value = precosAtuais.prime.toFixed(2);
-                document.getElementById('precoPremium').value = precosAtuais.premium.toFixed(2);
-            } catch (e) {
-                console.warn("Sem preços salvos. Usando padrão 0.00.");
-                document.getElementById('precoPrime').value = "0.00";
-                document.getElementById('precoPremium').value = "0.00";
+            catch (erro) {
+
+                console.error(
+                    "Erro ao validar admin:",
+                    erro
+                );
+
+                statusEl.innerHTML =
+                    "<span style='color:var(--danger)'>" +
+                    "Erro ao validar permissões." +
+                    "</span>";
+
             }
+
+        }
+    );
+
+
+    /* =====================================================
+       PREÇOS
+    ===================================================== */
+
+    async function carregarPrecosPlanos() {
+
+        try {
+
+            const snap =
+                await getDoc(
+                    doc(
+                        db,
+                        "configuracoes",
+                        "planos"
+                    )
+                );
+
+
+            if (snap.exists()) {
+
+                const d =
+                    snap.data();
+
+
+                if (
+                    d.prime !== undefined
+                ) {
+
+                    precosAtuais.prime =
+                        Number(d.prime);
+
+                }
+
+
+                if (
+                    d.premium !== undefined
+                ) {
+
+                    precosAtuais.premium =
+                        Number(d.premium);
+
+                }
+
+            }
+
+
+            document.getElementById(
+                "precoPrime"
+            ).value =
+                precosAtuais.prime.toFixed(2);
+
+
+            document.getElementById(
+                "precoPremium"
+            ).value =
+                precosAtuais.premium.toFixed(2);
+
         }
 
-        // SALVAR PREÇOS DAS TAGS
-        document.getElementById('formPlanos').onsubmit = async (e) => {
-            e.preventDefault();
-            const pPrime = parseFloat(document.getElementById('precoPrime').value) || 0.00;
-            const pPremium = parseFloat(document.getElementById('precoPremium').value) || 0.00;
+        catch (erro) {
 
-            if (pPrime < 1.00 || pPremium < 1.00) {
-                mostrarNotificacao("O valor mínimo por plano é R$ 1,00 (exigência da InfinitePay para gerar o Pix).");
+            console.warn(
+                "Preços não encontrados.",
+                erro
+            );
+
+            document.getElementById(
+                "precoPrime"
+            ).value = "0.00";
+
+            document.getElementById(
+                "precoPremium"
+            ).value = "0.00";
+
+        }
+
+    }
+
+
+    formPlanos.onsubmit =
+        async e => {
+
+            e.preventDefault();
+
+
+            const pPrime =
+                parseFloat(
+                    document.getElementById(
+                        "precoPrime"
+                    ).value
+                ) || 0;
+
+
+            const pPremium =
+                parseFloat(
+                    document.getElementById(
+                        "precoPremium"
+                    ).value
+                ) || 0;
+
+
+            if (
+                pPrime < 1 ||
+                pPremium < 1
+            ) {
+
+                mostrarNotificacao(
+                    "O valor mínimo é R$ 1,00."
+                );
+
                 return;
+
             }
+
 
             try {
-                await setDoc(doc(db, "configuracoes", "planos"), {
-                    prime: pPrime,
-                    premium: pPremium,
-                    atualizadoEm: serverTimestamp()
-                }, { merge: true });
 
-                precosAtuais.prime = pPrime;
-                precosAtuais.premium = pPremium;
-                mostrarNotificacao("Preços atualizados com sucesso!");
-            } catch (err) {
-                mostrarNotificacao("Erro ao salvar preços das tags.");
-            }
-        };
+                await setDoc(
+                    doc(
+                        db,
+                        "configuracoes",
+                        "planos"
+                    ),
+                    {
+                        prime: pPrime,
+                        premium: pPremium,
+                        atualizadoEm:
+                            serverTimestamp()
+                    },
+                    {
+                        merge: true
+                    }
+                );
 
-        // AJUSTAR AUTOMATICAMENTE O CAMPO DE PREÇO QUANDO A TAG FOR ALTERADA
-        document.getElementById('tag').onchange = (e) => {
-            const val = e.target.value;
-            const campoPreco = document.getElementById('preco');
-            if (val === 'prime') campoPreco.value = precosAtuais.prime.toFixed(2);
-            else if (val === 'premium') campoPreco.value = precosAtuais.premium.toFixed(2);
-            else campoPreco.value = "0.00";
-        };
 
-        // 2. BUSCA E LISTAGEM DE CONTEÚDO
-        async function carregarListaConteudos() {
-            const tbody = document.getElementById('tabelaConteudo');
-            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #666;">Buscando itens...</td></tr>`;
-            todosItens = [];
+                precosAtuais.prime =
+                    pPrime;
 
-            for (const col of COLECOES) {
-                try {
-                    const snap = await getDocs(collection(db, col));
-                    snap.forEach(d => {
-                        todosItens.push({ id: d.id, colecao: col, ...d.data() });
-                    });
-                } catch (e) {
-                    console.error(`Erro ao carregar coleção ${col}:`, e);
-                }
+                precosAtuais.premium =
+                    pPremium;
+
+
+                mostrarNotificacao(
+                    "Preços atualizados!"
+                );
+
             }
 
-            // Ordenação em memória por data
-            todosItens.sort((a, b) => {
-                const dataA = a.criadoEm?.toDate ? a.criadoEm.toDate() : new Date(0);
-                const dataB = b.criadoEm?.toDate ? b.criadoEm.toDate() : new Date(0);
+            catch (erro) {
+
+                console.error(
+                    erro
+                );
+
+                mostrarNotificacao(
+                    "Erro ao salvar preços."
+                );
+
+            }
+
+        };
+
+
+    /* =====================================================
+       TAG
+    ===================================================== */
+
+    document.getElementById(
+        "tag"
+    ).onchange =
+        e => {
+
+            const valor =
+                e.target.value;
+
+
+            const campoPreco =
+                document.getElementById(
+                    "preco"
+                );
+
+
+            if (
+                valor === "prime"
+            ) {
+
+                campoPreco.value =
+                    precosAtuais.prime
+                        .toFixed(2);
+
+            }
+
+            else if (
+                valor === "premium"
+            ) {
+
+                campoPreco.value =
+                    precosAtuais.premium
+                        .toFixed(2);
+
+            }
+
+            else {
+
+                campoPreco.value =
+                    "0.00";
+
+            }
+
+        };
+
+
+    /* =====================================================
+       NORMALIZAR PLAYER
+       
+       IMPORTANTE:
+       NÃO modifica o conteúdo.
+       
+       Aceita:
+       - URL
+       - iframe
+       - embed
+       - player Abyss
+       ===================================================== */
+
+    function normalizarPlayer(valor) {
+
+        if (!valor)
+            return "";
+
+        return String(valor).trim();
+
+    }
+
+
+    /* =====================================================
+       LISTA
+    ===================================================== */
+
+    async function carregarListaConteudos() {
+
+        const tbody =
+            document.getElementById(
+                "tabelaConteudo"
+            );
+
+
+        tbody.innerHTML =
+            `
+            <tr>
+                <td colspan="7"
+                    style="text-align:center;color:#666;">
+                    Buscando itens...
+                </td>
+            </tr>
+            `;
+
+
+        todosItens = [];
+
+
+        for (
+            const col of COLECOES
+        ) {
+
+            try {
+
+                const snap =
+                    await getDocs(
+                        collection(
+                            db,
+                            col
+                        )
+                    );
+
+
+                snap.forEach(
+                    d => {
+
+                        todosItens.push({
+
+                            id:
+                                d.id,
+
+                            colecao:
+                                col,
+
+                            ...d.data()
+
+                        });
+
+                    }
+                );
+
+            }
+
+            catch (erro) {
+
+                console.error(
+                    `Erro na coleção ${col}:`,
+                    erro
+                );
+
+            }
+
+        }
+
+
+        todosItens.sort(
+            (a, b) => {
+
+                const dataA =
+                    a.criadoEm?.toDate
+                        ? a.criadoEm.toDate()
+                        : new Date(0);
+
+
+                const dataB =
+                    b.criadoEm?.toDate
+                        ? b.criadoEm.toDate()
+                        : new Date(0);
+
+
                 return dataB - dataA;
-            });
 
-            if (todosItens.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #666;">Nenhum item cadastrado.</td></tr>`;
-                return;
             }
+        );
 
-            tbody.innerHTML = "";
-            todosItens.forEach(item => {
-                const tag = (item.tag || item.plano || "gratis").toLowerCase();
-                const valorExibir = tag === 'gratis' ? 'Grátis' : `R$ ${Number(item.preco || precosAtuais[tag] || 0).toFixed(2)}`;
 
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${item.titulo}</strong></td>
-                    <td>${item.colecao}</td>
-                    <td>${item.categoria || '-'}</td>
-                    <td><span class="badge-tag ${tag}">${tag}</span></td>
-                    <td>${valorExibir}</td>
-                    <td>${item.destaque ? '<i class="fa-solid fa-star" style="color: #ffaa00;"></i> Sim' : 'Não'}</td>
-                    <td>
-                        <button class="btn-acao editar" title="Editar"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn-acao excluir" title="Excluir"><i class="fa-solid fa-trash"></i></button>
+        if (
+            todosItens.length === 0
+        ) {
+
+            tbody.innerHTML =
+                `
+                <tr>
+                    <td colspan="7"
+                        style="text-align:center;color:#666;">
+                        Nenhum item cadastrado.
                     </td>
+                </tr>
                 `;
 
-                tr.querySelector('.editar').onclick = () => prepararEdicao(item);
-                tr.querySelector('.excluir').onclick = () => excluirItem(item);
+            return;
 
-                tbody.appendChild(tr);
-            });
         }
 
-        // 3. SALVAR OU ATUALIZAR ITEM
-        document.getElementById('formConteudo').onsubmit = async (e) => {
+
+        tbody.innerHTML = "";
+
+
+        todosItens.forEach(
+            item => {
+
+                const tag =
+                    (
+                        item.tag ||
+                        item.plano ||
+                        "gratis"
+                    ).toLowerCase();
+
+
+                const valor =
+                    tag === "gratis"
+                        ? "Grátis"
+                        : `R$ ${Number(
+                            item.preco ||
+                            precosAtuais[tag] ||
+                            0
+                        ).toFixed(2)}`;
+
+
+                const tr =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                tr.innerHTML =
+                    `
+                    <td>
+                        <strong>
+                            ${escaparHtml(item.titulo || "")}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escaparHtml(item.colecao)}
+                    </td>
+
+                    <td>
+                        ${escaparHtml(item.categoria || "-")}
+                    </td>
+
+                    <td>
+                        <span class="badge-tag ${tag}">
+                            ${tag}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${valor}
+                    </td>
+
+                    <td>
+                        ${
+                            item.destaque
+                            ? "⭐ Sim"
+                            : "Não"
+                        }
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn-acao editar"
+                            title="Editar"
+                        >
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+
+                        <button
+                            class="btn-acao excluir"
+                            title="Excluir"
+                        >
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+
+                    </td>
+                    `;
+
+
+                tr.querySelector(
+                    ".editar"
+                ).onclick =
+                    () => prepararEdicao(
+                        item
+                    );
+
+
+                tr.querySelector(
+                    ".excluir"
+                ).onclick =
+                    () => excluirItem(
+                        item
+                    );
+
+
+                tbody.appendChild(
+                    tr
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ESCAPAR HTML DA TABELA
+    ===================================================== */
+
+    function escaparHtml(valor) {
+
+        return String(valor)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+
+    }
+
+
+    /* =====================================================
+       SALVAR CONTEÚDO
+    ===================================================== */
+
+    formConteudo.onsubmit =
+        async e => {
+
             e.preventDefault();
 
-            const itemId = document.getElementById('itemId').value;
-            const colecao = document.getElementById('colecao').value;
-            const tag = document.getElementById('tag').value;
-            const preco = parseFloat(document.getElementById('preco').value) || (tag === 'gratis' ? 0 : precosAtuais[tag]);
+
+            btnSalvarItem.disabled =
+                true;
+
+
+            const itemId =
+                document.getElementById(
+                    "itemId"
+                ).value;
+
+
+            const colecao =
+                document.getElementById(
+                    "colecao"
+                ).value;
+
+
+            const tag =
+                document.getElementById(
+                    "tag"
+                ).value;
+
+
+            const precoDigitado =
+                parseFloat(
+                    document.getElementById(
+                        "preco"
+                    ).value
+                );
+
+
+            const preco =
+                Number.isFinite(
+                    precoDigitado
+                )
+                    ? precoDigitado
+                    : (
+                        tag === "gratis"
+                            ? 0
+                            : Number(
+                                precosAtuais[tag] || 0
+                            )
+                    );
+
+
+            /*
+             * PLAYER
+             *
+             * Pode ser:
+             *
+             * URL:
+             * https://player.abyssplayer.com/P8Gb3PlIes
+             *
+             * OU:
+             *
+             * <iframe ...></iframe>
+             */
+
+            const video1 =
+                normalizarPlayer(
+                    document.getElementById(
+                        "video1"
+                    ).value
+                );
+
+
+            const video2 =
+                normalizarPlayer(
+                    document.getElementById(
+                        "video2"
+                    ).value
+                );
+
+
+            const video3 =
+                normalizarPlayer(
+                    document.getElementById(
+                        "video3"
+                    ).value
+                );
+
 
             const itemData = {
-                titulo: document.getElementById('titulo').value,
-                categoria: document.getElementById('categoria').value,
-                ano: document.getElementById('ano').value,
-                tag: tag,
-                plano: tag, // Retrocompatibilidade
-                preco: preco,
-                capa: document.getElementById('capa').value,
-                banner: document.getElementById('banner').value,
-                video1: document.getElementById('video1').value,
-                video2: document.getElementById('video2').value,
-                video3: document.getElementById('video3').value,
-                arquivoDownload: document.getElementById('arquivoDownload').value,
-                trailer: document.getElementById('trailer').value,
-                descricao: document.getElementById('descricao').value,
-                destaque: document.getElementById('destaque').checked,
-                recomendado: document.getElementById('recomendado').checked,
-                ativo: true,
-                atualizadoEm: serverTimestamp()
+
+                titulo:
+                    document.getElementById(
+                        "titulo"
+                    ).value.trim(),
+
+
+                categoria:
+                    document.getElementById(
+                        "categoria"
+                    ).value,
+
+
+                ano:
+                    document.getElementById(
+                        "ano"
+                    ).value.trim(),
+
+
+                tag:
+                    tag,
+
+
+                plano:
+                    tag,
+
+
+                preco:
+                    preco,
+
+
+                capa:
+                    document.getElementById(
+                        "capa"
+                    ).value.trim(),
+
+
+                banner:
+                    document.getElementById(
+                        "banner"
+                    ).value.trim(),
+
+
+                /*
+                 * NOVO SISTEMA
+                 */
+
+                video1:
+                    video1,
+
+                video2:
+                    video2,
+
+                video3:
+                    video3,
+
+
+                /*
+                 * Compatibilidade com
+                 * código antigo do player
+                 */
+
+                video:
+                    video1,
+
+
+                arquivoDownload:
+                    document.getElementById(
+                        "arquivoDownload"
+                    ).value.trim(),
+
+
+                trailer:
+                    document.getElementById(
+                        "trailer"
+                    ).value.trim(),
+
+
+                descricao:
+                    document.getElementById(
+                        "descricao"
+                    ).value.trim(),
+
+
+                destaque:
+                    document.getElementById(
+                        "destaque"
+                    ).checked,
+
+
+                recomendado:
+                    document.getElementById(
+                        "recomendado"
+                    ).checked,
+
+
+                ativo:
+                    true,
+
+
+                atualizadoEm:
+                    serverTimestamp()
+
             };
 
+
             try {
+
                 if (itemId) {
-                    await setDoc(doc(db, colecao, itemId), itemData, { merge: true });
-                    mostrarNotificacao("Conteúdo atualizado com sucesso!");
-                } else {
-                    itemData.criadoEm = serverTimestamp();
-                    const novoRef = doc(collection(db, colecao));
-                    await setDoc(novoRef, itemData);
-                    mostrarNotificacao("Novo conteúdo cadastrado com sucesso!");
+
+                    /*
+                     * EDIÇÃO
+                     */
+
+                    await setDoc(
+                        doc(
+                            db,
+                            colecao,
+                            itemId
+                        ),
+                        itemData,
+                        {
+                            merge: true
+                        }
+                    );
+
+
+                    mostrarNotificacao(
+                        "Conteúdo atualizado com sucesso!"
+                    );
+
                 }
 
+                else {
+
+                    /*
+                     * NOVO
+                     */
+
+                    itemData.criadoEm =
+                        serverTimestamp();
+
+
+                    const novoRef =
+                        doc(
+                            collection(
+                                db,
+                                colecao
+                            )
+                        );
+
+
+                    await setDoc(
+                        novoRef,
+                        itemData
+                    );
+
+
+                    mostrarNotificacao(
+                        "Novo conteúdo cadastrado!"
+                    );
+
+                }
+
+
                 resetarFormulario();
-                carregarListaConteudos();
-            } catch (err) {
-                console.error(err);
-                mostrarNotificacao("Erro ao salvar conteúdo no Firestore.");
+
+                await carregarListaConteudos();
+
             }
+
+            catch (erro) {
+
+                console.error(
+                    "Erro ao salvar:",
+                    erro
+                );
+
+                mostrarNotificacao(
+                    "Erro ao salvar conteúdo."
+                );
+
+            }
+
+            finally {
+
+                btnSalvarItem.disabled =
+                    false;
+
+            }
+
         };
 
-        function prepararEdicao(item) {
-            document.getElementById('itemId').value = item.id;
-            document.getElementById('titulo').value = item.titulo || "";
-            
-            // Trava o campo de coleção para garantir salvamento correto no documento original
-            const selectColecao = document.getElementById('colecao');
-            selectColecao.value = item.colecao;
-            selectColecao.disabled = true;
 
-            document.getElementById('categoria').value = item.categoria || "";
-            document.getElementById('ano').value = item.ano || "";
-            document.getElementById('tag').value = (item.tag || item.plano || "gratis").toLowerCase();
-            document.getElementById('preco').value = item.preco !== undefined ? item.preco : "";
-            document.getElementById('capa').value = item.capa || "";
-            document.getElementById('banner').value = item.banner || "";
-            document.getElementById('video1').value = item.video1 || item.video || "";
-            document.getElementById('video2').value = item.video2 || "";
-            document.getElementById('video3').value = item.video3 || "";
-            document.getElementById('arquivoDownload').value = item.arquivoDownload || "";
-            document.getElementById('trailer').value = item.trailer || "";
-            document.getElementById('descricao').value = item.descricao || "";
-            document.getElementById('destaque').checked = !!item.destaque;
-            document.getElementById('recomendado').checked = !!item.recomendado;
+    /* =====================================================
+       EDITAR
+    ===================================================== */
 
-            document.getElementById('formTitulo').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Editando: ${item.titulo}`;
-            document.getElementById('btnCancelarEdicao').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+    function prepararEdicao(item) {
+
+        document.getElementById(
+            "itemId"
+        ).value =
+            item.id;
+
+
+        document.getElementById(
+            "titulo"
+        ).value =
+            item.titulo || "";
+
+
+        const selectColecao =
+            document.getElementById(
+                "colecao"
+            );
+
+
+        selectColecao.value =
+            item.colecao;
+
+
+        selectColecao.disabled =
+            true;
+
+
+        document.getElementById(
+            "categoria"
+        ).value =
+            item.categoria || "";
+
+
+        document.getElementById(
+            "ano"
+        ).value =
+            item.ano || "";
+
+
+        document.getElementById(
+            "tag"
+        ).value =
+            (
+                item.tag ||
+                item.plano ||
+                "gratis"
+            ).toLowerCase();
+
+
+        document.getElementById(
+            "preco"
+        ).value =
+            item.preco !== undefined
+                ? item.preco
+                : "";
+
+
+        document.getElementById(
+            "capa"
+        ).value =
+            item.capa || "";
+
+
+        document.getElementById(
+            "banner"
+        ).value =
+            item.banner || "";
+
+
+        /*
+         * PLAYER PRINCIPAL
+         *
+         * Prioridade:
+         * video1
+         * video
+         */
+
+        document.getElementById(
+            "video1"
+        ).value =
+            item.video1 ||
+            item.video ||
+            "";
+
+
+        document.getElementById(
+            "video2"
+        ).value =
+            item.video2 || "";
+
+
+        document.getElementById(
+            "video3"
+        ).value =
+            item.video3 || "";
+
+
+        document.getElementById(
+            "arquivoDownload"
+        ).value =
+            item.arquivoDownload || "";
+
+
+        document.getElementById(
+            "trailer"
+        ).value =
+            item.trailer || "";
+
+
+        document.getElementById(
+            "descricao"
+        ).value =
+            item.descricao || "";
+
+
+        document.getElementById(
+            "destaque"
+        ).checked =
+            !!item.destaque;
+
+
+        document.getElementById(
+            "recomendado"
+        ).checked =
+            !!item.recomendado;
+
+
+        document.getElementById(
+            "formTitulo"
+        ).innerHTML =
+            `
+            <i class="fa-solid fa-pen-to-square"></i>
+            Editando: ${escaparHtml(item.titulo || "")}
+            `;
+
+
+        document.getElementById(
+            "btnCancelarEdicao"
+        ).classList.remove(
+            "hidden"
+        );
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    /* =====================================================
+       EXCLUIR
+    ===================================================== */
+
+    async function excluirItem(item) {
+
+        if (
+            !confirm(
+                `Tem certeza que deseja excluir "${item.titulo}"?`
+            )
+        ) {
+
+            return;
+
         }
 
-        async function excluirItem(item) {
-            if (!confirm(`Tem certeza que deseja excluir "${item.titulo}"?`)) return;
 
-            try {
-                await deleteDoc(doc(db, item.colecao, item.id));
-                mostrarNotificacao("Item excluído com sucesso!");
-                carregarListaConteudos();
-            } catch (e) {
-                mostrarNotificacao("Erro ao excluir item.");
-            }
+        try {
+
+            await deleteDoc(
+                doc(
+                    db,
+                    item.colecao,
+                    item.id
+                )
+            );
+
+
+            mostrarNotificacao(
+                "Item excluído com sucesso!"
+            );
+
+
+            carregarListaConteudos();
+
         }
 
-        document.getElementById('btnCancelarEdicao').onclick = resetarFormulario;
+        catch (erro) {
 
-        function resetarFormulario() {
-            document.getElementById('formConteudo').reset();
-            document.getElementById('itemId').value = "";
-            
-            // Libera o campo de coleção novamente para novos cadastros
-            document.getElementById('colecao').disabled = false;
+            console.error(
+                erro
+            );
 
-            document.getElementById('formTitulo').innerHTML = `<i class="fa-solid fa-plus-circle"></i> Cadastrar Novo Conteúdo`;
-            document.getElementById('btnCancelarEdicao').classList.add('hidden');
+            mostrarNotificacao(
+                "Erro ao excluir item."
+            );
+
         }
 
-        function mostrarNotificacao(msg) {
-            const box = document.getElementById('notification');
-            document.getElementById('notificationText').innerText = msg;
-            box.classList.remove('hidden');
-            setTimeout(() => box.classList.add('hidden'), 3500);
-        }
-    </script>
+    }
+
+
+    /* =====================================================
+       CANCELAR EDIÇÃO
+    ===================================================== */
+
+    document.getElementById(
+        "btnCancelarEdicao"
+    ).onclick =
+        resetarFormulario;
+
+
+    /* =====================================================
+       RESET
+    ===================================================== */
+
+    function resetarFormulario() {
+
+        formConteudo.reset();
+
+
+        document.getElementById(
+            "itemId"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "colecao"
+        ).disabled =
+            false;
+
+
+        document.getElementById(
+            "formTitulo"
+        ).innerHTML =
+            `
+            <i class="fa-solid fa-plus-circle"></i>
+            Cadastrar Novo Conteúdo
+            `;
+
+
+        document.getElementById(
+            "btnCancelarEdicao"
+        ).classList.add(
+            "hidden"
+        );
+
+
+        /*
+         * Grátis por padrão
+         */
+
+        document.getElementById(
+            "tag"
+        ).value =
+            "gratis";
+
+
+        document.getElementById(
+            "preco"
+        ).value =
+            "0.00";
+
+    }
+
+
+    /* =====================================================
+       NOTIFICAÇÃO
+    ===================================================== */
+
+    function mostrarNotificacao(
+        mensagem
+    ) {
+
+        const box =
+            document.getElementById(
+                "notification"
+            );
+
+
+        document.getElementById(
+            "notificationText"
+        ).innerText =
+            mensagem;
+
+
+        box.classList.remove(
+            "hidden"
+        );
+
+
+        setTimeout(
+            () => {
+
+                box.classList.add(
+                    "hidden"
+                );
+
+            },
+            3500
+        );
+
+    }
+
+</script>
+
 </body>
 </html>
