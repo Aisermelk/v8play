@@ -1,216 +1,2872 @@
-<!-- =========================================================
-     CORREÇÃO DO BOTÃO "ASSISTIR VÍDEO AGORA"
-     Substitua o bloco antigo do btnConfirmarAd por este.
-========================================================= -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>V8 Play+</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <style>
+
+        :root {
+            --primary: #00d4ff;
+            --primary-hover: #00a2c7;
+            --bg-dark: #0a0a0b;
+            --bg-card: #16161a;
+            --bg-modal: #121214;
+            --text: #ffffff;
+            --text-secondary: #aaaaaa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px 5%;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: linear-gradient(
+                to bottom,
+                rgba(10,10,11,0.95),
+                rgba(10,10,11,0)
+            );
+            backdrop-filter: blur(8px);
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .logo-img {
+            height: 42px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 360px;
+            position: relative;
+        }
+
+        #busca {
+            width: 100%;
+            padding: 10px 16px 10px 38px;
+            border-radius: 20px;
+            border: 1px solid #2a2a30;
+            background: rgba(255,255,255,0.06);
+            color: white;
+            outline: none;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        #busca:focus {
+            border-color: var(--primary);
+            background: rgba(0,0,0,0.4);
+            box-shadow: 0 0 10px rgba(0,212,255,0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .btn-login {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-login:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .ad-banner-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 5%;
+            margin-top: 75px;
+        }
+
+        .ad-box {
+            width: 100%;
+            max-width: 970px;
+            height: 90px;
+            background: #1a1a20;
+            border: 1px dashed #333;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        #hero {
+            height: 70vh;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 5% 50px;
+            background-size: cover;
+            background-position: center;
+            background-color: #111;
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    to top,
+                    var(--bg-dark) 5%,
+                    transparent 60%
+                ),
+                linear-gradient(
+                    to right,
+                    rgba(10,10,11,0.9),
+                    transparent 70%
+                );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 650px;
+        }
+
+        .hero-content h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.1;
+        }
+
+        .hero-content p {
+            color: #ddd;
+            margin-bottom: 22px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .hero-btns button {
+            padding: 12px 28px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 12px;
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .btn-assistir {
+            background: #fff;
+            color: #000;
+        }
+
+        .btn-assistir:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .btn-info {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            backdrop-filter: blur(5px);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-info:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            padding: 30px 5%;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin: 25px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .filtros {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            scrollbar-width: none;
+        }
+
+        .filtros::-webkit-scrollbar {
+            display: none;
+        }
+
+        .chip {
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid #2a2a30;
+            background: rgba(255,255,255,0.03);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .chip:hover {
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .chip.ativo {
+            background: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .cards {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 10px 0 25px;
+            scrollbar-width: thin;
+            scrollbar-color: #333 transparent;
+        }
+
+        .movie-card {
+            min-width: 165px;
+            width: 165px;
+            height: 245px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.25s, box-shadow 0.25s;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .movie-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 20px rgba(0,212,255,0.25);
+            border-color: var(--primary);
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .movie-card .titulo-fallback {
+            padding: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a20;
+        }
+
+        .selo-card {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            text-transform: uppercase;
+        }
+
+        .selo-card.gratis,
+        .selo-card.free {
+            background: rgba(0,0,0,0.7);
+            color: #00d4ff;
+            border: 1px solid #00d4ff;
+        }
+
+        .selo-card.prime {
+            background: linear-gradient(135deg, #ffaa00, #ff5500);
+            color: #000;
+        }
+
+        .selo-card.premium {
+            background: linear-gradient(135deg, #00d4ff, #0072ff);
+            color: #000;
+        }
+
+        .vazio {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            padding: 20px 0;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(6px);
+            padding: 20px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .login-box {
+            background: var(--bg-modal);
+            padding: 35px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid #222;
+        }
+
+        .login-box h2 {
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            background: #1c1c20;
+            border: 1px solid #333;
+            color: white;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .login-box input:focus {
+            border-color: var(--primary);
+        }
+
+        .login-box .btn-secundario {
+            background: none;
+            color: var(--text-secondary);
+            border: none;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-box .btn-secundario:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .erro-msg {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            min-height: 20px;
+            margin-bottom: 8px;
+        }
+
+        .detalhe-box {
+            background: var(--bg-modal);
+            border-radius: 12px;
+            max-width: 650px;
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid #222;
+            position: relative;
+        }
+
+        .detalhe-box img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .detalhe-info {
+            padding: 25px;
+        }
+
+        .detalhe-info h2 {
+            margin-bottom: 6px;
+            font-size: 1.6rem;
+        }
+
+        .detalhe-meta {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 14px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .detalhe-info p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.92rem;
+        }
+
+        .detalhe-btns {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .detalhe-btns button {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-ad-action {
+            background: linear-gradient(135deg, #ff9900, #ff5500);
+            color: white;
+        }
+
+        .btn-ad-action:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-pix-prime {
+            background: linear-gradient(135deg, #ffaa00, #ff5500);
+            color: #000;
+        }
+
+        .btn-pix-premium {
+            background: linear-gradient(135deg, #00d4ff, #0072ff);
+            color: #ffffff;
+        }
+
+        #notification {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f1f24;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 30px;
+            z-index: 4000;
+            border: 1px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            font-size: 0.9rem;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .checkout-info {
+            color: #aaa;
+            font-size: 0.82rem;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 12px 4%;
+            }
+
+            .logo {
+                font-size: 1.1rem;
+            }
+
+            .logo-img {
+                height: 34px;
+            }
+
+            .search-box {
+                max-width: none;
+            }
+
+            .btn-login {
+                padding: 8px 14px;
+                font-size: 0.8rem;
+            }
+
+            #hero {
+                height: 65vh;
+                padding: 0 5% 35px;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 0.85rem;
+            }
+
+            .movie-card {
+                min-width: 140px;
+                width: 140px;
+                height: 210px;
+            }
+
+            .login-box {
+                padding: 25px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <a href="#" class="logo">
+
+        <img
+            src="assets/v8p.png"
+            alt="V8 Play+"
+            class="logo-img"
+            onerror="this.style.display='none'"
+        >
+
+        <span>V8 Play+</span>
+
+    </a>
+
+    <div class="search-box">
+
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+
+        <input
+            type="text"
+            id="busca"
+            placeholder="Buscar filmes, séries e doramas..."
+            autocomplete="off"
+        >
+
+    </div>
+
+    <button class="btn-login" id="authBtn">
+        Entrar
+    </button>
+
+</header>
+
+
+<div class="ad-banner-container">
+
+    <div class="ad-box">
+
+        <span>
+            ESPAÇO PUBLICITÁRIO
+        </span>
+
+        <small>
+            ADSENSE / BANNER
+        </small>
+
+    </div>
+
+</div>
+
+
+<section id="hero">
+
+    <div class="hero-content">
+
+        <h1 id="heroTitle">
+            Carregando...
+        </h1>
+
+        <p id="heroDesc">
+            Sua nova experiência em streaming em alta definição.
+        </p>
+
+        <div class="hero-btns">
+
+            <button
+                class="btn-assistir"
+                id="heroAssistir"
+            >
+                <i class="fa-solid fa-play"></i>
+                Ver Opções
+            </button>
+
+            <button
+                class="btn-info"
+                id="heroInfo"
+            >
+                <i class="fa-solid fa-circle-info"></i>
+                Mais detalhes
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="container">
+
+    <div
+        class="filtros"
+        id="filtros"
+    >
+
+        <button
+            class="chip ativo"
+            data-genero="Todos"
+        >
+            Todos
+        </button>
+
+    </div>
+
+
+    <h2 class="section-title">
+        🔥 Em Alta
+    </h2>
+
+    <div
+        class="cards"
+        id="emAlta"
+    ></div>
+
+
+    <h2 class="section-title">
+        🎬 Filmes
+    </h2>
+
+    <div
+        class="cards"
+        id="filmes"
+    ></div>
+
+
+    <div
+        class="ad-banner-container"
+        style="margin:20px 0;"
+    >
+
+        <div
+            class="ad-box"
+            style="height:120px;"
+        >
+
+            <span>
+                ESPAÇO PUBLICITÁRIO MID-PAGE
+            </span>
+
+            <small>
+                Monetização V8 Play+
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <h2 class="section-title">
+        📺 Séries
+    </h2>
+
+    <div
+        class="cards"
+        id="series"
+    ></div>
+
+
+    <h2 class="section-title">
+        🎌 Animes
+    </h2>
+
+    <div
+        class="cards"
+        id="animes"
+    ></div>
+
+
+    <h2 class="section-title">
+        🎭 Doramas
+    </h2>
+
+    <div
+        class="cards"
+        id="doramas"
+    ></div>
+
+
+    <h2 class="section-title">
+        ⭐ Recomendados
+    </h2>
+
+    <div
+        class="cards"
+        id="recomendados"
+    ></div>
+
+</div>
+
+
+<!-- LOGIN -->
+
+<div
+    id="loginModal"
+    class="modal hidden"
+>
+
+    <div class="login-box">
+
+        <h2 id="tituloAuth">
+            Entrar no V8 Play+
+        </h2>
+
+        <p
+            class="erro-msg"
+            id="erroAuth"
+        ></p>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="E-mail"
+            autocomplete="username"
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Senha"
+            autocomplete="current-password"
+        >
+
+        <button
+            class="btn-login"
+            style="
+                width:100%;
+                border-radius:6px;
+                padding:12px;
+                margin-top:5px;
+            "
+            id="doLogin"
+        >
+            Entrar
+        </button>
+
+        <button
+            class="btn-secundario"
+            id="btnEsqueciSenha"
+        >
+            Esqueci minha senha
+        </button>
+
+        <button
+            class="btn-secundario"
+            id="alternarCadastro"
+        >
+            Ainda não tem conta? Criar conta
+        </button>
+
+        <button
+            class="btn-secundario"
+            onclick="fecharModais()"
+            style="margin-top:15px;color:#666;"
+        >
+            Cancelar
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- DETALHES -->
+
+<div
+    id="detalheModal"
+    class="modal hidden"
+>
+
+    <div class="detalhe-box">
+
+        <img
+            id="detImg"
+            src=""
+            alt=""
+        >
+
+        <div class="detalhe-info">
+
+            <h2 id="detTitulo"></h2>
+
+            <div class="detalhe-meta">
+
+                <span id="detAno"></span>
+
+                •
+
+                <span id="detCategoria"></span>
+
+            </div>
+
+            <p id="detDescricao"></p>
+
+            <div
+                class="detalhe-btns"
+                id="detBtnsContainer"
+            ></div>
+
+            <div
+                class="detalhe-btns"
+                style="margin-top:15px;"
+            >
+
+                <button
+                    class="btn-info"
+                    style="
+                        background:transparent;
+                        border:1px solid #333;
+                    "
+                    onclick="fecharModais()"
+                >
+                    Fechar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ANÚNCIO -->
+
+<div
+    id="adModal"
+    class="modal hidden"
+>
+
+    <div
+        class="login-box"
+        style="max-width:450px;"
+    >
+
+        <h2>
+            Anúncio Patrocinado
+        </h2>
+
+        <p
+            style="
+                font-size:0.85rem;
+                color:#aaa;
+                margin-bottom:15px;
+            "
+        >
+            Aguarde o anúncio para liberar sua ação gratuita.
+        </p>
+
+        <div
+            class="ad-box"
+            style="
+                height:180px;
+                margin-bottom:20px;
+            "
+        >
+
+            <span>
+                [ ANÚNCIO PUBLICITÁRIO ]
+            </span>
+
+            <small>
+                Monetag / Google AdSense / Banner
+            </small>
+
+        </div>
+
+        <button
+            id="btnConfirmarAd"
+            class="btn-login"
+            style="
+                width:100%;
+                opacity:0.5;
+            "
+            disabled
+        >
+            Aguarde
+            <span id="adTimerCount">
+                5
+            </span>s...
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- NOTIFICAÇÃO -->
+
+<div
+    id="notification"
+    class="hidden"
+>
+
+    <span id="notificationText"></span>
+
+</div>
+
 
 <script type="module">
 
-    // =========================================================
-    // BOTÃO CONFIRMAR ANÚNCIO
-    // =========================================================
+    import {
+        db,
+        auth
+    } from "./js/firebase.js";
 
-    document
-        .getElementById("btnConfirmarAd")
-        .onclick = () => {
 
-            console.log("=================================");
-            console.log("🎬 BOTÃO DO ANÚNCIO CLICADO");
-            console.log("=================================");
+    import {
+        collection,
+        getDocs,
+        doc,
+        getDoc,
+        setDoc,
+        serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-            // -------------------------------------------------
-            // VERIFICAÇÃO DO ITEM
-            // -------------------------------------------------
 
-            if (!filmeAtual) {
+    import {
+        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword,
+        sendPasswordResetEmail,
+        onAuthStateChanged,
+        signOut
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-                console.error(
-                    "❌ filmeAtual está vazio."
+
+    // ==========================================
+    // VARIÁVEIS
+    // ==========================================
+
+    let catalogo = [];
+
+    let filmeAtual = null;
+
+    let modoCadastro = false;
+
+    let acaoAnuncioPendente = null;
+
+    let titulosComprados = new Set();
+
+    let intervaloChecagemPix = null;
+
+
+    let valoresPlanosAdmin = {
+
+        prime: 9.90,
+
+        premium: 19.90
+
+    };
+
+
+    const COLECOES = [
+
+        "filmes",
+
+        "series",
+
+        "animes",
+
+        "doramas"
+
+    ];
+
+
+    // ==========================================
+    // PREÇO
+    // ==========================================
+
+    function formatarPreco(valor) {
+
+        const num = Number(valor) || 0;
+
+        return `R$ ${num.toFixed(2).replace(".", ",")}`;
+
+    }
+
+
+    async function carregarPrecosAdmin() {
+
+        try {
+
+            const docRef = doc(
+                db,
+                "configuracoes",
+                "planos"
+            );
+
+            const docSnap =
+                await getDoc(docRef);
+
+
+            if (docSnap.exists()) {
+
+                const dados =
+                    docSnap.data();
+
+
+                if (dados.prime !== undefined) {
+
+                    valoresPlanosAdmin.prime =
+                        Number(dados.prime);
+
+                }
+
+
+                if (dados.premium !== undefined) {
+
+                    valoresPlanosAdmin.premium =
+                        Number(dados.premium);
+
+                }
+
+            }
+
+        }
+
+        catch (e) {
+
+            console.warn(
+                "Usando preços padrão.",
+                e
+            );
+
+        }
+
+    }
+
+
+    // ==========================================
+    // TAG
+    // ==========================================
+
+    function obterTagItem(item) {
+
+        if (item.tag) {
+
+            return String(item.tag)
+                .toLowerCase();
+
+        }
+
+
+        if (item.plano) {
+
+            return String(item.plano)
+                .toLowerCase();
+
+        }
+
+
+        return "gratis";
+
+    }
+
+
+    // ==========================================
+    // BUSCAR COLEÇÃO
+    // ==========================================
+
+    async function buscarColecao(nome) {
+
+        try {
+
+            const snap =
+                await getDocs(
+                    collection(db, nome)
                 );
 
-                mostrarNotificacao(
-                    "Não foi possível identificar o conteúdo."
-                );
 
-                return;
+            const itens = [];
+
+
+            snap.forEach((docSnap) => {
+
+                const data =
+                    docSnap.data();
+
+
+                if (data.ativo !== false) {
+
+                    itens.push({
+
+                        id: docSnap.id,
+
+                        colecao: nome,
+
+                        ...data
+
+                    });
+
+                }
+
+            });
+
+
+            itens.sort((a, b) => {
+
+                const dataA =
+                    a.data?.toDate
+                        ? a.data.toDate()
+                        : new Date(a.data || 0);
+
+
+                const dataB =
+                    b.data?.toDate
+                        ? b.data.toDate()
+                        : new Date(b.data || 0);
+
+
+                return dataB - dataA;
+
+            });
+
+
+            return itens;
+
+        }
+
+        catch (e) {
+
+            console.error(
+                `Erro na coleção ${nome}:`,
+                e
+            );
+
+            return [];
+
+        }
+
+    }
+
+
+    // ==========================================
+    // CARREGAR CATÁLOGO
+    // ==========================================
+
+    async function carregarCatalogo() {
+
+        await carregarPrecosAdmin();
+
+
+        const containerIds = [
+
+            "emAlta",
+
+            "filmes",
+
+            "series",
+
+            "animes",
+
+            "doramas",
+
+            "recomendados"
+
+        ];
+
+
+        containerIds.forEach(id => {
+
+            const el =
+                document.getElementById(id);
+
+
+            if (el) {
+
+                el.innerHTML = "";
+
+            }
+
+        });
+
+
+        const resultados =
+            await Promise.all(
+                COLECOES.map(buscarColecao)
+            );
+
+
+        catalogo =
+            resultados.flat();
+
+
+        if (!catalogo.length) {
+
+            document
+                .getElementById("filmes")
+                .innerHTML =
+                `
+                <p class="vazio">
+                    Nenhum título disponível no momento.
+                </p>
+                `;
+
+            return;
+
+        }
+
+
+        catalogo.forEach(item => {
+
+            const card =
+                criarCard(item);
+
+
+            if (
+                item.destaque &&
+                document.getElementById("emAlta")
+            ) {
+
+                document
+                    .getElementById("emAlta")
+                    .appendChild(
+                        card.cloneNode(true)
+                    );
+
+                const ultimo =
+                    document
+                        .getElementById("emAlta")
+                        .lastElementChild;
+
+                ultimo.onclick =
+                    () => abrirDetalhes(item);
+
             }
 
 
-            // -------------------------------------------------
-            // VERIFICAÇÃO DA AÇÃO
-            // -------------------------------------------------
+            if (
+                item.tipo === "serie"
+            ) {
+
+                adicionarCard(
+                    "series",
+                    item
+                );
+
+            }
+
+            else if (
+                item.tipo === "anime"
+            ) {
+
+                adicionarCard(
+                    "animes",
+                    item
+                );
+
+            }
+
+            else if (
+                item.tipo === "dorama"
+            ) {
+
+                adicionarCard(
+                    "doramas",
+                    item
+                );
+
+            }
+
+            else {
+
+                adicionarCard(
+                    "filmes",
+                    item
+                );
+
+            }
+
+
+            if (item.recomendado) {
+
+                adicionarCard(
+                    "recomendados",
+                    item
+                );
+
+            }
+
+        });
+
+
+        carregarDestaque();
+
+        montarFiltros();
+
+    }
+
+
+    function adicionarCard(containerId, item) {
+
+        const container =
+            document.getElementById(
+                containerId
+            );
+
+
+        if (!container)
+            return;
+
+
+        container.appendChild(
+            criarCard(item)
+        );
+
+    }
+
+
+    // ==========================================
+    // CARD
+    // ==========================================
+
+    function criarCard(item) {
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "movie-card";
+
+
+        card.dataset.categoria =
+            item.categoria || "";
+
+
+        card.dataset.titulo =
+            String(item.titulo || "")
+                .toLowerCase();
+
+
+        const tag =
+            obterTagItem(item);
+
+
+        let rotulo =
+            "GRÁTIS";
+
+
+        if (tag === "prime") {
+
+            rotulo =
+                `PRIME (${formatarPreco(
+                    valoresPlanosAdmin.prime
+                )})`;
+
+        }
+
+        else if (tag === "premium") {
+
+            rotulo =
+                `PREMIUM (${formatarPreco(
+                    valoresPlanosAdmin.premium
+                )})`;
+
+        }
+
+
+        const selo = `
+
+            <span
+                class="selo-card ${tag}"
+            >
+                ${rotulo}
+            </span>
+
+        `;
+
+
+        if (item.capa) {
+
+            card.innerHTML = `
+
+                ${selo}
+
+                <img
+                    src="${item.capa}"
+                    alt="${item.titulo || ""}"
+                    loading="lazy"
+                >
+
+            `;
+
+        }
+
+        else {
+
+            card.innerHTML = `
+
+                ${selo}
+
+                <div class="titulo-fallback">
+                    ${item.titulo || "Sem título"}
+                </div>
+
+            `;
+
+        }
+
+
+        card.onclick =
+            () => abrirDetalhes(item);
+
+
+        return card;
+
+    }
+
+
+    // ==========================================
+    // FILTROS
+    // ==========================================
+
+    function montarFiltros() {
+
+        const container =
+            document.getElementById(
+                "filtros"
+            );
+
+
+        if (!container)
+            return;
+
+
+        const generos = [
+
+            ...new Set(
+
+                catalogo
+                    .map(i => i.categoria)
+                    .filter(Boolean)
+
+            )
+
+        ].sort();
+
+
+        container
+            .querySelectorAll(
+                '.chip:not([data-genero="Todos"])'
+            )
+            .forEach(
+                c => c.remove()
+            );
+
+
+        generos.forEach(genero => {
+
+            const chip =
+                document.createElement(
+                    "button"
+                );
+
+
+            chip.className =
+                "chip";
+
+
+            chip.dataset.genero =
+                genero;
+
+
+            chip.innerText =
+                genero;
+
+
+            container.appendChild(
+                chip
+            );
+
+        });
+
+    }
+
+
+    function aplicarFiltrosEBusca() {
+
+        const busca =
+            document.getElementById(
+                "busca"
+            );
+
+
+        const texto =
+            busca
+                ? busca.value
+                    .toLowerCase()
+                    .trim()
+                : "";
+
+
+        const chipAtivo =
+            document.querySelector(
+                "#filtros .chip.ativo"
+            );
+
+
+        const generoAtivo =
+            chipAtivo?.dataset.genero ||
+            "Todos";
+
+
+        document
+            .querySelectorAll(
+                ".movie-card"
+            )
+            .forEach(card => {
+
+                const titulo =
+                    card.dataset.titulo ||
+                    "";
+
+
+                const categoria =
+                    card.dataset.categoria ||
+                    "";
+
+
+                const buscaOk =
+                    !texto ||
+                    titulo.includes(texto);
+
+
+                const generoOk =
+                    generoAtivo === "Todos" ||
+                    categoria === generoAtivo;
+
+
+                card.style.display =
+                    buscaOk && generoOk
+                        ? ""
+                        : "none";
+
+            });
+
+    }
+
+
+    document
+        .getElementById("filtros")
+        ?.addEventListener(
+            "click",
+            e => {
+
+                if (
+                    !e.target.classList
+                        .contains("chip")
+                )
+                    return;
+
+
+                document
+                    .querySelectorAll(
+                        "#filtros .chip"
+                    )
+                    .forEach(
+                        c =>
+                            c.classList
+                                .remove("ativo")
+                    );
+
+
+                e.target.classList
+                    .add("ativo");
+
+
+                aplicarFiltrosEBusca();
+
+            }
+        );
+
+
+    document
+        .getElementById("busca")
+        ?.addEventListener(
+            "input",
+            aplicarFiltrosEBusca
+        );
+
+
+    // ==========================================
+    // DESTAQUE
+    // ==========================================
+
+    function carregarDestaque() {
+
+        const destaque =
+            catalogo.find(
+                i => i.destaque === true
+            ) ||
+            catalogo[0];
+
+
+        if (!destaque)
+            return;
+
+
+        filmeAtual =
+            destaque;
+
+
+        document
+            .getElementById("heroTitle")
+            .innerText =
+            destaque.titulo ||
+            "V8 Play+";
+
+
+        document
+            .getElementById("heroDesc")
+            .innerText =
+            destaque.descricao ||
+            "Assista agora em alta definição no V8 Play+.";
+
+
+        const hero =
+            document.getElementById("hero");
+
+
+        if (
+            destaque.banner ||
+            destaque.capa
+        ) {
+
+            hero.style.backgroundImage =
+                `url('${destaque.banner || destaque.capa}')`;
+
+        }
+
+    }
+
+
+    // ==========================================
+    // DETALHES
+    // ==========================================
+
+    function abrirDetalhes(item) {
+
+        filmeAtual =
+            item;
+
+
+        document
+            .getElementById("detImg")
+            .src =
+            item.banner ||
+            item.capa ||
+            "";
+
+
+        document
+            .getElementById("detTitulo")
+            .innerText =
+            item.titulo ||
+            "";
+
+
+        document
+            .getElementById("detAno")
+            .innerText =
+            item.ano ||
+            "2026";
+
+
+        document
+            .getElementById("detCategoria")
+            .innerText =
+            item.categoria ||
+            item.tipo ||
+            "";
+
+
+        document
+            .getElementById("detDescricao")
+            .innerText =
+            item.descricao ||
+            "Sem descrição disponível.";
+
+
+        const container =
+            document.getElementById(
+                "detBtnsContainer"
+            );
+
+
+        container.innerHTML =
+            "";
+
+
+        const tag =
+            obterTagItem(item);
+
+
+        const comprado =
+            titulosComprados.has(
+                item.id
+            );
+
+
+        // ======================================
+        // GRATUITO
+        // ======================================
+
+        if (
+            tag === "gratis" ||
+            tag === "free"
+        ) {
+
+            container.innerHTML = `
+
+                <button
+                    class="btn-ad-action"
+                    id="btnAssistirAnuncio"
+                >
+                    <i class="fa-solid fa-play"></i>
+                    Assistir com Anúncio
+                </button>
+
+                <button
+                    class="btn-ad-action"
+                    id="btnDownloadAnuncio"
+                    style="
+                        background:
+                        linear-gradient(
+                            135deg,
+                            #00d4ff,
+                            #0072ff
+                        );
+                    "
+                >
+                    <i class="fa-solid fa-download"></i>
+                    Baixar com Anúncio
+                </button>
+
+            `;
+
+
+            document
+                .getElementById(
+                    "btnAssistirAnuncio"
+                )
+                .onclick =
+                () =>
+                    iniciarFluxoAnuncio(
+                        "assistir"
+                    );
+
+
+            document
+                .getElementById(
+                    "btnDownloadAnuncio"
+                )
+                .onclick =
+                () =>
+                    iniciarFluxoAnuncio(
+                        "baixar"
+                    );
+
+        }
+
+
+        // ======================================
+        // PAGO
+        // ======================================
+
+        else {
+
+            const valor =
+                tag === "prime"
+                    ? valoresPlanosAdmin.prime
+                    : valoresPlanosAdmin.premium;
+
+
+            if (comprado) {
+
+                container.innerHTML = `
+
+                    <button
+                        class="btn-login"
+                        id="btnAssistirDireto"
+                    >
+                        <i class="fa-solid fa-play"></i>
+                        Assistir Agora
+                    </button>
+
+                    <button
+                        class="btn-info"
+                        id="btnDownloadDireto"
+                    >
+                        <i class="fa-solid fa-download"></i>
+                        Baixar Arquivo
+                    </button>
+
+                `;
+
+
+                document
+                    .getElementById(
+                        "btnAssistirDireto"
+                    )
+                    .onclick =
+                    () =>
+                        irParaPlayer(item);
+
+
+                document
+                    .getElementById(
+                        "btnDownloadDireto"
+                    )
+                    .onclick =
+                    () =>
+                        executarDownload(item);
+
+            }
+
+
+            else {
+
+                const classe =
+                    tag === "prime"
+                        ? "btn-pix-prime"
+                        : "btn-pix-premium";
+
+
+                container.innerHTML = `
+
+                    <button
+                        class="${classe}"
+                        id="btnComprarTag"
+                    >
+                        <i class="fa-solid fa-pix"></i>
+                        Liberar Tag
+                        ${tag.toUpperCase()}
+                        (${formatarPreco(valor)})
+                    </button>
+
+                `;
+
+
+                document
+                    .getElementById(
+                        "btnComprarTag"
+                    )
+                    .onclick =
+                    () =>
+                        solicitarPix(
+                            item,
+                            tag,
+                            valor
+                        );
+
+            }
+
+        }
+
+
+        // ======================================
+        // TRAILER
+        // ======================================
+
+        if (item.trailer) {
+
+            const btnTrailer =
+                document.createElement(
+                    "button"
+                );
+
+
+            btnTrailer.className =
+                "btn-info";
+
+
+            btnTrailer.innerHTML = `
+
+                <i class="fa-solid fa-film"></i>
+                Trailer
+
+            `;
+
+
+            btnTrailer.onclick =
+                () => {
+
+                    fecharModais();
+
+
+                    window.location.href =
+                        `player.html?id=${encodeURIComponent(item.id)}&colecao=${encodeURIComponent(item.colecao)}&trailer=true`;
+
+                };
+
+
+            container.appendChild(
+                btnTrailer
+            );
+
+        }
+
+
+        document
+            .getElementById(
+                "detalheModal"
+            )
+            .classList
+            .remove("hidden");
+
+    }
+
+
+    // ==========================================
+    // PLAYER
+    // ==========================================
+
+    function irParaPlayer(item) {
+
+        fecharModais();
+
+
+        window.location.href =
+            `player.html?id=${encodeURIComponent(item.id)}&colecao=${encodeURIComponent(item.colecao)}`;
+
+    }
+
+
+    // ==========================================
+    // ANÚNCIO
+    // ==========================================
+
+    function iniciarFluxoAnuncio(tipo) {
+
+        acaoAnuncioPendente =
+            tipo;
+
+
+        document
+            .getElementById(
+                "detalheModal"
+            )
+            .classList
+            .add("hidden");
+
+
+        document
+            .getElementById(
+                "adModal"
+            )
+            .classList
+            .remove("hidden");
+
+
+        let count = 5;
+
+
+        const btn =
+            document.getElementById(
+                "btnConfirmarAd"
+            );
+
+
+        btn.disabled =
+            true;
+
+
+        btn.style.opacity =
+            "0.5";
+
+
+        btn.innerText =
+            `Aguarde ${count}s...`;
+
+
+        const interval =
+            setInterval(
+                () => {
+
+                    count--;
+
+
+                    btn.innerText =
+                        count > 0
+                            ? `Aguarde ${count}s...`
+                            : (
+                                tipo === "assistir"
+                                    ? "Assistir Vídeo Agora"
+                                    : "Iniciar Download"
+                            );
+
+
+                    if (count <= 0) {
+
+                        clearInterval(
+                            interval
+                        );
+
+
+                        btn.disabled =
+                            false;
+
+
+                        btn.style.opacity =
+                            "1";
+
+                    }
+
+                },
+                1000
+            );
+
+    }
+
+
+    document
+        .getElementById(
+            "btnConfirmarAd"
+        )
+        .onclick =
+        () => {
+
+            if (!filmeAtual)
+                return;
+
 
             const acao =
                 acaoAnuncioPendente;
 
 
-            console.log(
-                "🎯 Ação:",
-                acao
-            );
+            fecharModais();
 
 
-            console.log(
-                "🎬 Filme:",
-                filmeAtual
-            );
+            if (acao === "assistir") {
 
-
-            console.log(
-                "🆔 ID:",
-                filmeAtual.id
-            );
-
-
-            console.log(
-                "📁 Coleção:",
-                filmeAtual.colecao
-            );
-
-
-            // =================================================
-            // ASSISTIR
-            // =================================================
-
-            if (
-                acao === "assistir"
-            ) {
-
-                // ---------------------------------------------
-                // VERIFICAR ID
-                // ---------------------------------------------
-
-                if (
-                    !filmeAtual.id
-                ) {
-
-                    console.error(
-                        "❌ O conteúdo não possui ID."
-                    );
-
-                    mostrarNotificacao(
-                        "ID do conteúdo não encontrado."
-                    );
-
-                    return;
-
-                }
-
-
-                // ---------------------------------------------
-                // VERIFICAR COLEÇÃO
-                // ---------------------------------------------
-
-                if (
-                    !filmeAtual.colecao
-                ) {
-
-                    console.error(
-                        "❌ O conteúdo não possui coleção."
-                    );
-
-                    mostrarNotificacao(
-                        "Coleção do conteúdo não encontrada."
-                    );
-
-                    return;
-
-                }
-
-
-                // ---------------------------------------------
-                // CONSTRUIR URL
-                // ---------------------------------------------
-
-                const urlPlayer =
-                    `player.html?id=${encodeURIComponent(filmeAtual.id)}&colecao=${encodeURIComponent(filmeAtual.colecao)}`;
-
-
-                console.log(
-                    "🚀 REDIRECIONANDO PARA:",
-                    urlPlayer
+                irParaPlayer(
+                    filmeAtual
                 );
-
-
-                // ---------------------------------------------
-                // FECHAR POPUPS
-                // ---------------------------------------------
-
-                document
-                    .querySelectorAll(".modal")
-                    .forEach(
-                        modal => {
-                            modal.classList.add("hidden");
-                        }
-                    );
-
-
-                // ---------------------------------------------
-                // PEQUENO ATRASO
-                // Garante que o popup seja fechado antes
-                // da navegação.
-                // ---------------------------------------------
-
-                setTimeout(
-                    () => {
-
-                        console.log(
-                            "▶️ Abrindo player..."
-                        );
-
-                        window.location.href =
-                            urlPlayer;
-
-                    },
-                    100
-                );
-
-
-                return;
 
             }
 
-
-            // =================================================
-            // DOWNLOAD
-            // =================================================
-
-            if (
-                acao === "baixar"
-            ) {
-
-                document
-                    .querySelectorAll(".modal")
-                    .forEach(
-                        modal => {
-                            modal.classList.add("hidden");
-                        }
-                    );
-
+            else if (acao === "baixar") {
 
                 executarDownload(
                     filmeAtual
                 );
 
+            }
+
+        };
+
+
+    // ==========================================
+    // DOWNLOAD
+    // ==========================================
+
+    function executarDownload(item) {
+
+        const url =
+            item.arquivoDownload ||
+            item.video1 ||
+            item.video;
+
+
+        if (!url) {
+
+            mostrarNotificacao(
+                "Link de download não disponível."
+            );
+
+            return;
+
+        }
+
+
+        window.open(
+            url,
+            "_blank"
+        );
+
+    }
+
+
+    // ==========================================
+    // INFINITEPAY
+    // ==========================================
+
+    async function solicitarPix(
+        item,
+        tag,
+        valor
+    ) {
+
+        // ------------------------------
+        // LOGIN
+        // ------------------------------
+
+        if (!auth.currentUser) {
+
+            mostrarNotificacao(
+                `Faça login para adquirir o acesso ${tag.toUpperCase()}.`
+            );
+
+
+            fecharModais();
+
+
+            document
+                .getElementById(
+                    "loginModal"
+                )
+                .classList
+                .remove("hidden");
+
+
+            return;
+
+        }
+
+
+        if (Number(valor) < 1) {
+
+            mostrarNotificacao(
+                "Valor de plano inválido (mínimo R$ 1,00). Contate o suporte."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            mostrarNotificacao(
+                "Gerando pagamento..."
+            );
+
+
+            // ------------------------------
+            // DADOS
+            // ------------------------------
+
+            const payload = {
+
+                uid:
+                    auth.currentUser.uid,
+
+                email:
+                    auth.currentUser.email || "",
+
+                itemId:
+                    item.id,
+
+                colecao:
+                    item.colecao,
+
+                tag:
+                    tag,
+
+                valor:
+                    Number(valor)
+
+            };
+
+
+            console.log(
+                "Enviando pagamento:",
+                payload
+            );
+
+
+            // ------------------------------
+            // API CLOUDFLARE
+            // ------------------------------
+
+            const resp =
+                await fetch(
+                    "/criar-compra-pix",
+                    {
+
+                        method:
+                            "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify(
+                                payload
+                            )
+
+                    }
+                );
+
+
+            // ------------------------------
+            // LER RESPOSTA
+            // ------------------------------
+
+            const texto =
+                await resp.text();
+
+
+            let dados;
+
+
+            try {
+
+                dados =
+                    JSON.parse(texto);
+
+            }
+
+            catch {
+
+                dados = {
+
+                    success:
+                        false,
+
+                    error:
+                        texto ||
+                        "Resposta inválida do servidor."
+
+                };
+
+            }
+
+
+            console.log(
+                "Resposta do servidor:",
+                resp.status,
+                dados
+            );
+
+
+            // ------------------------------
+            // ERRO HTTP
+            // ------------------------------
+
+            if (!resp.ok) {
+
+                console.error(
+                    "Erro HTTP:",
+                    resp.status,
+                    dados
+                );
+
+
+                mostrarNotificacao(
+                    dados.error ||
+                    `Erro no pagamento. HTTP ${resp.status}`
+                );
+
 
                 return;
 
             }
 
 
-            // =================================================
-            // AÇÃO DESCONHECIDA
-            // =================================================
+            // ------------------------------
+            // CHECKOUT INFINITEPAY
+            // ------------------------------
+
+            if (
+                dados.success &&
+                dados.checkout_url
+            ) {
+
+                fecharModais();
+
+
+                mostrarNotificacao(
+                    "Checkout criado. Redirecionando..."
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        window.location.href =
+                            dados.checkout_url;
+
+                    },
+                    500
+                );
+
+
+                return;
+
+            }
+
+
+            // ------------------------------
+            // SEM URL
+            // ------------------------------
 
             console.error(
-                "❌ Ação desconhecida:",
-                acao
+                "Resposta sem checkout_url:",
+                dados
             );
 
+
             mostrarNotificacao(
-                "Não foi possível executar esta ação."
+                dados.error ||
+                "A InfinitePay não retornou o link de pagamento."
             );
+
+        }
+
+        catch (e) {
+
+            console.error(
+                "Erro na API de pagamento:",
+                e
+            );
+
+
+            mostrarNotificacao(
+                "Falha na conexão com o servidor de pagamento."
+            );
+
+        }
+
+    }
+
+
+    // ==========================================
+    // FECHAR MODAIS
+    // ==========================================
+
+    window.fecharModais =
+        function () {
+
+            document
+                .querySelectorAll(
+                    ".modal"
+                )
+                .forEach(
+                    modal =>
+                        modal.classList
+                            .add("hidden")
+                );
+
+
+            if (
+                intervaloChecagemPix
+            ) {
+
+                clearInterval(
+                    intervaloChecagemPix
+                );
+
+
+                intervaloChecagemPix =
+                    null;
+
+            }
 
         };
 
+
+    // ==========================================
+    // HERO
+    // ==========================================
+
+    document
+        .getElementById(
+            "heroAssistir"
+        )
+        .onclick =
+        () => {
+
+            if (filmeAtual) {
+
+                abrirDetalhes(
+                    filmeAtual
+                );
+
+            }
+
+        };
+
+
+    document
+        .getElementById(
+            "heroInfo"
+        )
+        .onclick =
+        () => {
+
+            if (filmeAtual) {
+
+                abrirDetalhes(
+                    filmeAtual
+                );
+
+            }
+
+        };
+
+
+    // ==========================================
+    // CADASTRO
+    // ==========================================
+
+    document
+        .getElementById(
+            "alternarCadastro"
+        )
+        .onclick =
+        () => {
+
+            modoCadastro =
+                !modoCadastro;
+
+
+            document
+                .getElementById(
+                    "tituloAuth"
+                )
+                .innerText =
+                modoCadastro
+                    ? "Criar nova conta"
+                    : "Entrar no V8 Play+";
+
+
+            document
+                .getElementById(
+                    "doLogin"
+                )
+                .innerText =
+                modoCadastro
+                    ? "Criar conta"
+                    : "Entrar";
+
+
+            document
+                .getElementById(
+                    "alternarCadastro"
+                )
+                .innerText =
+                modoCadastro
+                    ? "Já possui conta? Fazer login"
+                    : "Ainda não tem conta? Criar conta";
+
+
+            document
+                .getElementById(
+                    "erroAuth"
+                )
+                .innerText =
+                "";
+
+        };
+
+
+    // ==========================================
+    // ESQUECI SENHA
+    // ==========================================
+
+    document
+        .getElementById(
+            "btnEsqueciSenha"
+        )
+        .onclick =
+        async () => {
+
+            const email =
+                document
+                    .getElementById(
+                        "email"
+                    )
+                    .value
+                    .trim();
+
+
+            const erro =
+                document
+                    .getElementById(
+                        "erroAuth"
+                    );
+
+
+            if (!email) {
+
+                erro.innerText =
+                    "Informe seu e-mail.";
+
+                return;
+
+            }
+
+
+            try {
+
+                await sendPasswordResetEmail(
+                    auth,
+                    email
+                );
+
+
+                mostrarNotificacao(
+                    "E-mail de redefinição enviado!"
+                );
+
+
+                erro.innerText =
+                    "";
+
+            }
+
+            catch (e) {
+
+                console.error(e);
+
+
+                erro.innerText =
+                    "Não foi possível enviar o e-mail.";
+
+            }
+
+        };
+
+
+    // ==========================================
+    // LOGIN
+    // ==========================================
+
+    document
+        .getElementById(
+            "doLogin"
+        )
+        .onclick =
+        async () => {
+
+            const email =
+                document
+                    .getElementById(
+                        "email"
+                    )
+                    .value
+                    .trim();
+
+
+            const pass =
+                document
+                    .getElementById(
+                        "password"
+                    )
+                    .value;
+
+
+            const erro =
+                document
+                    .getElementById(
+                        "erroAuth"
+                    );
+
+
+            erro.innerText =
+                "";
+
+
+            if (!email || !pass) {
+
+                erro.innerText =
+                    "Preencha todos os campos.";
+
+                return;
+
+            }
+
+
+            try {
+
+                if (modoCadastro) {
+
+                    const cred =
+                        await createUserWithEmailAndPassword(
+                            auth,
+                            email,
+                            pass
+                        );
+
+
+                    await setDoc(
+
+                        doc(
+                            db,
+                            "usuarios",
+                            cred.user.uid
+                        ),
+
+                        {
+
+                            email:
+                                email,
+
+                            admin:
+                                false,
+
+                            criadoEm:
+                                serverTimestamp()
+
+                        }
+
+                    );
+
+                }
+
+                else {
+
+                    await signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        pass
+                    );
+
+                }
+
+
+                fecharModais();
+
+            }
+
+            catch (e) {
+
+                console.error(
+                    "Erro de autenticação:",
+                    e
+                );
+
+
+                erro.innerText =
+                    "Falha na autenticação. Verifique e-mail e senha.";
+
+            }
+
+        };
+
+
+    // ==========================================
+    // BOTÃO LOGIN
+    // ==========================================
+
+    document
+        .getElementById(
+            "authBtn"
+        )
+        .onclick =
+        () => {
+
+            if (auth.currentUser) {
+
+                signOut(auth);
+
+
+                mostrarNotificacao(
+                    "Sessão encerrada."
+                );
+
+            }
+
+            else {
+
+                document
+                    .getElementById(
+                        "loginModal"
+                    )
+                    .classList
+                    .remove("hidden");
+
+            }
+
+        };
+
+
+    // ==========================================
+    // AUTH STATE
+    // ==========================================
+
+    onAuthStateChanged(
+        auth,
+        user => {
+
+            const btn =
+                document.getElementById(
+                    "authBtn"
+                );
+
+
+            if (user) {
+
+                const nome =
+                    user.email
+                        ? user.email.split("@")[0]
+                        : "Usuário";
+
+
+                btn.innerText =
+                    `Sair (${nome})`;
+
+            }
+
+            else {
+
+                btn.innerText =
+                    "Entrar";
+
+            }
+
+        }
+    );
+
+
+    // ==========================================
+    // NOTIFICAÇÃO
+    // ==========================================
+
+    function mostrarNotificacao(msg) {
+
+        const box =
+            document.getElementById(
+                "notification"
+            );
+
+
+        const texto =
+            document.getElementById(
+                "notificationText"
+            );
+
+
+        texto.innerText =
+            msg;
+
+
+        box.classList
+            .remove("hidden");
+
+
+        setTimeout(
+            () => {
+
+                box.classList
+                    .add("hidden");
+
+            },
+            3500
+        );
+
+    }
+
+
+    // ==========================================
+    // INICIALIZAÇÃO
+    // ==========================================
+
+    carregarCatalogo();
+
 </script>
-```
+
+</body>
+</html>
