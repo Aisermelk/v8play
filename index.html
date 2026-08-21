@@ -7,10 +7,12 @@
 
     <title>V8 Play+</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet"
+    <link
+        rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
     <style>
@@ -49,7 +51,7 @@
             z-index: 1000;
             background: linear-gradient(
                 to bottom,
-                rgba(10,10,11,0.95),
+                rgba(10,10,11,.95),
                 rgba(10,10,11,0)
             );
             backdrop-filter: blur(8px);
@@ -87,17 +89,17 @@
             padding: 10px 16px 10px 38px;
             border-radius: 20px;
             border: 1px solid #2a2a30;
-            background: rgba(255,255,255,0.06);
+            background: rgba(255,255,255,.06);
             color: white;
             outline: none;
-            transition: 0.3s;
-            font-size: 0.9rem;
+            transition: .3s;
+            font-size: .9rem;
         }
 
         #busca:focus {
             border-color: var(--primary);
-            background: rgba(0,0,0,0.4);
-            box-shadow: 0 0 10px rgba(0,212,255,0.2);
+            background: rgba(0,0,0,.4);
+            box-shadow: 0 0 10px rgba(0,212,255,.2);
         }
 
         .search-icon {
@@ -106,7 +108,7 @@
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-secondary);
-            font-size: 0.85rem;
+            font-size: .85rem;
         }
 
         .btn-login {
@@ -118,8 +120,8 @@
             font-weight: 600;
             cursor: pointer;
             white-space: nowrap;
-            transition: 0.2s;
-            font-size: 0.9rem;
+            transition: .2s;
+            font-size: .9rem;
         }
 
         .btn-login:hover {
@@ -148,7 +150,7 @@
             align-items: center;
             justify-content: center;
             color: #666;
-            font-size: 0.8rem;
+            font-size: .8rem;
             text-align: center;
         }
 
@@ -161,17 +163,13 @@
             background-size: cover;
             background-position: center;
             background-color: #111;
-            transition: background-image 0.5s ease-in-out;
+            transition: background-image .5s ease-in-out;
         }
 
         #hero::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-
+            inset: 0;
             background:
                 linear-gradient(
                     to top,
@@ -180,7 +178,7 @@
                 ),
                 linear-gradient(
                     to right,
-                    rgba(10,10,11,0.9),
+                    rgba(10,10,11,.9),
                     transparent 70%
                 );
         }
@@ -202,7 +200,7 @@
             color: #ddd;
             margin-bottom: 22px;
             line-height: 1.6;
-            font-size: 0.95rem;
+            font-size: .95rem;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
@@ -216,8 +214,8 @@
             font-weight: 600;
             cursor: pointer;
             margin-right: 12px;
-            transition: 0.2s;
-            font-size: 0.95rem;
+            transition: .2s;
+            font-size: .95rem;
         }
 
         .btn-assistir {
@@ -231,7 +229,7 @@
         }
 
         .btn-info {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,.2);
             color: white;
             backdrop-filter: blur(5px);
             border: none;
@@ -241,7 +239,7 @@
         }
 
         .btn-info:hover {
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,.3);
             transform: translateY(-2px);
         }
 
@@ -275,12 +273,12 @@
             padding: 8px 18px;
             border-radius: 20px;
             border: 1px solid #2a2a30;
-            background: rgba(255,255,255,0.03);
+            background: rgba(255,255,255,.03);
             color: var(--text-secondary);
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: .85rem;
             white-space: nowrap;
-            transition: 0.2s;
+            transition: .2s;
         }
 
         .chip:hover {
@@ -311,16 +309,16 @@
             background: var(--bg-card);
             border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.25s, box-shadow 0.25s;
+            transition: transform .25s, box-shadow .25s;
             flex-shrink: 0;
             overflow: hidden;
             position: relative;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,.05);
         }
 
         .movie-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 8px 20px rgba(0,212,255,0.25);
+            box-shadow: 0 8px 20px rgba(0,212,255,.25);
             border-color: var(--primary);
         }
 
@@ -330,9 +328,9 @@
             object-fit: cover;
         }
 
-        .movie-card .titulo-fallback {
+        .titulo-fallback {
             padding: 15px;
-            font-size: 0.9rem;
+            font-size: .9rem;
             text-align: center;
             height: 100%;
             display: flex;
@@ -347,47 +345,44 @@
             right: 10px;
             padding: 4px 8px;
             border-radius: 4px;
-            font-size: 0.65rem;
+            font-size: .65rem;
             font-weight: 700;
             z-index: 2;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            box-shadow: 0 2px 5px rgba(0,0,0,.5);
             text-transform: uppercase;
         }
 
         .selo-card.gratis,
         .selo-card.free {
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,.7);
             color: #00d4ff;
             border: 1px solid #00d4ff;
         }
 
         .selo-card.prime {
-            background: linear-gradient(135deg, #ffaa00, #ff5500);
+            background: linear-gradient(135deg,#ffaa00,#ff5500);
             color: #000;
         }
 
         .selo-card.premium {
-            background: linear-gradient(135deg, #00d4ff, #0072ff);
+            background: linear-gradient(135deg,#00d4ff,#0072ff);
             color: #000;
         }
 
         .vazio {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: .9rem;
             padding: 20px 0;
         }
 
         .modal {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             z-index: 2000;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,.85);
             backdrop-filter: blur(6px);
             padding: 20px;
         }
@@ -426,26 +421,26 @@
             border-color: var(--primary);
         }
 
-        .login-box .btn-secundario {
+        .btn-secundario {
             background: none;
             color: var(--text-secondary);
             border: none;
             margin-top: 10px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: .85rem;
             display: block;
             width: 100%;
             text-align: center;
         }
 
-        .login-box .btn-secundario:hover {
+        .btn-secundario:hover {
             color: white;
             text-decoration: underline;
         }
 
         .erro-msg {
             color: #ff6b6b;
-            font-size: 0.85rem;
+            font-size: .85rem;
             min-height: 20px;
             margin-bottom: 8px;
         }
@@ -458,6 +453,8 @@
             overflow: hidden;
             border: 1px solid #222;
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .detalhe-box img {
@@ -477,7 +474,7 @@
 
         .detalhe-meta {
             color: var(--text-secondary);
-            font-size: 0.85rem;
+            font-size: .85rem;
             margin-bottom: 14px;
             display: flex;
             gap: 10px;
@@ -487,7 +484,7 @@
             color: #ccc;
             line-height: 1.6;
             margin-bottom: 20px;
-            font-size: 0.92rem;
+            font-size: .92rem;
         }
 
         .detalhe-btns {
@@ -503,28 +500,28 @@
             border: none;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.9rem;
+            transition: .2s;
+            font-size: .9rem;
         }
 
         .btn-ad-action {
-            background: linear-gradient(135deg, #ff9900, #ff5500);
+            background: linear-gradient(135deg,#ff9900,#ff5500);
             color: white;
         }
 
         .btn-ad-action:hover {
-            opacity: 0.9;
+            opacity: .9;
             transform: translateY(-1px);
         }
 
         .btn-pix-prime {
-            background: linear-gradient(135deg, #ffaa00, #ff5500);
+            background: linear-gradient(135deg,#ffaa00,#ff5500);
             color: #000;
         }
 
         .btn-pix-premium {
-            background: linear-gradient(135deg, #00d4ff, #0072ff);
-            color: #ffffff;
+            background: linear-gradient(135deg,#00d4ff,#0072ff);
+            color: #fff;
         }
 
         #notification {
@@ -538,19 +535,19 @@
             border-radius: 30px;
             z-index: 4000;
             border: 1px solid var(--primary);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,.5);
+            font-size: .9rem;
             text-align: center;
             max-width: 90%;
         }
 
         .checkout-info {
             color: #aaa;
-            font-size: 0.82rem;
+            font-size: .82rem;
             margin-top: 10px;
         }
 
-        @media (max-width: 700px) {
+        @media (max-width:700px) {
 
             header {
                 padding: 12px 4%;
@@ -570,7 +567,7 @@
 
             .btn-login {
                 padding: 8px 14px;
-                font-size: 0.8rem;
+                font-size: .8rem;
             }
 
             #hero {
@@ -583,7 +580,7 @@
             }
 
             .hero-content p {
-                font-size: 0.85rem;
+                font-size: .85rem;
             }
 
             .movie-card {
@@ -605,20 +602,16 @@
 <header>
 
     <a href="#" class="logo">
-
         <img
             src="assets/v8p.png"
             alt="V8 Play+"
             class="logo-img"
             onerror="this.style.display='none'"
         >
-
         <span>V8 Play+</span>
-
     </a>
 
     <div class="search-box">
-
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
 
         <input
@@ -627,7 +620,6 @@
             placeholder="Buscar filmes, séries e doramas..."
             autocomplete="off"
         >
-
     </div>
 
     <button class="btn-login" id="authBtn">
@@ -636,23 +628,14 @@
 
 </header>
 
-
 <div class="ad-banner-container">
 
     <div class="ad-box">
-
-        <span>
-            ESPAÇO PUBLICITÁRIO
-        </span>
-
-        <small>
-            ADSENSE / BANNER
-        </small>
-
+        <span>ESPAÇO PUBLICITÁRIO</span>
+        <small>ADSENSE / BANNER</small>
     </div>
 
 </div>
-
 
 <section id="hero">
 
@@ -668,18 +651,12 @@
 
         <div class="hero-btns">
 
-            <button
-                class="btn-assistir"
-                id="heroAssistir"
-            >
+            <button class="btn-assistir" id="heroAssistir">
                 <i class="fa-solid fa-play"></i>
                 Ver Opções
             </button>
 
-            <button
-                class="btn-info"
-                id="heroInfo"
-            >
+            <button class="btn-info" id="heroInfo">
                 <i class="fa-solid fa-circle-info"></i>
                 Mais detalhes
             </button>
@@ -690,13 +667,9 @@
 
 </section>
 
-
 <div class="container">
 
-    <div
-        class="filtros"
-        id="filtros"
-    >
+    <div class="filtros" id="filtros">
 
         <button
             class="chip ativo"
@@ -707,98 +680,60 @@
 
     </div>
 
-
     <h2 class="section-title">
         🔥 Em Alta
     </h2>
 
-    <div
-        class="cards"
-        id="emAlta"
-    ></div>
-
+    <div class="cards" id="emAlta"></div>
 
     <h2 class="section-title">
         🎬 Filmes
     </h2>
 
-    <div
-        class="cards"
-        id="filmes"
-    ></div>
-
+    <div class="cards" id="filmes"></div>
 
     <div
         class="ad-banner-container"
         style="margin:20px 0;"
     >
-
         <div
             class="ad-box"
             style="height:120px;"
         >
-
-            <span>
-                ESPAÇO PUBLICITÁRIO MID-PAGE
-            </span>
-
-            <small>
-                Monetização V8 Play+
-            </small>
-
+            <span>ESPAÇO PUBLICITÁRIO MID-PAGE</span>
+            <small>Monetização V8 Play+</small>
         </div>
-
     </div>
-
 
     <h2 class="section-title">
         📺 Séries
     </h2>
 
-    <div
-        class="cards"
-        id="series"
-    ></div>
-
+    <div class="cards" id="series"></div>
 
     <h2 class="section-title">
         🎌 Animes
     </h2>
 
-    <div
-        class="cards"
-        id="animes"
-    ></div>
-
+    <div class="cards" id="animes"></div>
 
     <h2 class="section-title">
         🎭 Doramas
     </h2>
 
-    <div
-        class="cards"
-        id="doramas"
-    ></div>
-
+    <div class="cards" id="doramas"></div>
 
     <h2 class="section-title">
         ⭐ Recomendados
     </h2>
 
-    <div
-        class="cards"
-        id="recomendados"
-    ></div>
+    <div class="cards" id="recomendados"></div>
 
 </div>
 
-
 <!-- LOGIN -->
 
-<div
-    id="loginModal"
-    class="modal hidden"
->
+<div id="loginModal" class="modal hidden">
 
     <div class="login-box">
 
@@ -806,10 +741,7 @@
             Entrar no V8 Play+
         </h2>
 
-        <p
-            class="erro-msg"
-            id="erroAuth"
-        ></p>
+        <p class="erro-msg" id="erroAuth"></p>
 
         <input
             type="email"
@@ -864,34 +796,22 @@
 
 </div>
 
-
 <!-- DETALHES -->
 
-<div
-    id="detalheModal"
-    class="modal hidden"
->
+<div id="detalheModal" class="modal hidden">
 
     <div class="detalhe-box">
 
-        <img
-            id="detImg"
-            src=""
-            alt=""
-        >
+        <img id="detImg" src="" alt="">
 
         <div class="detalhe-info">
 
             <h2 id="detTitulo"></h2>
 
             <div class="detalhe-meta">
-
                 <span id="detAno"></span>
-
                 •
-
                 <span id="detCategoria"></span>
-
             </div>
 
             <p id="detDescricao"></p>
@@ -925,13 +845,9 @@
 
 </div>
 
-
 <!-- ANÚNCIO -->
 
-<div
-    id="adModal"
-    class="modal hidden"
->
+<div id="adModal" class="modal hidden">
 
     <div
         class="login-box"
@@ -944,7 +860,7 @@
 
         <p
             style="
-                font-size:0.85rem;
+                font-size:.85rem;
                 color:#aaa;
                 margin-bottom:15px;
             "
@@ -975,30 +891,22 @@
             class="btn-login"
             style="
                 width:100%;
-                opacity:0.5;
+                opacity:.5;
             "
             disabled
         >
             Aguarde
-            <span id="adTimerCount">
-                5
-            </span>s...
+            <span id="adTimerCount">5</span>s...
         </button>
 
     </div>
 
 </div>
 
-
 <!-- NOTIFICAÇÃO -->
 
-<div
-    id="notification"
-    class="hidden"
->
-
+<div id="notification" class="hidden">
     <span id="notificationText"></span>
-
 </div>
 
 
@@ -1009,7 +917,6 @@
         auth
     } from "./js/firebase.js";
 
-
     import {
         collection,
         getDocs,
@@ -1018,7 +925,6 @@
         setDoc,
         serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
 
     import {
         signInWithEmailAndPassword,
@@ -1029,48 +935,34 @@
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 
-    // ==========================================
+    // =========================================================
     // VARIÁVEIS
-    // ==========================================
+    // =========================================================
 
     let catalogo = [];
-
     let filmeAtual = null;
-
     let modoCadastro = false;
-
     let acaoAnuncioPendente = null;
-
     let titulosComprados = new Set();
-
     let intervaloChecagemPix = null;
-
+    let intervaloAnuncio = null;
 
     let valoresPlanosAdmin = {
-
         prime: 9.90,
-
         premium: 19.90
-
     };
 
-
     const COLECOES = [
-
         "filmes",
-
         "series",
-
         "animes",
-
         "doramas"
-
     ];
 
 
-    // ==========================================
+    // =========================================================
     // PREÇO
-    // ==========================================
+    // =========================================================
 
     function formatarPreco(valor) {
 
@@ -1091,31 +983,22 @@
                 "planos"
             );
 
-            const docSnap =
-                await getDoc(docRef);
+            const docSnap = await getDoc(docRef);
 
+            if (!docSnap.exists()) {
+                return;
+            }
 
-            if (docSnap.exists()) {
+            const dados = docSnap.data();
 
-                const dados =
-                    docSnap.data();
+            if (dados.prime !== undefined) {
+                valoresPlanosAdmin.prime =
+                    Number(dados.prime);
+            }
 
-
-                if (dados.prime !== undefined) {
-
-                    valoresPlanosAdmin.prime =
-                        Number(dados.prime);
-
-                }
-
-
-                if (dados.premium !== undefined) {
-
-                    valoresPlanosAdmin.premium =
-                        Number(dados.premium);
-
-                }
-
+            if (dados.premium !== undefined) {
+                valoresPlanosAdmin.premium =
+                    Number(dados.premium);
             }
 
         }
@@ -1132,36 +1015,27 @@
     }
 
 
-    // ==========================================
-    // TAG
-    // ==========================================
+    // =========================================================
+    // TAG / ACESSO
+    // =========================================================
 
     function obterTagItem(item) {
 
-        if (item.tag) {
+        const tag =
+            item.tag ??
+            item.plano ??
+            "gratis";
 
-            return String(item.tag)
-                .toLowerCase();
-
-        }
-
-
-        if (item.plano) {
-
-            return String(item.plano)
-                .toLowerCase();
-
-        }
-
-
-        return "gratis";
+        return String(tag)
+            .trim()
+            .toLowerCase();
 
     }
 
 
-    // ==========================================
+    // =========================================================
     // BUSCAR COLEÇÃO
-    // ==========================================
+    // =========================================================
 
     async function buscarColecao(nome) {
 
@@ -1172,29 +1046,26 @@
                     collection(db, nome)
                 );
 
-
             const itens = [];
 
+            snap.forEach(docSnap => {
 
-            snap.forEach((docSnap) => {
+                const data = docSnap.data();
 
-                const data =
-                    docSnap.data();
+                /*
+                 * Somente documentos explicitamente
+                 * marcados como false ficam ocultos.
+                 */
 
-
-                if (data.ativo !== false) {
-
-                    itens.push({
-
-                        id: docSnap.id,
-
-                        colecao: nome,
-
-                        ...data
-
-                    });
-
+                if (data.ativo === false) {
+                    return;
                 }
+
+                itens.push({
+                    id: docSnap.id,
+                    colecao: nome,
+                    ...data
+                });
 
             });
 
@@ -1206,17 +1077,14 @@
                         ? a.data.toDate()
                         : new Date(a.data || 0);
 
-
                 const dataB =
                     b.data?.toDate
                         ? b.data.toDate()
                         : new Date(b.data || 0);
 
-
                 return dataB - dataA;
 
             });
-
 
             return itens;
 
@@ -1236,42 +1104,32 @@
     }
 
 
-    // ==========================================
+    // =========================================================
     // CARREGAR CATÁLOGO
-    // ==========================================
+    // =========================================================
 
     async function carregarCatalogo() {
 
+        console.log("🎬 Carregando catálogo...");
+
         await carregarPrecosAdmin();
 
-
         const containerIds = [
-
             "emAlta",
-
             "filmes",
-
             "series",
-
             "animes",
-
             "doramas",
-
             "recomendados"
-
         ];
-
 
         containerIds.forEach(id => {
 
             const el =
                 document.getElementById(id);
 
-
             if (el) {
-
                 el.innerHTML = "";
-
             }
 
         });
@@ -1287,15 +1145,19 @@
             resultados.flat();
 
 
+        console.log(
+            `🎥 ${catalogo.length} conteúdos encontrados.`
+        );
+
+
         if (!catalogo.length) {
 
             document
                 .getElementById("filmes")
-                .innerHTML =
-                `
-                <p class="vazio">
-                    Nenhum título disponível no momento.
-                </p>
+                .innerHTML = `
+                    <p class="vazio">
+                        Nenhum título disponível no momento.
+                    </p>
                 `;
 
             return;
@@ -1305,35 +1167,33 @@
 
         catalogo.forEach(item => {
 
-            const card =
-                criarCard(item);
-
+            /*
+             * EM ALTA
+             */
 
             if (
-                item.destaque &&
-                document.getElementById("emAlta")
+                item.destaque === true
             ) {
 
-                document
-                    .getElementById("emAlta")
-                    .appendChild(
-                        card.cloneNode(true)
-                    );
-
-                const ultimo =
-                    document
-                        .getElementById("emAlta")
-                        .lastElementChild;
-
-                ultimo.onclick =
-                    () => abrirDetalhes(item);
+                adicionarCard(
+                    "emAlta",
+                    item
+                );
 
             }
 
 
-            if (
-                item.tipo === "serie"
-            ) {
+            /*
+             * CATEGORIA PRINCIPAL
+             */
+
+            const tipo =
+                String(item.tipo || "")
+                    .toLowerCase()
+                    .trim();
+
+
+            if (tipo === "serie" || tipo === "series") {
 
                 adicionarCard(
                     "series",
@@ -1342,9 +1202,7 @@
 
             }
 
-            else if (
-                item.tipo === "anime"
-            ) {
+            else if (tipo === "anime") {
 
                 adicionarCard(
                     "animes",
@@ -1353,9 +1211,7 @@
 
             }
 
-            else if (
-                item.tipo === "dorama"
-            ) {
+            else if (tipo === "dorama") {
 
                 adicionarCard(
                     "doramas",
@@ -1374,7 +1230,13 @@
             }
 
 
-            if (item.recomendado) {
+            /*
+             * RECOMENDADOS
+             */
+
+            if (
+                item.recomendado === true
+            ) {
 
                 adicionarCard(
                     "recomendados",
@@ -1393,17 +1255,19 @@
     }
 
 
-    function adicionarCard(containerId, item) {
+    function adicionarCard(
+        containerId,
+        item
+    ) {
 
         const container =
             document.getElementById(
                 containerId
             );
 
-
-        if (!container)
+        if (!container) {
             return;
-
+        }
 
         container.appendChild(
             criarCard(item)
@@ -1412,26 +1276,29 @@
     }
 
 
-    // ==========================================
+    // =========================================================
     // CARD
-    // ==========================================
+    // =========================================================
 
     function criarCard(item) {
 
         const card =
             document.createElement("div");
 
-
         card.className =
             "movie-card";
 
 
         card.dataset.categoria =
-            item.categoria || "";
+            String(
+                item.categoria || ""
+            );
 
 
         card.dataset.titulo =
-            String(item.titulo || "")
+            String(
+                item.titulo || ""
+            )
                 .toLowerCase();
 
 
@@ -1462,50 +1329,82 @@
         }
 
 
-        const selo = `
+        const selo =
+            document.createElement("span");
 
-            <span
-                class="selo-card ${tag}"
-            >
-                ${rotulo}
-            </span>
+        selo.className =
+            `selo-card ${tag}`;
 
-        `;
+        selo.innerText =
+            rotulo;
+
+
+        card.appendChild(selo);
 
 
         if (item.capa) {
 
-            card.innerHTML = `
+            const img =
+                document.createElement("img");
 
-                ${selo}
+            img.src =
+                item.capa;
 
-                <img
-                    src="${item.capa}"
-                    alt="${item.titulo || ""}"
-                    loading="lazy"
-                >
+            img.alt =
+                item.titulo || "Conteúdo";
 
-            `;
+            img.loading =
+                "lazy";
+
+            img.onerror =
+                function () {
+
+                    this.style.display =
+                        "none";
+
+                    const fallback =
+                        document.createElement("div");
+
+                    fallback.className =
+                        "titulo-fallback";
+
+                    fallback.innerText =
+                        item.titulo ||
+                        "Sem título";
+
+                    card.appendChild(
+                        fallback
+                    );
+
+                };
+
+            card.appendChild(img);
 
         }
 
         else {
 
-            card.innerHTML = `
+            const fallback =
+                document.createElement("div");
 
-                ${selo}
+            fallback.className =
+                "titulo-fallback";
 
-                <div class="titulo-fallback">
-                    ${item.titulo || "Sem título"}
-                </div>
+            fallback.innerText =
+                item.titulo ||
+                "Sem título";
 
-            `;
+            card.appendChild(
+                fallback
+            );
 
         }
 
 
-        card.onclick =
-            () => abrirDetalhes(item);
+        card.addEventListener(
+            "click",
+            () => abrirDetalhes(item)
+        );
 
 
         return card;
@@ -1513,33 +1412,29 @@
     }
 
 
-    // ==========================================
+    // =========================================================
     // FILTROS
-    // ==========================================
+    // =========================================================
 
     function montarFiltros() {
 
         const container =
-            document.getElementById(
-                "filtros"
-            );
+            document.getElementById("filtros");
 
-
-        if (!container)
+        if (!container) {
             return;
+        }
 
 
-        const generos = [
-
-            ...new Set(
-
-                catalogo
-                    .map(i => i.categoria)
-                    .filter(Boolean)
-
-            )
-
-        ].sort();
+        const generos =
+            [
+                ...new Set(
+                    catalogo
+                        .map(i => i.categoria)
+                        .filter(Boolean)
+                )
+            ]
+            .sort();
 
 
         container
@@ -1547,29 +1442,23 @@
                 '.chip:not([data-genero="Todos"])'
             )
             .forEach(
-                c => c.remove()
+                chip => chip.remove()
             );
 
 
         generos.forEach(genero => {
 
             const chip =
-                document.createElement(
-                    "button"
-                );
-
+                document.createElement("button");
 
             chip.className =
                 "chip";
 
-
             chip.dataset.genero =
                 genero;
 
-
             chip.innerText =
                 genero;
-
 
             container.appendChild(
                 chip
@@ -1583,10 +1472,7 @@
     function aplicarFiltrosEBusca() {
 
         const busca =
-            document.getElementById(
-                "busca"
-            );
-
+            document.getElementById("busca");
 
         const texto =
             busca
@@ -1608,19 +1494,14 @@
 
 
         document
-            .querySelectorAll(
-                ".movie-card"
-            )
+            .querySelectorAll(".movie-card")
             .forEach(card => {
 
                 const titulo =
-                    card.dataset.titulo ||
-                    "";
-
+                    card.dataset.titulo || "";
 
                 const categoria =
-                    card.dataset.categoria ||
-                    "";
+                    card.dataset.categoria || "";
 
 
                 const buscaOk =
@@ -1647,13 +1528,14 @@
         .getElementById("filtros")
         ?.addEventListener(
             "click",
-            e => {
+            event => {
 
-                if (
-                    !e.target.classList
-                        .contains("chip")
-                )
+                const chip =
+                    event.target.closest(".chip");
+
+                if (!chip) {
                     return;
+                }
 
 
                 document
@@ -1667,9 +1549,7 @@
                     );
 
 
-                e.target.classList
-                    .add("ativo");
-
+                chip.classList.add("ativo");
 
                 aplicarFiltrosEBusca();
 
@@ -1685,21 +1565,23 @@
         );
 
 
-    // ==========================================
+    // =========================================================
     // DESTAQUE
-    // ==========================================
+    // =========================================================
 
     function carregarDestaque() {
 
         const destaque =
             catalogo.find(
-                i => i.destaque === true
+                item =>
+                    item.destaque === true
             ) ||
             catalogo[0];
 
 
-        if (!destaque)
+        if (!destaque) {
             return;
+        }
 
 
         filmeAtual =
@@ -1724,24 +1606,31 @@
             document.getElementById("hero");
 
 
-        if (
+        const imagem =
             destaque.banner ||
-            destaque.capa
-        ) {
+            destaque.capa;
+
+
+        if (imagem) {
 
             hero.style.backgroundImage =
-                `url('${destaque.banner || destaque.capa}')`;
+                `url("${imagem}")`;
 
         }
 
     }
 
 
-    // ==========================================
+    // =========================================================
     // DETALHES
-    // ==========================================
+    // =========================================================
 
     function abrirDetalhes(item) {
+
+        if (!item) {
+            return;
+        }
+
 
         filmeAtual =
             item;
@@ -1758,15 +1647,13 @@
         document
             .getElementById("detTitulo")
             .innerText =
-            item.titulo ||
-            "";
+            item.titulo || "";
 
 
         document
             .getElementById("detAno")
             .innerText =
-            item.ano ||
-            "2026";
+            item.ano || "2026";
 
 
         document
@@ -1804,71 +1691,75 @@
             );
 
 
-        // ======================================
+        // =====================================================
         // GRATUITO
-        // ======================================
+        // =====================================================
 
         if (
             tag === "gratis" ||
             tag === "free"
         ) {
 
-            container.innerHTML = `
+            const btnAssistir =
+                document.createElement("button");
 
-                <button
-                    class="btn-ad-action"
-                    id="btnAssistirAnuncio"
-                >
-                    <i class="fa-solid fa-play"></i>
-                    Assistir com Anúncio
-                </button>
+            btnAssistir.className =
+                "btn-ad-action";
 
-                <button
-                    class="btn-ad-action"
-                    id="btnDownloadAnuncio"
-                    style="
-                        background:
-                        linear-gradient(
-                            135deg,
-                            #00d4ff,
-                            #0072ff
-                        );
-                    "
-                >
-                    <i class="fa-solid fa-download"></i>
-                    Baixar com Anúncio
-                </button>
+            btnAssistir.id =
+                "btnAssistirAnuncio";
 
-            `;
+            btnAssistir.innerHTML =
+                `<i class="fa-solid fa-play"></i>
+                 Assistir com Anúncio`;
 
 
-            document
-                .getElementById(
-                    "btnAssistirAnuncio"
-                )
-                .onclick =
+            btnAssistir.onclick =
                 () =>
                     iniciarFluxoAnuncio(
                         "assistir"
                     );
 
 
-            document
-                .getElementById(
-                    "btnDownloadAnuncio"
-                )
-                .onclick =
+            container.appendChild(
+                btnAssistir
+            );
+
+
+            const btnDownload =
+                document.createElement("button");
+
+            btnDownload.className =
+                "btn-ad-action";
+
+            btnDownload.id =
+                "btnDownloadAnuncio";
+
+            btnDownload.style.background =
+                "linear-gradient(135deg,#00d4ff,#0072ff)";
+
+            btnDownload.innerHTML =
+                `<i class="fa-solid fa-download"></i>
+                 Baixar com Anúncio`;
+
+
+            btnDownload.onclick =
                 () =>
                     iniciarFluxoAnuncio(
                         "baixar"
                     );
 
+
+            container.appendChild(
+                btnDownload
+            );
+
         }
 
 
-        // ======================================
+        // =====================================================
         // PAGO
-        // ======================================
+        // =====================================================
 
         else {
 
@@ -1880,75 +1771,75 @@
 
             if (comprado) {
 
-                container.innerHTML = `
+                const btnAssistir =
+                    document.createElement("button");
 
-                    <button
-                        class="btn-login"
-                        id="btnAssistirDireto"
-                    >
-                        <i class="fa-solid fa-play"></i>
-                        Assistir Agora
-                    </button>
+                btnAssistir.className =
+                    "btn-login";
 
-                    <button
-                        class="btn-info"
-                        id="btnDownloadDireto"
-                    >
-                        <i class="fa-solid fa-download"></i>
-                        Baixar Arquivo
-                    </button>
+                btnAssistir.id =
+                    "btnAssistirDireto";
 
-                `;
+                btnAssistir.innerHTML =
+                    `<i class="fa-solid fa-play"></i>
+                     Assistir Agora`;
 
 
-                document
-                    .getElementById(
-                        "btnAssistirDireto"
-                    )
-                    .onclick =
+                btnAssistir.onclick =
                     () =>
                         irParaPlayer(item);
 
 
-                document
-                    .getElementById(
-                        "btnDownloadDireto"
-                    )
-                    .onclick =
+                container.appendChild(
+                    btnAssistir
+                );
+
+
+                const btnDownload =
+                    document.createElement("button");
+
+                btnDownload.className =
+                    "btn-info";
+
+                btnDownload.id =
+                    "btnDownloadDireto";
+
+                btnDownload.innerHTML =
+                    `<i class="fa-solid fa-download"></i>
+                     Baixar Arquivo`;
+
+
+                btnDownload.onclick =
                     () =>
                         executarDownload(item);
 
-            }
 
+                container.appendChild(
+                    btnDownload
+                );
+
+            }
 
             else {
 
-                const classe =
+                const btnComprar =
+                    document.createElement("button");
+
+                btnComprar.className =
                     tag === "prime"
                         ? "btn-pix-prime"
                         : "btn-pix-premium";
 
+                btnComprar.id =
+                    "btnComprarTag";
 
-                container.innerHTML = `
-
-                    <button
-                        class="${classe}"
-                        id="btnComprarTag"
-                    >
-                        <i class="fa-solid fa-pix"></i>
-                        Liberar Tag
-                        ${tag.toUpperCase()}
-                        (${formatarPreco(valor)})
-                    </button>
-
-                `;
+                btnComprar.innerHTML =
+                    `<i class="fa-solid fa-pix"></i>
+                     Liberar ${tag.toUpperCase()}
+                     (${formatarPreco(valor)})`;
 
 
-                document
-                    .getElementById(
-                        "btnComprarTag"
-                    )
-                    .onclick =
+                btnComprar.onclick =
                     () =>
                         solicitarPix(
                             item,
@@ -1956,43 +1847,37 @@
                             valor
                         );
 
+
+                container.appendChild(
+                    btnComprar
+                );
+
             }
 
         }
 
 
-        // ======================================
+        // =====================================================
         // TRAILER
-        // ======================================
+        // =====================================================
 
         if (item.trailer) {
 
             const btnTrailer =
-                document.createElement(
-                    "button"
-                );
-
+                document.createElement("button");
 
             btnTrailer.className =
                 "btn-info";
 
-
-            btnTrailer.innerHTML = `
-
-                <i class="fa-solid fa-film"></i>
-                Trailer
-
-            `;
+            btnTrailer.innerHTML =
+                `<i class="fa-solid fa-film"></i>
+                 Trailer`;
 
 
             btnTrailer.onclick =
                 () => {
 
-                    fecharModais();
-
-
-                    window.location.href =
-                        `player.html?id=${encodeURIComponent(item.id)}&colecao=${encodeURIComponent(item.colecao)}&trailer=true`;
+                    abrirTrailer(item);
 
                 };
 
@@ -2005,33 +1890,257 @@
 
 
         document
-            .getElementById(
-                "detalheModal"
-            )
+            .getElementById("detalheModal")
             .classList
             .remove("hidden");
 
     }
 
 
-    // ==========================================
+    // =========================================================
     // PLAYER
-    // ==========================================
+    // =========================================================
+    //
+    // ESTA É A PRINCIPAL CORREÇÃO.
+    //
+    // O index envia:
+    //
+    // id
+    // colecao
+    // video
+    // title
+    //
+    // para o player.html.
+    //
+    // NÃO existe player.js.
+    // =========================================================
 
     function irParaPlayer(item) {
+
+        console.log(
+            "🎬 Abrindo player:",
+            item
+        );
+
+
+        if (!item) {
+
+            mostrarNotificacao(
+                "Conteúdo não encontrado."
+            );
+
+            return;
+
+        }
+
+
+        if (!item.id) {
+
+            console.error(
+                "❌ ID do conteúdo ausente:",
+                item
+            );
+
+            mostrarNotificacao(
+                "ID do conteúdo não encontrado."
+            );
+
+            return;
+
+        }
+
+
+        if (!item.colecao) {
+
+            console.error(
+                "❌ Coleção ausente:",
+                item
+            );
+
+            mostrarNotificacao(
+                "Coleção do conteúdo não encontrada."
+            );
+
+            return;
+
+        }
+
+
+        const params =
+            new URLSearchParams();
+
+
+        params.set(
+            "id",
+            String(item.id)
+        );
+
+
+        params.set(
+            "colecao",
+            String(item.colecao)
+        );
+
+
+        /*
+         * Envia o vídeo junto.
+         *
+         * O player poderá usar este endereço
+         * diretamente ou consultar novamente
+         * o Firestore.
+         */
+
+        if (item.video) {
+
+            params.set(
+                "video",
+                String(item.video)
+            );
+
+        }
+
+        else if (item.video1) {
+
+            params.set(
+                "video",
+                String(item.video1)
+            );
+
+        }
+
+
+        if (item.titulo) {
+
+            params.set(
+                "title",
+                String(item.titulo)
+            );
+
+        }
+
+
+        const url =
+            `player.html?${params.toString()}`;
+
+
+        console.log(
+            "🚀 URL do player:",
+            url
+        );
+
 
         fecharModais();
 
 
-        window.location.href =
-            `player.html?id=${encodeURIComponent(item.id)}&colecao=${encodeURIComponent(item.colecao)}`;
+        /*
+         * Pequeno atraso para garantir
+         * que o modal seja removido antes
+         * da navegação.
+         */
+
+        setTimeout(
+            () => {
+
+                window.location.assign(
+                    url
+                );
+
+            },
+            100
+        );
 
     }
 
 
-    // ==========================================
+    // =========================================================
+    // TRAILER
+    // =========================================================
+
+    function abrirTrailer(item) {
+
+        if (!item?.id || !item?.colecao) {
+
+            mostrarNotificacao(
+                "Trailer indisponível."
+            );
+
+            return;
+
+        }
+
+
+        const params =
+            new URLSearchParams();
+
+
+        params.set(
+            "id",
+            String(item.id)
+        );
+
+
+        params.set(
+            "colecao",
+            String(item.colecao)
+        );
+
+
+        params.set(
+            "trailer",
+            "true"
+        );
+
+
+        if (item.trailer) {
+
+            params.set(
+                "video",
+                String(item.trailer)
+            );
+
+        }
+
+
+        if (item.titulo) {
+
+            params.set(
+                "title",
+                String(item.titulo)
+            );
+
+        }
+
+
+        const url =
+            `player.html?${params.toString()}`;
+
+
+        console.log(
+            "🎞️ Abrindo trailer:",
+            url
+        );
+
+
+        fecharModais();
+
+
+        setTimeout(
+            () => {
+
+                window.location.assign(
+                    url
+                );
+
+            },
+            100
+        );
+
+    }
+
+
+    // =========================================================
     // ANÚNCIO
-    // ==========================================
+    // =========================================================
 
     function iniciarFluxoAnuncio(tipo) {
 
@@ -2040,17 +2149,13 @@
 
 
         document
-            .getElementById(
-                "detalheModal"
-            )
+            .getElementById("detalheModal")
             .classList
             .add("hidden");
 
 
         document
-            .getElementById(
-                "adModal"
-            )
+            .getElementById("adModal")
             .classList
             .remove("hidden");
 
@@ -2067,45 +2172,57 @@
         btn.disabled =
             true;
 
-
         btn.style.opacity =
-            "0.5";
-
+            ".5";
 
         btn.innerText =
             `Aguarde ${count}s...`;
 
 
-        const interval =
+        if (intervaloAnuncio) {
+
+            clearInterval(
+                intervaloAnuncio
+            );
+
+        }
+
+
+        intervaloAnuncio =
             setInterval(
                 () => {
 
                     count--;
 
 
-                    btn.innerText =
-                        count > 0
-                            ? `Aguarde ${count}s...`
-                            : (
-                                tipo === "assistir"
-                                    ? "Assistir Vídeo Agora"
-                                    : "Iniciar Download"
-                            );
+                    if (count > 0) {
 
+                        btn.innerText =
+                            `Aguarde ${count}s...`;
 
-                    if (count <= 0) {
+                    }
+
+                    else {
 
                         clearInterval(
-                            interval
+                            intervaloAnuncio
                         );
+
+                        intervaloAnuncio =
+                            null;
 
 
                         btn.disabled =
                             false;
 
-
                         btn.style.opacity =
                             "1";
+
+
+                        btn.innerText =
+                            tipo === "assistir"
+                                ? "Assistir Vídeo Agora"
+                                : "Iniciar Download";
 
                     }
 
@@ -2117,14 +2234,13 @@
 
 
     document
-        .getElementById(
-            "btnConfirmarAd"
-        )
+        .getElementById("btnConfirmarAd")
         .onclick =
         () => {
 
-            if (!filmeAtual)
+            if (!filmeAtual) {
                 return;
+            }
 
 
             const acao =
@@ -2153,16 +2269,15 @@
         };
 
 
-    // ==========================================
+    // =========================================================
     // DOWNLOAD
-    // ==========================================
+    // =========================================================
 
     function executarDownload(item) {
 
         const url =
-            item.arquivoDownload ||
-            item.video1 ||
-            item.video;
+            item?.arquivoDownload ||
+            "";
 
 
         if (!url) {
@@ -2176,27 +2291,30 @@
         }
 
 
+        console.log(
+            "⬇️ Download:",
+            url
+        );
+
+
         window.open(
             url,
-            "_blank"
+            "_blank",
+            "noopener,noreferrer"
         );
 
     }
 
 
-    // ==========================================
+    // =========================================================
     // INFINITEPAY
-    // ==========================================
+    // =========================================================
 
     async function solicitarPix(
         item,
         tag,
         valor
     ) {
-
-        // ------------------------------
-        // LOGIN
-        // ------------------------------
 
         if (!auth.currentUser) {
 
@@ -2209,9 +2327,7 @@
 
 
             document
-                .getElementById(
-                    "loginModal"
-                )
+                .getElementById("loginModal")
                 .classList
                 .remove("hidden");
 
@@ -2224,7 +2340,7 @@
         if (Number(valor) < 1) {
 
             mostrarNotificacao(
-                "Valor de plano inválido (mínimo R$ 1,00). Contate o suporte."
+                "Valor inválido. Mínimo R$ 1,00."
             );
 
             return;
@@ -2238,10 +2354,6 @@
                 "Gerando pagamento..."
             );
 
-
-            // ------------------------------
-            // DADOS
-            // ------------------------------
 
             const payload = {
 
@@ -2267,14 +2379,10 @@
 
 
             console.log(
-                "Enviando pagamento:",
+                "💰 Enviando pagamento:",
                 payload
             );
 
-
-            // ------------------------------
-            // API CLOUDFLARE
-            // ------------------------------
 
             const resp =
                 await fetch(
@@ -2285,10 +2393,8 @@
                             "POST",
 
                         headers: {
-
                             "Content-Type":
                                 "application/json"
-
                         },
 
                         body:
@@ -2299,10 +2405,6 @@
                     }
                 );
 
-
-            // ------------------------------
-            // LER RESPOSTA
-            // ------------------------------
 
             const texto =
                 await resp.text();
@@ -2321,53 +2423,33 @@
             catch {
 
                 dados = {
-
-                    success:
-                        false,
-
+                    success: false,
                     error:
                         texto ||
                         "Resposta inválida do servidor."
-
                 };
 
             }
 
 
             console.log(
-                "Resposta do servidor:",
+                "💳 Resposta:",
                 resp.status,
                 dados
             );
 
 
-            // ------------------------------
-            // ERRO HTTP
-            // ------------------------------
-
             if (!resp.ok) {
-
-                console.error(
-                    "Erro HTTP:",
-                    resp.status,
-                    dados
-                );
-
 
                 mostrarNotificacao(
                     dados.error ||
                     `Erro no pagamento. HTTP ${resp.status}`
                 );
 
-
                 return;
 
             }
 
-
-            // ------------------------------
-            // CHECKOUT INFINITEPAY
-            // ------------------------------
 
             if (
                 dados.success &&
@@ -2385,8 +2467,9 @@
                 setTimeout(
                     () => {
 
-                        window.location.href =
-                            dados.checkout_url;
+                        window.location.assign(
+                            dados.checkout_url
+                        );
 
                     },
                     500
@@ -2396,16 +2479,6 @@
                 return;
 
             }
-
-
-            // ------------------------------
-            // SEM URL
-            // ------------------------------
-
-            console.error(
-                "Resposta sem checkout_url:",
-                dados
-            );
 
 
             mostrarNotificacao(
@@ -2432,17 +2505,15 @@
     }
 
 
-    // ==========================================
+    // =========================================================
     // FECHAR MODAIS
-    // ==========================================
+    // =========================================================
 
     window.fecharModais =
         function () {
 
             document
-                .querySelectorAll(
-                    ".modal"
-                )
+                .querySelectorAll(".modal")
                 .forEach(
                     modal =>
                         modal.classList
@@ -2450,14 +2521,11 @@
                 );
 
 
-            if (
-                intervaloChecagemPix
-            ) {
+            if (intervaloChecagemPix) {
 
                 clearInterval(
                     intervaloChecagemPix
                 );
-
 
                 intervaloChecagemPix =
                     null;
@@ -2467,14 +2535,12 @@
         };
 
 
-    // ==========================================
+    // =========================================================
     // HERO
-    // ==========================================
+    // =========================================================
 
     document
-        .getElementById(
-            "heroAssistir"
-        )
+        .getElementById("heroAssistir")
         .onclick =
         () => {
 
@@ -2490,9 +2556,7 @@
 
 
     document
-        .getElementById(
-            "heroInfo"
-        )
+        .getElementById("heroInfo")
         .onclick =
         () => {
 
@@ -2507,14 +2571,12 @@
         };
 
 
-    // ==========================================
+    // =========================================================
     // CADASTRO
-    // ==========================================
+    // =========================================================
 
     document
-        .getElementById(
-            "alternarCadastro"
-        )
+        .getElementById("alternarCadastro")
         .onclick =
         () => {
 
@@ -2523,9 +2585,7 @@
 
 
             document
-                .getElementById(
-                    "tituloAuth"
-                )
+                .getElementById("tituloAuth")
                 .innerText =
                 modoCadastro
                     ? "Criar nova conta"
@@ -2533,9 +2593,7 @@
 
 
             document
-                .getElementById(
-                    "doLogin"
-                )
+                .getElementById("doLogin")
                 .innerText =
                 modoCadastro
                     ? "Criar conta"
@@ -2543,9 +2601,7 @@
 
 
             document
-                .getElementById(
-                    "alternarCadastro"
-                )
+                .getElementById("alternarCadastro")
                 .innerText =
                 modoCadastro
                     ? "Já possui conta? Fazer login"
@@ -2553,40 +2609,32 @@
 
 
             document
-                .getElementById(
-                    "erroAuth"
-                )
+                .getElementById("erroAuth")
                 .innerText =
                 "";
 
         };
 
 
-    // ==========================================
+    // =========================================================
     // ESQUECI SENHA
-    // ==========================================
+    // =========================================================
 
     document
-        .getElementById(
-            "btnEsqueciSenha"
-        )
+        .getElementById("btnEsqueciSenha")
         .onclick =
         async () => {
 
             const email =
                 document
-                    .getElementById(
-                        "email"
-                    )
+                    .getElementById("email")
                     .value
                     .trim();
 
 
             const erro =
                 document
-                    .getElementById(
-                        "erroAuth"
-                    );
+                    .getElementById("erroAuth");
 
 
             if (!email) {
@@ -2621,7 +2669,6 @@
 
                 console.error(e);
 
-
                 erro.innerText =
                     "Não foi possível enviar o e-mail.";
 
@@ -2630,39 +2677,31 @@
         };
 
 
-    // ==========================================
+    // =========================================================
     // LOGIN
-    // ==========================================
+    // =========================================================
 
     document
-        .getElementById(
-            "doLogin"
-        )
+        .getElementById("doLogin")
         .onclick =
         async () => {
 
             const email =
                 document
-                    .getElementById(
-                        "email"
-                    )
+                    .getElementById("email")
                     .value
                     .trim();
 
 
             const pass =
                 document
-                    .getElementById(
-                        "password"
-                    )
+                    .getElementById("password")
                     .value;
 
 
             const erro =
                 document
-                    .getElementById(
-                        "erroAuth"
-                    );
+                    .getElementById("erroAuth");
 
 
             erro.innerText =
@@ -2692,15 +2731,12 @@
 
 
                     await setDoc(
-
                         doc(
                             db,
                             "usuarios",
                             cred.user.uid
                         ),
-
                         {
-
                             email:
                                 email,
 
@@ -2709,9 +2745,7 @@
 
                             criadoEm:
                                 serverTimestamp()
-
                         }
-
                     );
 
                 }
@@ -2747,21 +2781,18 @@
         };
 
 
-    // ==========================================
+    // =========================================================
     // BOTÃO LOGIN
-    // ==========================================
+    // =========================================================
 
     document
-        .getElementById(
-            "authBtn"
-        )
+        .getElementById("authBtn")
         .onclick =
         () => {
 
             if (auth.currentUser) {
 
                 signOut(auth);
-
 
                 mostrarNotificacao(
                     "Sessão encerrada."
@@ -2772,9 +2803,7 @@
             else {
 
                 document
-                    .getElementById(
-                        "loginModal"
-                    )
+                    .getElementById("loginModal")
                     .classList
                     .remove("hidden");
 
@@ -2783,9 +2812,9 @@
         };
 
 
-    // ==========================================
+    // =========================================================
     // AUTH STATE
-    // ==========================================
+    // =========================================================
 
     onAuthStateChanged(
         auth,
@@ -2821,9 +2850,9 @@
     );
 
 
-    // ==========================================
+    // =========================================================
     // NOTIFICAÇÃO
-    // ==========================================
+    // =========================================================
 
     function mostrarNotificacao(msg) {
 
@@ -2860,11 +2889,28 @@
     }
 
 
-    // ==========================================
+    // =========================================================
     // INICIALIZAÇÃO
-    // ==========================================
+    // =========================================================
 
-    carregarCatalogo();
+    console.log("🚀 V8 Play+ iniciando...");
+
+    carregarCatalogo()
+        .then(() => {
+
+            console.log(
+                "✅ V8 Play+ carregado."
+            );
+
+        })
+        .catch(error => {
+
+            console.error(
+                "❌ Erro ao iniciar V8 Play+:",
+                error
+            );
+
+        });
 
 </script>
 
