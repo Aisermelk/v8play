@@ -3,9 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>V8 Play+</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>V8 Play+ | Player</title>
+
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
 
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
@@ -13,8 +22,8 @@
 
     <link
         rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    >
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 
     <style>
 
@@ -22,19 +31,16 @@
             --primary: #00d4ff;
             --primary-hover: #00a2c7;
 
-            --bg-dark: #0a0a0b;
-            --bg-card: #16161a;
-            --bg-modal: #121214;
+            --bg: #050507;
+            --surface: #101014;
+            --surface2: #18181d;
 
             --text: #ffffff;
-            --text-secondary: #aaaaaa;
+            --text2: #aaaaaa;
 
-            --border: #29292f;
-            --success: #00d084;
-            --danger: #ff5f5f;
-
-            --radius: 10px;
+            --danger: #ff4d4d;
         }
+
 
         * {
             box-sizing: border-box;
@@ -42,331 +48,350 @@
             padding: 0;
         }
 
-        html {
-            scroll-behavior: smooth;
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Poppins", sans-serif;
         }
 
+
         body {
-            background: var(--bg-dark);
-            color: var(--text);
-            font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
         }
 
-        button,
-        input {
-            font-family: inherit;
-        }
-
-        button {
-            cursor: pointer;
-        }
 
         /* =====================================================
            HEADER
         ===================================================== */
 
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-
-            padding: 15px 5%;
+        .player-header {
 
             position: fixed;
+
             top: 0;
             left: 0;
 
             width: 100%;
+
+            height: 70px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 0 30px;
 
             z-index: 1000;
 
             background:
                 linear-gradient(
                     to bottom,
-                    rgba(10,10,11,.98),
-                    rgba(10,10,11,.75),
-                    rgba(10,10,11,0)
+                    rgba(5,5,7,.98),
+                    rgba(5,5,7,.75),
+                    transparent
                 );
 
             backdrop-filter: blur(8px);
+
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
 
-            text-decoration: none;
+        .btn-voltar {
 
-            font-size: 1.5rem;
-            font-weight: 800;
-
-            color: white;
-
-            white-space: nowrap;
-        }
-
-        .logo span {
-            color: var(--primary);
-        }
-
-        .logo-img {
+            width: 42px;
             height: 42px;
-            width: auto;
-            object-fit: contain;
-        }
 
-        .search-box {
-            flex: 1;
-            max-width: 360px;
-            position: relative;
-        }
+            display: flex;
 
-        #busca {
-            width: 100%;
+            align-items: center;
+            justify-content: center;
 
-            padding: 10px 16px 10px 38px;
+            border: 1px solid rgba(255,255,255,.12);
 
-            border-radius: 20px;
-            border: 1px solid #2a2a30;
-
-            background: rgba(255,255,255,.06);
+            background:
+                rgba(255,255,255,.08);
 
             color: white;
 
-            outline: none;
+            border-radius: 50%;
 
-            transition: .3s;
+            cursor: pointer;
 
-            font-size: .9rem;
+            transition: .2s;
+
+            font-size: 16px;
+
         }
 
-        #busca::placeholder {
-            color: #888;
-        }
 
-        #busca:focus {
-            border-color: var(--primary);
+        .btn-voltar:hover {
 
-            background: rgba(0,0,0,.4);
-
-            box-shadow:
-                0 0 10px rgba(0,212,255,.2);
-        }
-
-        .search-icon {
-            position: absolute;
-
-            left: 14px;
-            top: 50%;
-
-            transform: translateY(-50%);
-
-            color: var(--text-secondary);
-
-            font-size: .85rem;
-
-            pointer-events: none;
-        }
-
-        .btn-login {
             background: var(--primary);
 
             color: #000;
 
-            border: none;
+            transform: scale(1.05);
 
-            padding: 8px 22px;
+        }
 
-            border-radius: 20px;
 
-            font-weight: 600;
+        .player-brand {
 
-            cursor: pointer;
+            font-size: 1.25rem;
+
+            font-weight: 800;
 
             white-space: nowrap;
 
-            transition: .2s;
-
-            font-size: .9rem;
         }
 
-        .btn-login:hover {
-            background: var(--primary-hover);
 
-            transform: translateY(-1px);
+        .player-brand span {
+
+            color: var(--primary);
+
         }
+
 
         /* =====================================================
-           PUBLICIDADE
+           PLAYER
         ===================================================== */
 
-        .ad-banner-container {
-            width: 100%;
+        .player-page {
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            min-height: 100vh;
 
-            padding: 10px 5%;
-
-            margin-top: 75px;
-        }
-
-        .ad-box {
-            width: 100%;
-            max-width: 970px;
-
-            height: 90px;
-
-            background: #1a1a20;
-
-            border: 1px dashed #333;
-
-            border-radius: 8px;
+            padding-top: 70px;
 
             display: flex;
 
             flex-direction: column;
 
-            align-items: center;
-            justify-content: center;
-
-            color: #666;
-
-            font-size: .8rem;
-
-            text-align: center;
         }
 
-        .ad-box small {
-            margin-top: 4px;
-            color: #444;
+
+        .player-container {
+
+            width: 100%;
+
+            max-width: 1400px;
+
+            margin: 0 auto;
+
+            padding: 20px;
+
         }
 
-        /* =====================================================
-           HERO
-        ===================================================== */
 
-        #hero {
-            height: 70vh;
+        .video-wrapper {
+
+            width: 100%;
 
             position: relative;
 
-            display: flex;
+            background: #000;
 
-            align-items: flex-end;
+            border-radius: 12px;
 
-            padding: 0 5% 50px;
+            overflow: hidden;
 
-            background-size: cover;
+            box-shadow:
+                0 20px 60px rgba(0,0,0,.55);
 
-            background-position: center;
+            aspect-ratio: 16 / 9;
 
-            background-color: #111;
-
-            transition:
-                background-image .5s ease-in-out;
         }
 
-        #hero::before {
-            content: '';
+
+        /* =====================================================
+           VIDEO
+        ===================================================== */
+
+        #videoPlayer {
+
+            width: 100%;
+
+            height: 100%;
+
+            display: block;
+
+            background: #000;
+
+            object-fit: contain;
+
+        }
+
+
+        /* =====================================================
+           IFRAME
+        ===================================================== */
+
+        #iframePlayer {
+
+            width: 100%;
+
+            height: 100%;
+
+            border: none;
+
+            display: none;
+
+            background: #000;
+
+        }
+
+
+        /* =====================================================
+           LOADING
+        ===================================================== */
+
+        #loading {
 
             position: absolute;
 
             inset: 0;
 
-            background:
-                linear-gradient(
-                    to top,
-                    var(--bg-dark) 5%,
-                    transparent 65%
-                ),
-                linear-gradient(
-                    to right,
-                    rgba(10,10,11,.9),
-                    transparent 70%
-                );
-        }
-
-        .hero-content {
-            position: relative;
-
-            z-index: 1;
-
-            max-width: 650px;
-        }
-
-        .hero-content h1 {
-            font-size: 2.8rem;
-
-            font-weight: 800;
-
-            margin-bottom: 12px;
-
-            line-height: 1.1;
-        }
-
-        .hero-content p {
-            color: #ddd;
-
-            margin-bottom: 22px;
-
-            line-height: 1.6;
-
-            font-size: .95rem;
-
-            display: -webkit-box;
-
-            -webkit-line-clamp: 3;
-
-            -webkit-box-orient: vertical;
-
-            overflow: hidden;
-        }
-
-        .hero-btns {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 15px;
+
+            background: #000;
+
+            z-index: 10;
+
         }
 
-        .hero-btns button {
-            padding: 12px 28px;
 
-            border-radius: 6px;
+        .spinner {
+
+            width: 48px;
+
+            height: 48px;
+
+            border-radius: 50%;
+
+            border:
+
+                4px solid
+                rgba(255,255,255,.15);
+
+            border-top-color:
+                var(--primary);
+
+            animation:
+                girar .8s linear infinite;
+
+        }
+
+
+        @keyframes girar {
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        #loadingText {
+
+            color: #aaa;
+
+            font-size: .9rem;
+
+        }
+
+
+        /* =====================================================
+           ERRO
+        ===================================================== */
+
+        #errorBox {
+
+            position: absolute;
+
+            inset: 0;
+
+            z-index: 20;
+
+            display: none;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
+
+            padding: 30px;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    #18181d,
+                    #050507
+                );
+
+        }
+
+
+        #errorBox i {
+
+            font-size: 48px;
+
+            color: var(--danger);
+
+            margin-bottom: 15px;
+
+        }
+
+
+        #errorBox h2 {
+
+            font-size: 1.3rem;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        #errorBox p {
+
+            color: #aaa;
+
+            max-width: 500px;
+
+            font-size: .9rem;
+
+            line-height: 1.5;
+
+        }
+
+
+        .btn-tentar {
+
+            margin-top: 20px;
 
             border: none;
 
-            font-weight: 600;
+            background: var(--primary);
 
-            cursor: pointer;
-
-            transition: .2s;
-
-            font-size: .95rem;
-        }
-
-        .btn-assistir {
-            background: #fff;
             color: #000;
-        }
 
-        .btn-assistir:hover {
-            background: #e0e0e0;
-            transform: translateY(-2px);
-        }
-
-        .btn-info {
-            background: rgba(255,255,255,.15);
-
-            color: white;
-
-            backdrop-filter: blur(5px);
-
-            border: none;
+            font-weight: 700;
 
             padding: 10px 20px;
 
@@ -374,549 +399,171 @@
 
             cursor: pointer;
 
-            transition: .2s;
         }
 
-        .btn-info:hover {
-            background: rgba(255,255,255,.28);
-
-            transform: translateY(-2px);
-        }
 
         /* =====================================================
-           CONTEÚDO
+           INFORMAÇÕES
         ===================================================== */
 
-        .container {
-            padding: 30px 5%;
+        .player-info {
+
+            padding:
+
+                22px
+                5px
+                40px;
+
         }
 
-        .section-title {
-            font-size: 1.3rem;
 
-            margin: 25px 0 12px;
+        #playerTitle {
+
+            font-size: 1.6rem;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .player-meta {
 
             display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            color: var(--text2);
+
+            font-size: .85rem;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .badge {
+
+            padding: 4px 9px;
+
+            border-radius: 5px;
+
+            background:
+                rgba(0,212,255,.12);
+
+            color: var(--primary);
+
+            border:
+                1px solid
+                rgba(0,212,255,.3);
+
+        }
+
+
+        #playerDescription {
+
+            color: #aaa;
+
+            max-width: 900px;
+
+            line-height: 1.6;
+
+            font-size: .9rem;
+
+        }
+
+
+        /* =====================================================
+           BOTÕES
+        ===================================================== */
+
+        .player-actions {
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-top: 20px;
+
+        }
+
+
+        .action-btn {
+
+            display: inline-flex;
 
             align-items: center;
 
             gap: 8px;
 
-            font-weight: 600;
-        }
+            padding: 10px 18px;
 
-        /* =====================================================
-           FILTROS
-        ===================================================== */
-
-        .filtros {
-            display: flex;
-
-            gap: 10px;
-
-            overflow-x: auto;
-
-            padding-bottom: 10px;
-
-            margin-bottom: 15px;
-
-            scrollbar-width: none;
-        }
-
-        .filtros::-webkit-scrollbar {
-            display: none;
-        }
-
-        .chip {
-            padding: 8px 18px;
-
-            border-radius: 20px;
-
-            border: 1px solid #2a2a30;
-
-            background: rgba(255,255,255,.03);
-
-            color: var(--text-secondary);
-
-            cursor: pointer;
-
-            font-size: .85rem;
-
-            white-space: nowrap;
-
-            transition: .2s;
-        }
-
-        .chip:hover {
-            border-color: var(--primary);
-
-            color: white;
-        }
-
-        .chip.ativo {
-            background: var(--primary);
-
-            color: #000;
-
-            border-color: var(--primary);
-
-            font-weight: 600;
-        }
-
-        /* =====================================================
-           CARDS
-        ===================================================== */
-
-        .cards {
-            display: flex;
-
-            gap: 16px;
-
-            overflow-x: auto;
-
-            padding: 10px 0 25px;
-
-            scrollbar-width: thin;
-
-            scrollbar-color: #333 transparent;
-        }
-
-        .cards::-webkit-scrollbar {
-            height: 5px;
-        }
-
-        .cards::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 10px;
-        }
-
-        .movie-card {
-            min-width: 165px;
-
-            width: 165px;
-
-            height: 245px;
-
-            background: var(--bg-card);
-
-            border-radius: 10px;
-
-            cursor: pointer;
-
-            transition:
-                transform .25s,
-                box-shadow .25s;
-
-            flex-shrink: 0;
-
-            overflow: hidden;
-
-            position: relative;
-
-            border:
-                1px solid rgba(255,255,255,.05);
-        }
-
-        .movie-card:hover {
-            transform: translateY(-6px);
-
-            box-shadow:
-                0 8px 20px rgba(0,212,255,.25);
-
-            border-color: var(--primary);
-        }
-
-        .movie-card img {
-            width: 100%;
-
-            height: 100%;
-
-            object-fit: cover;
-
-            display: block;
-        }
-
-        .movie-card .titulo-fallback {
-            padding: 15px;
-
-            font-size: .9rem;
-
-            text-align: center;
-
-            height: 100%;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            background: #1a1a20;
-        }
-
-        .selo-card {
-            position: absolute;
-
-            top: 10px;
-
-            right: 10px;
-
-            padding: 4px 8px;
-
-            border-radius: 4px;
-
-            font-size: .65rem;
-
-            font-weight: 700;
-
-            z-index: 2;
-
-            box-shadow:
-                0 2px 5px rgba(0,0,0,.5);
-
-            text-transform: uppercase;
-
-            backdrop-filter: blur(5px);
-        }
-
-        .selo-card.gratis,
-        .selo-card.free {
-            background: rgba(0,0,0,.7);
-
-            color: #00d4ff;
-
-            border:
-                1px solid #00d4ff;
-        }
-
-        .selo-card.prime {
-            background:
-                linear-gradient(
-                    135deg,
-                    #ffaa00,
-                    #ff5500
-                );
-
-            color: #000;
-        }
-
-        .selo-card.premium {
-            background:
-                linear-gradient(
-                    135deg,
-                    #00d4ff,
-                    #0072ff
-                );
-
-            color: #000;
-        }
-
-        .vazio {
-            color: var(--text-secondary);
-
-            font-size: .9rem;
-
-            padding: 20px 0;
-        }
-
-        /* =====================================================
-           MODAIS
-        ===================================================== */
-
-        .modal {
-            position: fixed;
-
-            inset: 0;
-
-            width: 100%;
-            height: 100%;
-
-            z-index: 2000;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            background: rgba(0,0,0,.85);
-
-            backdrop-filter: blur(6px);
-
-            padding: 20px;
-
-            overflow-y: auto;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .login-box {
-            background: var(--bg-modal);
-
-            padding: 35px;
-
-            border-radius: 12px;
-
-            width: 100%;
-
-            max-width: 400px;
-
-            text-align: center;
-
-            border: 1px solid #222;
-
-            box-shadow:
-                0 20px 60px rgba(0,0,0,.6);
-        }
-
-        .login-box h2 {
-            margin-bottom: 15px;
-
-            font-weight: 700;
-        }
-
-        .login-box input {
-            width: 100%;
-
-            padding: 12px;
-
-            margin-bottom: 12px;
-
-            background: #1c1c20;
+            border-radius: 7px;
 
             border: 1px solid #333;
 
+            background: #17171c;
+
             color: white;
-
-            border-radius: 6px;
-
-            outline: none;
-        }
-
-        .login-box input:focus {
-            border-color: var(--primary);
-        }
-
-        .btn-secundario {
-            background: none;
-
-            color: var(--text-secondary);
-
-            border: none;
-
-            margin-top: 10px;
 
             cursor: pointer;
 
-            font-size: .85rem;
-
-            display: block;
-
-            width: 100%;
-
-            text-align: center;
-        }
-
-        .btn-secundario:hover {
-            color: white;
-
-            text-decoration: underline;
-        }
-
-        .erro-msg {
-            color: #ff6b6b;
-
-            font-size: .85rem;
-
-            min-height: 20px;
-
-            margin-bottom: 8px;
-        }
-
-        /* =====================================================
-           DETALHES
-        ===================================================== */
-
-        .detalhe-box {
-            background: var(--bg-modal);
-
-            border-radius: 12px;
-
-            max-width: 650px;
-
-            width: 100%;
-
-            overflow: hidden;
-
-            border: 1px solid #222;
-
-            position: relative;
-
-            box-shadow:
-                0 20px 60px rgba(0,0,0,.7);
-        }
-
-        .detalhe-box img {
-            width: 100%;
-
-            max-height: 300px;
-
-            object-fit: cover;
-
-            display: block;
-
-            background: #111;
-        }
-
-        .detalhe-info {
-            padding: 25px;
-        }
-
-        .detalhe-info h2 {
-            margin-bottom: 6px;
-
-            font-size: 1.6rem;
-        }
-
-        .detalhe-meta {
-            color: var(--text-secondary);
-
-            font-size: .85rem;
-
-            margin-bottom: 14px;
-
-            display: flex;
-
-            gap: 10px;
-
-            flex-wrap: wrap;
-        }
-
-        .detalhe-info p {
-            color: #ccc;
-
-            line-height: 1.6;
-
-            margin-bottom: 20px;
-
-            font-size: .92rem;
-        }
-
-        .detalhe-btns {
-            display: flex;
-
-            gap: 10px;
-
-            margin-bottom: 10px;
-
-            flex-wrap: wrap;
-        }
-
-        .detalhe-btns button {
-            padding: 10px 20px;
-
-            border-radius: 6px;
-
-            border: none;
+            font-family: inherit;
 
             font-weight: 600;
 
-            cursor: pointer;
-
             transition: .2s;
 
-            font-size: .9rem;
         }
 
-        .detalhe-btns button:hover {
-            transform: translateY(-1px);
-        }
 
-        .btn-ad-action {
+        .action-btn:hover {
+
+            border-color:
+                var(--primary);
+
             background:
-                linear-gradient(
-                    135deg,
-                    #ff9900,
-                    #ff5500
-                );
+                rgba(0,212,255,.1);
 
-            color: white;
         }
 
-        .btn-pix-prime {
-            background:
-                linear-gradient(
-                    135deg,
-                    #ffaa00,
-                    #ff5500
-                );
-
-            color: #000;
-        }
-
-        .btn-pix-premium {
-            background:
-                linear-gradient(
-                    135deg,
-                    #00d4ff,
-                    #0072ff
-                );
-
-            color: #fff;
-        }
 
         /* =====================================================
-           NOTIFICAÇÃO
+           MENSAGEM TRAILER
         ===================================================== */
 
-        #notification {
-            position: fixed;
+        .trailer-badge {
 
-            bottom: 25px;
+            display: inline-flex;
 
-            left: 50%;
+            align-items: center;
 
-            transform: translateX(-50%);
+            gap: 6px;
 
-            background: #1f1f24;
-
-            color: white;
-
-            padding: 12px 28px;
-
-            border-radius: 30px;
-
-            z-index: 4000;
+            background:
+                rgba(255,170,0,.12);
 
             border:
-                1px solid var(--primary);
+                1px solid
+                rgba(255,170,0,.35);
 
-            box-shadow:
-                0 4px 15px rgba(0,0,0,.5);
+            color: #ffaa00;
 
-            font-size: .9rem;
+            padding: 5px 10px;
 
-            text-align: center;
+            border-radius: 5px;
 
-            max-width: 90%;
+            font-size: .75rem;
 
-            animation:
-                notificationIn .25s ease;
+            font-weight: 700;
+
         }
 
-        @keyframes notificationIn {
-            from {
-                opacity: 0;
-                transform: translate(-50%, 10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
-        }
 
         /* =====================================================
            MOBILE
@@ -924,933 +571,1219 @@
 
         @media (max-width: 700px) {
 
-            header {
-                padding: 12px 4%;
-                gap: 8px;
+            .player-header {
+
+                height: 60px;
+
+                padding:
+                    0 15px;
+
             }
 
-            .logo {
-                font-size: 1.1rem;
+
+            .btn-voltar {
+
+                width: 38px;
+                height: 38px;
+
             }
 
-            .logo-img {
-                height: 34px;
+
+            .player-brand {
+
+                font-size: 1rem;
+
             }
 
-            .search-box {
-                max-width: none;
+
+            .player-page {
+
+                padding-top: 60px;
+
             }
 
-            #busca {
-                padding-left: 34px;
-                font-size: .8rem;
+
+            .player-container {
+
+                padding:
+                    10px 0;
+
             }
 
-            .btn-login {
-                padding: 8px 14px;
-                font-size: .8rem;
+
+            .video-wrapper {
+
+                border-radius: 0;
+
             }
 
-            #hero {
-                height: 65vh;
-                padding: 0 5% 35px;
+
+            .player-info {
+
+                padding:
+                    20px 15px 35px;
+
             }
 
-            .hero-content h1 {
-                font-size: 2rem;
-            }
 
-            .hero-content p {
-                font-size: .85rem;
-            }
+            #playerTitle {
 
-            .movie-card {
-                min-width: 140px;
+                font-size: 1.25rem;
 
-                width: 140px;
-
-                height: 210px;
-            }
-
-            .login-box {
-                padding: 25px;
-            }
-
-            .detalhe-info {
-                padding: 20px;
-            }
-
-            .detalhe-box img {
-                max-height: 220px;
-            }
-
-        }
-
-        @media (max-width: 480px) {
-
-            .logo span {
-                display: none;
-            }
-
-            .search-box {
-                flex: 1;
-            }
-
-            .btn-login {
-                padding: 8px 11px;
-            }
-
-            .hero-btns button {
-                padding: 10px 17px;
             }
 
         }
 
     </style>
+
 </head>
 
 
 <body>
 
 
-<!-- =====================================================
+<!-- =========================================================
      HEADER
-===================================================== -->
+========================================================= -->
 
-<header>
-
-    <a href="#" class="logo">
-
-        <img
-            src="assets/v8p.png"
-            alt="V8 Play+"
-            class="logo-img"
-            onerror="this.style.display='none'"
-        >
-
-        <span>V8 Play+</span>
-
-    </a>
-
-
-    <div class="search-box">
-
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-
-        <input
-            type="text"
-            id="busca"
-            placeholder="Buscar filmes, séries e doramas..."
-            autocomplete="off"
-        >
-
-    </div>
-
+<header class="player-header">
 
     <button
-        class="btn-login"
-        id="authBtn"
-        type="button"
-    >
-        Entrar
+        class="btn-voltar"
+        id="btnVoltar"
+        title="Voltar">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
     </button>
+
+
+    <div class="player-brand">
+
+        V8 <span>Play+</span>
+
+    </div>
 
 </header>
 
 
-<!-- =====================================================
-     PUBLICIDADE TOPO
-===================================================== -->
 
-<div class="ad-banner-container">
+<!-- =========================================================
+     PLAYER
+========================================================= -->
 
-    <div class="ad-box">
+<main class="player-page">
 
-        <span>
-            ESPAÇO PUBLICITÁRIO
-        </span>
 
-        <small>
-            ADSENSE / BANNER
-        </small>
+    <div class="player-container">
 
-    </div>
 
-</div>
+        <div class="video-wrapper">
 
 
-<!-- =====================================================
-     HERO
-===================================================== -->
+            <!-- LOADING -->
 
-<section id="hero">
+            <div id="loading">
 
-    <div class="hero-content">
+                <div class="spinner"></div>
 
-        <h1 id="heroTitle">
-            Carregando...
-        </h1>
-
-        <p id="heroDesc">
-            Sua nova experiência em streaming em alta definição.
-        </p>
-
-        <div class="hero-btns">
-
-            <button
-                class="btn-assistir"
-                id="heroAssistir"
-                type="button"
-            >
-                <i class="fa-solid fa-play"></i>
-                Ver Opções
-            </button>
-
-            <button
-                class="btn-info"
-                id="heroInfo"
-                type="button"
-            >
-                <i class="fa-solid fa-circle-info"></i>
-                Mais detalhes
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     CATÁLOGO
-===================================================== -->
-
-<div class="container">
-
-
-    <!-- FILTROS -->
-
-    <div
-        class="filtros"
-        id="filtros"
-    >
-
-        <button
-            class="chip ativo"
-            data-genero="Todos"
-            type="button"
-        >
-            Todos
-        </button>
-
-    </div>
-
-
-    <!-- EM ALTA -->
-
-    <h2 class="section-title">
-        🔥 Em Alta
-    </h2>
-
-    <div
-        class="cards"
-        id="emAlta"
-    ></div>
-
-
-    <!-- FILMES -->
-
-    <h2 class="section-title">
-        🎬 Filmes
-    </h2>
-
-    <div
-        class="cards"
-        id="filmes"
-    ></div>
-
-
-    <!-- PUBLICIDADE MID PAGE -->
-
-    <div
-        class="ad-banner-container"
-        style="margin:20px 0;"
-    >
-
-        <div
-            class="ad-box"
-            style="height:120px;"
-        >
-
-            <span>
-                ESPAÇO PUBLICITÁRIO MID-PAGE
-            </span>
-
-            <small>
-                Monetização V8 Play+
-            </small>
-
-        </div>
-
-    </div>
-
-
-    <!-- SÉRIES -->
-
-    <h2 class="section-title">
-        📺 Séries
-    </h2>
-
-    <div
-        class="cards"
-        id="series"
-    ></div>
-
-
-    <!-- ANIMES -->
-
-    <h2 class="section-title">
-        🎌 Animes
-    </h2>
-
-    <div
-        class="cards"
-        id="animes"
-    ></div>
-
-
-    <!-- DORAMAS -->
-
-    <h2 class="section-title">
-        🎭 Doramas
-    </h2>
-
-    <div
-        class="cards"
-        id="doramas"
-    ></div>
-
-
-    <!-- RECOMENDADOS -->
-
-    <h2 class="section-title">
-        ⭐ Recomendados
-    </h2>
-
-    <div
-        class="cards"
-        id="recomendados"
-    ></div>
-
-</div>
-
-
-<!-- =====================================================
-     LOGIN
-===================================================== -->
-
-<div
-    id="loginModal"
-    class="modal hidden"
->
-
-    <div class="login-box">
-
-        <h2 id="tituloAuth">
-            Entrar no V8 Play+
-        </h2>
-
-        <p
-            class="erro-msg"
-            id="erroAuth"
-        ></p>
-
-
-        <input
-            type="email"
-            id="email"
-            placeholder="E-mail"
-            autocomplete="username"
-        >
-
-
-        <input
-            type="password"
-            id="password"
-            placeholder="Senha"
-            autocomplete="current-password"
-        >
-
-
-        <button
-            class="btn-login"
-            style="
-                width:100%;
-                border-radius:6px;
-                padding:12px;
-                margin-top:5px;
-            "
-            id="doLogin"
-            type="button"
-        >
-            Entrar
-        </button>
-
-
-        <button
-            class="btn-secundario"
-            id="btnEsqueciSenha"
-            type="button"
-        >
-            Esqueci minha senha
-        </button>
-
-
-        <button
-            class="btn-secundario"
-            id="alternarCadastro"
-            type="button"
-        >
-            Ainda não tem conta? Criar conta
-        </button>
-
-
-        <button
-            class="btn-secundario"
-            id="btnCancelarLogin"
-            type="button"
-            style="
-                margin-top:15px;
-                color:#666;
-            "
-        >
-            Cancelar
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     DETALHES
-===================================================== -->
-
-<div
-    id="detalheModal"
-    class="modal hidden"
->
-
-    <div class="detalhe-box">
-
-        <img
-            id="detImg"
-            src=""
-            alt=""
-        >
-
-
-        <div class="detalhe-info">
-
-            <h2 id="detTitulo"></h2>
-
-
-            <div class="detalhe-meta">
-
-                <span id="detAno"></span>
-
-                <span>•</span>
-
-                <span id="detCategoria"></span>
+                <div id="loadingText">
+                    Carregando vídeo...
+                </div>
 
             </div>
 
 
-            <p id="detDescricao"></p>
+            <!-- VIDEO HTML5 -->
+
+            <video
+                id="videoPlayer"
+                controls
+                playsinline
+                preload="metadata"
+                controlsList="nodownload">
+
+            </video>
 
 
-            <div
-                class="detalhe-btns"
-                id="detBtnsContainer"
-            ></div>
+            <!-- IFRAME -->
+
+            <iframe
+                id="iframePlayer"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen>
+            </iframe>
 
 
-            <div
-                class="detalhe-btns"
-                style="margin-top:15px;"
-            >
+            <!-- ERRO -->
+
+            <div id="errorBox">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+                <h2>
+                    Não foi possível reproduzir
+                </h2>
+
+                <p id="errorText">
+                    O vídeo não pôde ser carregado.
+                </p>
 
                 <button
-                    class="btn-info"
-                    id="btnFecharDetalhes"
-                    type="button"
-                    style="
-                        background:transparent;
-                        border:1px solid #333;
-                    "
-                >
-                    Fechar
+                    class="btn-tentar"
+                    id="btnTentar">
+
+                    <i class="fa-solid fa-rotate-right"></i>
+                    Tentar novamente
+
                 </button>
 
             </div>
 
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     ANÚNCIO
-===================================================== -->
-
-<div
-    id="adModal"
-    class="modal hidden"
->
-
-    <div
-        class="login-box"
-        style="max-width:450px;"
-    >
-
-        <h2>
-            Anúncio Patrocinado
-        </h2>
-
-
-        <p
-            style="
-                font-size:.85rem;
-                color:#aaa;
-                margin-bottom:15px;
-            "
-        >
-            Aguarde o anúncio para liberar sua ação gratuita.
-        </p>
-
-
-        <div
-            class="ad-box"
-            style="
-                height:180px;
-                margin-bottom:20px;
-            "
-        >
-
-            <span>
-                [ ANÚNCIO PUBLICITÁRIO ]
-            </span>
-
-            <small>
-                Monetag / Google AdSense / Banner
-            </small>
 
         </div>
 
 
-        <button
-            id="btnConfirmarAd"
-            class="btn-login"
-            type="button"
-            style="
-                width:100%;
-                opacity:.5;
-            "
-            disabled
-        >
-            Aguarde
-            <span id="adTimerCount">
-                5
-            </span>s...
-        </button>
+        <!-- =================================================
+             INFORMAÇÕES
+        ================================================= -->
+
+        <section class="player-info">
 
 
-        <button
-            class="btn-secundario"
-            id="btnCancelarAd"
-            type="button"
-        >
-            Cancelar
-        </button>
+            <h1 id="playerTitle">
+                Carregando...
+            </h1>
+
+
+            <div class="player-meta">
+
+                <span
+                    class="badge"
+                    id="badgeTipo">
+
+                    V8 Play+
+
+                </span>
+
+
+                <span id="badgeAno"></span>
+
+
+                <span
+                    id="trailerBadge"
+                    class="trailer-badge"
+                    style="display:none;">
+
+                    <i class="fa-solid fa-film"></i>
+
+                    TRAILER
+
+                </span>
+
+            </div>
+
+
+            <p id="playerDescription">
+                Carregando informações...
+            </p>
+
+
+            <div class="player-actions">
+
+
+                <button
+                    class="action-btn"
+                    id="btnVoltar2">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Voltar
+
+                </button>
+
+
+                <button
+                    class="action-btn"
+                    id="btnRecarregar">
+
+                    <i class="fa-solid fa-rotate-right"></i>
+
+                    Recarregar vídeo
+
+                </button>
+
+
+            </div>
+
+
+        </section>
+
 
     </div>
 
-</div>
+
+</main>
 
 
-<!-- =====================================================
-     NOTIFICAÇÃO
-===================================================== -->
-
-<div
-    id="notification"
-    class="hidden"
->
-
-    <span id="notificationText"></span>
-
-</div>
-
-
-<!-- =====================================================
-     FIREBASE + SISTEMA
-===================================================== -->
 
 <script type="module">
 
+
+    // =========================================================
+    // FIREBASE
+    // =========================================================
+
     import {
-        db,
-        auth
+        db
     } from "./js/firebase.js";
 
 
     import {
-        collection,
-        getDocs,
         doc,
-        getDoc,
-        setDoc,
-        serverTimestamp
-    }
-    from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        getDoc
+    } from
+        "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
-    import {
-        signInWithEmailAndPassword,
-        createUserWithEmailAndPassword,
-        sendPasswordResetEmail,
-        onAuthStateChanged,
-        signOut
-    }
-    from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    // =========================================================
+    // ELEMENTOS
+    // =========================================================
+
+    const videoPlayer =
+        document.getElementById(
+            "videoPlayer"
+        );
 
 
-    /* =====================================================
-       VARIÁVEIS
-    ===================================================== */
-
-    let catalogo = [];
-
-    let filmeAtual = null;
-
-    let modoCadastro = false;
-
-    let acaoAnuncioPendente = null;
-
-    let titulosComprados = new Set();
-
-    let intervaloChecagemPix = null;
-
-    let timerAnuncio = null;
+    const iframePlayer =
+        document.getElementById(
+            "iframePlayer"
+        );
 
 
-    const valoresPlanosAdmin = {
-
-        prime: 9.90,
-
-        premium: 19.90
-
-    };
+    const loading =
+        document.getElementById(
+            "loading"
+        );
 
 
-    const COLECOES = [
-
-        "filmes",
-        "series",
-        "animes",
-        "doramas"
-
-    ];
+    const loadingText =
+        document.getElementById(
+            "loadingText"
+        );
 
 
-    /* =====================================================
-       PREÇO
-    ===================================================== */
-
-    function formatarPreco(valor) {
-
-        const num =
-            Number(valor) || 0;
-
-        return `R$ ${num
-            .toFixed(2)
-            .replace(".", ",")}`;
-
-    }
+    const errorBox =
+        document.getElementById(
+            "errorBox"
+        );
 
 
-    /* =====================================================
-       CARREGAR PREÇOS
-    ===================================================== */
-
-    async function carregarPrecosAdmin() {
-
-        try {
-
-            const ref =
-                doc(
-                    db,
-                    "configuracoes",
-                    "planos"
-                );
-
-            const snap =
-                await getDoc(ref);
+    const errorText =
+        document.getElementById(
+            "errorText"
+        );
 
 
-            if (!snap.exists()) {
-                return;
-            }
+    const playerTitle =
+        document.getElementById(
+            "playerTitle"
+        );
 
 
-            const dados =
-                snap.data();
+    const playerDescription =
+        document.getElementById(
+            "playerDescription"
+        );
 
 
-            if (
-                dados.prime !== undefined
-            ) {
-
-                valoresPlanosAdmin.prime =
-                    Number(dados.prime);
-
-            }
+    const badgeTipo =
+        document.getElementById(
+            "badgeTipo"
+        );
 
 
-            if (
-                dados.premium !== undefined
-            ) {
+    const badgeAno =
+        document.getElementById(
+            "badgeAno"
+        );
 
-                valoresPlanosAdmin.premium =
-                    Number(dados.premium);
 
-            }
+    const trailerBadge =
+        document.getElementById(
+            "trailerBadge"
+        );
+
+
+
+    // =========================================================
+    // PARÂMETROS
+    // =========================================================
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const itemId =
+        params.get("id");
+
+
+    const colecao =
+        params.get("colecao");
+
+
+    const videoParametro =
+        params.get("video");
+
+
+    const tituloParametro =
+        params.get("title");
+
+
+    const ehTrailer =
+        params.get("trailer") === "true";
+
+
+
+    console.log(
+        "🎬 V8 Play+ Player iniciado"
+    );
+
+
+    console.log(
+        "ID:",
+        itemId
+    );
+
+
+    console.log(
+        "Coleção:",
+        colecao
+    );
+
+
+    console.log(
+        "Vídeo recebido:",
+        videoParametro
+    );
+
+
+    console.log(
+        "Título:",
+        tituloParametro
+    );
+
+
+    console.log(
+        "Trailer:",
+        ehTrailer
+    );
+
+
+
+    // =========================================================
+    // VOLTAR
+    // =========================================================
+
+    function voltar() {
+
+        if (
+            window.history.length > 1
+        ) {
+
+            window.history.back();
 
         }
 
-        catch (erro) {
+        else {
 
-            console.warn(
-                "Não foi possível carregar preços administrativos.",
-                erro
+            window.location.href =
+                "index.html";
+
+        }
+
+    }
+
+
+    document
+        .getElementById(
+            "btnVoltar"
+        )
+        .onclick =
+        voltar;
+
+
+    document
+        .getElementById(
+            "btnVoltar2"
+        )
+        .onclick =
+        voltar;
+
+
+
+    // =========================================================
+    // MOSTRAR ERRO
+    // =========================================================
+
+    function mostrarErro(
+        mensagem
+    ) {
+
+        console.error(
+            "❌ Player:",
+            mensagem
+        );
+
+
+        loading.style.display =
+            "none";
+
+
+        videoPlayer.style.display =
+            "none";
+
+
+        iframePlayer.style.display =
+            "none";
+
+
+        errorText.innerText =
+            mensagem;
+
+
+        errorBox.style.display =
+            "flex";
+
+    }
+
+
+
+    // =========================================================
+    // ESCONDER ERRO
+    // =========================================================
+
+    function esconderErro() {
+
+        errorBox.style.display =
+            "none";
+
+    }
+
+
+
+    // =========================================================
+    // LOADING
+    // =========================================================
+
+    function mostrarLoading(
+        texto = "Carregando vídeo..."
+    ) {
+
+        loadingText.innerText =
+            texto;
+
+        loading.style.display =
+            "flex";
+
+    }
+
+
+
+    function esconderLoading() {
+
+        loading.style.display =
+            "none";
+
+    }
+
+
+
+    // =========================================================
+    // EXTRAIR YOUTUBE
+    // =========================================================
+
+    function extrairYoutubeID(
+        url
+    ) {
+
+        if (!url)
+            return null;
+
+
+        url =
+            String(url).trim();
+
+
+        /*
+         * youtube.com/watch?v=ID
+         */
+
+        let match =
+            url.match(
+                /youtube\.com\/watch\?v=([^&]+)/i
             );
 
-        }
+
+        if (match)
+            return match[1];
+
+
+        /*
+         * youtu.be/ID
+         */
+
+        match =
+            url.match(
+                /youtu\.be\/([^?&/]+)/i
+            );
+
+
+        if (match)
+            return match[1];
+
+
+        /*
+         * youtube.com/embed/ID
+         */
+
+        match =
+            url.match(
+                /youtube\.com\/embed\/([^?&/]+)/i
+            );
+
+
+        if (match)
+            return match[1];
+
+
+        /*
+         * youtube.com/shorts/ID
+         */
+
+        match =
+            url.match(
+                /youtube\.com\/shorts\/([^?&/]+)/i
+            );
+
+
+        if (match)
+            return match[1];
+
+
+        /*
+         * youtube-nocookie
+         */
+
+        match =
+            url.match(
+                /youtube-nocookie\.com\/embed\/([^?&/]+)/i
+            );
+
+
+        if (match)
+            return match[1];
+
+
+        return null;
 
     }
 
 
-    /* =====================================================
-       TAG DO CONTEÚDO
-    ===================================================== */
 
-    function obterTagItem(item) {
+    // =========================================================
+    // VERIFICAR YOUTUBE
+    // =========================================================
 
-        const valor =
-            item.tag ??
-            item.plano ??
-            "gratis";
+    function ehYoutube(
+        url
+    ) {
+
+        if (!url)
+            return false;
 
 
-        const tag =
-            String(valor)
-                .trim()
-                .toLowerCase();
+        return /youtube\.com|youtu\.be|youtube-nocookie\.com/i
+            .test(url);
+
+    }
+
+
+
+    // =========================================================
+    // VERIFICAR VÍDEO
+    // =========================================================
+
+    function ehVideoDireto(
+        url
+    ) {
+
+        if (!url)
+            return false;
+
+
+        return /\.(mp4|webm|ogg|m3u8)(\?.*)?$/i
+            .test(url);
+
+    }
+
+
+
+    // =========================================================
+    // CONSTRUIR URL YOUTUBE
+    // =========================================================
+
+    function montarYoutubeURL(
+        id
+    ) {
+
+        return (
+            "https://www.youtube.com/embed/" +
+            encodeURIComponent(id) +
+            "?autoplay=1&rel=0&modestbranding=1"
+        );
+
+    }
+
+
+
+    // =========================================================
+    // CARREGAR YOUTUBE
+    // =========================================================
+
+    function carregarYoutube(
+        url
+    ) {
+
+        const id =
+            extrairYoutubeID(url);
+
+
+        if (!id) {
+
+            mostrarErro(
+                "O link do YouTube é inválido."
+            );
+
+            return;
+
+        }
+
+
+        console.log(
+            "▶️ YouTube ID:",
+            id
+        );
+
+
+        videoPlayer.pause();
+
+
+        videoPlayer.removeAttribute(
+            "src"
+        );
+
+
+        videoPlayer.style.display =
+            "none";
+
+
+        iframePlayer.style.display =
+            "block";
+
+
+        iframePlayer.src =
+            montarYoutubeURL(id);
+
+
+        iframePlayer.onload =
+            () => {
+
+                esconderLoading();
+
+            };
+
+
+        /*
+         * Caso o navegador não dispare
+         * onload corretamente.
+         */
+
+        setTimeout(
+            () => {
+
+                esconderLoading();
+
+            },
+            3000
+        );
+
+    }
+
+
+
+    // =========================================================
+    // CARREGAR VÍDEO DIRETO
+    // =========================================================
+
+    function carregarVideoDireto(
+        url
+    ) {
+
+        console.log(
+            "🎥 Vídeo direto:",
+            url
+        );
+
+
+        iframePlayer.src =
+            "";
+
+
+        iframePlayer.style.display =
+            "none";
+
+
+        videoPlayer.style.display =
+            "block";
+
+
+        videoPlayer.src =
+            url;
+
+
+        videoPlayer.load();
+
+
+        videoPlayer.onloadedmetadata =
+            () => {
+
+                console.log(
+                    "✅ Metadata carregada"
+                );
+
+
+                esconderLoading();
+
+            };
+
+
+        videoPlayer.oncanplay =
+            () => {
+
+                console.log(
+                    "▶️ Vídeo pronto"
+                );
+
+
+                esconderLoading();
+
+            };
+
+
+        videoPlayer.onerror =
+            () => {
+
+                mostrarErro(
+                    "O arquivo de vídeo não pôde ser carregado. Verifique se o link é válido e permite reprodução no navegador."
+                );
+
+            };
+
+
+        /*
+         * Tentativa automática.
+         *
+         * Alguns navegadores bloqueiam autoplay
+         * com som, por isso o erro é ignorado.
+         */
+
+        const promessa =
+            videoPlayer.play();
 
 
         if (
-            tag === "free" ||
-            tag === "gratis" ||
-            tag === "gratuito"
+            promessa &&
+            typeof promessa.catch === "function"
         ) {
 
-            return "gratis";
+            promessa.catch(
+                () => {
+
+                    console.log(
+                        "Autoplay bloqueado pelo navegador."
+                    );
+
+                }
+            );
 
         }
-
-
-        if (tag === "prime") {
-
-            return "prime";
-
-        }
-
-
-        if (tag === "premium") {
-
-            return "premium";
-
-        }
-
-
-        return "gratis";
 
     }
 
 
-    /* =====================================================
-       BUSCAR COLEÇÃO
-    ===================================================== */
 
-    async function buscarColecao(nome) {
+    // =========================================================
+    // CARREGAR IFRAME GENÉRICO
+    // =========================================================
+
+    function carregarIframe(
+        url
+    ) {
+
+        console.log(
+            "🌐 Embed:",
+            url
+        );
+
+
+        videoPlayer.pause();
+
+
+        videoPlayer.removeAttribute(
+            "src"
+        );
+
+
+        videoPlayer.style.display =
+            "none";
+
+
+        iframePlayer.style.display =
+            "block";
+
+
+        iframePlayer.src =
+            url;
+
+
+        iframePlayer.onload =
+            () => {
+
+                esconderLoading();
+
+            };
+
+
+        setTimeout(
+            () => {
+
+                esconderLoading();
+
+            },
+            3000
+        );
+
+    }
+
+
+
+    // =========================================================
+    // CARREGAR PLAYER
+    // =========================================================
+
+    function carregarPlayer(
+        url
+    ) {
+
+        esconderErro();
+
+        mostrarLoading();
+
+
+        if (!url) {
+
+            mostrarErro(
+                "Nenhum vídeo foi informado para este conteúdo."
+            );
+
+            return;
+
+        }
+
+
+        url =
+            String(url).trim();
+
+
+        /*
+         * YouTube
+         */
+
+        if (
+            ehYoutube(url)
+        ) {
+
+            carregarYoutube(url);
+
+            return;
+
+        }
+
+
+        /*
+         * Arquivo de vídeo
+         */
+
+        if (
+            ehVideoDireto(url)
+        ) {
+
+            carregarVideoDireto(url);
+
+            return;
+
+        }
+
+
+        /*
+         * Se for uma URL HTTP/HTTPS,
+         * tratamos como embed.
+         */
+
+        if (
+            /^https?:\/\//i.test(url)
+        ) {
+
+            carregarIframe(url);
+
+            return;
+
+        }
+
+
+        mostrarErro(
+            "Formato de vídeo não reconhecido."
+        );
+
+    }
+
+
+
+    // =========================================================
+    // CARREGAR DADOS DO FIRESTORE
+    // =========================================================
+
+    async function carregarDadosFirestore() {
+
+        /*
+         * Se não temos ID ou coleção,
+         * usamos os parâmetros enviados
+         * pelo index.
+         */
+
+        if (
+            !itemId ||
+            !colecao
+        ) {
+
+            console.warn(
+                "⚠️ ID ou coleção ausentes."
+            );
+
+            if (tituloParametro) {
+
+                playerTitle.innerText =
+                    tituloParametro;
+
+            }
+
+            carregarPlayer(
+                videoParametro
+            );
+
+            return;
+
+        }
+
 
         try {
 
-            const snap =
-                await getDocs(
-                    collection(db, nome)
+            console.log(
+                `🔥 Buscando ${colecao}/${itemId}`
+            );
+
+
+            const referencia =
+                doc(
+                    db,
+                    colecao,
+                    itemId
                 );
 
 
-            const itens = [];
+            const snap =
+                await getDoc(
+                    referencia
+                );
 
 
-            snap.forEach(
-                docSnap => {
+            if (!snap.exists()) {
 
-                    const dados =
-                        docSnap.data();
+                console.warn(
+                    "Documento não encontrado. Usando parâmetros da URL."
+                );
 
 
-                    if (
-                        dados.ativo !== false
-                    ) {
+                playerTitle.innerText =
+                    tituloParametro ||
+                    "V8 Play+";
 
-                        itens.push({
 
-                            id:
-                                docSnap.id,
+                carregarPlayer(
+                    videoParametro
+                );
 
-                            colecao:
-                                nome,
 
-                            ...dados
+                return;
 
-                        });
+            }
 
-                    }
 
-                }
+            const item =
+                snap.data();
+
+
+            console.log(
+                "🎬 Conteúdo encontrado:",
+                item
             );
 
 
-            itens.sort(
-                (a, b) => {
+            /*
+             * Título
+             */
 
-                    const dataA =
-                        a.data?.toDate
-                            ? a.data.toDate()
-                            : new Date(
-                                a.data || 0
-                            );
-
-
-                    const dataB =
-                        b.data?.toDate
-                            ? b.data.toDate()
-                            : new Date(
-                                b.data || 0
-                            );
+            playerTitle.innerText =
+                item.titulo ||
+                tituloParametro ||
+                "V8 Play+";
 
 
-                    return dataB - dataA;
+            /*
+             * Descrição
+             */
 
-                }
+            playerDescription.innerText =
+                item.descricao ||
+                "Sem descrição disponível.";
+
+
+            /*
+             * Ano
+             */
+
+            if (item.ano) {
+
+                badgeAno.innerText =
+                    item.ano;
+
+            }
+
+
+            /*
+             * Categoria
+             */
+
+            badgeTipo.innerText =
+                item.categoria ||
+                item.tipo ||
+                "V8 Play+";
+
+
+            /*
+             * Trailer
+             */
+
+            if (
+                ehTrailer
+            ) {
+
+                trailerBadge.style.display =
+                    "inline-flex";
+
+            }
+
+
+            /*
+             * Escolher vídeo.
+             *
+             * Ordem de prioridade:
+             *
+             * trailer
+             * video
+             * video1
+             * video2
+             * video3
+             * embed
+             * URL recebida
+             */
+
+            let url = "";
+
+
+            if (
+                ehTrailer
+            ) {
+
+                url =
+                    item.trailer ||
+                    item.videoTrailer ||
+                    videoParametro ||
+                    "";
+
+            }
+
+            else {
+
+                url =
+                    item.video ||
+                    item.video1 ||
+                    item.video2 ||
+                    item.video3 ||
+                    item.embed ||
+                    videoParametro ||
+                    "";
+
+            }
+
+
+            console.log(
+                "🎞️ URL final:",
+                url
             );
 
 
-            return itens;
+            carregarPlayer(
+                url
+            );
 
         }
 
         catch (erro) {
 
             console.error(
-                `Erro na coleção ${nome}:`,
+                "❌ Erro ao buscar conteúdo:",
                 erro
             );
 
-            return [];
 
-        }
+            /*
+             * Mesmo se o Firestore falhar,
+             * tentamos o vídeo enviado pelo index.
+             */
 
-    }
-
-
-    /* =====================================================
-       CARREGAR COMPRAS DO USUÁRIO
-    ===================================================== */
-
-    async function carregarComprasUsuario() {
-
-        titulosComprados =
-            new Set();
+            playerTitle.innerText =
+                tituloParametro ||
+                "V8 Play+";
 
 
-        const user =
-            auth.currentUser;
-
-
-        if (!user) {
-            return;
-        }
-
-
-        try {
-
-            const comprasRef =
-                collection(
-                    db,
-                    "usuarios",
-                    user.uid,
-                    "compras"
-                );
-
-
-            const snap =
-                await getDocs(
-                    comprasRef
-                );
-
-
-            snap.forEach(
-                docSnap => {
-
-                    const dados =
-                        docSnap.data();
-
-
-                    if (
-                        dados.status === "aprovado" ||
-                        dados.status === "paid" ||
-                        dados.status === "pago"
-                    ) {
-
-                        if (
-                            dados.itemId
-                        ) {
-
-                            titulosComprados.add(
-                                dados.itemId
-                            );
-
-                        }
-
-                    }
-
-                }
-            );
-
-        }
-
-        catch (erro) {
-
-            console.warn(
-                "Não foi possível carregar compras:",
-                erro
+            carregarPlayer(
+                videoParametro
             );
 
         }
@@ -1858,1086 +1791,1017 @@
     }
 
 
-    /* =====================================================
-       CARREGAR CATÁLOGO
-    ===================================================== */
 
-    async function carregarCatalogo() {
-
-        mostrarNotificacao(
-            "Carregando catálogo..."
-        );
-
-
-        await carregarPrecosAdmin();
-
-        await carregarComprasUsuario();
-
-
-        const containers = [
-
-            "emAlta",
-            "filmes",
-            "series",
-            "animes",
-            "doramas",
-            "recomendados"
-
-        ];
-
-
-        containers.forEach(
-            id => {
-
-                const el =
-                    document.getElementById(id);
-
-                if (el) {
-
-                    el.innerHTML = "";
-
-                }
-
-            }
-        );
-
-
-        const resultados =
-            await Promise.all(
-                COLECOES.map(
-                    buscarColecao
-                )
-            );
-
-
-        catalogo =
-            resultados.flat();
-
-
-        if (!catalogo.length) {
-
-            document
-                .getElementById("filmes")
-                .innerHTML = `
-                    <p class="vazio">
-                        Nenhum título disponível no momento.
-                    </p>
-                `;
-
-            return;
-
-        }
-
-
-        catalogo.forEach(
-            item => {
-
-                const tipo =
-                    String(
-                        item.tipo ||
-                        item.categoria ||
-                        "filme"
-                    ).toLowerCase();
-
-
-                /* EM ALTA */
-
-                if (
-                    item.destaque === true
-                ) {
-
-                    adicionarCard(
-                        "emAlta",
-                        item
-                    );
-
-                }
-
-
-                /* TIPO */
-
-                if (
-                    tipo === "serie" ||
-                    tipo === "série" ||
-                    tipo === "series" ||
-                    tipo === "séries"
-                ) {
-
-                    adicionarCard(
-                        "series",
-                        item
-                    );
-
-                }
-
-                else if (
-                    tipo === "anime" ||
-                    tipo === "animes"
-                ) {
-
-                    adicionarCard(
-                        "animes",
-                        item
-                    );
-
-                }
-
-                else if (
-                    tipo === "dorama" ||
-                    tipo === "doramas"
-                ) {
-
-                    adicionarCard(
-                        "doramas",
-                        item
-                    );
-
-                }
-
-                else {
-
-                    adicionarCard(
-                        "filmes",
-                        item
-                    );
-
-                }
-
-
-                /* RECOMENDADOS */
-
-                if (
-                    item.recomendado === true
-                ) {
-
-                    adicionarCard(
-                        "recomendados",
-                        item
-                    );
-
-                }
-
-            }
-        );
-
-
-        /* FALLBACK EM ALTA */
-
-        const emAlta =
-            document.getElementById(
-                "emAlta"
-            );
-
-
-        if (
-            emAlta &&
-            !emAlta.children.length
-        ) {
-
-            catalogo
-                .slice(0, 10)
-                .forEach(
-                    item =>
-                        adicionarCard(
-                            "emAlta",
-                            item
-                        )
-                );
-
-        }
-
-
-        /* FILTROS */
-
-        montarFiltros();
-
-
-        /* HERO */
-
-        carregarDestaque();
-
-
-        aplicarFiltrosEBusca();
-
-
-        console.log(
-            "✅ Catálogo carregado:",
-            catalogo.length
-        );
-
-    }
-
-
-    /* =====================================================
-       ADICIONAR CARD
-    ===================================================== */
-
-    function adicionarCard(
-        containerId,
-        item
-    ) {
-
-        const container =
-            document.getElementById(
-                containerId
-            );
-
-
-        if (!container) {
-            return;
-        }
-
-
-        container.appendChild(
-            criarCard(item)
-        );
-
-    }
-
-
-    /* =====================================================
-       CRIAR CARD
-    ===================================================== */
-
-    function criarCard(item) {
-
-        const card =
-            document.createElement("div");
-
-
-        card.className =
-            "movie-card";
-
-
-        card.dataset.categoria =
-            String(
-                item.categoria || ""
-            );
-
-
-        card.dataset.titulo =
-            String(
-                item.titulo || ""
-            )
-            .toLowerCase();
-
-
-        const tag =
-            obterTagItem(item);
-
-
-        let rotulo =
-            "GRÁTIS";
-
-
-        if (tag === "prime") {
-
-            rotulo =
-                `PRIME ${formatarPreco(
-                    valoresPlanosAdmin.prime
-                )}`;
-
-        }
-
-
-        if (tag === "premium") {
-
-            rotulo =
-                `PREMIUM ${formatarPreco(
-                    valoresPlanosAdmin.premium
-                )}`;
-
-        }
-
-
-        const selo = `
-
-            <span class="selo-card ${tag}">
-                ${rotulo}
-            </span>
-
-        `;
-
-
-        const titulo =
-            String(
-                item.titulo ||
-                "Sem título"
-            );
-
-
-        if (item.capa) {
-
-            card.innerHTML = `
-
-                ${selo}
-
-                <img
-                    src="${escapeHtml(item.capa)}"
-                    alt="${escapeHtml(titulo)}"
-                    loading="lazy"
-                >
-
-                <div
-                    class="titulo-fallback hidden"
-                >
-                    ${escapeHtml(titulo)}
-                </div>
-
-            `;
-
-
-            const img =
-                card.querySelector("img");
-
-
-            img.addEventListener(
-                "error",
-                () => {
-
-                    img.style.display =
-                        "none";
-
-
-                    const fallback =
-                        card.querySelector(
-                            ".titulo-fallback"
-                        );
-
-
-                    if (fallback) {
-
-                        fallback.classList
-                            .remove("hidden");
-
-                    }
-
-                }
-            );
-
-        }
-
-        else {
-
-            card.innerHTML = `
-
-                ${selo}
-
-                <div class="titulo-fallback">
-                    ${escapeHtml(titulo)}
-                </div>
-
-            `;
-
-        }
-
-
-        card.addEventListener(
-            "click",
-            () => abrirDetalhes(item)
-        );
-
-
-        return card;
-
-    }
-
-
-    /* =====================================================
-       SEGURANÇA HTML
-    ===================================================== */
-
-    function escapeHtml(valor) {
-
-        return String(valor ?? "")
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
-            .replaceAll('"', "&quot;")
-            .replaceAll("'", "&#039;");
-
-    }
-
-
-    /* =====================================================
-       FILTROS
-    ===================================================== */
-
-    function montarFiltros() {
-
-        const container =
-            document.getElementById(
-                "filtros"
-            );
-
-
-        if (!container) {
-            return;
-        }
-
-
-        const generos =
-            [
-                ...new Set(
-                    catalogo
-                        .map(
-                            item =>
-                                item.categoria
-                        )
-                        .filter(Boolean)
-                )
-            ]
-            .sort();
-
-
-        container
-            .querySelectorAll(
-                '.chip:not([data-genero="Todos"])'
-            )
-            .forEach(
-                chip =>
-                    chip.remove()
-            );
-
-
-        generos.forEach(
-            genero => {
-
-                const chip =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                chip.className =
-                    "chip";
-
-
-                chip.dataset.genero =
-                    genero;
-
-
-                chip.innerText =
-                    genero;
-
-
-                chip.type =
-                    "button";
-
-
-                container.appendChild(
-                    chip
-                );
-
-            }
-        );
-
-    }
-
-
-    function aplicarFiltrosEBusca() {
-
-        const busca =
-            document.getElementById(
-                "busca"
-            );
-
-
-        const texto =
-            busca
-                ? busca.value
-                    .toLowerCase()
-                    .trim()
-                : "";
-
-
-        const chipAtivo =
-            document.querySelector(
-                "#filtros .chip.ativo"
-            );
-
-
-        const generoAtivo =
-            chipAtivo?.dataset.genero ||
-            "Todos";
-
-
-        document
-            .querySelectorAll(
-                ".movie-card"
-            )
-            .forEach(
-                card => {
-
-                    const titulo =
-                        card.dataset.titulo ||
-                        "";
-
-
-                    const categoria =
-                        card.dataset.categoria ||
-                        "";
-
-
-                    const buscaOk =
-                        !texto ||
-                        titulo.includes(texto);
-
-
-                    const generoOk =
-                        generoAtivo === "Todos" ||
-                        categoria === generoAtivo;
-
-
-                    card.style.display =
-                        buscaOk &&
-                        generoOk
-                            ? ""
-                            : "none";
-
-                }
-            );
-
-    }
-
-
-    /* =====================================================
-       EVENTO FILTROS
-    ===================================================== */
+    // =========================================================
+    // RECARREGAR
+    // =========================================================
 
     document
-        .getElementById("filtros")
-        ?.addEventListener(
-            "click",
-            event => {
-
-                const chip =
-                    event.target.closest(
-                        ".chip"
-                    );
-
-
-                if (!chip) {
-                    return;
-                }
-
-
-                document
-                    .querySelectorAll(
-                        "#filtros .chip"
-                    )
-                    .forEach(
-                        item =>
-                            item.classList
-                                .remove("ativo")
-                    );
-
-
-                chip.classList.add(
-                    "ativo"
-                );
-
-
-                aplicarFiltrosEBusca();
-
-            }
-        );
-
-
-    /* =====================================================
-       PESQUISA
-    ===================================================== */
-
-    document
-        .getElementById("busca")
-        ?.addEventListener(
-            "input",
-            aplicarFiltrosEBusca
-        );
-
-
-    /* =====================================================
-       DESTAQUE
-    ===================================================== */
-
-    function carregarDestaque() {
-
-        const destaque =
-            catalogo.find(
-                item =>
-                    item.destaque === true
-            ) ||
-            catalogo[0];
-
-
-        if (!destaque) {
-            return;
-        }
-
-
-        filmeAtual =
-            destaque;
-
-
-        document
-            .getElementById(
-                "heroTitle"
-            )
-            .innerText =
-            destaque.titulo ||
-            "V8 Play+";
-
-
-        document
-            .getElementById(
-                "heroDesc"
-            )
-            .innerText =
-            destaque.descricao ||
-            "Assista agora em alta definição no V8 Play+.";
-
-
-        const hero =
-            document.getElementById(
-                "hero"
-            );
-
-
-        const imagem =
-            destaque.banner ||
-            destaque.capa ||
-            "";
-
-
-        if (imagem) {
-
-            hero.style.backgroundImage =
-                `url("${imagem}")`;
-
-        }
-
-    }
-
-
-    /* =====================================================
-       DETALHES
-    ===================================================== */
-
-    function abrirDetalhes(item) {
-
-        if (!item) {
-            return;
-        }
-
-
-        filmeAtual =
-            item;
-
-
-        document
-            .getElementById(
-                "detImg"
-            )
-            .src =
-            item.banner ||
-            item.capa ||
-            "";
-
-
-        document
-            .getElementById(
-                "detTitulo"
-            )
-            .innerText =
-            item.titulo ||
-            "Sem título";
-
-
-        document
-            .getElementById(
-                "detAno"
-            )
-            .innerText =
-            item.ano ||
-            "2026";
-
-
-        document
-            .getElementById(
-                "detCategoria"
-            )
-            .innerText =
-            item.categoria ||
-            item.tipo ||
-            "Conteúdo";
-
-
-        document
-            .getElementById(
-                "detDescricao"
-            )
-            .innerText =
-            item.descricao ||
-            "Sem descrição disponível.";
-
-
-        const container =
-            document.getElementById(
-                "detBtnsContainer"
-            );
-
-
-        container.innerHTML =
-            "";
-
-
-        const tag =
-            obterTagItem(item);
-
-
-        const comprado =
-            titulosComprados.has(
-                item.id
-            );
-
-
-        /* =================================================
-           GRATUITO
-        ================================================= */
-
-        if (
-            tag === "gratis"
-        ) {
-
-            const assistir =
-                document.createElement(
-                    "button"
-                );
-
-
-            assistir.className =
-                "btn-ad-action";
-
-
-            assistir.innerHTML = `
-                <i class="fa-solid fa-play"></i>
-                Assistir com Anúncio
-            `;
-
-
-            assistir.onclick =
-                () =>
-                    iniciarFluxoAnuncio(
-                        "assistir"
-                    );
-
-
-            container.appendChild(
-                assistir
-            );
-
-
-            const baixar =
-                document.createElement(
-                    "button"
-                );
-
-
-            baixar.className =
-                "btn-ad-action";
-
-
-            baixar.style.background =
-                "linear-gradient(135deg,#00d4ff,#0072ff)";
-
-
-            baixar.innerHTML = `
-                <i class="fa-solid fa-download"></i>
-                Baixar com Anúncio
-            `;
-
-
-            baixar.onclick =
-                () =>
-                    iniciarFluxoAnuncio(
-                        "baixar"
-                    );
-
-
-            container.appendChild(
-                baixar
-            );
-
-        }
-
-
-        /* =================================================
-           PAGO
-        ================================================= */
-
-        else {
-
-            const valor =
-                tag === "prime"
-                    ? valoresPlanosAdmin.prime
-                    : valoresPlanosAdmin.premium;
-
-
-            if (comprado) {
-
-                const assistir =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                assistir.className =
-                    "btn-login";
-
-
-                assistir.style.borderRadius =
-                    "6px";
-
-
-                assistir.innerHTML = `
-                    <i class="fa-solid fa-play"></i>
-                    Assistir Agora
-                `;
-
-
-                assistir.onclick =
-                    () =>
-                        irParaPlayer(item);
-
-
-                container.appendChild(
-                    assistir
-                );
-
-
-                const baixar =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                baixar.className =
-                    "btn-info";
-
-
-                baixar.innerHTML = `
-                    <i class="fa-solid fa-download"></i>
-                    Baixar Arquivo
-                `;
-
-
-                baixar.onclick =
-                    () =>
-                        executarDownload(
-                            item
-                        );
-
-
-                container.appendChild(
-                    baixar
+        .getElementById(
+            "btnRecarregar"
+        )
+        .onclick =
+        () => {
+
+            if (videoParametro) {
+
+                carregarPlayer(
+                    videoParametro
                 );
 
             }
 
             else {
 
-                const comprar =
-                    document.createElement(
-                        "button"
-                    );
+                carregarDadosFirestore();
+
+            }
+
+        };
 
 
-                comprar.className =
-                    tag === "prime"
-                        ? "btn-pix-prime"
-                        : "btn-pix-premium";
+    document
+        .getElementById(
+            "btnTentar"
+        )
+        .onclick =
+        () => {
+
+            carregarDadosFirestore();
+
+        };
 
 
-                comprar.innerHTML = `
-                    <i class="fa-brands fa-pix"></i>
-                    Comprar ${tag.toUpperCase()}
-                    (${formatarPreco(valor)})
-                `;
+
+    // =========================================================
+    // TECLADO
+    // =========================================================
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            /*
+             * ESC = voltar
+             */
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                voltar();
+
+            }
+
+        }
+    );
 
 
-                comprar.onclick =
-                    () =>
-                        solicitarPix(
-                            item,
-                            tag,
-                            valor
+
+    // =========================================================
+    // INICIALIZAÇÃO
+    // =========================================================
+
+    carregarDadosFirestore();
+
+
+</script>
+
+
+</body>
+
+</html>
+<script type="module">
+
+import {
+    db,
+    auth
+} from "./js/firebase.js";
+
+import {
+    collection,
+    getDocs,
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+import {
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    sendPasswordResetEmail,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+
+/* =========================================================
+   CONFIGURAÇÃO
+========================================================= */
+
+const COLECOES = [
+    "filmes",
+    "series",
+    "animes",
+    "doramas"
+];
+
+let catalogo = [];
+let filmeAtual = null;
+let modoCadastro = false;
+let acaoAnuncioPendente = null;
+let adTimer = null;
+
+let titulosComprados =
+    new Set();
+
+let valoresPlanosAdmin = {
+    prime: 9.90,
+    premium: 19.90
+};
+
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const $ = id =>
+    document.getElementById(id);
+
+
+/* =========================================================
+   PREÇO
+========================================================= */
+
+function formatarPreco(valor) {
+
+    const numero =
+        Number(valor) || 0;
+
+    return `R$ ${numero
+        .toFixed(2)
+        .replace(".", ",")}`;
+}
+
+
+/* =========================================================
+   CARREGAR PREÇOS
+========================================================= */
+
+async function carregarPrecosAdmin() {
+
+    try {
+
+        const ref =
+            doc(
+                db,
+                "configuracoes",
+                "planos"
+            );
+
+        const snap =
+            await getDoc(ref);
+
+        if (!snap.exists())
+            return;
+
+        const dados =
+            snap.data();
+
+        if (dados.prime !== undefined) {
+
+            valoresPlanosAdmin.prime =
+                Number(dados.prime);
+
+        }
+
+        if (dados.premium !== undefined) {
+
+            valoresPlanosAdmin.premium =
+                Number(dados.premium);
+
+        }
+
+    }
+
+    catch (erro) {
+
+        console.warn(
+            "Não foi possível carregar os preços:",
+            erro
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   TAG DO CONTEÚDO
+========================================================= */
+
+function obterTagItem(item) {
+
+    const tag =
+        item.tag ||
+        item.plano ||
+        "gratis";
+
+    return String(tag)
+        .toLowerCase()
+        .trim();
+
+}
+
+
+/* =========================================================
+   BUSCAR COLEÇÃO
+========================================================= */
+
+async function buscarColecao(nome) {
+
+    try {
+
+        const snap =
+            await getDocs(
+                collection(db, nome)
+            );
+
+        const itens = [];
+
+        snap.forEach(
+            documento => {
+
+                const dados =
+                    documento.data();
+
+                if (
+                    dados.ativo === false
+                )
+                    return;
+
+                itens.push({
+
+                    id:
+                        documento.id,
+
+                    colecao:
+                        nome,
+
+                    ...dados
+
+                });
+
+            }
+        );
+
+        itens.sort(
+            (a, b) => {
+
+                const dataA =
+                    a.data?.toDate
+                        ? a.data.toDate()
+                        : new Date(
+                            a.data || 0
                         );
 
+                const dataB =
+                    b.data?.toDate
+                        ? b.data.toDate()
+                        : new Date(
+                            b.data || 0
+                        );
+
+                return dataB - dataA;
+
+            }
+        );
+
+        return itens;
+
+    }
+
+    catch (erro) {
+
+        console.error(
+            `Erro na coleção ${nome}:`,
+            erro
+        );
+
+        return [];
+
+    }
+
+}
+
+
+/* =========================================================
+   CARREGAR CATÁLOGO
+========================================================= */
+
+async function carregarCatalogo() {
+
+    console.log(
+        "🎬 Carregando catálogo..."
+    );
+
+    await carregarPrecosAdmin();
+
+    const ids = [
+        "emAlta",
+        "filmes",
+        "series",
+        "animes",
+        "doramas",
+        "recomendados"
+    ];
+
+    ids.forEach(
+        id => {
+
+            const elemento =
+                $(id);
+
+            if (elemento)
+                elemento.innerHTML = "";
+
+        }
+    );
+
+    const resultados =
+        await Promise.all(
+            COLECOES.map(
+                buscarColecao
+            )
+        );
+
+    catalogo =
+        resultados.flat();
+
+    console.log(
+        `🎥 ${catalogo.length} conteúdos encontrados`
+    );
+
+    if (!catalogo.length) {
+
+        $("filmes").innerHTML = `
+            <p class="vazio">
+                Nenhum título disponível no momento.
+            </p>
+        `;
+
+        return;
+
+    }
+
+
+    /* EM ALTA */
+
+    catalogo
+        .filter(
+            item =>
+                item.destaque === true
+        )
+        .forEach(
+            item =>
+                adicionarCard(
+                    "emAlta",
+                    item
+                )
+        );
+
+
+    /* CATEGORIAS */
+
+    catalogo.forEach(
+        item => {
+
+            const tipo =
+                String(
+                    item.tipo || ""
+                ).toLowerCase();
+
+            if (
+                tipo === "serie" ||
+                tipo === "series"
+            ) {
+
+                adicionarCard(
+                    "series",
+                    item
+                );
+
+            }
+
+            else if (
+                tipo === "anime" ||
+                tipo === "animes"
+            ) {
+
+                adicionarCard(
+                    "animes",
+                    item
+                );
+
+            }
+
+            else if (
+                tipo === "dorama" ||
+                tipo === "doramas"
+            ) {
+
+                adicionarCard(
+                    "doramas",
+                    item
+                );
+
+            }
+
+            else {
+
+                adicionarCard(
+                    "filmes",
+                    item
+                );
+
+            }
+
+        }
+    );
+
+
+    /* RECOMENDADOS */
+
+    catalogo
+        .filter(
+            item =>
+                item.recomendado === true
+        )
+        .forEach(
+            item =>
+                adicionarCard(
+                    "recomendados",
+                    item
+                )
+        );
+
+
+    carregarDestaque();
+
+    montarFiltros();
+
+    aplicarFiltrosEBusca();
+
+}
+
+
+/* =========================================================
+   ADICIONAR CARD
+========================================================= */
+
+function adicionarCard(
+    containerId,
+    item
+) {
+
+    const container =
+        $(containerId);
+
+    if (!container)
+        return;
+
+    container.appendChild(
+        criarCard(item)
+    );
+
+}
+
+
+/* =========================================================
+   CRIAR CARD
+========================================================= */
+
+function criarCard(item) {
+
+    const card =
+        document.createElement("div");
+
+    card.className =
+        "movie-card";
+
+    card.dataset.titulo =
+        String(
+            item.titulo || ""
+        ).toLowerCase();
+
+    card.dataset.categoria =
+        String(
+            item.categoria || ""
+        );
+
+    const tag =
+        obterTagItem(item);
+
+    let rotulo =
+        "GRÁTIS";
+
+    if (tag === "prime") {
+
+        rotulo =
+            `PRIME ${formatarPreco(
+                valoresPlanosAdmin.prime
+            )}`;
+
+    }
+
+    if (tag === "premium") {
+
+        rotulo =
+            `PREMIUM ${formatarPreco(
+                valoresPlanosAdmin.premium
+            )}`;
+
+    }
+
+
+    const selo =
+        document.createElement(
+            "span"
+        );
+
+    selo.className =
+        `selo-card ${tag}`;
+
+    selo.innerText =
+        rotulo;
+
+    card.appendChild(
+        selo
+    );
+
+
+    if (item.capa) {
+
+        const imagem =
+            document.createElement(
+                "img"
+            );
+
+        imagem.src =
+            item.capa;
+
+        imagem.alt =
+            item.titulo || "";
+
+        imagem.loading =
+            "lazy";
+
+        imagem.onerror =
+            () => {
+
+                imagem.style.display =
+                    "none";
+
+                mostrarFallback();
+
+            };
+
+        card.appendChild(
+            imagem
+        );
+
+    }
+
+
+    const fallback =
+        document.createElement(
+            "div"
+        );
+
+    fallback.className =
+        "titulo-fallback hidden";
+
+    fallback.innerText =
+        item.titulo ||
+        "Sem título";
+
+    card.appendChild(
+        fallback
+    );
+
+
+    if (!item.capa) {
+
+        fallback.classList
+            .remove("hidden");
+
+    }
+
+
+    card.addEventListener(
+        "click",
+        () => {
+
+            abrirDetalhes(
+                item
+            );
+
+        }
+    );
+
+
+    function mostrarFallback() {
+
+        fallback.classList
+            .remove("hidden");
+
+    }
+
+
+    return card;
+
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+function montarFiltros() {
+
+    const container =
+        $("filtros");
+
+    if (!container)
+        return;
+
+    container
+        .querySelectorAll(
+            '.chip:not([data-genero="Todos"])'
+        )
+        .forEach(
+            chip =>
+                chip.remove()
+        );
+
+    const generos =
+        [
+            ...new Set(
+                catalogo
+                    .map(
+                        item =>
+                            item.categoria
+                    )
+                    .filter(Boolean)
+            )
+        ]
+        .sort();
+
+    generos.forEach(
+        genero => {
+
+            const chip =
+                document.createElement(
+                    "button"
+                );
+
+            chip.className =
+                "chip";
+
+            chip.dataset.genero =
+                genero;
+
+            chip.innerText =
+                genero;
+
+            container.appendChild(
+                chip
+            );
+
+        }
+    );
+
+}
+
+
+function aplicarFiltrosEBusca() {
+
+    const campo =
+        $("busca");
+
+    const texto =
+        campo
+            ? campo.value
+                .toLowerCase()
+                .trim()
+            : "";
+
+    const ativo =
+        document.querySelector(
+            "#filtros .chip.ativo"
+        );
+
+    const genero =
+        ativo?.dataset.genero ||
+        "Todos";
+
+
+    document
+        .querySelectorAll(
+            ".movie-card"
+        )
+        .forEach(
+            card => {
+
+                const titulo =
+                    card.dataset.titulo ||
+                    "";
+
+                const categoria =
+                    card.dataset.categoria ||
+                    "";
+
+                const buscaOK =
+                    !texto ||
+                    titulo.includes(texto);
+
+                const generoOK =
+                    genero === "Todos" ||
+                    categoria === genero;
+
+                card.style.display =
+                    buscaOK &&
+                    generoOK
+                        ? ""
+                        : "none";
+
+            }
+        );
+
+}
+
+
+$("filtros")
+    ?.addEventListener(
+        "click",
+        evento => {
+
+            const chip =
+                evento.target.closest(
+                    ".chip"
+                );
+
+            if (!chip)
+                return;
+
+            document
+                .querySelectorAll(
+                    "#filtros .chip"
+                )
+                .forEach(
+                    item =>
+                        item.classList
+                            .remove("ativo")
+                );
+
+            chip.classList
+                .add("ativo");
+
+            aplicarFiltrosEBusca();
+
+        }
+    );
+
+
+$("busca")
+    ?.addEventListener(
+        "input",
+        aplicarFiltrosEBusca
+    );
+
+
+/* =========================================================
+   DESTAQUE
+========================================================= */
+
+function carregarDestaque() {
+
+    const destaque =
+        catalogo.find(
+            item =>
+                item.destaque === true
+        ) ||
+        catalogo[0];
+
+    if (!destaque)
+        return;
+
+    filmeAtual =
+        destaque;
+
+    $("heroTitle").innerText =
+        destaque.titulo ||
+        "V8 Play+";
+
+    $("heroDesc").innerText =
+        destaque.descricao ||
+        "Sua nova experiência em entretenimento.";
+
+
+    const imagem =
+        destaque.banner ||
+        destaque.capa;
+
+    if (imagem) {
+
+        $("hero").style
+            .backgroundImage =
+            `url("${imagem}")`;
+
+    }
+
+}
+
+
+/* =========================================================
+   DETALHES
+========================================================= */
+
+function abrirDetalhes(item) {
+
+    filmeAtual =
+        item;
+
+    $("detImg").src =
+        item.banner ||
+        item.capa ||
+        "";
+
+    $("detTitulo").innerText =
+        item.titulo ||
+        "Sem título";
+
+    $("detAno").innerText =
+        item.ano ||
+        "2026";
+
+    $("detCategoria").innerText =
+        item.categoria ||
+        item.tipo ||
+        "";
+
+    $("detDescricao").innerText =
+        item.descricao ||
+        "Sem descrição disponível.";
+
+    const container =
+        $("detBtnsContainer");
+
+    container.innerHTML = "";
+
+    const tag =
+        obterTagItem(item);
+
+    const comprado =
+        titulosComprados.has(
+            item.id
+        );
+
+
+    /* =====================================================
+       GRATUITO
+    ===================================================== */
+
+    if (
+        tag === "gratis" ||
+        tag === "free"
+    ) {
+
+        const assistir =
+            criarBotao(
+                "btn-ad-action",
+                '<i class="fa-solid fa-play"></i> Assistir'
+            );
+
+        assistir.onclick =
+            () =>
+                iniciarFluxoAnuncio(
+                    "assistir",
+                    item
+                );
+
+        container.appendChild(
+            assistir
+        );
+
+
+        if (item.arquivoDownload) {
+
+            const download =
+                criarBotao(
+                    "btn-ad-action",
+                    '<i class="fa-solid fa-download"></i> Baixar'
+                );
+
+            download.style.background =
+                "linear-gradient(135deg,#00d4ff,#0072ff)";
+
+            download.onclick =
+                () =>
+                    iniciarFluxoAnuncio(
+                        "baixar",
+                        item
+                    );
+
+            container.appendChild(
+                download
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       PAGO
+    ===================================================== */
+
+    else {
+
+        const valor =
+            tag === "prime"
+                ? valoresPlanosAdmin.prime
+                : valoresPlanosAdmin.premium;
+
+
+        if (comprado) {
+
+            const assistir =
+                criarBotao(
+                    "btn-login",
+                    '<i class="fa-solid fa-play"></i> Assistir Agora'
+                );
+
+            assistir.onclick =
+                () =>
+                    irParaPlayer(item);
+
+            container.appendChild(
+                assistir
+            );
+
+
+            if (item.arquivoDownload) {
+
+                const download =
+                    criarBotao(
+                        "btn-info",
+                        '<i class="fa-solid fa-download"></i> Baixar Arquivo'
+                    );
+
+                download.onclick =
+                    () =>
+                        executarDownload(
+                            item
+                        );
 
                 container.appendChild(
-                    comprar
+                    download
                 );
 
             }
 
         }
 
+        else {
 
-        /* =================================================
-           TRAILER
-        ================================================= */
+            const classe =
+                tag === "prime"
+                    ? "btn-pix-prime"
+                    : "btn-pix-premium";
 
-        const trailer =
-            item.trailer ||
-            item.videoTrailer ||
-            "";
-
-
-        if (trailer) {
-
-            const btnTrailer =
-                document.createElement(
-                    "button"
+            const comprar =
+                criarBotao(
+                    classe,
+                    `<i class="fa-solid fa-pix"></i>
+                     Comprar ${tag.toUpperCase()}
+                     — ${formatarPreco(valor)}`
                 );
 
-
-            btnTrailer.className =
-                "btn-info";
-
-
-            btnTrailer.innerHTML = `
-                <i class="fa-solid fa-film"></i>
-                Trailer
-            `;
-
-
-            btnTrailer.onclick =
+            comprar.onclick =
                 () =>
-                    abrirTrailer(item);
-
+                    solicitarPix(
+                        item,
+                        tag,
+                        valor
+                    );
 
             container.appendChild(
-                btnTrailer
+                comprar
             );
 
         }
-
-
-        document
-            .getElementById(
-                "detalheModal"
-            )
-            .classList
-            .remove("hidden");
-
-    }
-
-
-    /* =====================================================
-       PLAYER
-    ===================================================== */
-
-    function irParaPlayer(item) {
-
-        console.log(
-            "🎬 Preparando player:",
-            item
-        );
-
-
-        if (!item) {
-
-            mostrarNotificacao(
-                "Conteúdo não encontrado."
-            );
-
-            return;
-
-        }
-
-
-        if (!item.id) {
-
-            mostrarNotificacao(
-                "ID do conteúdo não encontrado."
-            );
-
-            return;
-
-        }
-
-
-        if (!item.colecao) {
-
-            mostrarNotificacao(
-                "Coleção do conteúdo não encontrada."
-            );
-
-            return;
-
-        }
-
-
-        const video =
-            item.video ||
-            item.video1 ||
-            item.video2 ||
-            item.video3 ||
-            item.embed ||
-            "";
-
-
-        fecharModais();
-
-
-        const params =
-            new URLSearchParams();
-
-
-        params.set(
-            "id",
-            item.id
-        );
-
-
-        params.set(
-            "colecao",
-            item.colecao
-        );
-
-
-        if (video) {
-
-            params.set(
-                "video",
-                video
-            );
-
-        }
-
-
-        if (item.titulo) {
-
-            params.set(
-                "title",
-                item.titulo
-            );
-
-        }
-
-
-        const url =
-            `player.html?${params.toString()}`;
-
-
-        console.log(
-            "🚀 Abrindo:",
-            url
-        );
-
-
-        window.location.href =
-            url;
 
     }
 
@@ -2946,1209 +2810,531 @@
        TRAILER
     ===================================================== */
 
-    function abrirTrailer(item) {
+    const trailer =
+        item.trailer ||
+        item.videoTrailer;
 
-        if (!item) {
-            return;
-        }
+    if (trailer) {
 
-
-        const trailer =
-            item.trailer ||
-            item.videoTrailer ||
-            "";
-
-
-        if (!trailer) {
-
-            mostrarNotificacao(
-                "Este título não possui trailer."
+        const btnTrailer =
+            criarBotao(
+                "btn-info",
+                '<i class="fa-solid fa-film"></i> Trailer'
             );
 
-            return;
+        btnTrailer.onclick =
+            () =>
+                abrirTrailer(item);
 
-        }
-
-
-        fecharModais();
-
-
-        const params =
-            new URLSearchParams();
-
-
-        params.set(
-            "id",
-            item.id || ""
+        container.appendChild(
+            btnTrailer
         );
 
+    }
 
-        params.set(
-            "colecao",
-            item.colecao || ""
+
+    $("detalheModal")
+        .classList
+        .remove("hidden");
+
+}
+
+
+function criarBotao(
+    classe,
+    html
+) {
+
+    const botao =
+        document.createElement(
+            "button"
         );
 
+    botao.className =
+        classe;
 
-        params.set(
-            "trailer",
-            "true"
+    botao.innerHTML =
+        html;
+
+    return botao;
+
+}
+
+
+/* =========================================================
+   PLAYER
+========================================================= */
+
+function irParaPlayer(item) {
+
+    if (!item) {
+
+        mostrarNotificacao(
+            "Conteúdo não encontrado."
         );
 
+        return;
+
+    }
+
+    if (!item.id) {
+
+        mostrarNotificacao(
+            "ID do conteúdo não encontrado."
+        );
+
+        return;
+
+    }
+
+    if (!item.colecao) {
+
+        mostrarNotificacao(
+            "Coleção do conteúdo não encontrada."
+        );
+
+        return;
+
+    }
+
+
+    console.log(
+        "🎬 Abrindo player:",
+        item.titulo
+    );
+
+
+    const params =
+        new URLSearchParams();
+
+    params.set(
+        "id",
+        item.id
+    );
+
+    params.set(
+        "colecao",
+        item.colecao
+    );
+
+
+    const video =
+        item.video ||
+        item.video1 ||
+        item.video2 ||
+        item.video3 ||
+        item.embed ||
+        "";
+
+    if (video) {
 
         params.set(
             "video",
-            trailer
+            video
         );
 
-
-        if (item.titulo) {
-
-            params.set(
-                "title",
-                item.titulo
-            );
-
-        }
+    }
 
 
-        window.location.href =
-            `player.html?${params.toString()}`;
+    if (item.titulo) {
+
+        params.set(
+            "title",
+            item.titulo
+        );
 
     }
 
 
-    /* =====================================================
-       ANÚNCIO
-    ===================================================== */
+    const url =
+        `player.html?${params.toString()}`;
 
-    function iniciarFluxoAnuncio(tipo) {
-
-        if (!filmeAtual) {
-            return;
-        }
+    console.log(
+        "🔗",
+        url
+    );
 
 
-        acaoAnuncioPendente =
-            tipo;
+    /*
+       IMPORTANTE:
+       Não usamos window.open().
+       AdBlock costuma bloquear window.open().
+       Usamos navegação direta.
+    */
+
+    window.location.href =
+        url;
+
+}
 
 
-        document
-            .getElementById(
-                "detalheModal"
-            )
-            .classList
-            .add("hidden");
+/* =========================================================
+   TRAILER
+========================================================= */
 
+function abrirTrailer(item) {
 
-        document
-            .getElementById(
-                "adModal"
-            )
-            .classList
-            .remove("hidden");
+    const trailer =
+        item.trailer ||
+        item.videoTrailer;
 
+    if (!trailer) {
 
-        const btn =
-            document.getElementById(
-                "btnConfirmarAd"
-            );
+        mostrarNotificacao(
+            "Trailer não encontrado."
+        );
 
+        return;
 
-        const contador =
-            document.getElementById(
-                "adTimerCount"
-            );
+    }
 
+    const params =
+        new URLSearchParams();
 
-        let count =
-            5;
+    params.set(
+        "id",
+        item.id
+    );
 
+    params.set(
+        "colecao",
+        item.colecao
+    );
 
-        btn.disabled =
-            true;
+    params.set(
+        "trailer",
+        "true"
+    );
 
+    params.set(
+        "video",
+        trailer
+    );
 
-        btn.style.opacity =
-            ".5";
+    if (item.titulo) {
 
-
-        btn.innerHTML = `
-            Aguarde
-            <span id="adTimerCount">
-                5
-            </span>s...
-        `;
-
-
-        if (timerAnuncio) {
-
-            clearInterval(
-                timerAnuncio
-            );
-
-        }
-
-
-        timerAnuncio =
-            setInterval(
-                () => {
-
-                    count--;
-
-
-                    if (count > 0) {
-
-                        btn.innerHTML = `
-                            Aguarde
-                            <span id="adTimerCount">
-                                ${count}
-                            </span>s...
-                        `;
-
-                    }
-
-
-                    else {
-
-                        clearInterval(
-                            timerAnuncio
-                        );
-
-
-                        timerAnuncio =
-                            null;
-
-
-                        btn.disabled =
-                            false;
-
-
-                        btn.style.opacity =
-                            "1";
-
-
-                        btn.innerText =
-                            tipo === "assistir"
-                                ? "Assistir Vídeo Agora"
-                                : "Iniciar Download";
-
-                    }
-
-                },
-                1000
-            );
+        params.set(
+            "title",
+            item.titulo
+        );
 
     }
 
 
-    document
-        .getElementById(
-            "btnConfirmarAd"
-        )
-        .addEventListener(
-            "click",
+    window.location.href =
+        `player.html?${params.toString()}`;
+
+}
+
+
+/* =========================================================
+   ANÚNCIO
+========================================================= */
+
+function iniciarFluxoAnuncio(
+    tipo,
+    item
+) {
+
+    filmeAtual =
+        item;
+
+    acaoAnuncioPendente =
+        tipo;
+
+    $("detalheModal")
+        .classList
+        .add("hidden");
+
+    $("adModal")
+        .classList
+        .remove("hidden");
+
+
+    let contador =
+        5;
+
+    const botao =
+        $("btnConfirmarAd");
+
+    botao.disabled =
+        true;
+
+    botao.style.opacity =
+        "0.5";
+
+    botao.innerText =
+        `Aguarde ${contador}s...`;
+
+
+    if (adTimer)
+        clearInterval(adTimer);
+
+
+    adTimer =
+        setInterval(
             () => {
 
-                if (!filmeAtual) {
-                    return;
+                contador--;
+
+                if (contador > 0) {
+
+                    botao.innerText =
+                        `Aguarde ${contador}s...`;
+
                 }
+                else {
 
-
-                const acao =
-                    acaoAnuncioPendente;
-
-
-                fecharModais();
-
-
-                if (
-                    acao === "assistir"
-                ) {
-
-                    irParaPlayer(
-                        filmeAtual
+                    clearInterval(
+                        adTimer
                     );
 
+                    adTimer =
+                        null;
+
+                    botao.disabled =
+                        false;
+
+                    botao.style.opacity =
+                        "1";
+
+                    botao.innerText =
+                        tipo === "assistir"
+                            ? "Assistir agora"
+                            : "Iniciar download";
+
                 }
 
-
-                if (
-                    acao === "baixar"
-                ) {
-
-                    executarDownload(
-                        filmeAtual
-                    );
-
-                }
-
-            }
+            },
+            1000
         );
 
-
-    /* =====================================================
-       DOWNLOAD
-    ===================================================== */
-
-    function executarDownload(item) {
-
-        if (!item) {
-            return;
-        }
+}
 
 
-        const url =
-            item.arquivoDownload ||
-            item.download ||
-            "";
+/* =========================================================
+   CONFIRMAR ANÚNCIO
+========================================================= */
 
+$("btnConfirmarAd")
+    ?.addEventListener(
+        "click",
+        () => {
 
-        if (!url) {
+            if (!filmeAtual)
+                return;
 
-            mostrarNotificacao(
-                "Link de download não disponível."
-            );
+            const item =
+                filmeAtual;
 
-            return;
-
-        }
-
-
-        window.open(
-            url,
-            "_blank",
-            "noopener,noreferrer"
-        );
-
-    }
-
-
-    /* =====================================================
-       INFINITEPAY
-    ===================================================== */
-
-    async function solicitarPix(
-        item,
-        tag,
-        valor
-    ) {
-
-        if (!auth.currentUser) {
-
-            mostrarNotificacao(
-                "Faça login para realizar a compra."
-            );
-
+            const acao =
+                acaoAnuncioPendente;
 
             fecharModais();
 
 
-            document
-                .getElementById(
-                    "loginModal"
-                )
-                .classList
-                .remove("hidden");
-
-
-            return;
-
-        }
-
-
-        const preco =
-            Number(valor);
-
-
-        if (
-            !Number.isFinite(preco) ||
-            preco <= 0
-        ) {
-
-            mostrarNotificacao(
-                "Valor inválido. Contate o suporte."
-            );
-
-            return;
-
-        }
-
-
-        try {
-
-            mostrarNotificacao(
-                "Gerando pagamento..."
-            );
-
-
-            const payload = {
-
-                uid:
-                    auth.currentUser.uid,
-
-                email:
-                    auth.currentUser.email || "",
-
-                itemId:
-                    item.id,
-
-                colecao:
-                    item.colecao,
-
-                titulo:
-                    item.titulo || "",
-
-                tag:
-                    tag,
-
-                valor:
-                    preco
-
-            };
-
-
-            console.log(
-                "💳 Enviando pagamento:",
-                payload
-            );
-
-
-            const response =
-                await fetch(
-                    "/criar-compra-pix",
-                    {
-
-                        method:
-                            "POST",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json"
-
-                        },
-
-                        body:
-                            JSON.stringify(
-                                payload
-                            )
-
-                    }
-                );
-
-
-            const texto =
-                await response.text();
-
-
-            let dados;
-
-
-            try {
-
-                dados =
-                    JSON.parse(
-                        texto
-                    );
-
-            }
-
-            catch {
-
-                dados = {
-
-                    success: false,
-
-                    error:
-                        texto ||
-                        "Resposta inválida do servidor."
-
-                };
-
-            }
-
-
-            console.log(
-                "💳 Resposta:",
-                response.status,
-                dados
-            );
-
-
-            if (!response.ok) {
-
-                mostrarNotificacao(
-                    dados.error ||
-                    `Erro no pagamento (${response.status}).`
-                );
-
-                return;
-
-            }
-
-
-            const checkout =
-                dados.checkout_url ||
-                dados.url ||
-                dados.payment_url;
-
-
             if (
-                dados.success &&
-                checkout
+                acao === "assistir"
             ) {
 
-                fecharModais();
-
-
-                mostrarNotificacao(
-                    "Checkout criado. Redirecionando..."
+                irParaPlayer(
+                    item
                 );
-
-
-                setTimeout(
-                    () => {
-
-                        window.location.href =
-                            checkout;
-
-                    },
-                    500
-                );
-
-
-                return;
 
             }
 
+            else if (
+                acao === "baixar"
+            ) {
 
-            mostrarNotificacao(
-                dados.error ||
-                "A InfinitePay não retornou o link de pagamento."
-            );
+                executarDownload(
+                    item
+                );
 
-        }
-
-        catch (erro) {
-
-            console.error(
-                "❌ Erro no pagamento:",
-                erro
-            );
-
-
-            mostrarNotificacao(
-                "Falha na conexão com o servidor de pagamento."
-            );
+            }
 
         }
+    );
+
+
+/* =========================================================
+   DOWNLOAD
+========================================================= */
+
+function executarDownload(item) {
+
+    const url =
+        item?.arquivoDownload ||
+        "";
+
+    if (!url) {
+
+        mostrarNotificacao(
+            "Link de download não disponível."
+        );
+
+        return;
 
     }
 
 
-    /* =====================================================
-       FECHAR MODAIS
-    ===================================================== */
+    /*
+       Navegação direta evita bloqueio
+       de pop-up pelo navegador/adblock.
+    */
 
-    window.fecharModais =
-        function () {
+    window.location.href =
+        url;
 
-            document
-                .querySelectorAll(
-                    ".modal"
-                )
-                .forEach(
-                    modal =>
-                        modal.classList
-                            .add("hidden")
-                );
+}
 
 
-            if (
-                intervaloChecagemPix
-            ) {
+/* =========================================================
+   INFINITEPAY
+========================================================= */
 
-                clearInterval(
-                    intervaloChecagemPix
-                );
+async function solicitarPix(
+    item,
+    tag,
+    valor
+) {
 
+    if (!auth.currentUser) {
 
-                intervaloChecagemPix =
-                    null;
+        fecharModais();
 
-            }
-
-
-            if (timerAnuncio) {
-
-                clearInterval(
-                    timerAnuncio
-                );
-
-
-                timerAnuncio =
-                    null;
-
-            }
-
-        };
-
-
-    /* =====================================================
-       FECHAR CLICANDO FORA
-    ===================================================== */
-
-    document
-        .querySelectorAll(
-            ".modal"
-        )
-        .forEach(
-            modal => {
-
-                modal.addEventListener(
-                    "click",
-                    event => {
-
-                        if (
-                            event.target ===
-                            modal
-                        ) {
-
-                            window.fecharModais();
-
-                        }
-
-                    }
-                );
-
-            }
-        );
-
-
-    /* =====================================================
-       BOTÕES FECHAR
-    ===================================================== */
-
-    document
-        .getElementById(
-            "btnFecharDetalhes"
-        )
-        .addEventListener(
-            "click",
-            window.fecharModais
-        );
-
-
-    document
-        .getElementById(
-            "btnCancelarLogin"
-        )
-        .addEventListener(
-            "click",
-            window.fecharModais
-        );
-
-
-    document
-        .getElementById(
-            "btnCancelarAd"
-        )
-        .addEventListener(
-            "click",
-            window.fecharModais
-        );
-
-
-    /* =====================================================
-       ESC
-    ===================================================== */
-
-    document.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "Escape"
-            ) {
-
-                window.fecharModais();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       HERO
-    ===================================================== */
-
-    document
-        .getElementById(
-            "heroAssistir"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                if (filmeAtual) {
-
-                    abrirDetalhes(
-                        filmeAtual
-                    );
-
-                }
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "heroInfo"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                if (filmeAtual) {
-
-                    abrirDetalhes(
-                        filmeAtual
-                    );
-
-                }
-
-            }
-        );
-
-
-    /* =====================================================
-       CADASTRO
-    ===================================================== */
-
-    document
-        .getElementById(
-            "alternarCadastro"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                modoCadastro =
-                    !modoCadastro;
-
-
-                document
-                    .getElementById(
-                        "tituloAuth"
-                    )
-                    .innerText =
-                    modoCadastro
-                        ? "Criar nova conta"
-                        : "Entrar no V8 Play+";
-
-
-                document
-                    .getElementById(
-                        "doLogin"
-                    )
-                    .innerText =
-                    modoCadastro
-                        ? "Criar conta"
-                        : "Entrar";
-
-
-                document
-                    .getElementById(
-                        "alternarCadastro"
-                    )
-                    .innerText =
-                    modoCadastro
-                        ? "Já possui conta? Fazer login"
-                        : "Ainda não tem conta? Criar conta";
-
-
-                document
-                    .getElementById(
-                        "erroAuth"
-                    )
-                    .innerText =
-                    "";
-
-            }
-        );
-
-
-    /* =====================================================
-       ESQUECI SENHA
-    ===================================================== */
-
-    document
-        .getElementById(
-            "btnEsqueciSenha"
-        )
-        .addEventListener(
-            "click",
-            async () => {
-
-                const email =
-                    document
-                        .getElementById(
-                            "email"
-                        )
-                        .value
-                        .trim();
-
-
-                const erro =
-                    document
-                        .getElementById(
-                            "erroAuth"
-                        );
-
-
-                if (!email) {
-
-                    erro.innerText =
-                        "Informe seu e-mail.";
-
-                    return;
-
-                }
-
-
-                try {
-
-                    await sendPasswordResetEmail(
-                        auth,
-                        email
-                    );
-
-
-                    erro.innerText =
-                        "";
-
-
-                    mostrarNotificacao(
-                        "E-mail de redefinição enviado!"
-                    );
-
-                }
-
-                catch (e) {
-
-                    console.error(
-                        e
-                    );
-
-
-                    erro.innerText =
-                        "Não foi possível enviar o e-mail.";
-
-                }
-
-            }
-        );
-
-
-    /* =====================================================
-       LOGIN
-    ===================================================== */
-
-    document
-        .getElementById(
-            "doLogin"
-        )
-        .addEventListener(
-            "click",
-            async () => {
-
-                const email =
-                    document
-                        .getElementById(
-                            "email"
-                        )
-                        .value
-                        .trim();
-
-
-                const senha =
-                    document
-                        .getElementById(
-                            "password"
-                        )
-                        .value;
-
-
-                const erro =
-                    document
-                        .getElementById(
-                            "erroAuth"
-                        );
-
-
-                erro.innerText =
-                    "";
-
-
-                if (
-                    !email ||
-                    !senha
-                ) {
-
-                    erro.innerText =
-                        "Preencha todos os campos.";
-
-                    return;
-
-                }
-
-
-                try {
-
-                    if (modoCadastro) {
-
-                        const cred =
-                            await createUserWithEmailAndPassword(
-                                auth,
-                                email,
-                                senha
-                            );
-
-
-                        await setDoc(
-
-                            doc(
-                                db,
-                                "usuarios",
-                                cred.user.uid
-                            ),
-
-                            {
-
-                                email:
-                                    email,
-
-                                admin:
-                                    false,
-
-                                criadoEm:
-                                    serverTimestamp()
-
-                            }
-
-                        );
-
-                    }
-
-                    else {
-
-                        await signInWithEmailAndPassword(
-                            auth,
-                            email,
-                            senha
-                        );
-
-                    }
-
-
-                    document
-                        .getElementById(
-                            "email"
-                        )
-                        .value =
-                        "";
-
-
-                    document
-                        .getElementById(
-                            "password"
-                        )
-                        .value =
-                        "";
-
-
-                    window.fecharModais();
-
-
-                    await carregarComprasUsuario();
-
-
-                    mostrarNotificacao(
-                        modoCadastro
-                            ? "Conta criada com sucesso!"
-                            : "Login realizado com sucesso!"
-                    );
-
-
-                    modoCadastro =
-                        false;
-
-
-                    document
-                        .getElementById(
-                            "tituloAuth"
-                        )
-                        .innerText =
-                        "Entrar no V8 Play+";
-
-
-                    document
-                        .getElementById(
-                            "doLogin"
-                        )
-                        .innerText =
-                        "Entrar";
-
-
-                    document
-                        .getElementById(
-                            "alternarCadastro"
-                        )
-                        .innerText =
-                        "Ainda não tem conta? Criar conta";
-
-                }
-
-                catch (e) {
-
-                    console.error(
-                        "Erro de autenticação:",
-                        e
-                    );
-
-
-                    switch (
-                        e.code
-                    ) {
-
-                        case "auth/invalid-email":
-
-                            erro.innerText =
-                                "E-mail inválido.";
-
-                            break;
-
-
-                        case "auth/email-already-in-use":
-
-                            erro.innerText =
-                                "Este e-mail já está cadastrado.";
-
-                            break;
-
-
-                        case "auth/weak-password":
-
-                            erro.innerText =
-                                "A senha deve ter pelo menos 6 caracteres.";
-
-                            break;
-
-
-                        case "auth/invalid-credential":
-
-                        case "auth/wrong-password":
-
-                        case "auth/user-not-found":
-
-                            erro.innerText =
-                                "E-mail ou senha incorretos.";
-
-                            break;
-
-
-                        default:
-
-                            erro.innerText =
-                                "Falha na autenticação. Tente novamente.";
-
-                    }
-
-                }
-
-            }
-        );
-
-
-    /* =====================================================
-       BOTÃO LOGIN
-    ===================================================== */
-
-    document
-        .getElementById(
-            "authBtn"
-        )
-        .addEventListener(
-            "click",
-            async () => {
-
-                if (
-                    auth.currentUser
-                ) {
-
-                    try {
-
-                        await signOut(
-                            auth
-                        );
-
-
-                        titulosComprados =
-                            new Set();
-
-
-                        mostrarNotificacao(
-                            "Sessão encerrada."
-                        );
-
-                    }
-
-                    catch (erro) {
-
-                        console.error(
-                            erro
-                        );
-
-                    }
-
-                }
-
-                else {
-
-                    document
-                        .getElementById(
-                            "loginModal"
-                        )
-                        .classList
-                        .remove("hidden");
-
-                }
-
-            }
-        );
-
-
-    /* =====================================================
-       AUTH STATE
-    ===================================================== */
-
-    onAuthStateChanged(
-        auth,
-        async user => {
-
-            const btn =
-                document.getElementById(
-                    "authBtn"
-                );
-
-
-            if (user) {
-
-                const nome =
-                    user.email
-                        ? user.email.split("@")[0]
-                        : "Usuário";
-
-
-                btn.innerText =
-                    `Sair (${nome})`;
-
-
-                await carregarComprasUsuario();
-
-            }
-
-            else {
-
-                btn.innerText =
-                    "Entrar";
-
-
-                titulosComprados =
-                    new Set();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       NOTIFICAÇÃO
-    ===================================================== */
-
-    let notificationTimer = null;
-
-
-    function mostrarNotificacao(
-        mensagem
-    ) {
-
-        const box =
-            document.getElementById(
-                "notification"
-            );
-
-
-        const texto =
-            document.getElementById(
-                "notificationText"
-            );
-
-
-        if (!box || !texto) {
-            return;
-        }
-
-
-        texto.innerText =
-            mensagem;
-
-
-        box.classList
+        $("loginModal")
+            .classList
             .remove("hidden");
 
+        $("erroAuth").innerText =
+            `Faça login para comprar o acesso ${tag.toUpperCase()}.`;
 
-        if (notificationTimer) {
-
-            clearTimeout(
-                notificationTimer
-            );
-
-        }
-
-
-        notificationTimer =
-            setTimeout(
-                () => {
-
-                    box.classList
-                        .add("hidden");
-
-                },
-                3500
-            );
+        return;
 
     }
 
 
-    /* =====================================================
-       INICIALIZAÇÃO
-    ===================================================== */
+    if (
+        !Number.isFinite(
+            Number(valor)
+        ) ||
+        Number(valor) <= 0
+    ) {
 
-    console.log(
-        "🚀 V8 Play+ iniciado"
-    );
+        mostrarNotificacao(
+            "Valor inválido."
+        );
+
+        return;
+
+    }
 
 
     try {
 
-        await carregarCatalogo();
+        mostrarNotificacao(
+            "Gerando pagamento..."
+        );
 
-        console.log(
-            "✅ V8 Play+ carregado"
+
+        const payload = {
+
+            uid:
+                auth.currentUser.uid,
+
+            email:
+                auth.currentUser.email || "",
+
+            itemId:
+                item.id,
+
+            colecao:
+                item.colecao,
+
+            tag:
+                tag,
+
+            valor:
+                Number(valor)
+
+        };
+
+
+        const resposta =
+            await fetch(
+                "/criar-compra-pix",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            payload
+                        )
+
+                }
+            );
+
+
+        const texto =
+            await resposta.text();
+
+        let dados;
+
+        try {
+
+            dados =
+                JSON.parse(texto);
+
+        }
+
+        catch {
+
+            dados = {
+                success: false,
+                error:
+                    texto ||
+                    "Resposta inválida."
+            };
+
+        }
+
+
+        if (!resposta.ok) {
+
+            mostrarNotificacao(
+                dados.error ||
+                `Erro HTTP ${resposta.status}`
+            );
+
+            return;
+
+        }
+
+
+        if (
+            dados.success &&
+            dados.checkout_url
+        ) {
+
+            window.location.href =
+                dados.checkout_url;
+
+            return;
+
+        }
+
+
+        mostrarNotificacao(
+            dados.error ||
+            "Não foi possível criar o checkout."
         );
 
     }
@@ -4156,16 +3342,507 @@
     catch (erro) {
 
         console.error(
-            "❌ Erro ao iniciar V8 Play+:",
+            "Erro InfinitePay:",
             erro
         );
 
-
         mostrarNotificacao(
-            "Não foi possível carregar o catálogo."
+            "Falha na conexão com o pagamento."
         );
 
     }
+
+}
+
+
+/* =========================================================
+   FECHAR MODAIS
+========================================================= */
+
+window.fecharModais =
+    function () {
+
+        document
+            .querySelectorAll(
+                ".modal"
+            )
+            .forEach(
+                modal =>
+                    modal.classList
+                        .add("hidden")
+            );
+
+        if (adTimer) {
+
+            clearInterval(
+                adTimer
+            );
+
+            adTimer =
+                null;
+
+        }
+
+    };
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+$("heroAssistir")
+    ?.addEventListener(
+        "click",
+        () => {
+
+            if (filmeAtual)
+                abrirDetalhes(
+                    filmeAtual
+                );
+
+        }
+    );
+
+
+$("heroInfo")
+    ?.addEventListener(
+        "click",
+        () => {
+
+            if (filmeAtual)
+                abrirDetalhes(
+                    filmeAtual
+                );
+
+        }
+    );
+
+
+/* =========================================================
+   LOGIN / CADASTRO
+========================================================= */
+
+$("alternarCadastro")
+    ?.addEventListener(
+        "click",
+        () => {
+
+            modoCadastro =
+                !modoCadastro;
+
+            $("tituloAuth")
+                .innerText =
+                modoCadastro
+                    ? "Criar nova conta"
+                    : "Entrar no V8 Play+";
+
+            $("doLogin")
+                .innerText =
+                modoCadastro
+                    ? "Criar conta"
+                    : "Entrar";
+
+            $("alternarCadastro")
+                .innerText =
+                modoCadastro
+                    ? "Já possui conta? Fazer login"
+                    : "Ainda não tem conta? Criar conta";
+
+            $("erroAuth")
+                .innerText =
+                "";
+
+        }
+    );
+
+
+/* =========================================================
+   ESQUECI SENHA
+========================================================= */
+
+$("btnEsqueciSenha")
+    ?.addEventListener(
+        "click",
+        async () => {
+
+            const email =
+                $("email")
+                    .value
+                    .trim();
+
+            if (!email) {
+
+                $("erroAuth")
+                    .innerText =
+                    "Informe seu e-mail.";
+
+                return;
+
+            }
+
+
+            try {
+
+                await sendPasswordResetEmail(
+                    auth,
+                    email
+                );
+
+                mostrarNotificacao(
+                    "E-mail de redefinição enviado."
+                );
+
+                $("erroAuth")
+                    .innerText =
+                    "";
+
+            }
+
+            catch (erro) {
+
+                console.error(
+                    erro
+                );
+
+                $("erroAuth")
+                    .innerText =
+                    "Não foi possível enviar o e-mail.";
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+$("doLogin")
+    ?.addEventListener(
+        "click",
+        async () => {
+
+            const email =
+                $("email")
+                    .value
+                    .trim();
+
+            const senha =
+                $("password")
+                    .value;
+
+            const erro =
+                $("erroAuth");
+
+            erro.innerText =
+                "";
+
+
+            if (!email || !senha) {
+
+                erro.innerText =
+                    "Preencha todos os campos.";
+
+                return;
+
+            }
+
+
+            try {
+
+                if (modoCadastro) {
+
+                    const cred =
+                        await createUserWithEmailAndPassword(
+                            auth,
+                            email,
+                            senha
+                        );
+
+
+                    await setDoc(
+
+                        doc(
+                            db,
+                            "usuarios",
+                            cred.user.uid
+                        ),
+
+                        {
+
+                            email:
+                                email,
+
+                            admin:
+                                false,
+
+                            criadoEm:
+                                serverTimestamp()
+
+                        }
+
+                    );
+
+                }
+
+                else {
+
+                    await signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        senha
+                    );
+
+                }
+
+
+                fecharModais();
+
+                mostrarNotificacao(
+                    modoCadastro
+                        ? "Conta criada com sucesso!"
+                        : "Login realizado!"
+                );
+
+            }
+
+            catch (erroFirebase) {
+
+                console.error(
+                    erroFirebase
+                );
+
+                switch (
+                    erroFirebase.code
+                ) {
+
+                    case "auth/invalid-credential":
+                    case "auth/wrong-password":
+                    case "auth/user-not-found":
+
+                        erro.innerText =
+                            "E-mail ou senha incorretos.";
+
+                        break;
+
+                    case "auth/email-already-in-use":
+
+                        erro.innerText =
+                            "Este e-mail já está cadastrado.";
+
+                        break;
+
+                    case "auth/weak-password":
+
+                        erro.innerText =
+                            "A senha deve possuir pelo menos 6 caracteres.";
+
+                        break;
+
+                    case "auth/invalid-email":
+
+                        erro.innerText =
+                            "E-mail inválido.";
+
+                        break;
+
+                    default:
+
+                        erro.innerText =
+                            "Falha na autenticação.";
+
+                    }
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   BOTÃO ENTRAR / SAIR
+========================================================= */
+
+$("authBtn")
+    ?.addEventListener(
+        "click",
+        async () => {
+
+            if (auth.currentUser) {
+
+                await signOut(
+                    auth
+                );
+
+                mostrarNotificacao(
+                    "Sessão encerrada."
+                );
+
+                return;
+
+            }
+
+
+            $("loginModal")
+                .classList
+                .remove("hidden");
+
+        }
+    );
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+onAuthStateChanged(
+    auth,
+    user => {
+
+        const botao =
+            $("authBtn");
+
+        if (!botao)
+            return;
+
+
+        if (user) {
+
+            const nome =
+                user.email
+                    ? user.email
+                        .split("@")[0]
+                    : "Usuário";
+
+            botao.innerText =
+                `Sair (${nome})`;
+
+        }
+
+        else {
+
+            botao.innerText =
+                "Entrar";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   NOTIFICAÇÃO
+========================================================= */
+
+function mostrarNotificacao(
+    mensagem
+) {
+
+    const box =
+        $("notification");
+
+    const texto =
+        $("notificationText");
+
+    if (!box || !texto)
+        return;
+
+    texto.innerText =
+        mensagem;
+
+    box.classList
+        .remove("hidden");
+
+
+    setTimeout(
+        () => {
+
+            box.classList
+                .add("hidden");
+
+        },
+        3500
+    );
+
+}
+
+
+/* =========================================================
+   FECHAR MODAL CLICANDO FORA
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".modal"
+    )
+    .forEach(
+        modal => {
+
+            modal.addEventListener(
+                "click",
+                evento => {
+
+                    if (
+                        evento.target ===
+                        modal
+                    ) {
+
+                        fecharModais();
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   ESC
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    evento => {
+
+        if (
+            evento.key === "Escape"
+        ) {
+
+            fecharModais();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
+
+console.log(
+    "🚀 V8 Play+ iniciado"
+);
+
+console.log(
+    "🛡️ Navegação direta do player ativada"
+);
+
+
+carregarCatalogo()
+    .catch(
+        erro => {
+
+            console.error(
+                "Erro ao iniciar V8 Play+:",
+                erro
+            );
+
+        }
+    );
 
 </script>
 
