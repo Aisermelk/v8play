@@ -34,8 +34,7 @@
             --prime: #ffaa00;
             --premium: #00d4ff;
 
-            --danger: #ff5c5c;
-            --success: #39e58c;
+            --border: #29292f;
         }
 
         * {
@@ -51,7 +50,7 @@
         body {
             background: var(--bg-dark);
             color: var(--text);
-            font-family: 'Poppins', sans-serif;
+            font-family: "Poppins", sans-serif;
             overflow-x: hidden;
         }
 
@@ -68,16 +67,17 @@
             display: none !important;
         }
 
-        /* ==========================================
+        /* ==============================
            HEADER
-        ========================================== */
+        ============================== */
 
         header {
             display: flex;
+            align-items: center;
             justify-content: space-between;
             gap: 15px;
 
-            padding: 15px 5%;
+            padding: 14px 5%;
 
             position: fixed;
             top: 0;
@@ -90,26 +90,24 @@
             background:
                 linear-gradient(
                     to bottom,
-                    rgba(10,10,11,.96),
-                    rgba(10,10,11,.60),
-                    rgba(10,10,11,0)
+                    rgba(10, 10, 11, .97),
+                    rgba(10, 10, 11, .55),
+                    transparent
                 );
 
             backdrop-filter: blur(8px);
-
-            align-items: center;
         }
 
         .logo {
             display: flex;
             align-items: center;
-
-            text-decoration: none;
-
-            font-size: 1.5rem;
-            font-weight: 800;
+            gap: 8px;
 
             color: white;
+            text-decoration: none;
+
+            font-size: 1.4rem;
+            font-weight: 800;
 
             white-space: nowrap;
         }
@@ -121,16 +119,12 @@
         .logo-img {
             height: 42px;
             width: auto;
-
             object-fit: contain;
-
-            margin-right: 5px;
         }
 
         .search-box {
             flex: 1;
             max-width: 380px;
-
             position: relative;
         }
 
@@ -139,32 +133,30 @@
 
             padding: 10px 16px 10px 40px;
 
-            border-radius: 20px;
+            border-radius: 22px;
 
             border: 1px solid #2a2a30;
 
-            background: rgba(255,255,255,.06);
+            background: rgba(255, 255, 255, .06);
 
             color: white;
 
             outline: none;
 
             transition: .3s;
-
-            font-size: .9rem;
         }
 
         #busca::placeholder {
-            color: #888;
+            color: #777;
         }
 
         #busca:focus {
             border-color: var(--primary);
 
-            background: rgba(0,0,0,.5);
+            background: rgba(0, 0, 0, .4);
 
             box-shadow:
-                0 0 12px rgba(0,212,255,.18);
+                0 0 12px rgba(0, 212, 255, .18);
         }
 
         .search-icon {
@@ -175,56 +167,47 @@
 
             transform: translateY(-50%);
 
-            color: var(--text-secondary);
+            color: #888;
 
             font-size: .85rem;
-
-            pointer-events: none;
         }
 
         .btn-login {
             background: var(--primary);
-
             color: #000;
 
             border: none;
 
-            padding: 8px 22px;
+            padding: 9px 20px;
 
             border-radius: 20px;
 
             font-weight: 600;
 
-            cursor: pointer;
-
-            white-space: nowrap;
-
             transition: .2s;
 
-            font-size: .9rem;
+            white-space: nowrap;
         }
 
         .btn-login:hover {
             background: var(--primary-hover);
-
             transform: translateY(-1px);
         }
 
-        /* ==========================================
+        /* ==============================
            ADS
-        ========================================== */
+        ============================== */
 
         .ad-banner-container {
             width: 100%;
 
             display: flex;
-
             justify-content: center;
             align-items: center;
 
             padding: 10px 5%;
 
-            margin-top: 75px;
+            margin-top: 72px;
         }
 
         .ad-box {
@@ -233,14 +216,13 @@
 
             height: 90px;
 
-            background: #1a1a20;
+            background: #17171c;
 
             border: 1px dashed #333;
 
             border-radius: 8px;
 
             display: flex;
-
             flex-direction: column;
 
             align-items: center;
@@ -258,12 +240,14 @@
             color: #444;
         }
 
-        /* ==========================================
+        /* ==============================
            HERO
-        ========================================== */
+        ============================== */
 
         #hero {
             height: 70vh;
+
+            min-height: 500px;
 
             position: relative;
 
@@ -271,7 +255,7 @@
 
             align-items: flex-end;
 
-            padding: 0 5% 50px;
+            padding: 0 5% 55px;
 
             background-size: cover;
 
@@ -280,11 +264,11 @@
             background-color: #111;
 
             transition:
-                background-image .5s ease-in-out;
+                background-image .5s ease;
         }
 
         #hero::before {
-            content: '';
+            content: "";
 
             position: absolute;
 
@@ -293,14 +277,14 @@
             background:
                 linear-gradient(
                     to top,
-                    var(--bg-dark) 5%,
+                    var(--bg-dark) 4%,
                     transparent 65%
                 ),
                 linear-gradient(
                     to right,
-                    rgba(10,10,11,.92),
-                    rgba(10,10,11,.25),
-                    transparent 75%
+                    rgba(10, 10, 11, .92),
+                    rgba(10, 10, 11, .15),
+                    transparent
                 );
         }
 
@@ -317,19 +301,19 @@
 
             font-weight: 800;
 
-            margin-bottom: 12px;
-
             line-height: 1.1;
+
+            margin-bottom: 12px;
         }
 
         .hero-content p {
             color: #ddd;
 
-            margin-bottom: 22px;
-
             line-height: 1.6;
 
             font-size: .95rem;
+
+            margin-bottom: 22px;
 
             display: -webkit-box;
 
@@ -342,14 +326,12 @@
 
         .hero-btns {
             display: flex;
-
-            gap: 10px;
-
             flex-wrap: wrap;
+            gap: 10px;
         }
 
         .hero-btns button {
-            padding: 12px 28px;
+            padding: 12px 24px;
 
             border-radius: 6px;
 
@@ -357,53 +339,41 @@
 
             font-weight: 600;
 
-            cursor: pointer;
+            font-size: .9rem;
 
             transition: .2s;
-
-            font-size: .95rem;
         }
 
         .btn-assistir {
             background: white;
-            color: #000;
+            color: black;
         }
 
         .btn-assistir:hover {
-            background: #e0e0e0;
+            background: #ddd;
             transform: translateY(-2px);
         }
 
         .btn-info {
-            background: rgba(255,255,255,.15);
+            background: rgba(255, 255, 255, .15);
 
             color: white;
 
+            border: 1px solid rgba(255, 255, 255, .15) !important;
+
             backdrop-filter: blur(5px);
-
-            border: 1px solid rgba(255,255,255,.12);
-
-            padding: 10px 20px;
-
-            border-radius: 6px;
-
-            cursor: pointer;
-
-            transition: .2s;
         }
 
         .btn-info:hover {
-            background: rgba(255,255,255,.28);
-
-            transform: translateY(-2px);
+            background: rgba(255, 255, 255, .25);
         }
 
-        /* ==========================================
-           CONTEÚDO
-        ========================================== */
+        /* ==============================
+           CONTAINER
+        ============================== */
 
         .container {
-            padding: 30px 5%;
+            padding: 25px 5% 60px;
         }
 
         .section-title {
@@ -420,9 +390,9 @@
             font-weight: 600;
         }
 
-        /* ==========================================
+        /* ==============================
            FILTROS
-        ========================================== */
+        ============================== */
 
         .filtros {
             display: flex;
@@ -432,8 +402,6 @@
             overflow-x: auto;
 
             padding-bottom: 10px;
-
-            margin-bottom: 15px;
 
             scrollbar-width: none;
         }
@@ -449,11 +417,9 @@
 
             border: 1px solid #2a2a30;
 
-            background: rgba(255,255,255,.03);
+            background: rgba(255, 255, 255, .03);
 
             color: var(--text-secondary);
-
-            cursor: pointer;
 
             font-size: .85rem;
 
@@ -464,7 +430,6 @@
 
         .chip:hover {
             border-color: var(--primary);
-
             color: white;
         }
 
@@ -478,9 +443,9 @@
             font-weight: 600;
         }
 
-        /* ==========================================
+        /* ==============================
            CARDS
-        ========================================== */
+        ============================== */
 
         .cards {
             display: flex;
@@ -507,7 +472,6 @@
 
         .movie-card {
             min-width: 165px;
-
             width: 165px;
 
             height: 245px;
@@ -516,29 +480,29 @@
 
             border-radius: 10px;
 
+            overflow: hidden;
+
+            position: relative;
+
+            flex-shrink: 0;
+
             cursor: pointer;
+
+            border: 1px solid rgba(255, 255, 255, .05);
 
             transition:
                 transform .25s,
                 box-shadow .25s,
                 border-color .25s;
-
-            flex-shrink: 0;
-
-            overflow: hidden;
-
-            position: relative;
-
-            border: 1px solid rgba(255,255,255,.05);
         }
 
         .movie-card:hover {
             transform: translateY(-6px);
 
-            box-shadow:
-                0 8px 20px rgba(0,212,255,.25);
-
             border-color: var(--primary);
+
+            box-shadow:
+                0 8px 25px rgba(0, 212, 255, .2);
         }
 
         .movie-card img {
@@ -551,28 +515,30 @@
         }
 
         .titulo-fallback {
-            padding: 15px;
-
-            font-size: .9rem;
-
-            text-align: center;
-
+            width: 100%;
             height: 100%;
 
             display: flex;
 
             align-items: center;
-
             justify-content: center;
 
+            padding: 15px;
+
+            text-align: center;
+
             background: #1a1a20;
+
+            font-size: .9rem;
         }
 
         .selo-card {
             position: absolute;
 
-            top: 10px;
-            right: 10px;
+            top: 9px;
+            right: 9px;
+
+            z-index: 3;
 
             padding: 4px 8px;
 
@@ -580,25 +546,21 @@
 
             font-size: .62rem;
 
-            font-weight: 700;
-
-            z-index: 2;
-
-            box-shadow:
-                0 2px 5px rgba(0,0,0,.5);
+            font-weight: 800;
 
             text-transform: uppercase;
 
-            backdrop-filter: blur(5px);
+            box-shadow:
+                0 2px 7px rgba(0, 0, 0, .6);
         }
 
-        .selo-card.gratis,
-        .selo-card.free {
-            background: rgba(0,0,0,.75);
+        .selo-card.free,
+        .selo-card.gratis {
+            background: rgba(0, 0, 0, .75);
 
-            color: #00d4ff;
+            color: var(--primary);
 
-            border: 1px solid #00d4ff;
+            border: 1px solid var(--primary);
         }
 
         .selo-card.prime {
@@ -624,64 +586,56 @@
         }
 
         .vazio {
-            color: var(--text-secondary);
-
-            font-size: .9rem;
-
+            color: #777;
             padding: 20px 0;
+            font-size: .9rem;
         }
 
-        /* ==========================================
+        /* ==============================
            MODAIS
-        ========================================== */
+        ============================== */
 
         .modal {
             position: fixed;
 
             inset: 0;
 
-            width: 100%;
-            height: 100%;
-
-            z-index: 2000;
+            z-index: 3000;
 
             display: flex;
 
-            justify-content: center;
             align-items: center;
-
-            background: rgba(0,0,0,.85);
-
-            backdrop-filter: blur(6px);
+            justify-content: center;
 
             padding: 20px;
+
+            background: rgba(0, 0, 0, .86);
+
+            backdrop-filter: blur(7px);
 
             overflow-y: auto;
         }
 
         .login-box {
+            width: 100%;
+            max-width: 400px;
+
             background: var(--bg-modal);
 
-            padding: 35px;
+            border: 1px solid #25252b;
 
             border-radius: 12px;
 
-            width: 100%;
-
-            max-width: 400px;
+            padding: 32px;
 
             text-align: center;
 
-            border: 1px solid #222;
-
             box-shadow:
-                0 20px 60px rgba(0,0,0,.5);
+                0 20px 70px rgba(0, 0, 0, .5);
         }
 
         .login-box h2 {
-            margin-bottom: 15px;
-
-            font-weight: 700;
+            margin-bottom: 12px;
         }
 
         .login-box input {
@@ -691,13 +645,13 @@
 
             margin-bottom: 12px;
 
-            background: #1c1c20;
+            border-radius: 6px;
 
             border: 1px solid #333;
 
-            color: white;
+            background: #1c1c20;
 
-            border-radius: 6px;
+            color: white;
 
             outline: none;
         }
@@ -709,70 +663,63 @@
         .btn-secundario {
             background: none;
 
-            color: var(--text-secondary);
-
             border: none;
 
-            margin-top: 10px;
-
-            cursor: pointer;
-
-            font-size: .85rem;
-
-            display: block;
+            color: #888;
 
             width: 100%;
 
-            text-align: center;
+            margin-top: 12px;
+
+            font-size: .84rem;
         }
 
         .btn-secundario:hover {
             color: white;
-
             text-decoration: underline;
         }
 
         .erro-msg {
             color: #ff6b6b;
 
-            font-size: .85rem;
-
             min-height: 20px;
 
             margin-bottom: 8px;
+
+            font-size: .84rem;
         }
 
-        /* ==========================================
+        /* ==============================
            DETALHES
-        ========================================== */
+        ============================== */
 
         .detalhe-box {
+            width: 100%;
+
+            max-width: 680px;
+
             background: var(--bg-modal);
 
             border-radius: 12px;
 
-            max-width: 700px;
-
-            width: 100%;
-
             overflow: hidden;
 
-            border: 1px solid #222;
-
-            position: relative;
+            border: 1px solid #29292f;
 
             box-shadow:
-                0 20px 60px rgba(0,0,0,.6);
+                0 20px 80px rgba(0, 0, 0, .6);
         }
 
-        .detalhe-box img {
+        .detalhe-box > img {
             width: 100%;
 
-            max-height: 330px;
+            height: 300px;
 
             object-fit: cover;
 
             display: block;
+
+            background: #111;
         }
 
         .detalhe-info {
@@ -780,47 +727,43 @@
         }
 
         .detalhe-info h2 {
-            margin-bottom: 6px;
-
             font-size: 1.6rem;
+
+            margin-bottom: 7px;
         }
 
         .detalhe-meta {
-            color: var(--text-secondary);
-
-            font-size: .85rem;
-
-            margin-bottom: 14px;
-
             display: flex;
 
             gap: 10px;
 
-            flex-wrap: wrap;
+            color: #999;
+
+            font-size: .84rem;
+
+            margin-bottom: 15px;
         }
 
         .detalhe-info p {
             color: #ccc;
 
-            line-height: 1.6;
+            line-height: 1.65;
+
+            font-size: .9rem;
 
             margin-bottom: 20px;
-
-            font-size: .92rem;
         }
 
         .detalhe-btns {
             display: flex;
 
-            gap: 10px;
-
-            margin-bottom: 10px;
-
             flex-wrap: wrap;
+
+            gap: 10px;
         }
 
         .detalhe-btns button {
-            padding: 10px 20px;
+            padding: 10px 18px;
 
             border-radius: 6px;
 
@@ -828,15 +771,7 @@
 
             font-weight: 600;
 
-            cursor: pointer;
-
-            transition: .2s;
-
-            font-size: .9rem;
-        }
-
-        .detalhe-btns button:hover {
-            transform: translateY(-1px);
+            font-size: .85rem;
         }
 
         .btn-ad-action {
@@ -845,17 +780,6 @@
                     135deg,
                     #ff9900,
                     #ff5500
-                );
-
-            color: white;
-        }
-
-        .btn-download-free {
-            background:
-                linear-gradient(
-                    135deg,
-                    #00d4ff,
-                    #0072ff
                 );
 
             color: white;
@@ -883,95 +807,52 @@
             color: white;
         }
 
-        .tag-info {
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 6px;
-
-            padding: 5px 10px;
-
-            border-radius: 20px;
-
-            font-size: .72rem;
-
-            font-weight: 700;
-
-            margin-bottom: 15px;
-        }
-
-        .tag-info.gratis {
-            border: 1px solid #00d4ff;
-            color: #00d4ff;
-        }
-
-        .tag-info.prime {
-            background: #ffaa00;
-            color: #000;
-        }
-
-        .tag-info.premium {
-            background: #00d4ff;
-            color: #000;
-        }
-
-        .preco-detalhe {
-            font-size: 1.15rem;
-
-            font-weight: 700;
-
-            margin-bottom: 12px;
-        }
-
-        /* ==========================================
+        /* ==============================
            NOTIFICAÇÃO
-        ========================================== */
+        ============================== */
 
         #notification {
             position: fixed;
 
-            bottom: 25px;
-
             left: 50%;
+            bottom: 25px;
 
             transform: translateX(-50%);
 
-            background: #1f1f24;
+            z-index: 5000;
 
-            color: white;
+            max-width: 90%;
 
-            padding: 12px 28px;
+            padding: 12px 25px;
 
             border-radius: 30px;
 
-            z-index: 4000;
+            background: #202024;
+
+            color: white;
 
             border: 1px solid var(--primary);
 
             box-shadow:
-                0 4px 15px rgba(0,0,0,.5);
+                0 5px 25px rgba(0, 0, 0, .5);
 
-            font-size: .9rem;
+            font-size: .86rem;
 
             text-align: center;
-
-            max-width: 90%;
         }
 
-        /* ==========================================
-           RESPONSIVO
-        ========================================== */
+        /* ==============================
+           MOBILE
+        ============================== */
 
         @media (max-width: 700px) {
 
             header {
-                padding: 12px 4%;
-                gap: 8px;
+                padding: 11px 4%;
             }
 
             .logo {
-                font-size: 1.05rem;
+                font-size: 1rem;
             }
 
             .logo-img {
@@ -983,13 +864,17 @@
             }
 
             .btn-login {
-                padding: 8px 14px;
+                padding: 8px 13px;
                 font-size: .78rem;
             }
 
             #hero {
                 height: 65vh;
-                padding: 0 5% 35px;
+                min-height: 470px;
+
+                padding:
+                    0 5%
+                    35px;
             }
 
             .hero-content h1 {
@@ -997,7 +882,7 @@
             }
 
             .hero-content p {
-                font-size: .85rem;
+                font-size: .84rem;
             }
 
             .movie-card {
@@ -1007,16 +892,17 @@
             }
 
             .login-box {
-                padding: 25px;
+                padding: 25px 20px;
+            }
+
+            .detalhe-box > img {
+                height: 220px;
             }
 
             .detalhe-info {
                 padding: 20px;
             }
 
-            .detalhe-box img {
-                max-height: 230px;
-            }
         }
 
     </style>
@@ -1024,3051 +910,2628 @@
 
 <body>
 
-<header>
+    <!-- ==========================
+         HEADER
+    =========================== -->
 
-    <a href="#" class="logo">
+    <header>
 
-        <img
-            src="assets/v8p.png"
-            alt="V8 Play+"
-            class="logo-img"
-            onerror="this.style.display='none'"
-        >
+        <a href="#" class="logo">
 
-        <span>V8 Play+</span>
-
-    </a>
-
-    <div class="search-box">
-
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-
-        <input
-            type="text"
-            id="busca"
-            placeholder="Buscar filmes, séries e doramas..."
-            autocomplete="off"
-        >
-
-    </div>
-
-    <button
-        class="btn-login"
-        id="authBtn"
-    >
-        Entrar
-    </button>
-
-</header>
-
-
-<!-- ==========================================
-     PUBLICIDADE TOPO
-========================================== -->
-
-<div class="ad-banner-container">
-
-    <div class="ad-box">
-
-        <span>
-            ESPAÇO PUBLICITÁRIO
-        </span>
-
-        <small>
-            ADSENSE / BANNER
-        </small>
-
-    </div>
-
-</div>
-
-
-<!-- ==========================================
-     HERO
-========================================== -->
-
-<section id="hero">
-
-    <div class="hero-content">
-
-        <h1 id="heroTitle">
-            Carregando...
-        </h1>
-
-        <p id="heroDesc">
-            Sua nova experiência em entretenimento.
-        </p>
-
-        <div class="hero-btns">
-
-            <button
-                class="btn-assistir"
-                id="heroAssistir"
+            <img
+                src="assets/v8p.png"
+                alt="V8 Play+"
+                class="logo-img"
+                onerror="this.style.display='none'"
             >
-                <i class="fa-solid fa-play"></i>
-                Ver opções
-            </button>
 
-            <button
-                class="btn-info"
-                id="heroInfo"
+            <span>V8 Play+</span>
+
+        </a>
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+
+            <input
+                type="text"
+                id="busca"
+                placeholder="Buscar filmes, séries e doramas..."
+                autocomplete="off"
             >
-                <i class="fa-solid fa-circle-info"></i>
-                Mais detalhes
-            </button>
 
         </div>
-
-    </div>
-
-</section>
-
-
-<!-- ==========================================
-     CATÁLOGO
-========================================== -->
-
-<div class="container">
-
-    <!-- FILTROS -->
-
-    <div
-        class="filtros"
-        id="filtros"
-    >
-
-        <button
-            class="chip ativo"
-            data-genero="Todos"
-        >
-            Todos
-        </button>
-
-    </div>
-
-
-    <!-- EM ALTA -->
-
-    <h2 class="section-title">
-        🔥 Em Alta
-    </h2>
-
-    <div
-        class="cards"
-        id="emAlta"
-    ></div>
-
-
-    <!-- FILMES -->
-
-    <h2 class="section-title">
-        🎬 Filmes
-    </h2>
-
-    <div
-        class="cards"
-        id="filmes"
-    ></div>
-
-
-    <!-- PUBLICIDADE -->
-
-    <div
-        class="ad-banner-container"
-        style="margin:20px 0;"
-    >
-
-        <div
-            class="ad-box"
-            style="height:120px;"
-        >
-
-            <span>
-                ESPAÇO PUBLICITÁRIO MID-PAGE
-            </span>
-
-            <small>
-                Monetização V8 Play+
-            </small>
-
-        </div>
-
-    </div>
-
-
-    <!-- SERIES -->
-
-    <h2 class="section-title">
-        📺 Séries
-    </h2>
-
-    <div
-        class="cards"
-        id="series"
-    ></div>
-
-
-    <!-- ANIMES -->
-
-    <h2 class="section-title">
-        🎌 Animes
-    </h2>
-
-    <div
-        class="cards"
-        id="animes"
-    ></div>
-
-
-    <!-- DORAMAS -->
-
-    <h2 class="section-title">
-        🎭 Doramas
-    </h2>
-
-    <div
-        class="cards"
-        id="doramas"
-    ></div>
-
-
-    <!-- RECOMENDADOS -->
-
-    <h2 class="section-title">
-        ⭐ Recomendados
-    </h2>
-
-    <div
-        class="cards"
-        id="recomendados"
-    ></div>
-
-</div>
-
-
-<!-- ==========================================
-     LOGIN
-========================================== -->
-
-<div
-    id="loginModal"
-    class="modal hidden"
->
-
-    <div class="login-box">
-
-        <h2 id="tituloAuth">
-            Entrar no V8 Play+
-        </h2>
-
-        <p
-            class="erro-msg"
-            id="erroAuth"
-        ></p>
-
-        <input
-            type="email"
-            id="email"
-            placeholder="E-mail"
-            autocomplete="username"
-        >
-
-        <input
-            type="password"
-            id="password"
-            placeholder="Senha"
-            autocomplete="current-password"
-        >
 
         <button
             class="btn-login"
-            style="
-                width:100%;
-                border-radius:6px;
-                padding:12px;
-                margin-top:5px;
-            "
-            id="doLogin"
+            id="authBtn"
         >
             Entrar
         </button>
 
-        <button
-            class="btn-secundario"
-            id="btnEsqueciSenha"
-        >
-            Esqueci minha senha
-        </button>
+    </header>
 
-        <button
-            class="btn-secundario"
-            id="alternarCadastro"
-        >
-            Ainda não tem conta? Criar conta
-        </button>
 
-        <button
-            class="btn-secundario"
-            id="btnCancelarLogin"
-            style="margin-top:15px;color:#666;"
-        >
-            Cancelar
-        </button>
+    <!-- ==========================
+         PUBLICIDADE TOPO
+    =========================== -->
+
+    <div class="ad-banner-container">
+
+        <div class="ad-box">
+
+            <span>ESPAÇO PUBLICITÁRIO</span>
+
+            <small>ADSENSE / BANNER</small>
+
+        </div>
 
     </div>
 
-</div>
 
+    <!-- ==========================
+         HERO
+    =========================== -->
 
-<!-- ==========================================
-     DETALHES
-========================================== -->
+    <section id="hero">
 
-<div
-    id="detalheModal"
-    class="modal hidden"
->
+        <div class="hero-content">
 
-    <div class="detalhe-box">
+            <h1 id="heroTitle">
+                Carregando...
+            </h1>
 
-        <img
-            id="detImg"
-            src=""
-            alt=""
-        >
+            <p id="heroDesc">
+                Sua nova experiência em streaming.
+            </p>
 
-        <div class="detalhe-info">
+            <div class="hero-btns">
 
-            <div
-                id="detTag"
-                class="tag-info gratis"
-            >
-                GRÁTIS
-            </div>
-
-            <h2 id="detTitulo"></h2>
-
-            <div class="detalhe-meta">
-
-                <span id="detAno"></span>
-
-                <span>•</span>
-
-                <span id="detTipo"></span>
-
-                <span>•</span>
-
-                <span id="detCategoria"></span>
-
-            </div>
-
-            <p id="detDescricao"></p>
-
-            <div
-                id="detPreco"
-                class="preco-detalhe"
-            ></div>
-
-            <div
-                class="detalhe-btns"
-                id="detBtnsContainer"
-            ></div>
-
-            <div
-                class="detalhe-btns"
-                style="margin-top:15px;"
-            >
+                <button
+                    class="btn-assistir"
+                    id="heroAssistir"
+                >
+                    <i class="fa-solid fa-play"></i>
+                    Ver opções
+                </button>
 
                 <button
                     class="btn-info"
-                    id="btnFecharDetalhes"
-                    style="
-                        background:transparent;
-                        border:1px solid #333;
-                    "
+                    id="heroInfo"
                 >
-                    Fechar
+                    <i class="fa-solid fa-circle-info"></i>
+                    Mais detalhes
                 </button>
 
             </div>
 
         </div>
 
-    </div>
-
-</div>
+    </section>
 
 
-<!-- ==========================================
-     MODAL DE ANÚNCIO
-========================================== -->
+    <!-- ==========================
+         CATÁLOGO
+    =========================== -->
 
-<div
-    id="adModal"
-    class="modal hidden"
->
-
-    <div
-        class="login-box"
-        style="max-width:450px;"
-    >
-
-        <h2>
-            Anúncio Patrocinado
-        </h2>
-
-        <p
-            style="
-                font-size:.85rem;
-                color:#aaa;
-                margin-bottom:15px;
-            "
-        >
-            Aguarde o anúncio para liberar sua ação gratuita.
-        </p>
+    <main class="container">
 
         <div
-            class="ad-box"
-            style="
-                height:180px;
-                margin-bottom:20px;
-            "
+            class="filtros"
+            id="filtros"
         >
 
-            <span>
-                [ ANÚNCIO PUBLICITÁRIO ]
-            </span>
-
-            <small>
-                Monetização V8 Play+
-            </small>
+            <button
+                class="chip ativo"
+                data-genero="Todos"
+            >
+                Todos
+            </button>
 
         </div>
 
-        <button
-            id="btnConfirmarAd"
-            class="btn-login"
-            style="
-                width:100%;
-                opacity:.5;
-            "
-            disabled
-        >
-            Aguarde
-            <span id="adTimerCount">
-                5
-            </span>s...
-        </button>
 
-        <button
-            id="btnCancelarAd"
-            class="btn-secundario"
+        <h2 class="section-title">
+            🔥 Em Alta
+        </h2>
+
+        <div
+            class="cards"
+            id="emAlta"
+        ></div>
+
+
+        <h2 class="section-title">
+            🎬 Filmes
+        </h2>
+
+        <div
+            class="cards"
+            id="filmes"
+        ></div>
+
+
+        <div
+            class="ad-banner-container"
+            style="
+                margin:20px 0;
+                padding:0;
+            "
         >
-            Cancelar
-        </button>
+
+            <div
+                class="ad-box"
+                style="height:120px;"
+            >
+
+                <span>
+                    ESPAÇO PUBLICITÁRIO
+                </span>
+
+                <small>
+                    Monetização V8 Play+
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <h2 class="section-title">
+            📺 Séries
+        </h2>
+
+        <div
+            class="cards"
+            id="series"
+        ></div>
+
+
+        <h2 class="section-title">
+            🎌 Animes
+        </h2>
+
+        <div
+            class="cards"
+            id="animes"
+        ></div>
+
+
+        <h2 class="section-title">
+            🎭 Doramas
+        </h2>
+
+        <div
+            class="cards"
+            id="doramas"
+        ></div>
+
+
+        <h2 class="section-title">
+            ⭐ Recomendados
+        </h2>
+
+        <div
+            class="cards"
+            id="recomendados"
+        ></div>
+
+    </main>
+
+
+    <!-- ==========================
+         LOGIN
+    =========================== -->
+
+    <div
+        id="loginModal"
+        class="modal hidden"
+    >
+
+        <div class="login-box">
+
+            <h2 id="tituloAuth">
+                Entrar no V8 Play+
+            </h2>
+
+            <p
+                id="erroAuth"
+                class="erro-msg"
+            ></p>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="E-mail"
+                autocomplete="username"
+            >
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Senha"
+                autocomplete="current-password"
+            >
+
+            <button
+                id="doLogin"
+                class="btn-login"
+                style="
+                    width:100%;
+                    border-radius:6px;
+                    padding:12px;
+                "
+            >
+                Entrar
+            </button>
+
+            <button
+                id="btnEsqueciSenha"
+                class="btn-secundario"
+            >
+                Esqueci minha senha
+            </button>
+
+            <button
+                id="alternarCadastro"
+                class="btn-secundario"
+            >
+                Ainda não tem conta? Criar conta
+            </button>
+
+            <button
+                onclick="fecharModais()"
+                class="btn-secundario"
+                style="color:#555;"
+            >
+                Cancelar
+            </button>
+
+        </div>
 
     </div>
 
-</div>
 
+    <!-- ==========================
+         DETALHES
+    =========================== -->
 
-<!-- ==========================================
-     NOTIFICAÇÃO
-========================================== -->
+    <div
+        id="detalheModal"
+        class="modal hidden"
+    >
+
+        <div class="detalhe-box">
 
-<div
-    id="notification"
-    class="hidden"
->
+            <img
+                id="detImg"
+                src=""
+                alt=""
+            >
+
+            <div class="detalhe-info">
 
-    <span id="notificationText"></span>
+                <h2 id="detTitulo"></h2>
 
-</div>
+                <div class="detalhe-meta">
 
+                    <span id="detAno"></span>
 
-<script type="module">
+                    <span>•</span>
 
-    import {
-        db,
-        auth
-    } from "./js/firebase.js";
+                    <span id="detCategoria"></span>
 
+                </div>
 
-    import {
-        collection,
-        getDocs,
-        doc,
-        setDoc,
-        serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+                <p id="detDescricao"></p>
 
+                <div
+                    class="detalhe-btns"
+                    id="detBtnsContainer"
+                ></div>
 
-    import {
-        signInWithEmailAndPassword,
-        createUserWithEmailAndPassword,
-        sendPasswordResetEmail,
-        onAuthStateChanged,
-        signOut
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+                <div
+                    class="detalhe-btns"
+                    style="margin-top:15px;"
+                >
 
-
-    /* ==================================================
-       CONFIGURAÇÃO
-    ================================================== */
-
-    const COLECOES = [
-        "filmes",
-        "series",
-        "animes",
-        "doramas"
-    ];
-
-
-    let catalogo = [];
-
-    let filmeAtual = null;
-
-    let modoCadastro = false;
-
-    let acaoAnuncioPendente = null;
-
-    let intervaloAnuncio = null;
-
-    /*
-       IDs dos conteúdos já adquiridos pelo usuário.
-       O sistema suporta:
-
-       usuarios/{uid}/compras/{itemId}
-
-       ou
-
-       compras/{uid_itemId}
-
-       A segunda parte será integrada ao backend de
-       pagamento posteriormente.
-    */
-
-    let titulosComprados = new Set();
-
-
-    /* ==================================================
-       ELEMENTOS
-    ================================================== */
-
-    const $ = id =>
-        document.getElementById(id);
-
-
-    /* ==================================================
-       PREÇO
-    ================================================== */
-
-    function numeroSeguro(valor) {
-
-        if (
-            valor === null ||
-            valor === undefined ||
-            valor === ""
-        ) {
-            return 0;
-        }
-
-        if (typeof valor === "number") {
-            return valor;
-        }
-
-        const texto =
-            String(valor)
-                .replace("R$", "")
-                .replace(/\s/g, "")
-                .replace(/\./g, "")
-                .replace(",", ".");
-
-        const numero =
-            Number(texto);
-
-        return Number.isFinite(numero)
-            ? numero
-            : 0;
-    }
-
-
-    function formatarPreco(valor) {
-
-        const numero =
-            numeroSeguro(valor);
-
-        return numero.toLocaleString(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL"
-            }
-        );
-
-    }
-
-
-    /* ==================================================
-       NORMALIZAR TAG
-    ================================================== */
-
-    function normalizarTag(item) {
-
-        /*
-           Prioridade:
-
-           1. tag
-           2. plano
-           3. nivel
-           4. tipoAcesso
-        */
-
-        let valor =
-            item.tag ??
-            item.plano ??
-            item.nivel ??
-            item.tipoAcesso ??
-            "FREE";
-
-
-        valor =
-            String(valor)
-                .trim()
-                .toLowerCase();
-
-
-        if (
-            valor === "free" ||
-            valor === "gratis" ||
-            valor === "grátis" ||
-            valor === "gratuito"
-        ) {
-            return "gratis";
-        }
-
-
-        if (
-            valor === "prime" ||
-            valor === "premium"
-        ) {
-            return valor;
-        }
-
-
-        return "gratis";
-
-    }
-
-
-    /* ==================================================
-       PREÇO INDIVIDUAL
-    ================================================== */
-
-    function obterPreco(item, tag) {
-
-        /*
-           Novo padrão:
-
-           preco
-
-           Compatibilidade com estruturas antigas:
-
-           precoPrime
-           precoPremium
-           valor
-           price
-        */
-
-        if (
-            item.preco !== undefined &&
-            item.preco !== null
-        ) {
-            return numeroSeguro(item.preco);
-        }
-
-
-        if (
-            item.valor !== undefined &&
-            item.valor !== null
-        ) {
-            return numeroSeguro(item.valor);
-        }
-
-
-        if (
-            item.price !== undefined &&
-            item.price !== null
-        ) {
-            return numeroSeguro(item.price);
-        }
-
-
-        if (tag === "prime") {
-
-            return numeroSeguro(
-                item.precoPrime ??
-                item.valorPrime ??
-                9.90
-            );
-
-        }
-
-
-        if (tag === "premium") {
-
-            return numeroSeguro(
-                item.precoPremium ??
-                item.valorPremium ??
-                19.90
-            );
-
-        }
-
-
-        return 0;
-
-    }
-
-
-    /* ==================================================
-       NORMALIZAR TIPO
-    ================================================== */
-
-    function normalizarTipo(item, colecao) {
-
-        let tipo =
-            String(
-                item.tipo ||
-                colecao ||
-                "filme"
-            )
-            .trim()
-            .toLowerCase();
-
-
-        if (
-            tipo === "filmes"
-        ) return "filme";
-
-
-        if (
-            tipo === "series"
-        ) return "serie";
-
-
-        if (
-            tipo === "animes"
-        ) return "anime";
-
-
-        if (
-            tipo === "doramas"
-        ) return "dorama";
-
-
-        return tipo;
-
-    }
-
-
-    /* ==================================================
-       NORMALIZAR ITEM
-    ================================================== */
-
-    function normalizarItem(
-        id,
-        colecao,
-        dados
-    ) {
-
-        const item = {
-            id,
-            colecao,
-            ...dados
+                    <button
+                        class="btn-info"
+                        onclick="fecharModais()"
+                    >
+                        Fechar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+         PEDIDO DE PERMISSÃO
+    =========================== -->
+
+    <div
+        id="permissaoAnuncioModal"
+        class="modal hidden"
+    >
+
+        <div class="login-box">
+
+            <i
+                class="fa-solid fa-rectangle-ad"
+                style="
+                    font-size:42px;
+                    color:#00d4ff;
+                    margin-bottom:18px;
+                "
+            ></i>
+
+            <h2>
+                Permita os anúncios
+            </h2>
+
+            <p
+                style="
+                    color:#aaa;
+                    line-height:1.6;
+                    font-size:.9rem;
+                    margin:15px 0 22px;
+                "
+            >
+                Para continuar gratuitamente,
+                permita a exibição de anúncios
+                no V8 Play+.
+            </p>
+
+            <button
+                id="btnPermitirAnuncios"
+                class="btn-login"
+                style="
+                    width:100%;
+                    padding:12px;
+                    border-radius:6px;
+                "
+            >
+                <i class="fa-solid fa-check"></i>
+                Permitir anúncios e continuar
+            </button>
+
+            <button
+                onclick="fecharModais()"
+                class="btn-secundario"
+            >
+                Cancelar
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+         ANÚNCIO / AGUARDE
+    =========================== -->
+
+    <div
+        id="adModal"
+        class="modal hidden"
+    >
+
+        <div
+            class="login-box"
+            style="max-width:450px;"
+        >
+
+            <h2>
+                Anúncio
+            </h2>
+
+            <p
+                style="
+                    color:#aaa;
+                    font-size:.85rem;
+                    line-height:1.6;
+                    margin:10px 0 15px;
+                "
+            >
+                Aguarde enquanto o anúncio é carregado.
+            </p>
+
+            <div
+                class="ad-box"
+                style="
+                    height:180px;
+                    margin-bottom:20px;
+                "
+            >
+
+                <span>
+                    ESPAÇO PUBLICITÁRIO
+                </span>
+
+                <small>
+                    Anúncio
+                </small>
+
+            </div>
+
+            <button
+                id="btnConfirmarAd"
+                class="btn-login"
+                style="
+                    width:100%;
+                    opacity:.5;
+                "
+                disabled
+            >
+                Aguarde
+                <span id="adTimerCount">5</span>s...
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+         NOTIFICAÇÃO
+    =========================== -->
+
+    <div
+        id="notification"
+        class="hidden"
+    >
+
+        <span id="notificationText"></span>
+
+    </div>
+
+
+    <!-- ==========================
+         JAVASCRIPT
+    =========================== -->
+
+    <script type="module">
+
+        import {
+            db,
+            auth
+        } from "./js/firebase.js";
+
+
+        import {
+            collection,
+            getDocs,
+            doc,
+            getDoc,
+            setDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+        import {
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            sendPasswordResetEmail,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+
+        /* =========================================
+           VARIÁVEIS
+        ========================================= */
+
+        let catalogo = [];
+
+        let filmeAtual = null;
+
+        let modoCadastro = false;
+
+        let acaoAnuncioPendente = null;
+
+        let titulosComprados = new Set();
+
+        let valoresPlanosAdmin = {
+            prime: 9.90,
+            premium: 19.90
         };
 
 
-        item.tipo =
-            normalizarTipo(
-                item,
-                colecao
-            );
+        const COLECOES = [
+            "filmes",
+            "series",
+            "animes",
+            "doramas"
+        ];
 
 
-        item.tag =
-            normalizarTag(item);
+        /* =========================================
+           PREÇO
+        ========================================= */
+
+        function formatarPreco(valor) {
+
+            const numero = Number(valor) || 0;
+
+            return `R$ ${numero
+                .toFixed(2)
+                .replace(".", ",")}`;
+
+        }
 
 
-        item.preco =
-            obterPreco(
-                item,
-                item.tag
-            );
+        async function carregarPrecosAdmin() {
 
+            try {
 
-        item.titulo =
-            item.titulo ||
-            item.nome ||
-            "Sem título";
-
-
-        item.capa =
-            item.capa ||
-            item.poster ||
-            item.imagem ||
-            "";
-
-
-        item.banner =
-            item.banner ||
-            item.backdrop ||
-            item.capa ||
-            "";
-
-
-        item.descricao =
-            item.descricao ||
-            item.sinopse ||
-            "Sem descrição disponível.";
-
-
-        item.categoria =
-            item.categoria ||
-            item.genero ||
-            item.generos ||
-            "";
-
-
-        item.ano =
-            item.ano ||
-            item.lancamento ||
-            "";
-
-
-        item.ativo =
-            item.ativo !== false;
-
-
-        item.destaque =
-            item.destaque === true;
-
-
-        item.recomendado =
-            item.recomendado === true;
-
-
-        return item;
-
-    }
-
-
-    /* ==================================================
-       FIRESTORE
-    ================================================== */
-
-    async function buscarColecao(nome) {
-
-        try {
-
-            console.log(
-                `🎬 Buscando coleção: ${nome}`
-            );
-
-
-            const snapshot =
-                await getDocs(
-                    collection(
+                const referencia =
+                    doc(
                         db,
-                        nome
+                        "configuracoes",
+                        "planos"
+                    );
+
+
+                const snapshot =
+                    await getDoc(referencia);
+
+
+                if (!snapshot.exists()) {
+
+                    console.warn(
+                        "Documento configuracoes/planos não encontrado."
+                    );
+
+                    return;
+
+                }
+
+
+                const dados =
+                    snapshot.data();
+
+
+                if (
+                    dados.prime !== undefined
+                ) {
+
+                    valoresPlanosAdmin.prime =
+                        Number(dados.prime);
+
+                }
+
+
+                if (
+                    dados.premium !== undefined
+                ) {
+
+                    valoresPlanosAdmin.premium =
+                        Number(dados.premium);
+
+                }
+
+
+                console.log(
+                    "Preços carregados:",
+                    valoresPlanosAdmin
+                );
+
+            }
+
+            catch (erro) {
+
+                console.error(
+                    "Erro ao carregar preços:",
+                    erro
+                );
+
+            }
+
+        }
+
+
+        function obterTagItem(item) {
+
+            const tag =
+                item.tag ||
+                item.plano ||
+                "free";
+
+
+            return String(tag)
+                .trim()
+                .toLowerCase();
+
+        }
+
+
+        function obterPrecoItem(item) {
+
+            const tag =
+                obterTagItem(item);
+
+
+            if (tag === "prime") {
+
+                return valoresPlanosAdmin.prime;
+
+            }
+
+
+            if (tag === "premium") {
+
+                return valoresPlanosAdmin.premium;
+
+            }
+
+
+            return 0;
+
+        }
+
+
+        /* =========================================
+           FIREBASE
+        ========================================= */
+
+        async function buscarColecao(nome) {
+
+            try {
+
+                const snapshot =
+                    await getDocs(
+                        collection(
+                            db,
+                            nome
+                        )
+                    );
+
+
+                const itens = [];
+
+
+                snapshot.forEach(
+                    documento => {
+
+                        const dados =
+                            documento.data();
+
+
+                        if (
+                            dados.ativo === false
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        itens.push({
+
+                            id:
+                                documento.id,
+
+                            colecao:
+                                nome,
+
+                            ...dados
+
+                        });
+
+                    }
+                );
+
+
+                itens.sort(
+                    (a, b) => {
+
+                        const dataA =
+                            a.data?.toDate
+                                ? a.data.toDate()
+                                : new Date(
+                                    a.data || 0
+                                );
+
+
+                        const dataB =
+                            b.data?.toDate
+                                ? b.data.toDate()
+                                : new Date(
+                                    b.data || 0
+                                );
+
+
+                        return dataB - dataA;
+
+                    }
+                );
+
+
+                return itens;
+
+            }
+
+            catch (erro) {
+
+                console.error(
+                    `Erro em ${nome}:`,
+                    erro
+                );
+
+                return [];
+
+            }
+
+        }
+
+
+        /* =========================================
+           CATÁLOGO
+        ========================================= */
+
+        async function carregarCatalogo() {
+
+            mostrarNotificacao(
+                "Carregando catálogo..."
+            );
+
+
+            await carregarPrecosAdmin();
+
+
+            const containers = [
+                "emAlta",
+                "filmes",
+                "series",
+                "animes",
+                "doramas",
+                "recomendados"
+            ];
+
+
+            containers.forEach(
+                id => {
+
+                    const elemento =
+                        document.getElementById(id);
+
+
+                    if (elemento) {
+
+                        elemento.innerHTML = "";
+
+                    }
+
+                }
+            );
+
+
+            const resultados =
+                await Promise.all(
+                    COLECOES.map(
+                        buscarColecao
                     )
                 );
 
 
-            const itens = [];
+            catalogo =
+                resultados.flat();
 
 
-            snapshot.forEach(
-                docSnap => {
+            console.log(
+                "Catálogo:",
+                catalogo
+            );
 
-                    const dados =
-                        docSnap.data();
 
+            if (!catalogo.length) {
+
+                document
+                    .getElementById("filmes")
+                    .innerHTML = `
+                        <p class="vazio">
+                            Nenhum título disponível no momento.
+                        </p>
+                    `;
+
+                return;
+
+            }
+
+
+            catalogo.forEach(
+                item => {
+
+                    /* Em Alta */
 
                     if (
-                        dados.ativo === false
+                        item.destaque === true
                     ) {
-                        return;
+
+                        adicionarCard(
+                            "emAlta",
+                            item
+                        );
+
                     }
 
 
-                    const item =
-                        normalizarItem(
-                            docSnap.id,
-                            nome,
-                            dados
+                    /* Categoria */
+
+                    const tipo =
+                        String(
+                            item.tipo ||
+                            ""
+                        ).toLowerCase();
+
+
+                    if (
+                        tipo === "serie" ||
+                        tipo === "series"
+                    ) {
+
+                        adicionarCard(
+                            "series",
+                            item
                         );
 
+                    }
 
-                    itens.push(item);
+                    else if (
+                        tipo === "anime" ||
+                        tipo === "animes"
+                    ) {
+
+                        adicionarCard(
+                            "animes",
+                            item
+                        );
+
+                    }
+
+                    else if (
+                        tipo === "dorama" ||
+                        tipo === "doramas"
+                    ) {
+
+                        adicionarCard(
+                            "doramas",
+                            item
+                        );
+
+                    }
+
+                    else {
+
+                        adicionarCard(
+                            "filmes",
+                            item
+                        );
+
+                    }
 
 
-                    console.log(
-                        "🎥 Item:",
-                        item.titulo,
-                        "| tag:",
-                        item.tag,
-                        "| preço:",
-                        item.preco
-                    );
+                    /* Recomendados */
+
+                    if (
+                        item.recomendado === true
+                    ) {
+
+                        adicionarCard(
+                            "recomendados",
+                            item
+                        );
+
+                    }
 
                 }
-            );
-
-
-            /*
-               Ordenação local.
-
-               Evita depender de orderBy() e
-               índice composto do Firestore.
-            */
-
-            itens.sort(
-                (a, b) => {
-
-                    const dataA =
-                        converterData(
-                            a.data
-                        );
-
-                    const dataB =
-                        converterData(
-                            b.data
-                        );
-
-
-                    return dataB - dataA;
-
-                }
-            );
-
-
-            return itens;
-
-        }
-
-        catch (erro) {
-
-            console.error(
-                `❌ Erro na coleção ${nome}:`,
-                erro
-            );
-
-
-            return [];
-
-        }
-
-    }
-
-
-    function converterData(valor) {
-
-        if (
-            valor?.toDate
-        ) {
-            return valor
-                .toDate()
-                .getTime();
-        }
-
-
-        if (
-            valor instanceof Date
-        ) {
-            return valor.getTime();
-        }
-
-
-        const data =
-            new Date(
-                valor || 0
-            );
-
-
-        return Number.isNaN(
-            data.getTime()
-        )
-            ? 0
-            : data.getTime();
-
-    }
-
-
-    /* ==================================================
-       CARREGAR CATÁLOGO
-    ================================================== */
-
-    async function carregarCatalogo() {
-
-        console.log(
-            "🔥 Carregando V8 Play+..."
-        );
-
-
-        limparCatalogo();
-
-
-        const resultados =
-            await Promise.all(
-                COLECOES.map(
-                    buscarColecao
-                )
-            );
-
-
-        catalogo =
-            resultados
-                .flat();
-
-
-        console.log(
-            `✅ ${catalogo.length} títulos carregados.`
-        );
-
-
-        if (!catalogo.length) {
-
-            mostrarVazio(
-                "filmes"
             );
 
 
             carregarDestaque();
 
-            return;
+            montarFiltros();
 
-        }
-
-
-        renderizarCatalogo();
-
-        carregarDestaque();
-
-        montarFiltros();
-
-        aplicarFiltrosEBusca();
-
-    }
-
-
-    function limparCatalogo() {
-
-        [
-            "emAlta",
-            "filmes",
-            "series",
-            "animes",
-            "doramas",
-            "recomendados"
-        ]
-        .forEach(
-            id => {
-
-                const el = $(id);
-
-                if (el) {
-                    el.innerHTML = "";
-                }
-
-            }
-        );
-
-    }
-
-
-    function mostrarVazio(id) {
-
-        const el = $(id);
-
-        if (!el) return;
-
-
-        el.innerHTML = `
-            <p class="vazio">
-                Nenhum título disponível no momento.
-            </p>
-        `;
-
-    }
-
-
-    /* ==================================================
-       RENDERIZAR
-    ================================================== */
-
-    function renderizarCatalogo() {
-
-        catalogo.forEach(
-            item => {
-
-                /*
-                   EM ALTA
-                */
-
-                if (
-                    item.destaque
-                ) {
-
-                    adicionarCard(
-                        "emAlta",
-                        item
-                    );
-
-                }
-
-
-                /*
-                   TIPO
-                */
-
-                if (
-                    item.tipo === "serie"
-                ) {
-
-                    adicionarCard(
-                        "series",
-                        item
-                    );
-
-                }
-
-                else if (
-                    item.tipo === "anime"
-                ) {
-
-                    adicionarCard(
-                        "animes",
-                        item
-                    );
-
-                }
-
-                else if (
-                    item.tipo === "dorama"
-                ) {
-
-                    adicionarCard(
-                        "doramas",
-                        item
-                    );
-
-                }
-
-                else {
-
-                    adicionarCard(
-                        "filmes",
-                        item
-                    );
-
-                }
-
-
-                /*
-                   RECOMENDADOS
-                */
-
-                if (
-                    item.recomendado
-                ) {
-
-                    adicionarCard(
-                        "recomendados",
-                        item
-                    );
-
-                }
-
-            }
-        );
-
-
-        [
-            "emAlta",
-            "filmes",
-            "series",
-            "animes",
-            "doramas",
-            "recomendados"
-        ]
-        .forEach(
-            id => {
-
-                const el = $(id);
-
-                if (
-                    el &&
-                    !el.children.length
-                ) {
-
-                    el.innerHTML = `
-                        <p class="vazio">
-                            Nenhum título disponível.
-                        </p>
-                    `;
-
-                }
-
-            }
-        );
-
-    }
-
-
-    function adicionarCard(
-        containerId,
-        item
-    ) {
-
-        const container =
-            $(containerId);
-
-
-        if (!container) {
-            return;
-        }
-
-
-        container.appendChild(
-            criarCard(item)
-        );
-
-    }
-
-
-    /* ==================================================
-       CARD
-    ================================================== */
-
-    function criarCard(item) {
-
-        const card =
-            document.createElement(
-                "div"
-            );
-
-
-        card.className =
-            "movie-card";
-
-
-        card.dataset.titulo =
-            String(
-                item.titulo
-            )
-            .toLowerCase();
-
-
-        card.dataset.categoria =
-            obterCategoriaTexto(
-                item
-            )
-            .toLowerCase();
-
-
-        card.dataset.tag =
-            item.tag;
-
-
-        const tag =
-            item.tag;
-
-
-        let rotulo =
-            "GRÁTIS";
-
-
-        if (
-            tag === "prime"
-        ) {
-
-            rotulo =
-                `PRIME • ${formatarPreco(item.preco)}`;
-
-        }
-
-
-        if (
-            tag === "premium"
-        ) {
-
-            rotulo =
-                `PREMIUM • ${formatarPreco(item.preco)}`;
-
-        }
-
-
-        const selo =
-            document.createElement(
-                "span"
-            );
-
-
-        selo.className =
-            `selo-card ${tag}`;
-
-
-        selo.innerText =
-            rotulo;
-
-
-        card.appendChild(
-            selo
-        );
-
-
-        if (item.capa) {
-
-            const img =
-                document.createElement(
-                    "img"
-                );
-
-
-            img.src =
-                item.capa;
-
-
-            img.alt =
-                item.titulo;
-
-
-            img.loading =
-                "lazy";
-
-
-            img.onerror =
-                () => {
-
-                    img.remove();
-
-                    criarFallback(
-                        card,
-                        item.titulo
-                    );
-
-                };
-
-
-            card.appendChild(
-                img
-            );
-
-        }
-
-        else {
-
-            criarFallback(
-                card,
-                item.titulo
+            mostrarNotificacao(
+                "Catálogo carregado."
             );
 
         }
 
 
-        card.onclick =
-            () => abrirDetalhes(item);
-
-
-        return card;
-
-    }
-
-
-    function criarFallback(
-        card,
-        titulo
-    ) {
-
-        const fallback =
-            document.createElement(
-                "div"
-            );
-
-
-        fallback.className =
-            "titulo-fallback";
-
-
-        fallback.innerText =
-            titulo;
-
-
-        card.appendChild(
-            fallback
-        );
-
-    }
-
-
-    function obterCategoriaTexto(item) {
-
-        if (
-            Array.isArray(
-                item.categoria
-            )
-        ) {
-
-            return item.categoria.join(
-                " "
-            );
-
-        }
-
-
-        return String(
-            item.categoria || ""
-        );
-
-    }
-
-
-    /* ==================================================
-       FILTROS
-    ================================================== */
-
-    function montarFiltros() {
-
-        const container =
-            $("filtros");
-
-
-        if (!container) return;
-
-
-        container
-            .querySelectorAll(
-                '.chip:not([data-genero="Todos"])'
-            )
-            .forEach(
-                chip => chip.remove()
-            );
-
-
-        const categorias =
-            catalogo
-                .flatMap(
-                    item => {
-
-                        if (
-                            Array.isArray(
-                                item.categoria
-                            )
-                        ) {
-
-                            return item.categoria;
-
-                        }
-
-
-                        return String(
-                            item.categoria || ""
-                        )
-                        .split(",")
-                        .map(
-                            x => x.trim()
-                        );
-
-                    }
-                )
-                .filter(Boolean);
-
-
-        const unicas =
-            [
-                ...new Set(
-                    categorias
-                )
-            ]
-            .sort(
-                (a, b) =>
-                    a.localeCompare(
-                        b,
-                        "pt-BR"
-                    )
-            );
-
-
-        unicas.forEach(
-            categoria => {
-
-                const chip =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                chip.className =
-                    "chip";
-
-
-                chip.dataset.genero =
-                    categoria;
-
-
-                chip.innerText =
-                    categoria;
-
-
-                container.appendChild(
-                    chip
-                );
-
-            }
-        );
-
-    }
-
-
-    function aplicarFiltrosEBusca() {
-
-        const texto =
-            $("busca")
-                ?.value
-                ?.toLowerCase()
-                ?.trim() ||
-            "";
-
-
-        const chip =
-            document.querySelector(
-                "#filtros .chip.ativo"
-            );
-
-
-        const genero =
-            chip?.dataset.genero ||
-            "Todos";
-
-
-        document
-            .querySelectorAll(
-                ".movie-card"
-            )
-            .forEach(
-                card => {
-
-                    const titulo =
-                        card.dataset.titulo ||
-                        "";
-
-
-                    const categoria =
-                        card.dataset.categoria ||
-                        "";
-
-
-                    const buscaOk =
-                        !texto ||
-                        titulo.includes(
-                            texto
-                        );
-
-
-                    const generoOk =
-                        genero === "Todos" ||
-                        categoria
-                            .split(",")
-                            .map(
-                                x =>
-                                    x.trim()
-                            )
-                            .includes(
-                                genero
-                            );
-
-
-                    card.style.display =
-                        buscaOk &&
-                        generoOk
-                            ? ""
-                            : "none";
-
-                }
-            );
-
-    }
-
-
-    $("filtros")
-        ?.addEventListener(
-            "click",
-            evento => {
-
-                const chip =
-                    evento.target.closest(
-                        ".chip"
-                    );
-
-
-                if (!chip) return;
-
-
-                document
-                    .querySelectorAll(
-                        "#filtros .chip"
-                    )
-                    .forEach(
-                        c =>
-                            c.classList
-                                .remove(
-                                    "ativo"
-                                )
-                    );
-
-
-                chip.classList.add(
-                    "ativo"
-                );
-
-
-                aplicarFiltrosEBusca();
-
-            }
-        );
-
-
-    $("busca")
-        ?.addEventListener(
-            "input",
-            aplicarFiltrosEBusca
-        );
-
-
-    /* ==================================================
-       HERO
-    ================================================== */
-
-    function carregarDestaque() {
-
-        const destaque =
-            catalogo.find(
-                item =>
-                    item.destaque === true
-            ) ||
-            catalogo[0];
-
-
-        if (!destaque) {
-
-            $("heroTitle").innerText =
-                "V8 Play+";
-
-
-            $("heroDesc").innerText =
-                "Sua nova experiência em entretenimento.";
-
-
-            return;
-
-        }
-
-
-        filmeAtual =
-            destaque;
-
-
-        $("heroTitle").innerText =
-            destaque.titulo;
-
-
-        $("heroDesc").innerText =
-            destaque.descricao;
-
-
-        const hero =
-            $("hero");
-
-
-        if (
-            destaque.banner
-        ) {
-
-            hero.style.backgroundImage =
-                `url("${destaque.banner}")`;
-
-        }
-
-        else if (
-            destaque.capa
-        ) {
-
-            hero.style.backgroundImage =
-                `url("${destaque.capa}")`;
-
-        }
-
-    }
-
-
-    /* ==================================================
-       DETALHES
-    ================================================== */
-
-    function abrirDetalhes(item) {
-
-        filmeAtual =
-            item;
-
-
-        $("detImg").src =
-            item.banner ||
-            item.capa ||
-            "";
-
-
-        $("detImg").alt =
-            item.titulo;
-
-
-        $("detTitulo").innerText =
-            item.titulo;
-
-
-        $("detAno").innerText =
-            item.ano ||
-            "—";
-
-
-        $("detTipo").innerText =
-            nomeTipo(
-                item.tipo
-            );
-
-
-        $("detCategoria").innerText =
-            obterCategoriaTexto(
-                item
-            ) ||
-            "—";
-
-
-        $("detDescricao").innerText =
-            item.descricao ||
-            "Sem descrição disponível.";
-
-
-        configurarTagDetalhes(
+        function adicionarCard(
+            containerId,
             item
-        );
-
-
-        const container =
-            $("detBtnsContainer");
-
-
-        container.innerHTML =
-            "";
-
-
-        if (
-            item.tag === "gratis"
         ) {
 
-            $("detPreco").innerText =
-                "Conteúdo gratuito";
-
-
-            criarBotao(
-                container,
-                "btn-ad-action",
-                '<i class="fa-solid fa-play"></i> Assistir com anúncio',
-                () =>
-                    iniciarFluxoAnuncio(
-                        "assistir",
-                        item
-                    )
-            );
-
-
-            if (
-                possuiDownload(item)
-            ) {
-
-                criarBotao(
-                    container,
-                    "btn-download-free",
-                    '<i class="fa-solid fa-download"></i> Baixar com anúncio',
-                    () =>
-                        iniciarFluxoAnuncio(
-                            "baixar",
-                            item
-                        )
+            const container =
+                document.getElementById(
+                    containerId
                 );
 
+
+            if (!container) {
+
+                return;
+
             }
+
+
+            container.appendChild(
+                criarCard(item)
+            );
 
         }
 
-        else {
 
-            $("detPreco").innerText =
-                formatarPreco(
-                    item.preco
+        /* =========================================
+           CARD
+        ========================================= */
+
+        function criarCard(item) {
+
+            const card =
+                document.createElement("div");
+
+
+            card.className =
+                "movie-card";
+
+
+            card.dataset.titulo =
+                String(
+                    item.titulo || ""
+                ).toLowerCase();
+
+
+            card.dataset.categoria =
+                String(
+                    item.categoria || ""
                 );
+
+
+            const tag =
+                obterTagItem(item);
+
+
+            let rotulo =
+                "GRÁTIS";
 
 
             if (
-                item.preco <= 0
+                tag === "prime"
             ) {
 
-                mostrarNotificacao(
-                    "O conteúdo pago está sem preço definido."
-                );
+                rotulo =
+                    `PRIME ${formatarPreco(
+                        valoresPlanosAdmin.prime
+                    )}`;
 
             }
 
 
             if (
-                awaitUsuarioPossuiItem(item)
+                tag === "premium"
             ) {
 
-                criarBotao(
-                    container,
-                    "btn-login",
-                    '<i class="fa-solid fa-play"></i> Assistir agora',
-                    () =>
-                        irParaPlayer(item)
-                );
+                rotulo =
+                    `PREMIUM ${formatarPreco(
+                        valoresPlanosAdmin.premium
+                    )}`;
+
+            }
 
 
-                if (
-                    possuiDownload(item)
-                ) {
+            const selo =
+                document.createElement("span");
 
-                    criarBotao(
-                        container,
-                        "btn-info",
-                        '<i class="fa-solid fa-download"></i> Baixar arquivo',
-                        () =>
-                            executarDownload(item)
-                    );
 
-                }
+            selo.className =
+                `selo-card ${tag}`;
+
+
+            selo.textContent =
+                rotulo;
+
+
+            card.appendChild(selo);
+
+
+            if (item.capa) {
+
+                const img =
+                    document.createElement("img");
+
+
+                img.src =
+                    item.capa;
+
+
+                img.alt =
+                    item.titulo || "";
+
+
+                img.loading =
+                    "lazy";
+
+
+                img.onerror =
+                    () => {
+
+                        img.remove();
+
+                        const fallback =
+                            document.createElement("div");
+
+
+                        fallback.className =
+                            "titulo-fallback";
+
+
+                        fallback.textContent =
+                            item.titulo ||
+                            "Sem título";
+
+
+                        card.appendChild(
+                            fallback
+                        );
+
+                    };
+
+
+                card.appendChild(img);
 
             }
 
             else {
 
-                const classe =
-                    item.tag === "prime"
-                        ? "btn-pix-prime"
-                        : "btn-pix-premium";
+                const fallback =
+                    document.createElement("div");
 
 
-                const texto =
-                    item.tag === "prime"
-                        ? "Comprar PRIME"
-                        : "Comprar PREMIUM";
+                fallback.className =
+                    "titulo-fallback";
 
 
-                criarBotao(
-                    container,
-                    classe,
-                    `<i class="fa-brands fa-pix"></i> ${texto} • ${formatarPreco(item.preco)}`,
-                    () =>
-                        solicitarPix(
-                            item
-                        )
+                fallback.textContent =
+                    item.titulo ||
+                    "Sem título";
+
+
+                card.appendChild(
+                    fallback
                 );
 
             }
 
-        }
+
+            card.onclick =
+                () => abrirDetalhes(item);
 
 
-        /*
-           Trailer sempre disponível,
-           se existir.
-        */
-
-        if (
-            item.trailer
-        ) {
-
-            criarBotao(
-                container,
-                "btn-info",
-                '<i class="fa-solid fa-film"></i> Trailer',
-                () =>
-                    abrirTrailer(item)
-            );
+            return card;
 
         }
 
 
-        $("detalheModal")
-            .classList
-            .remove("hidden");
+        /* =========================================
+           FILTROS
+        ========================================= */
 
-    }
+        function montarFiltros() {
 
+            const container =
+                document.getElementById(
+                    "filtros"
+                );
 
-    function configurarTagDetalhes(item) {
 
-        const tag =
-            $("detTag");
+            if (!container) {
 
+                return;
 
-        tag.className =
-            `tag-info ${item.tag}`;
+            }
 
 
-        if (
-            item.tag === "gratis"
-        ) {
+            container
+                .querySelectorAll(
+                    '.chip:not([data-genero="Todos"])'
+                )
+                .forEach(
+                    chip => chip.remove()
+                );
 
-            tag.innerText =
-                "GRÁTIS";
 
-        }
+            const generos =
+                [
+                    ...new Set(
+                        catalogo
+                            .map(
+                                item =>
+                                    item.categoria
+                            )
+                            .filter(Boolean)
+                    )
+                ]
+                .sort();
 
-        else if (
-            item.tag === "prime"
-        ) {
 
-            tag.innerText =
-                "PRIME";
+            generos.forEach(
+                genero => {
 
-        }
-
-        else {
-
-            tag.innerText =
-                "PREMIUM";
-
-        }
-
-    }
-
-
-    function criarBotao(
-        container,
-        classe,
-        html,
-        callback
-    ) {
-
-        const button =
-            document.createElement(
-                "button"
-            );
-
-
-        button.className =
-            classe;
-
-
-        button.innerHTML =
-            html;
-
-
-        button.onclick =
-            callback;
-
-
-        container.appendChild(
-            button
-        );
-
-
-        return button;
-
-    }
-
-
-    function nomeTipo(tipo) {
-
-        const nomes = {
-            filme: "Filme",
-            serie: "Série",
-            anime: "Anime",
-            dorama: "Dorama"
-        };
-
-
-        return nomes[tipo] ||
-            tipo ||
-            "Conteúdo";
-
-    }
-
-
-    /* ==================================================
-       TRAILER
-    ================================================== */
-
-    function abrirTrailer(item) {
-
-        fecharModais();
-
-
-        window.location.href =
-            `player.html?id=${encodeURIComponent(item.id)}&colecao=${encodeURIComponent(item.colecao)}&trailer=true`;
-
-    }
-
-
-    /* ==================================================
-       PLAYER
-    ================================================== */
-
-    function irParaPlayer(item) {
-
-        if (!item) return;
-
-
-        fecharModais();
-
-
-        window.location.href =
-            `player.html?id=${encodeURIComponent(item.id)}&colecao=${encodeURIComponent(item.colecao)}`;
-
-    }
-
-
-    /* ==================================================
-       DOWNLOAD
-    ================================================== */
-
-    function possuiDownload(item) {
-
-        return Boolean(
-            item.arquivoDownload ||
-            item.video1 ||
-            item.download ||
-            item.video
-        );
-
-    }
-
-
-    function executarDownload(item) {
-
-        const url =
-            item.arquivoDownload ||
-            item.video1 ||
-            item.download ||
-            item.video;
-
-
-        if (!url) {
-
-            mostrarNotificacao(
-                "Link de download não disponível."
-            );
-
-            return;
-
-        }
-
-
-        window.open(
-            url,
-            "_blank",
-            "noopener,noreferrer"
-        );
-
-    }
-
-
-    /* ==================================================
-       ANÚNCIO
-    ================================================== */
-
-    function iniciarFluxoAnuncio(
-        tipo,
-        item
-    ) {
-
-        filmeAtual =
-            item;
-
-
-        acaoAnuncioPendente =
-            tipo;
-
-
-        $("detalheModal")
-            .classList
-            .add("hidden");
-
-
-        $("adModal")
-            .classList
-            .remove("hidden");
-
-
-        if (
-            intervaloAnuncio
-        ) {
-
-            clearInterval(
-                intervaloAnuncio
-            );
-
-        }
-
-
-        const btn =
-            $("btnConfirmarAd");
-
-
-        const contador =
-            $("adTimerCount");
-
-
-        let segundos =
-            5;
-
-
-        btn.disabled =
-            true;
-
-
-        btn.style.opacity =
-            ".5";
-
-
-        contador.innerText =
-            segundos;
-
-
-        intervaloAnuncio =
-            setInterval(
-                () => {
-
-                    segundos--;
-
-
-                    contador.innerText =
-                        segundos;
-
-
-                    if (
-                        segundos <= 0
-                    ) {
-
-                        clearInterval(
-                            intervaloAnuncio
+                    const chip =
+                        document.createElement(
+                            "button"
                         );
 
 
-                        intervaloAnuncio =
-                            null;
+                    chip.className =
+                        "chip";
 
 
-                        btn.disabled =
-                            false;
+                    chip.dataset.genero =
+                        genero;
 
 
-                        btn.style.opacity =
-                            "1";
+                    chip.textContent =
+                        genero;
 
 
-                        btn.innerHTML =
-                            tipo === "assistir"
-                                ? '<i class="fa-solid fa-play"></i> Assistir agora'
-                                : '<i class="fa-solid fa-download"></i> Iniciar download';
+                    container.appendChild(
+                        chip
+                    );
 
-                    }
-
-                },
-                1000
+                }
             );
-
-    }
-
-
-    $("btnConfirmarAd")
-        .onclick =
-        () => {
-
-            if (
-                !filmeAtual
-            ) return;
-
-
-            const item =
-                filmeAtual;
-
-
-            const acao =
-                acaoAnuncioPendente;
-
-
-            fecharModais();
-
-
-            if (
-                acao === "assistir"
-            ) {
-
-                irParaPlayer(
-                    item
-                );
-
-            }
-
-            else if (
-                acao === "baixar"
-            ) {
-
-                executarDownload(
-                    item
-                );
-
-            }
-
-        };
-
-
-    /* ==================================================
-       COMPRAS
-    ================================================== */
-
-    function awaitUsuarioPossuiItem(item) {
-
-        if (
-            titulosComprados.has(
-                item.id
-            )
-        ) {
-
-            return true;
 
         }
 
 
-        return false;
+        function aplicarFiltros() {
 
-    }
-
-
-    /*
-       IMPORTANTE:
-
-       O pagamento é confirmado pelo backend.
-
-       O index NÃO deve considerar o simples clique
-       no checkout como compra aprovada.
-
-       Depois vamos conectar esta função à estrutura
-       definitiva de compras do Firebase/Cloudflare.
-    */
-
-    async function carregarComprasUsuario() {
-
-        /*
-           Deixamos preparada.
-
-           A confirmação real será feita pelo backend
-           da InfinitePay.
-
-           Não liberamos conteúdo apenas porque o
-           usuário abriu o checkout.
-        */
-
-        if (
-            !auth.currentUser
-        ) {
-
-            titulosComprados.clear();
-
-        }
-
-    }
-
-
-    /* ==================================================
-       INFINITEPAY
-    ================================================== */
-
-    async function solicitarPix(item) {
-
-        if (
-            !auth.currentUser
-        ) {
-
-            fecharModais();
-
-
-            $("loginModal")
-                .classList
-                .remove("hidden");
-
-
-            mostrarNotificacao(
-                "Faça login para realizar a compra."
-            );
-
-
-            return;
-
-        }
-
-
-        const valor =
-            numeroSeguro(
-                item.preco
-            );
-
-
-        if (
-            valor < 1
-        ) {
-
-            mostrarNotificacao(
-                "Este conteúdo está sem preço válido."
-            );
-
-
-            return;
-
-        }
-
-
-        try {
-
-            mostrarNotificacao(
-                "Gerando pagamento..."
-            );
-
-
-            const payload = {
-
-                uid:
-                    auth.currentUser.uid,
-
-                email:
-                    auth.currentUser.email ||
-                    "",
-
-                itemId:
-                    item.id,
-
-                colecao:
-                    item.colecao,
-
-                titulo:
-                    item.titulo,
-
-                tag:
-                    item.tag,
-
-                preco:
-                    valor,
-
-                valor:
-                    valor
-
-            };
-
-
-            console.log(
-                "💳 Criando compra:",
-                payload
-            );
-
-
-            const resposta =
-                await fetch(
-                    "/criar-compra-pix",
-                    {
-
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify(
-                                payload
-                            )
-
-                    }
+            const campo =
+                document.getElementById(
+                    "busca"
                 );
 
 
             const texto =
-                await resposta.text();
+                campo
+                    ? campo.value
+                        .toLowerCase()
+                        .trim()
+                    : "";
 
 
-            let dados;
-
-
-            try {
-
-                dados =
-                    JSON.parse(
-                        texto
-                    );
-
-            }
-
-            catch {
-
-                dados = {
-                    success: false,
-                    error:
-                        texto ||
-                        "Resposta inválida do servidor."
-                };
-
-            }
-
-
-            console.log(
-                "💳 Resposta:",
-                resposta.status,
-                dados
-            );
-
-
-            if (
-                !resposta.ok
-            ) {
-
-                mostrarNotificacao(
-                    dados.error ||
-                    `Erro HTTP ${resposta.status}`
+            const chip =
+                document.querySelector(
+                    "#filtros .chip.ativo"
                 );
 
 
-                return;
-
-            }
-
-
-            if (
-                dados.success &&
-                dados.checkout_url
-            ) {
-
-                fecharModais();
+            const genero =
+                chip?.dataset.genero ||
+                "Todos";
 
 
-                mostrarNotificacao(
-                    "Pagamento criado. Redirecionando..."
-                );
+            document
+                .querySelectorAll(
+                    ".movie-card"
+                )
+                .forEach(
+                    card => {
+
+                        const titulo =
+                            card.dataset.titulo ||
+                            "";
 
 
-                setTimeout(
-                    () => {
-
-                        window.location.href =
-                            dados.checkout_url;
-
-                    },
-                    500
-                );
+                        const categoria =
+                            card.dataset.categoria ||
+                            "";
 
 
-                return;
-
-            }
-
-
-            mostrarNotificacao(
-                dados.error ||
-                "Não foi possível criar o checkout."
-            );
-
-        }
-
-        catch (erro) {
-
-            console.error(
-                "❌ Erro no pagamento:",
-                erro
-            );
+                        const buscaOk =
+                            !texto ||
+                            titulo.includes(texto);
 
 
-            mostrarNotificacao(
-                "Falha na conexão com o servidor de pagamento."
-            );
-
-        }
-
-    }
+                        const generoOk =
+                            genero === "Todos" ||
+                            categoria === genero;
 
 
-    /* ==================================================
-       FECHAR MODAIS
-    ================================================== */
-
-    function fecharModais() {
-
-        document
-            .querySelectorAll(
-                ".modal"
-            )
-            .forEach(
-                modal =>
-                    modal.classList
-                        .add("hidden")
-            );
-
-
-        if (
-            intervaloAnuncio
-        ) {
-
-            clearInterval(
-                intervaloAnuncio
-            );
-
-
-            intervaloAnuncio =
-                null;
-
-        }
-
-    }
-
-
-    window.fecharModais =
-        fecharModais;
-
-
-    $("btnFecharDetalhes")
-        .onclick =
-        fecharModais;
-
-
-    $("btnCancelarAd")
-        .onclick =
-        fecharModais;
-
-
-    $("btnCancelarLogin")
-        .onclick =
-        fecharModais;
-
-
-    /*
-       Fechar clicando fora da caixa.
-    */
-
-    document
-        .querySelectorAll(
-            ".modal"
-        )
-        .forEach(
-            modal => {
-
-                modal.addEventListener(
-                    "click",
-                    evento => {
-
-                        if (
-                            evento.target ===
-                            modal
-                        ) {
-
-                            fecharModais();
-
-                        }
+                        card.style.display =
+                            buscaOk &&
+                            generoOk
+                                ? ""
+                                : "none";
 
                     }
                 );
 
+        }
+
+
+        document
+            .getElementById("busca")
+            ?.addEventListener(
+                "input",
+                aplicarFiltros
+            );
+
+
+        document
+            .getElementById("filtros")
+            ?.addEventListener(
+                "click",
+                evento => {
+
+                    const chip =
+                        evento.target.closest(
+                            ".chip"
+                        );
+
+
+                    if (!chip) {
+
+                        return;
+
+                    }
+
+
+                    document
+                        .querySelectorAll(
+                            "#filtros .chip"
+                        )
+                        .forEach(
+                            elemento =>
+                                elemento.classList
+                                    .remove("ativo")
+                        );
+
+
+                    chip.classList.add(
+                        "ativo"
+                    );
+
+
+                    aplicarFiltros();
+
+                }
+            );
+
+
+        /* =========================================
+           HERO
+        ========================================= */
+
+        function carregarDestaque() {
+
+            const destaque =
+                catalogo.find(
+                    item =>
+                        item.destaque === true
+                ) ||
+                catalogo[0];
+
+
+            if (!destaque) {
+
+                return;
+
             }
-        );
 
 
-    /*
-       ESC
-    */
+            filmeAtual =
+                destaque;
 
-    document.addEventListener(
-        "keydown",
-        evento => {
 
-            if (
-                evento.key === "Escape"
-            ) {
+            document
+                .getElementById("heroTitle")
+                .textContent =
+                destaque.titulo ||
+                "V8 Play+";
 
-                fecharModais();
+
+            document
+                .getElementById("heroDesc")
+                .textContent =
+                destaque.descricao ||
+                "Assista agora no V8 Play+.";
+
+
+            const hero =
+                document.getElementById(
+                    "hero"
+                );
+
+
+            const imagem =
+                destaque.banner ||
+                destaque.capa;
+
+
+            if (imagem) {
+
+                hero.style.backgroundImage =
+                    `url("${imagem}")`;
 
             }
 
         }
-    );
 
 
-    /* ==================================================
-       HERO
-    ================================================== */
+        /* =========================================
+           DETALHES
+        ========================================= */
 
-    $("heroAssistir")
-        .onclick =
-        () => {
+        function abrirDetalhes(item) {
 
-            if (
-                filmeAtual
-            ) {
-
-                abrirDetalhes(
-                    filmeAtual
-                );
-
-            }
-
-        };
+            filmeAtual =
+                item;
 
 
-    $("heroInfo")
-        .onclick =
-        () => {
-
-            if (
-                filmeAtual
-            ) {
-
-                abrirDetalhes(
-                    filmeAtual
-                );
-
-            }
-
-        };
-
-
-    /* ==================================================
-       AUTENTICAÇÃO
-    ================================================== */
-
-    $("alternarCadastro")
-        .onclick =
-        () => {
-
-            modoCadastro =
-                !modoCadastro;
-
-
-            $("tituloAuth")
-                .innerText =
-                modoCadastro
-                    ? "Criar nova conta"
-                    : "Entrar no V8 Play+";
-
-
-            $("doLogin")
-                .innerText =
-                modoCadastro
-                    ? "Criar conta"
-                    : "Entrar";
-
-
-            $("alternarCadastro")
-                .innerText =
-                modoCadastro
-                    ? "Já possui conta? Fazer login"
-                    : "Ainda não tem conta? Criar conta";
-
-
-            $("erroAuth")
-                .innerText =
-                "";
-
-        };
-
-
-    /* ==================================================
-       RESET SENHA
-    ================================================== */
-
-    $("btnEsqueciSenha")
-        .onclick =
-        async () => {
-
-            const email =
-                $("email")
-                    .value
-                    .trim();
-
-
-            const erro =
-                $("erroAuth");
-
-
-            if (!email) {
-
-                erro.innerText =
-                    "Informe seu e-mail.";
-
-                return;
-
-            }
-
-
-            try {
-
-                await sendPasswordResetEmail(
-                    auth,
-                    email
+            const imagem =
+                document.getElementById(
+                    "detImg"
                 );
 
 
-                erro.innerText =
-                    "";
-
-
-                mostrarNotificacao(
-                    "E-mail de redefinição enviado."
-                );
-
-            }
-
-            catch (erroFirebase) {
-
-                console.error(
-                    erroFirebase
-                );
-
-
-                erro.innerText =
-                    "Não foi possível enviar o e-mail.";
-
-            }
-
-        };
-
-
-    /* ==================================================
-       LOGIN / CADASTRO
-    ================================================== */
-
-    $("doLogin")
-        .onclick =
-        async () => {
-
-            const email =
-                $("email")
-                    .value
-                    .trim();
-
-
-            const senha =
-                $("password")
-                    .value;
-
-
-            const erro =
-                $("erroAuth");
-
-
-            erro.innerText =
+            imagem.src =
+                item.banner ||
+                item.capa ||
                 "";
 
 
+            document
+                .getElementById("detTitulo")
+                .textContent =
+                item.titulo || "";
+
+
+            document
+                .getElementById("detAno")
+                .textContent =
+                item.ano || "";
+
+
+            document
+                .getElementById("detCategoria")
+                .textContent =
+                item.categoria ||
+                item.tipo ||
+                "";
+
+
+            document
+                .getElementById("detDescricao")
+                .textContent =
+                item.descricao ||
+                "Sem descrição disponível.";
+
+
+            const container =
+                document.getElementById(
+                    "detBtnsContainer"
+                );
+
+
+            container.innerHTML =
+                "";
+
+
+            const tag =
+                obterTagItem(item);
+
+
+            /* =========================
+               FREE
+            ========================= */
+
             if (
-                !email ||
-                !senha
+                tag === "free" ||
+                tag === "gratis"
             ) {
 
-                erro.innerText =
-                    "Preencha todos os campos.";
+                const assistir =
+                    criarBotao(
+                        "btn-ad-action",
+                        "fa-play",
+                        "Assistir com anúncio"
+                    );
 
-                return;
 
-            }
+                const baixar =
+                    criarBotao(
+                        "btn-ad-action",
+                        "fa-download",
+                        "Baixar com anúncio"
+                    );
 
 
-            try {
-
-                if (
-                    modoCadastro
-                ) {
-
-                    const cred =
-                        await createUserWithEmailAndPassword(
-                            auth,
-                            email,
-                            senha
+                assistir.onclick =
+                    () =>
+                        pedirPermissaoAnuncio(
+                            "assistir"
                         );
 
 
-                    await setDoc(
-                        doc(
-                            db,
-                            "usuarios",
-                            cred.user.uid
-                        ),
+                baixar.onclick =
+                    () =>
+                        pedirPermissaoAnuncio(
+                            "baixar"
+                        );
+
+
+                container.appendChild(
+                    assistir
+                );
+
+
+                container.appendChild(
+                    baixar
+                );
+
+            }
+
+
+            /* =========================
+               PAGO
+            ========================= */
+
+            else {
+
+                const valor =
+                    obterPrecoItem(item);
+
+
+                const comprado =
+                    titulosComprados.has(
+                        item.id
+                    );
+
+
+                if (comprado) {
+
+                    const assistir =
+                        criarBotao(
+                            "btn-login",
+                            "fa-play",
+                            "Assistir agora"
+                        );
+
+
+                    const baixar =
+                        criarBotao(
+                            "btn-info",
+                            "fa-download",
+                            "Baixar arquivo"
+                        );
+
+
+                    assistir.onclick =
+                        () =>
+                            irParaPlayer(item);
+
+
+                    baixar.onclick =
+                        () =>
+                            executarDownload(
+                                item
+                            );
+
+
+                    container.appendChild(
+                        assistir
+                    );
+
+
+                    container.appendChild(
+                        baixar
+                    );
+
+                }
+
+                else {
+
+                    const classe =
+                        tag === "prime"
+                            ? "btn-pix-prime"
+                            : "btn-pix-premium";
+
+
+                    const texto =
+                        tag === "prime"
+                            ? "Comprar PRIME"
+                            : "Comprar PREMIUM";
+
+
+                    const comprar =
+                        criarBotao(
+                            classe,
+                            "fa-pix",
+                            `${texto} — ${formatarPreco(valor)}`
+                        );
+
+
+                    comprar.onclick =
+                        () =>
+                            solicitarPix(
+                                item,
+                                tag,
+                                valor
+                            );
+
+
+                    container.appendChild(
+                        comprar
+                    );
+
+                }
+
+            }
+
+
+            /* =========================
+               TRAILER
+            ========================= */
+
+            if (item.trailer) {
+
+                const trailer =
+                    criarBotao(
+                        "btn-info",
+                        "fa-film",
+                        "Trailer"
+                    );
+
+
+                trailer.onclick =
+                    () => {
+
+                        fecharModais();
+
+
+                        window.location.href =
+                            `player.html?id=${encodeURIComponent(
+                                item.id
+                            )}&colecao=${encodeURIComponent(
+                                item.colecao
+                            )}&trailer=true`;
+
+                    };
+
+
+                container.appendChild(
+                    trailer
+                );
+
+            }
+
+
+            document
+                .getElementById(
+                    "detalheModal"
+                )
+                .classList
+                .remove("hidden");
+
+        }
+
+
+        function criarBotao(
+            classe,
+            icone,
+            texto
+        ) {
+
+            const botao =
+                document.createElement(
+                    "button"
+                );
+
+
+            botao.className =
+                classe;
+
+
+            botao.innerHTML =
+                `
+                    <i class="fa-solid fa-${icone}"></i>
+                    ${texto}
+                `;
+
+
+            return botao;
+
+        }
+
+
+        /* =========================================
+           PEDIDO DE PERMISSÃO
+        ========================================= */
+
+        function pedirPermissaoAnuncio(tipo) {
+
+            acaoAnuncioPendente =
+                tipo;
+
+
+            document
+                .getElementById(
+                    "detalheModal"
+                )
+                .classList
+                .add("hidden");
+
+
+            document
+                .getElementById(
+                    "permissaoAnuncioModal"
+                )
+                .classList
+                .remove("hidden");
+
+        }
+
+
+        document
+            .getElementById(
+                "btnPermitirAnuncios"
+            )
+            .onclick =
+            () => {
+
+                document
+                    .getElementById(
+                        "permissaoAnuncioModal"
+                    )
+                    .classList
+                    .add("hidden");
+
+
+                iniciarFluxoAnuncio(
+                    acaoAnuncioPendente
+                );
+
+            };
+
+
+        /* =========================================
+           ANÚNCIO
+        ========================================= */
+
+        function iniciarFluxoAnuncio(tipo) {
+
+            document
+                .getElementById("adModal")
+                .classList
+                .remove("hidden");
+
+
+            const botao =
+                document.getElementById(
+                    "btnConfirmarAd"
+                );
+
+
+            let contador = 5;
+
+
+            botao.disabled =
+                true;
+
+
+            botao.style.opacity =
+                ".5";
+
+
+            botao.innerHTML =
+                `Aguarde ${contador}s...`;
+
+
+            const intervalo =
+                setInterval(
+                    () => {
+
+                        contador--;
+
+
+                        if (contador > 0) {
+
+                            botao.innerHTML =
+                                `Aguarde ${contador}s...`;
+
+                        }
+
+                        else {
+
+                            clearInterval(
+                                intervalo
+                            );
+
+
+                            botao.disabled =
+                                false;
+
+
+                            botao.style.opacity =
+                                "1";
+
+
+                            botao.innerHTML =
+                                tipo === "assistir"
+                                    ? `
+                                        <i class="fa-solid fa-play"></i>
+                                        Continuar
+                                      `
+                                    : `
+                                        <i class="fa-solid fa-download"></i>
+                                        Continuar download
+                                      `;
+
+                        }
+
+                    },
+                    1000
+                );
+
+        }
+
+
+        document
+            .getElementById(
+                "btnConfirmarAd"
+            )
+            .onclick =
+            () => {
+
+                if (!filmeAtual) {
+
+                    return;
+
+                }
+
+
+                const acao =
+                    acaoAnuncioPendente;
+
+
+                fecharModais();
+
+
+                if (
+                    acao === "assistir"
+                ) {
+
+                    irParaPlayer(
+                        filmeAtual
+                    );
+
+                }
+
+                else {
+
+                    executarDownload(
+                        filmeAtual
+                    );
+
+                }
+
+            };
+
+
+        /* =========================================
+           PLAYER
+        ========================================= */
+
+        function irParaPlayer(item) {
+
+            if (!item?.id) {
+
+                mostrarNotificacao(
+                    "Conteúdo inválido."
+                );
+
+                return;
+
+            }
+
+
+            fecharModais();
+
+
+            window.location.href =
+                `player.html?id=${encodeURIComponent(
+                    item.id
+                )}&colecao=${encodeURIComponent(
+                    item.colecao
+                )}`;
+
+        }
+
+
+        /* =========================================
+           DOWNLOAD
+        ========================================= */
+
+        function executarDownload(item) {
+
+            const url =
+                item.arquivoDownload ||
+                item.video1 ||
+                item.video ||
+                "";
+
+
+            if (!url) {
+
+                mostrarNotificacao(
+                    "Link de download não disponível."
+                );
+
+                return;
+
+            }
+
+
+            window.open(
+                url,
+                "_blank",
+                "noopener,noreferrer"
+            );
+
+        }
+
+
+        /* =========================================
+           INFINITEPAY
+        ========================================= */
+
+        async function solicitarPix(
+            item,
+            tag,
+            valor
+        ) {
+
+            if (!auth.currentUser) {
+
+                mostrarNotificacao(
+                    "Faça login para continuar."
+                );
+
+
+                fecharModais();
+
+
+                document
+                    .getElementById(
+                        "loginModal"
+                    )
+                    .classList
+                    .remove("hidden");
+
+
+                return;
+
+            }
+
+
+            if (
+                !["prime", "premium"]
+                    .includes(tag)
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                Number(valor) < 1
+            ) {
+
+                mostrarNotificacao(
+                    "Preço inválido. Verifique o Admin."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                mostrarNotificacao(
+                    "Gerando checkout..."
+                );
+
+
+                const payload = {
+
+                    uid:
+                        auth.currentUser.uid,
+
+                    email:
+                        auth.currentUser.email ||
+                        "",
+
+                    itemId:
+                        item.id,
+
+                    colecao:
+                        item.colecao,
+
+                    tag:
+                        tag,
+
+                    valor:
+                        Number(valor)
+
+                };
+
+
+                console.log(
+                    "Pagamento:",
+                    payload
+                );
+
+
+                const resposta =
+                    await fetch(
+                        "/criar-compra-pix",
                         {
 
-                            email,
+                            method:
+                                "POST",
 
-                            admin: false,
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
 
-                            criadoEm:
-                                serverTimestamp()
+                            body:
+                                JSON.stringify(
+                                    payload
+                                )
 
                         }
                     );
 
 
-                    mostrarNotificacao(
-                        "Conta criada com sucesso."
-                    );
+                const texto =
+                    await resposta.text();
+
+
+                let dados;
+
+
+                try {
+
+                    dados =
+                        JSON.parse(
+                            texto
+                        );
 
                 }
 
-                else {
+                catch {
 
-                    await signInWithEmailAndPassword(
-                        auth,
-                        email,
-                        senha
-                    );
-
-
-                    mostrarNotificacao(
-                        "Login realizado com sucesso."
-                    );
+                    dados = {
+                        success: false,
+                        error:
+                            texto ||
+                            "Resposta inválida."
+                    };
 
                 }
 
 
-                fecharModais();
-
-
-                await carregarComprasUsuario();
-
-            }
-
-            catch (erroFirebase) {
-
-                console.error(
-                    "❌ Erro de autenticação:",
-                    erroFirebase
+                console.log(
+                    "Checkout:",
+                    resposta.status,
+                    dados
                 );
 
 
-                const codigo =
-                    erroFirebase.code ||
-                    "";
+                if (!resposta.ok) {
+
+                    mostrarNotificacao(
+                        dados.error ||
+                        `Erro HTTP ${resposta.status}`
+                    );
+
+                    return;
+
+                }
 
 
                 if (
-                    codigo.includes(
-                        "invalid-credential"
-                    )
+                    dados.success &&
+                    dados.checkout_url
                 ) {
 
-                    erro.innerText =
-                        "E-mail ou senha incorretos.";
+                    fecharModais();
+
+
+                    window.location.href =
+                        dados.checkout_url;
+
+
+                    return;
 
                 }
-
-                else if (
-                    codigo.includes(
-                        "email-already-in-use"
-                    )
-                ) {
-
-                    erro.innerText =
-                        "Este e-mail já está cadastrado.";
-
-                }
-
-                else if (
-                    codigo.includes(
-                        "weak-password"
-                    )
-                ) {
-
-                    erro.innerText =
-                        "A senha deve ter pelo menos 6 caracteres.";
-
-                }
-
-                else {
-
-                    erro.innerText =
-                        "Falha na autenticação.";
-
-                }
-
-            }
-
-        };
-
-
-    /* ==================================================
-       BOTÃO LOGIN
-    ================================================== */
-
-    $("authBtn")
-        .onclick =
-        async () => {
-
-            if (
-                auth.currentUser
-            ) {
-
-                await signOut(
-                    auth
-                );
-
-
-                titulosComprados.clear();
 
 
                 mostrarNotificacao(
-                    "Sessão encerrada."
+                    dados.error ||
+                    "A InfinitePay não retornou o checkout."
                 );
 
             }
 
-            else {
-
-                $("loginModal")
-                    .classList
-                    .remove("hidden");
-
-            }
-
-        };
-
-
-    /* ==================================================
-       AUTH STATE
-    ================================================== */
-
-    onAuthStateChanged(
-        auth,
-        async user => {
-
-            const btn =
-                $("authBtn");
-
-
-            if (user) {
-
-                const nome =
-                    user.email
-                        ? user.email
-                            .split("@")[0]
-                        : "Usuário";
-
-
-                btn.innerText =
-                    `Sair (${nome})`;
-
-
-                await carregarComprasUsuario();
-
-            }
-
-            else {
-
-                btn.innerText =
-                    "Entrar";
-
-
-                titulosComprados.clear();
-
-            }
-
-        }
-    );
-
-
-    /* ==================================================
-       NOTIFICAÇÃO
-    ================================================== */
-
-    let timeoutNotificacao = null;
-
-
-    function mostrarNotificacao(
-        mensagem
-    ) {
-
-        const box =
-            $("notification");
-
-
-        const texto =
-            $("notificationText");
-
-
-        texto.innerText =
-            mensagem;
-
-
-        box.classList
-            .remove("hidden");
-
-
-        if (
-            timeoutNotificacao
-        ) {
-
-            clearTimeout(
-                timeoutNotificacao
-            );
-
-        }
-
-
-        timeoutNotificacao =
-            setTimeout(
-                () => {
-
-                    box.classList
-                        .add("hidden");
-
-                },
-                3500
-            );
-
-    }
-
-
-    /* ==================================================
-       INICIALIZAÇÃO
-    ================================================== */
-
-    console.log(
-        "🚀 V8 Play+ iniciado"
-    );
-
-
-    carregarCatalogo()
-        .catch(
-            erro => {
+            catch (erro) {
 
                 console.error(
-                    "❌ Erro fatal:",
                     erro
                 );
 
 
                 mostrarNotificacao(
-                    "Não foi possível carregar o catálogo."
+                    "Falha na conexão com o servidor de pagamento."
                 );
+
+            }
+
+        }
+
+
+        /* =========================================
+           FECHAR MODAIS
+        ========================================= */
+
+        window.fecharModais =
+            function () {
+
+                document
+                    .querySelectorAll(
+                        ".modal"
+                    )
+                    .forEach(
+                        modal =>
+                            modal.classList
+                                .add("hidden")
+                    );
+
+            };
+
+
+        document
+            .querySelectorAll(".modal")
+            .forEach(
+                modal => {
+
+                    modal.addEventListener(
+                        "click",
+                        evento => {
+
+                            if (
+                                evento.target === modal
+                            ) {
+
+                                modal.classList
+                                    .add("hidden");
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+
+        /* =========================================
+           HERO
+        ========================================= */
+
+        document
+            .getElementById(
+                "heroAssistir"
+            )
+            .onclick =
+            () => {
+
+                if (filmeAtual) {
+
+                    abrirDetalhes(
+                        filmeAtual
+                    );
+
+                }
+
+            };
+
+
+        document
+            .getElementById(
+                "heroInfo"
+            )
+            .onclick =
+            () => {
+
+                if (filmeAtual) {
+
+                    abrirDetalhes(
+                        filmeAtual
+                    );
+
+                }
+
+            };
+
+
+        /* =========================================
+           CADASTRO
+        ========================================= */
+
+        document
+            .getElementById(
+                "alternarCadastro"
+            )
+            .onclick =
+            () => {
+
+                modoCadastro =
+                    !modoCadastro;
+
+
+                document
+                    .getElementById(
+                        "tituloAuth"
+                    )
+                    .textContent =
+                    modoCadastro
+                        ? "Criar nova conta"
+                        : "Entrar no V8 Play+";
+
+
+                document
+                    .getElementById(
+                        "doLogin"
+                    )
+                    .textContent =
+                    modoCadastro
+                        ? "Criar conta"
+                        : "Entrar";
+
+
+                document
+                    .getElementById(
+                        "alternarCadastro"
+                    )
+                    .textContent =
+                    modoCadastro
+                        ? "Já possui conta? Fazer login"
+                        : "Ainda não tem conta? Criar conta";
+
+
+                document
+                    .getElementById(
+                        "erroAuth"
+                    )
+                    .textContent =
+                    "";
+
+            };
+
+
+        /* =========================================
+           ESQUECI SENHA
+        ========================================= */
+
+        document
+            .getElementById(
+                "btnEsqueciSenha"
+            )
+            .onclick =
+            async () => {
+
+                const email =
+                    document
+                        .getElementById(
+                            "email"
+                        )
+                        .value
+                        .trim();
+
+
+                const erro =
+                    document
+                        .getElementById(
+                            "erroAuth"
+                        );
+
+
+                if (!email) {
+
+                    erro.textContent =
+                        "Informe seu e-mail.";
+
+                    return;
+
+                }
+
+
+                try {
+
+                    await sendPasswordResetEmail(
+                        auth,
+                        email
+                    );
+
+
+                    erro.textContent =
+                        "";
+
+
+                    mostrarNotificacao(
+                        "E-mail de redefinição enviado."
+                    );
+
+                }
+
+                catch (erroFirebase) {
+
+                    console.error(
+                        erroFirebase
+                    );
+
+
+                    erro.textContent =
+                        "Não foi possível enviar o e-mail.";
+
+                }
+
+            };
+
+
+        /* =========================================
+           LOGIN / CADASTRO
+        ========================================= */
+
+        document
+            .getElementById(
+                "doLogin"
+            )
+            .onclick =
+            async () => {
+
+                const email =
+                    document
+                        .getElementById(
+                            "email"
+                        )
+                        .value
+                        .trim();
+
+
+                const senha =
+                    document
+                        .getElementById(
+                            "password"
+                        )
+                        .value;
+
+
+                const erro =
+                    document
+                        .getElementById(
+                            "erroAuth"
+                        );
+
+
+                erro.textContent =
+                    "";
+
+
+                if (
+                    !email ||
+                    !senha
+                ) {
+
+                    erro.textContent =
+                        "Preencha todos os campos.";
+
+                    return;
+
+                }
+
+
+                try {
+
+                    if (modoCadastro) {
+
+                        const credencial =
+                            await createUserWithEmailAndPassword(
+                                auth,
+                                email,
+                                senha
+                            );
+
+
+                        await setDoc(
+                            doc(
+                                db,
+                                "usuarios",
+                                credencial.user.uid
+                            ),
+                            {
+
+                                email:
+                                    email,
+
+                                admin:
+                                    false,
+
+                                criadoEm:
+                                    serverTimestamp()
+
+                            }
+                        );
+
+                    }
+
+                    else {
+
+                        await signInWithEmailAndPassword(
+                            auth,
+                            email,
+                            senha
+                        );
+
+                    }
+
+
+                    fecharModais();
+
+
+                    mostrarNotificacao(
+                        modoCadastro
+                            ? "Conta criada com sucesso."
+                            : "Login realizado."
+                    );
+
+                }
+
+                catch (erroFirebase) {
+
+                    console.error(
+                        erroFirebase
+                    );
+
+
+                    erro.textContent =
+                        traduzirErroAuth(
+                            erroFirebase
+                        );
+
+                }
+
+            };
+
+
+        function traduzirErroAuth(erro) {
+
+            switch (
+                erro.code
+            ) {
+
+                case "auth/invalid-email":
+                    return "E-mail inválido.";
+
+                case "auth/user-not-found":
+                    return "Usuário não encontrado.";
+
+                case "auth/wrong-password":
+                    return "Senha incorreta.";
+
+                case "auth/invalid-credential":
+                    return "E-mail ou senha incorretos.";
+
+                case "auth/email-already-in-use":
+                    return "Este e-mail já está cadastrado.";
+
+                case "auth/weak-password":
+                    return "A senha deve possuir pelo menos 6 caracteres.";
+
+                default:
+                    return "Falha na autenticação.";
+
+            }
+
+        }
+
+
+        /* =========================================
+           BOTÃO LOGIN
+        ========================================= */
+
+        document
+            .getElementById(
+                "authBtn"
+            )
+            .onclick =
+            async () => {
+
+                if (
+                    auth.currentUser
+                ) {
+
+                    await signOut(
+                        auth
+                    );
+
+
+                    mostrarNotificacao(
+                        "Sessão encerrada."
+                    );
+
+                }
+
+                else {
+
+                    document
+                        .getElementById(
+                            "loginModal"
+                        )
+                        .classList
+                        .remove("hidden");
+
+                }
+
+            };
+
+
+        /* =========================================
+           AUTH STATE
+        ========================================= */
+
+        onAuthStateChanged(
+            auth,
+            user => {
+
+                const botao =
+                    document.getElementById(
+                        "authBtn"
+                    );
+
+
+                if (user) {
+
+                    const nome =
+                        user.email
+                            ? user.email
+                                .split("@")[0]
+                            : "Usuário";
+
+
+                    botao.textContent =
+                        `Sair (${nome})`;
+
+                }
+
+                else {
+
+                    botao.textContent =
+                        "Entrar";
+
+                }
 
             }
         );
 
-</script>
+
+        /* =========================================
+           NOTIFICAÇÃO
+        ========================================= */
+
+        let timerNotificacao = null;
+
+
+        function mostrarNotificacao(
+            mensagem
+        ) {
+
+            const caixa =
+                document.getElementById(
+                    "notification"
+                );
+
+
+            const texto =
+                document.getElementById(
+                    "notificationText"
+                );
+
+
+            if (!caixa || !texto) {
+
+                return;
+
+            }
+
+
+            texto.textContent =
+                mensagem;
+
+
+            caixa.classList
+                .remove("hidden");
+
+
+            clearTimeout(
+                timerNotificacao
+            );
+
+
+            timerNotificacao =
+                setTimeout(
+                    () => {
+
+                        caixa.classList
+                            .add("hidden");
+
+                    },
+                    3500
+                );
+
+        }
+
+
+        /* =========================================
+           INICIALIZAÇÃO
+        ========================================= */
+
+        console.log(
+            "🔥 V8 Play+ iniciando..."
+        );
+
+
+        carregarCatalogo()
+            .then(
+                () => {
+
+                    console.log(
+                        "🚀 V8 Play+ iniciado."
+                    );
+
+                }
+            )
+            .catch(
+                erro => {
+
+                    console.error(
+                        "Erro ao iniciar:",
+                        erro
+                    );
+
+                    mostrarNotificacao(
+                        "Erro ao carregar o catálogo."
+                    );
+
+                }
+            );
+
+    </script>
 
 </body>
-
 </html>
