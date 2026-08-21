@@ -4,26 +4,22 @@
 <head>
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>V8 Play+ | Player</title>
 
-    <link rel="preconnect"
-        href="https://fonts.googleapis.com">
-
-    <link rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin>
-
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+        rel="stylesheet"
+    >
 
     <link
         rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    >
 
     <style>
 
@@ -31,44 +27,42 @@
             --primary: #00d4ff;
             --primary-hover: #00a2c7;
 
-            --bg: #050507;
-            --surface: #101014;
-            --surface2: #18181d;
+            --bg-dark: #080809;
+            --bg-card: #121216;
+            --bg-modal: #17171c;
 
             --text: #ffffff;
-            --text2: #aaaaaa;
+            --text-secondary: #aaa;
 
             --danger: #ff4d4d;
-        }
 
+            --radius: 12px;
+        }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-
 
         html,
         body {
             width: 100%;
-            height: 100%;
-            background: var(--bg);
+            min-height: 100%;
+            background: var(--bg-dark);
             color: var(--text);
-            font-family: "Poppins", sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
-
 
         body {
             overflow-x: hidden;
         }
 
-
         /* =====================================================
            HEADER
         ===================================================== */
 
-        .player-header {
+        header {
 
             position: fixed;
 
@@ -85,22 +79,23 @@
 
             gap: 15px;
 
-            padding: 0 30px;
+            padding: 10px 5%;
 
             z-index: 1000;
 
             background:
                 linear-gradient(
                     to bottom,
-                    rgba(5,5,7,.98),
-                    rgba(5,5,7,.75),
-                    transparent
+                    rgba(8,8,9,.97),
+                    rgba(8,8,9,.75)
                 );
 
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
 
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.05);
         }
-
 
         .btn-voltar {
 
@@ -112,23 +107,21 @@
             align-items: center;
             justify-content: center;
 
-            border: 1px solid rgba(255,255,255,.12);
+            border: none;
+
+            border-radius: 50%;
 
             background:
                 rgba(255,255,255,.08);
 
             color: white;
 
-            border-radius: 50%;
-
             cursor: pointer;
 
+            font-size: 17px;
+
             transition: .2s;
-
-            font-size: 16px;
-
         }
-
 
         .btn-voltar:hover {
 
@@ -136,47 +129,54 @@
 
             color: #000;
 
-            transform: scale(1.05);
-
+            transform: translateX(-2px);
         }
 
+        .logo {
 
-        .player-brand {
+            display: flex;
 
-            font-size: 1.25rem;
+            align-items: center;
+
+            text-decoration: none;
+
+            color: white;
 
             font-weight: 800;
 
-            white-space: nowrap;
-
+            font-size: 1.35rem;
         }
 
-
-        .player-brand span {
+        .logo span {
 
             color: var(--primary);
-
         }
 
+        .logo-img {
+
+            height: 40px;
+
+            width: auto;
+
+            object-fit: contain;
+
+            margin-right: 8px;
+        }
 
         /* =====================================================
            PLAYER
         ===================================================== */
 
-        .player-page {
+        main {
 
-            min-height: 100vh;
+            width: 100%;
 
             padding-top: 70px;
 
-            display: flex;
-
-            flex-direction: column;
-
+            min-height: 100vh;
         }
 
-
-        .player-container {
+        .player-wrapper {
 
             width: 100%;
 
@@ -184,39 +184,35 @@
 
             margin: 0 auto;
 
-            padding: 20px;
-
+            padding: 20px 4% 0;
         }
 
-
-        .video-wrapper {
+        .player-container {
 
             width: 100%;
-
-            position: relative;
-
-            background: #000;
-
-            border-radius: 12px;
-
-            overflow: hidden;
-
-            box-shadow:
-                0 20px 60px rgba(0,0,0,.55);
 
             aspect-ratio: 16 / 9;
 
+            background: #000;
+
+            border-radius: var(--radius);
+
+            overflow: hidden;
+
+            position: relative;
+
+            box-shadow:
+                0 15px 50px
+                rgba(0,0,0,.55);
+
+            border:
+                1px solid
+                rgba(255,255,255,.06);
         }
 
-
-        /* =====================================================
-           VIDEO
-        ===================================================== */
-
-        #videoPlayer {
+        video {
 
             width: 100%;
-
             height: 100%;
 
             display: block;
@@ -224,28 +220,19 @@
             background: #000;
 
             object-fit: contain;
-
         }
 
-
-        /* =====================================================
-           IFRAME
-        ===================================================== */
-
-        #iframePlayer {
+        iframe {
 
             width: 100%;
-
             height: 100%;
 
             border: none;
 
-            display: none;
+            display: block;
 
             background: #000;
-
         }
-
 
         /* =====================================================
            LOADING
@@ -257,33 +244,34 @@
 
             inset: 0;
 
+            z-index: 20;
+
             display: flex;
 
-            flex-direction: column;
+            align-items: center;
 
             justify-content: center;
 
-            align-items: center;
+            flex-direction: column;
 
             gap: 15px;
 
             background: #000;
-
-            z-index: 10;
-
         }
 
+        #loading.hidden {
+
+            display: none;
+        }
 
         .spinner {
 
             width: 48px;
-
             height: 48px;
 
             border-radius: 50%;
 
             border:
-
                 4px solid
                 rgba(255,255,255,.15);
 
@@ -292,9 +280,7 @@
 
             animation:
                 girar .8s linear infinite;
-
         }
-
 
         @keyframes girar {
 
@@ -304,86 +290,79 @@
 
         }
 
-
         #loadingText {
 
             color: #aaa;
 
             font-size: .9rem;
 
+            text-align: center;
         }
-
 
         /* =====================================================
            ERRO
         ===================================================== */
 
-        #errorBox {
+        #erroPlayer {
 
             position: absolute;
 
             inset: 0;
 
-            z-index: 20;
+            z-index: 30;
 
-            display: none;
-
-            flex-direction: column;
-
-            justify-content: center;
+            display: flex;
 
             align-items: center;
 
+            justify-content: center;
+
             text-align: center;
 
-            padding: 30px;
+            padding: 25px;
 
             background:
-                radial-gradient(
-                    circle at center,
-                    #18181d,
-                    #050507
-                );
-
+                rgba(0,0,0,.94);
         }
 
+        #erroPlayer.hidden {
 
-        #errorBox i {
+            display: none;
+        }
+
+        .erro-box {
+
+            max-width: 500px;
+        }
+
+        .erro-box i {
 
             font-size: 48px;
 
             color: var(--danger);
 
             margin-bottom: 15px;
-
         }
 
+        .erro-box h2 {
 
-        #errorBox h2 {
+            font-size: 1.35rem;
 
-            font-size: 1.3rem;
-
-            margin-bottom: 8px;
-
+            margin-bottom: 10px;
         }
 
-
-        #errorBox p {
+        .erro-box p {
 
             color: #aaa;
 
-            max-width: 500px;
-
             font-size: .9rem;
 
-            line-height: 1.5;
+            line-height: 1.6;
 
+            margin-bottom: 20px;
         }
 
-
-        .btn-tentar {
-
-            margin-top: 20px;
+        .btn-retry {
 
             border: none;
 
@@ -391,96 +370,34 @@
 
             color: #000;
 
-            font-weight: 700;
-
             padding: 10px 20px;
 
             border-radius: 6px;
 
+            font-weight: 700;
+
             cursor: pointer;
-
         }
-
 
         /* =====================================================
            INFORMAÇÕES
         ===================================================== */
 
-        .player-info {
+        .info {
 
-            padding:
-
-                22px
-                5px
-                40px;
-
+            padding: 25px 0 50px;
         }
 
+        .info h1 {
 
-        #playerTitle {
-
-            font-size: 1.6rem;
-
-            font-weight: 700;
+            font-size: 1.8rem;
 
             margin-bottom: 8px;
 
+            font-weight: 700;
         }
 
-
-        .player-meta {
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 8px;
-
-            color: var(--text2);
-
-            font-size: .85rem;
-
-            margin-bottom: 15px;
-
-        }
-
-
-        .badge {
-
-            padding: 4px 9px;
-
-            border-radius: 5px;
-
-            background:
-                rgba(0,212,255,.12);
-
-            color: var(--primary);
-
-            border:
-                1px solid
-                rgba(0,212,255,.3);
-
-        }
-
-
-        #playerDescription {
-
-            color: #aaa;
-
-            max-width: 900px;
-
-            line-height: 1.6;
-
-            font-size: .9rem;
-
-        }
-
-
-        /* =====================================================
-           BOTÕES
-        ===================================================== */
-
-        .player-actions {
+        .meta {
 
             display: flex;
 
@@ -488,53 +405,35 @@
 
             flex-wrap: wrap;
 
-            margin-top: 20px;
+            color: var(--text-secondary);
 
+            font-size: .85rem;
+
+            margin-bottom: 15px;
         }
 
-
-        .action-btn {
+        .meta span {
 
             display: inline-flex;
 
             align-items: center;
 
-            gap: 8px;
-
-            padding: 10px 18px;
-
-            border-radius: 7px;
-
-            border: 1px solid #333;
-
-            background: #17171c;
-
-            color: white;
-
-            cursor: pointer;
-
-            font-family: inherit;
-
-            font-weight: 600;
-
-            transition: .2s;
-
+            gap: 5px;
         }
 
+        .descricao {
 
-        .action-btn:hover {
+            max-width: 850px;
 
-            border-color:
-                var(--primary);
+            color: #ccc;
 
-            background:
-                rgba(0,212,255,.1);
+            line-height: 1.7;
 
+            font-size: .92rem;
         }
-
 
         /* =====================================================
-           MENSAGEM TRAILER
+           AVISO TRAILER
         ===================================================== */
 
         .trailer-badge {
@@ -545,25 +444,72 @@
 
             gap: 6px;
 
-            background:
-                rgba(255,170,0,.12);
-
-            border:
-                1px solid
-                rgba(255,170,0,.35);
-
-            color: #ffaa00;
+            margin-bottom: 12px;
 
             padding: 5px 10px;
 
             border-radius: 5px;
 
-            font-size: .75rem;
+            background:
+                rgba(0,212,255,.12);
+
+            border:
+                1px solid
+                rgba(0,212,255,.3);
+
+            color:
+                var(--primary);
+
+            font-size: .72rem;
 
             font-weight: 700;
 
+            text-transform: uppercase;
         }
 
+        /* =====================================================
+           NOTIFICAÇÃO
+        ===================================================== */
+
+        #notification {
+
+            position: fixed;
+
+            bottom: 25px;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            z-index: 5000;
+
+            background: #1d1d22;
+
+            border:
+                1px solid
+                var(--primary);
+
+            color: white;
+
+            padding: 12px 25px;
+
+            border-radius: 30px;
+
+            font-size: .85rem;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,.5);
+
+            max-width: 90%;
+
+            text-align: center;
+        }
+
+        .hidden {
+
+            display: none !important;
+        }
 
         /* =====================================================
            MOBILE
@@ -571,71 +517,67 @@
 
         @media (max-width: 700px) {
 
-            .player-header {
+            header {
 
                 height: 60px;
 
-                padding:
-                    0 15px;
-
+                padding: 8px 4%;
             }
 
+            main {
+
+                padding-top: 60px;
+            }
 
             .btn-voltar {
 
                 width: 38px;
                 height: 38px;
-
             }
 
+            .logo {
 
-            .player-brand {
-
-                font-size: 1rem;
-
+                font-size: 1.05rem;
             }
 
+            .logo-img {
 
-            .player-page {
-
-                padding-top: 60px;
-
+                height: 34px;
             }
 
+            .player-wrapper {
+
+                padding:
+                    10px 0 0;
+            }
 
             .player-container {
 
-                padding:
-                    10px 0;
-
-            }
-
-
-            .video-wrapper {
-
                 border-radius: 0;
 
+                border-left: none;
+                border-right: none;
             }
 
-
-            .player-info {
+            .info {
 
                 padding:
-                    20px 15px 35px;
-
+                    20px 4% 40px;
             }
 
+            .info h1 {
 
-            #playerTitle {
+                font-size: 1.4rem;
+            }
 
-                font-size: 1.25rem;
+            .descricao {
 
+                font-size: .85rem;
             }
 
         }
 
     </style>
-
 </head>
 
 
@@ -646,39 +588,52 @@
      HEADER
 ========================================================= -->
 
-<header class="player-header">
+<header>
 
     <button
         class="btn-voltar"
         id="btnVoltar"
-        title="Voltar">
+        title="Voltar"
+    >
 
         <i class="fa-solid fa-arrow-left"></i>
 
     </button>
 
 
-    <div class="player-brand">
+    <a
+        href="index.html"
+        class="logo"
+    >
 
-        V8 <span>Play+</span>
+        <img
+            src="assets/v8p.png"
+            class="logo-img"
+            alt="V8 Play+"
+            onerror="this.style.display='none'"
+        >
 
-    </div>
+        <span>
+            V8 Play+
+        </span>
+
+    </a>
 
 </header>
 
 
-
 <!-- =========================================================
-     PLAYER
+     CONTEÚDO
 ========================================================= -->
 
-<main class="player-page">
+<main>
+
+    <div class="player-wrapper">
 
 
-    <div class="player-container">
+        <!-- PLAYER -->
 
-
-        <div class="video-wrapper">
+        <div class="player-container">
 
 
             <!-- LOADING -->
@@ -694,52 +649,66 @@
             </div>
 
 
-            <!-- VIDEO HTML5 -->
+            <!-- VIDEO MP4 -->
 
             <video
                 id="videoPlayer"
                 controls
                 playsinline
                 preload="metadata"
-                controlsList="nodownload">
+                class="hidden"
+            ></video>
 
-            </video>
 
-
-            <!-- IFRAME -->
+            <!-- YOUTUBE / EMBED -->
 
             <iframe
-                id="iframePlayer"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowfullscreen>
-            </iframe>
+                id="youtubePlayer"
+                class="hidden"
+                allow="
+                    autoplay;
+                    encrypted-media;
+                    picture-in-picture;
+                    fullscreen
+                "
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
 
 
             <!-- ERRO -->
 
-            <div id="errorBox">
+            <div
+                id="erroPlayer"
+                class="hidden"
+            >
 
-                <i class="fa-solid fa-circle-exclamation"></i>
+                <div class="erro-box">
 
-                <h2>
-                    Não foi possível reproduzir
-                </h2>
+                    <i
+                        class="fa-solid fa-circle-exclamation"
+                    ></i>
 
-                <p id="errorText">
-                    O vídeo não pôde ser carregado.
-                </p>
+                    <h2>
+                        Não foi possível carregar o vídeo
+                    </h2>
 
-                <button
-                    class="btn-tentar"
-                    id="btnTentar">
+                    <p id="erroTexto">
+                        Verifique o endereço do vídeo
+                        ou tente novamente.
+                    </p>
 
-                    <i class="fa-solid fa-rotate-right"></i>
-                    Tentar novamente
+                    <button
+                        class="btn-retry"
+                        id="btnRetry"
+                    >
+                        <i class="fa-solid fa-rotate"></i>
+                        Tentar novamente
+                    </button>
 
-                </button>
+                </div>
 
             </div>
-
 
         </div>
 
@@ -748,168 +717,135 @@
              INFORMAÇÕES
         ================================================= -->
 
-        <section class="player-info">
+        <div class="info">
+
+            <div
+                id="trailerBadge"
+                class="trailer-badge hidden"
+            >
+
+                <i class="fa-solid fa-film"></i>
+
+                Trailer
+
+            </div>
 
 
-            <h1 id="playerTitle">
+            <h1 id="titulo">
                 Carregando...
             </h1>
 
 
-            <div class="player-meta">
+            <div class="meta">
 
-                <span
-                    class="badge"
-                    id="badgeTipo">
+                <span id="ano"></span>
 
-                    V8 Play+
-
+                <span id="separadorAno">
+                    •
                 </span>
 
-
-                <span id="badgeAno"></span>
-
-
-                <span
-                    id="trailerBadge"
-                    class="trailer-badge"
-                    style="display:none;">
-
-                    <i class="fa-solid fa-film"></i>
-
-                    TRAILER
-
-                </span>
+                <span id="categoria"></span>
 
             </div>
 
 
-            <p id="playerDescription">
+            <p
+                class="descricao"
+                id="descricao"
+            >
                 Carregando informações...
             </p>
 
-
-            <div class="player-actions">
-
-
-                <button
-                    class="action-btn"
-                    id="btnVoltar2">
-
-                    <i class="fa-solid fa-arrow-left"></i>
-
-                    Voltar
-
-                </button>
-
-
-                <button
-                    class="action-btn"
-                    id="btnRecarregar">
-
-                    <i class="fa-solid fa-rotate-right"></i>
-
-                    Recarregar vídeo
-
-                </button>
-
-
-            </div>
-
-
-        </section>
-
+        </div>
 
     </div>
-
 
 </main>
 
 
+<!-- =========================================================
+     NOTIFICAÇÃO
+========================================================= -->
+
+<div
+    id="notification"
+    class="hidden"
+>
+
+    <span id="notificationText"></span>
+
+</div>
+
+
+<!-- =========================================================
+     FIREBASE + PLAYER
+========================================================= -->
 
 <script type="module">
-
-
-    // =========================================================
-    // FIREBASE
-    // =========================================================
 
     import {
         db
     } from "./js/firebase.js";
 
-
     import {
         doc,
         getDoc
-    } from
-        "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
-
-    // =========================================================
+    // =====================================================
     // ELEMENTOS
-    // =========================================================
+    // =====================================================
 
     const videoPlayer =
         document.getElementById(
             "videoPlayer"
         );
 
-
-    const iframePlayer =
+    const youtubePlayer =
         document.getElementById(
-            "iframePlayer"
+            "youtubePlayer"
         );
-
 
     const loading =
         document.getElementById(
             "loading"
         );
 
-
     const loadingText =
         document.getElementById(
             "loadingText"
         );
 
-
-    const errorBox =
+    const erroPlayer =
         document.getElementById(
-            "errorBox"
+            "erroPlayer"
         );
 
-
-    const errorText =
+    const erroTexto =
         document.getElementById(
-            "errorText"
+            "erroTexto"
         );
 
-
-    const playerTitle =
+    const titulo =
         document.getElementById(
-            "playerTitle"
+            "titulo"
         );
 
-
-    const playerDescription =
+    const ano =
         document.getElementById(
-            "playerDescription"
+            "ano"
         );
 
-
-    const badgeTipo =
+    const categoria =
         document.getElementById(
-            "badgeTipo"
+            "categoria"
         );
 
-
-    const badgeAno =
+    const descricao =
         document.getElementById(
-            "badgeAno"
+            "descricao"
         );
-
 
     const trailerBadge =
         document.getElementById(
@@ -917,10 +853,9 @@
         );
 
 
-
-    // =========================================================
-    // PARÂMETROS
-    // =========================================================
+    // =====================================================
+    // URL
+    // =====================================================
 
     const params =
         new URLSearchParams(
@@ -929,183 +864,125 @@
 
 
     const itemId =
-        params.get("id");
+        params.get("id") || "";
 
 
     const colecao =
-        params.get("colecao");
+        params.get("colecao") || "";
 
 
-    const videoParametro =
-        params.get("video");
+    const videoURL =
+        params.get("video") || "";
 
 
-    const tituloParametro =
-        params.get("title");
+    const tituloURL =
+        params.get("title") || "";
 
 
-    const ehTrailer =
+    const isTrailer =
         params.get("trailer") === "true";
 
 
+    // =====================================================
+    // ESTADO
+    // =====================================================
 
-    console.log(
-        "🎬 V8 Play+ Player iniciado"
-    );
-
-
-    console.log(
-        "ID:",
-        itemId
-    );
+    let itemAtual = null;
 
 
-    console.log(
-        "Coleção:",
-        colecao
-    );
+    // =====================================================
+    // NOTIFICAÇÃO
+    // =====================================================
 
+    function mostrarNotificacao(
+        mensagem
+    ) {
 
-    console.log(
-        "Vídeo recebido:",
-        videoParametro
-    );
+        const box =
+            document.getElementById(
+                "notification"
+            );
 
+        const text =
+            document.getElementById(
+                "notificationText"
+            );
 
-    console.log(
-        "Título:",
-        tituloParametro
-    );
+        text.innerText =
+            mensagem;
 
+        box.classList.remove(
+            "hidden"
+        );
 
-    console.log(
-        "Trailer:",
-        ehTrailer
-    );
+        setTimeout(
+            () => {
 
+                box.classList.add(
+                    "hidden"
+                );
 
-
-    // =========================================================
-    // VOLTAR
-    // =========================================================
-
-    function voltar() {
-
-        if (
-            window.history.length > 1
-        ) {
-
-            window.history.back();
-
-        }
-
-        else {
-
-            window.location.href =
-                "index.html";
-
-        }
+            },
+            3500
+        );
 
     }
 
 
-    document
-        .getElementById(
-            "btnVoltar"
-        )
-        .onclick =
-        voltar;
+    // =====================================================
+    // LOADING
+    // =====================================================
+
+    function mostrarLoading(
+        mensagem = "Carregando vídeo..."
+    ) {
+
+        loadingText.innerText =
+            mensagem;
+
+        loading.classList.remove(
+            "hidden"
+        );
+
+        erroPlayer.classList.add(
+            "hidden"
+        );
+
+    }
 
 
-    document
-        .getElementById(
-            "btnVoltar2"
-        )
-        .onclick =
-        voltar;
+    function esconderLoading() {
+
+        loading.classList.add(
+            "hidden"
+        );
+
+    }
 
 
-
-    // =========================================================
-    // MOSTRAR ERRO
-    // =========================================================
+    // =====================================================
+    // ERRO
+    // =====================================================
 
     function mostrarErro(
         mensagem
     ) {
 
-        console.error(
-            "❌ Player:",
-            mensagem
-        );
+        esconderLoading();
 
-
-        loading.style.display =
-            "none";
-
-
-        videoPlayer.style.display =
-            "none";
-
-
-        iframePlayer.style.display =
-            "none";
-
-
-        errorText.innerText =
+        erroTexto.innerText =
             mensagem;
 
-
-        errorBox.style.display =
-            "flex";
-
-    }
-
-
-
-    // =========================================================
-    // ESCONDER ERRO
-    // =========================================================
-
-    function esconderErro() {
-
-        errorBox.style.display =
-            "none";
+        erroPlayer.classList.remove(
+            "hidden"
+        );
 
     }
 
 
-
-    // =========================================================
-    // LOADING
-    // =========================================================
-
-    function mostrarLoading(
-        texto = "Carregando vídeo..."
-    ) {
-
-        loadingText.innerText =
-            texto;
-
-        loading.style.display =
-            "flex";
-
-    }
-
-
-
-    function esconderLoading() {
-
-        loading.style.display =
-            "none";
-
-    }
-
-
-
-    // =========================================================
-    // EXTRAIR YOUTUBE
-    // =========================================================
+    // =====================================================
+    // YOUTUBE ID
+    // =====================================================
 
     function extrairYoutubeID(
         url
@@ -1115,145 +992,172 @@
             return null;
 
 
-        url =
-            String(url).trim();
+        // ID puro de 11 caracteres
+
+        if (
+            /^[a-zA-Z0-9_-]{11}$/
+                .test(url)
+        ) {
+
+            return url;
+
+        }
 
 
-        /*
-         * youtube.com/watch?v=ID
-         */
+        try {
 
-        let match =
-            url.match(
-                /youtube\.com\/watch\?v=([^&]+)/i
+            const parsed =
+                new URL(url);
+
+
+            // youtube.com/watch?v=
+
+            if (
+                parsed.hostname
+                    .includes("youtube.com")
+            ) {
+
+                const v =
+                    parsed.searchParams
+                        .get("v");
+
+                if (v)
+                    return v;
+
+
+                // /embed/ID
+
+                const partes =
+                    parsed.pathname
+                        .split("/")
+                        .filter(Boolean);
+
+                const embedIndex =
+                    partes.indexOf("embed");
+
+                if (
+                    embedIndex !== -1 &&
+                    partes[embedIndex + 1]
+                ) {
+
+                    return partes[
+                        embedIndex + 1
+                    ];
+
+                }
+
+
+                // /shorts/ID
+
+                const shortsIndex =
+                    partes.indexOf("shorts");
+
+                if (
+                    shortsIndex !== -1 &&
+                    partes[shortsIndex + 1]
+                ) {
+
+                    return partes[
+                        shortsIndex + 1
+                    ];
+
+                }
+
+            }
+
+
+            // youtu.be/ID
+
+            if (
+                parsed.hostname
+                    .includes("youtu.be")
+            ) {
+
+                return parsed.pathname
+                    .replace("/", "")
+                    .split("/")[0];
+
+            }
+
+        }
+
+        catch (e) {
+
+            console.warn(
+                "URL inválida:",
+                url
             );
 
-
-        if (match)
-            return match[1];
+        }
 
 
-        /*
-         * youtu.be/ID
-         */
+        // Regex adicional
 
-        match =
-            url.match(
-                /youtu\.be\/([^?&/]+)/i
+        const match =
+            String(url).match(
+                /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
             );
 
-
-        if (match)
-            return match[1];
-
-
-        /*
-         * youtube.com/embed/ID
-         */
-
-        match =
-            url.match(
-                /youtube\.com\/embed\/([^?&/]+)/i
-            );
-
-
-        if (match)
-            return match[1];
-
-
-        /*
-         * youtube.com/shorts/ID
-         */
-
-        match =
-            url.match(
-                /youtube\.com\/shorts\/([^?&/]+)/i
-            );
-
-
-        if (match)
-            return match[1];
-
-
-        /*
-         * youtube-nocookie
-         */
-
-        match =
-            url.match(
-                /youtube-nocookie\.com\/embed\/([^?&/]+)/i
-            );
-
-
-        if (match)
-            return match[1];
-
-
-        return null;
+        return match
+            ? match[1]
+            : null;
 
     }
 
 
+    // =====================================================
+    // DETECTAR TIPO DE VÍDEO
+    // =====================================================
 
-    // =========================================================
-    // VERIFICAR YOUTUBE
-    // =========================================================
-
-    function ehYoutube(
+    function detectarTipoVideo(
         url
     ) {
 
         if (!url)
-            return false;
+            return "nenhum";
 
 
-        return /youtube\.com|youtu\.be|youtube-nocookie\.com/i
-            .test(url);
+        const yt =
+            extrairYoutubeID(url);
 
-    }
-
-
-
-    // =========================================================
-    // VERIFICAR VÍDEO
-    // =========================================================
-
-    function ehVideoDireto(
-        url
-    ) {
-
-        if (!url)
-            return false;
+        if (yt)
+            return "youtube";
 
 
-        return /\.(mp4|webm|ogg|m3u8)(\?.*)?$/i
-            .test(url);
-
-    }
+        const lower =
+            url.toLowerCase();
 
 
+        if (
+            lower.includes(".mp4") ||
+            lower.includes(".webm") ||
+            lower.includes(".ogg") ||
+            lower.includes(".m3u8")
+        ) {
 
-    // =========================================================
-    // CONSTRUIR URL YOUTUBE
-    // =========================================================
+            return "video";
 
-    function montarYoutubeURL(
-        id
-    ) {
+        }
 
-        return (
-            "https://www.youtube.com/embed/" +
-            encodeURIComponent(id) +
-            "?autoplay=1&rel=0&modestbranding=1"
-        );
+
+        if (
+            lower.includes("embed") ||
+            lower.includes("player")
+        ) {
+
+            return "iframe";
+
+        }
+
+
+        return "video";
 
     }
 
 
-
-    // =========================================================
+    // =====================================================
     // CARREGAR YOUTUBE
-    // =========================================================
+    // =====================================================
 
     function carregarYoutube(
         url
@@ -1266,7 +1170,7 @@
         if (!id) {
 
             mostrarErro(
-                "O link do YouTube é inválido."
+                "O endereço do YouTube não é válido."
             );
 
             return;
@@ -1274,33 +1178,20 @@
         }
 
 
-        console.log(
-            "▶️ YouTube ID:",
-            id
+        videoPlayer.classList.add(
+            "hidden"
+        );
+
+        youtubePlayer.classList.remove(
+            "hidden"
         );
 
 
-        videoPlayer.pause();
+        youtubePlayer.src =
+            `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
 
 
-        videoPlayer.removeAttribute(
-            "src"
-        );
-
-
-        videoPlayer.style.display =
-            "none";
-
-
-        iframePlayer.style.display =
-            "block";
-
-
-        iframePlayer.src =
-            montarYoutubeURL(id);
-
-
-        iframePlayer.onload =
+        youtubePlayer.onload =
             () => {
 
                 esconderLoading();
@@ -1308,10 +1199,7 @@
             };
 
 
-        /*
-         * Caso o navegador não dispare
-         * onload corretamente.
-         */
+        // Segurança caso o onload não dispare
 
         setTimeout(
             () => {
@@ -1319,42 +1207,35 @@
                 esconderLoading();
 
             },
-            3000
+            2500
         );
 
     }
 
 
+    // =====================================================
+    // CARREGAR VÍDEO
+    // =====================================================
 
-    // =========================================================
-    // CARREGAR VÍDEO DIRETO
-    // =========================================================
-
-    function carregarVideoDireto(
+    function carregarVideo(
         url
     ) {
 
-        console.log(
-            "🎥 Vídeo direto:",
-            url
+        youtubePlayer.src =
+            "";
+
+        youtubePlayer.classList.add(
+            "hidden"
         );
 
 
-        iframePlayer.src =
-            "";
-
-
-        iframePlayer.style.display =
-            "none";
-
-
-        videoPlayer.style.display =
-            "block";
+        videoPlayer.classList.remove(
+            "hidden"
+        );
 
 
         videoPlayer.src =
             url;
-
 
         videoPlayer.load();
 
@@ -1362,23 +1243,17 @@
         videoPlayer.onloadedmetadata =
             () => {
 
-                console.log(
-                    "✅ Metadata carregada"
-                );
-
-
                 esconderLoading();
+
+                console.log(
+                    "✅ Vídeo carregado"
+                );
 
             };
 
 
         videoPlayer.oncanplay =
             () => {
-
-                console.log(
-                    "▶️ Vídeo pronto"
-                );
-
 
                 esconderLoading();
 
@@ -1388,80 +1263,63 @@
         videoPlayer.onerror =
             () => {
 
+                console.error(
+                    "❌ Erro no vídeo:",
+                    videoPlayer.error
+                );
+
                 mostrarErro(
-                    "O arquivo de vídeo não pôde ser carregado. Verifique se o link é válido e permite reprodução no navegador."
+                    "O vídeo não pôde ser reproduzido. O link pode estar indisponível, bloqueado pelo servidor ou ser incompatível com o navegador."
                 );
 
             };
 
 
-        /*
-         * Tentativa automática.
-         *
-         * Alguns navegadores bloqueiam autoplay
-         * com som, por isso o erro é ignorado.
-         */
+        // Tentativa automática
 
-        const promessa =
-            videoPlayer.play();
+        videoPlayer.play()
+            .then(() => {
 
+                console.log(
+                    "▶️ Reprodução iniciada"
+                );
 
-        if (
-            promessa &&
-            typeof promessa.catch === "function"
-        ) {
+            })
+            .catch(() => {
 
-            promessa.catch(
-                () => {
+                console.log(
+                    "ℹ️ Reprodução automática bloqueada pelo navegador."
+                );
 
-                    console.log(
-                        "Autoplay bloqueado pelo navegador."
-                    );
+                esconderLoading();
 
-                }
-            );
-
-        }
+            });
 
     }
 
 
-
-    // =========================================================
-    // CARREGAR IFRAME GENÉRICO
-    // =========================================================
+    // =====================================================
+    // CARREGAR IFRAME
+    // =====================================================
 
     function carregarIframe(
         url
     ) {
 
-        console.log(
-            "🌐 Embed:",
-            url
+        videoPlayer.classList.add(
+            "hidden"
+        );
+
+        youtubePlayer.classList.remove(
+            "hidden"
         );
 
 
-        videoPlayer.pause();
-
-
-        videoPlayer.removeAttribute(
-            "src"
-        );
-
-
-        videoPlayer.style.display =
-            "none";
-
-
-        iframePlayer.style.display =
-            "block";
-
-
-        iframePlayer.src =
+        youtubePlayer.src =
             url;
 
 
-        iframePlayer.onload =
+        youtubePlayer.onload =
             () => {
 
                 esconderLoading();
@@ -1475,25 +1333,19 @@
                 esconderLoading();
 
             },
-            3000
+            2500
         );
 
     }
 
 
+    // =====================================================
+    // ABRIR PLAYER
+    // =====================================================
 
-    // =========================================================
-    // CARREGAR PLAYER
-    // =========================================================
-
-    function carregarPlayer(
+    function abrirVideo(
         url
     ) {
-
-        esconderErro();
-
-        mostrarLoading();
-
 
         if (!url) {
 
@@ -1506,75 +1358,62 @@
         }
 
 
-        url =
-            String(url).trim();
+        mostrarLoading();
 
 
-        /*
-         * YouTube
-         */
+        const tipo =
+            detectarTipoVideo(url);
+
+
+        console.log(
+            "🎬 Tipo de vídeo:",
+            tipo
+        );
+
+        console.log(
+            "🔗 URL:",
+            url
+        );
+
 
         if (
-            ehYoutube(url)
+            tipo === "youtube"
         ) {
 
-            carregarYoutube(url);
+            carregarYoutube(
+                url
+            );
 
             return;
 
         }
 
 
-        /*
-         * Arquivo de vídeo
-         */
-
         if (
-            ehVideoDireto(url)
+            tipo === "iframe"
         ) {
 
-            carregarVideoDireto(url);
+            carregarIframe(
+                url
+            );
 
             return;
 
         }
 
 
-        /*
-         * Se for uma URL HTTP/HTTPS,
-         * tratamos como embed.
-         */
-
-        if (
-            /^https?:\/\//i.test(url)
-        ) {
-
-            carregarIframe(url);
-
-            return;
-
-        }
-
-
-        mostrarErro(
-            "Formato de vídeo não reconhecido."
+        carregarVideo(
+            url
         );
 
     }
 
 
-
-    // =========================================================
-    // CARREGAR DADOS DO FIRESTORE
-    // =========================================================
+    // =====================================================
+    // BUSCAR FIRESTORE
+    // =====================================================
 
     async function carregarDadosFirestore() {
-
-        /*
-         * Se não temos ID ou coleção,
-         * usamos os parâmetros enviados
-         * pelo index.
-         */
 
         if (
             !itemId ||
@@ -1582,31 +1421,15 @@
         ) {
 
             console.warn(
-                "⚠️ ID ou coleção ausentes."
+                "ID ou coleção não informados."
             );
 
-            if (tituloParametro) {
-
-                playerTitle.innerText =
-                    tituloParametro;
-
-            }
-
-            carregarPlayer(
-                videoParametro
-            );
-
-            return;
+            return null;
 
         }
 
 
         try {
-
-            console.log(
-                `🔥 Buscando ${colecao}/${itemId}`
-            );
-
 
             const referencia =
                 doc(
@@ -1622,119 +1445,243 @@
                 );
 
 
-            if (!snap.exists()) {
+            if (
+                !snap.exists()
+            ) {
 
                 console.warn(
-                    "Documento não encontrado. Usando parâmetros da URL."
+                    "Conteúdo não encontrado."
                 );
 
-
-                playerTitle.innerText =
-                    tituloParametro ||
-                    "V8 Play+";
-
-
-                carregarPlayer(
-                    videoParametro
-                );
-
-
-                return;
+                return null;
 
             }
 
 
-            const item =
-                snap.data();
+            return {
+
+                id:
+                    snap.id,
+
+                colecao:
+                    colecao,
+
+                ...snap.data()
+
+            };
+
+        }
+
+        catch (erro) {
+
+            console.error(
+                "Erro ao consultar Firestore:",
+                erro
+            );
+
+            return null;
+
+        }
+
+    }
 
 
-            console.log(
-                "🎬 Conteúdo encontrado:",
+    // =====================================================
+    // PREENCHER INFORMAÇÕES
+    // =====================================================
+
+    function preencherInformacoes(
+        item
+    ) {
+
+        if (!item)
+            return;
+
+
+        itemAtual =
+            item;
+
+
+        titulo.innerText =
+            item.titulo ||
+            tituloURL ||
+            "V8 Play+";
+
+
+        ano.innerText =
+            item.ano ||
+            "";
+
+
+        categoria.innerText =
+            item.categoria ||
+            item.tipo ||
+            "";
+
+
+        if (!ano.innerText)
+            document
+                .getElementById(
+                    "separadorAno"
+                )
+                .style.display =
+                "none";
+
+
+        descricao.innerText =
+            item.descricao ||
+            "Sem descrição disponível.";
+
+
+        if (isTrailer) {
+
+            trailerBadge.classList.remove(
+                "hidden"
+            );
+
+        }
+
+    }
+
+
+    // =====================================================
+    // VOLTAR
+    // =====================================================
+
+    document
+        .getElementById(
+            "btnVoltar"
+        )
+        .onclick =
+        () => {
+
+            if (
+                window.history.length > 1
+            ) {
+
+                window.history.back();
+
+            }
+
+            else {
+
+                window.location.href =
+                    "index.html";
+
+            }
+
+        };
+
+
+    // =====================================================
+    // RETRY
+    // =====================================================
+
+    document
+        .getElementById(
+            "btnRetry"
+        )
+        .onclick =
+        () => {
+
+            erroPlayer.classList.add(
+                "hidden"
+            );
+
+            if (itemAtual) {
+
+                const url =
+                    isTrailer
+                        ? (
+                            itemAtual.trailer ||
+                            itemAtual.videoTrailer ||
+                            videoURL
+                        )
+                        : (
+                            itemAtual.video ||
+                            itemAtual.video1 ||
+                            itemAtual.video2 ||
+                            itemAtual.video3 ||
+                            itemAtual.embed ||
+                            videoURL
+                        );
+
+                abrirVideo(url);
+
+            }
+
+            else if (videoURL) {
+
+                abrirVideo(
+                    videoURL
+                );
+
+            }
+
+        };
+
+
+    // =====================================================
+    // INICIALIZAÇÃO
+    // =====================================================
+
+    async function iniciar() {
+
+        console.log(
+            "🚀 Player V8 Play+ iniciado"
+        );
+
+
+        console.log(
+            "ID:",
+            itemId
+        );
+
+        console.log(
+            "Coleção:",
+            colecao
+        );
+
+        console.log(
+            "Vídeo recebido:",
+            videoURL
+        );
+
+        console.log(
+            "Trailer:",
+            isTrailer
+        );
+
+
+        mostrarLoading(
+            "Carregando conteúdo..."
+        );
+
+
+        // -------------------------------------------------
+        // BUSCA FIRESTORE
+        // -------------------------------------------------
+
+        const item =
+            await carregarDadosFirestore();
+
+
+        if (item) {
+
+            preencherInformacoes(
                 item
             );
 
 
-            /*
-             * Título
-             */
-
-            playerTitle.innerText =
-                item.titulo ||
-                tituloParametro ||
-                "V8 Play+";
+            let url;
 
 
-            /*
-             * Descrição
-             */
-
-            playerDescription.innerText =
-                item.descricao ||
-                "Sem descrição disponível.";
-
-
-            /*
-             * Ano
-             */
-
-            if (item.ano) {
-
-                badgeAno.innerText =
-                    item.ano;
-
-            }
-
-
-            /*
-             * Categoria
-             */
-
-            badgeTipo.innerText =
-                item.categoria ||
-                item.tipo ||
-                "V8 Play+";
-
-
-            /*
-             * Trailer
-             */
-
-            if (
-                ehTrailer
-            ) {
-
-                trailerBadge.style.display =
-                    "inline-flex";
-
-            }
-
-
-            /*
-             * Escolher vídeo.
-             *
-             * Ordem de prioridade:
-             *
-             * trailer
-             * video
-             * video1
-             * video2
-             * video3
-             * embed
-             * URL recebida
-             */
-
-            let url = "";
-
-
-            if (
-                ehTrailer
-            ) {
+            if (isTrailer) {
 
                 url =
                     item.trailer ||
                     item.videoTrailer ||
-                    videoParametro ||
-                    "";
+                    videoURL;
 
             }
 
@@ -1746,128 +1693,70 @@
                     item.video2 ||
                     item.video3 ||
                     item.embed ||
-                    videoParametro ||
-                    "";
+                    videoURL;
 
             }
 
 
-            console.log(
-                "🎞️ URL final:",
+            if (!url) {
+
+                mostrarErro(
+                    isTrailer
+                        ? "Este título não possui trailer disponível."
+                        : "Este título não possui vídeo disponível."
+                );
+
+                return;
+
+            }
+
+
+            abrirVideo(
                 url
             );
 
 
-            carregarPlayer(
-                url
-            );
+            return;
 
         }
 
-        catch (erro) {
 
-            console.error(
-                "❌ Erro ao buscar conteúdo:",
-                erro
-            );
+        // -------------------------------------------------
+        // FALLBACK DA URL
+        // -------------------------------------------------
 
+        if (videoURL) {
 
-            /*
-             * Mesmo se o Firestore falhar,
-             * tentamos o vídeo enviado pelo index.
-             */
-
-            playerTitle.innerText =
-                tituloParametro ||
+            titulo.innerText =
+                tituloURL ||
                 "V8 Play+";
 
 
-            carregarPlayer(
-                videoParametro
+            abrirVideo(
+                videoURL
             );
 
+
+            return;
+
         }
+
+
+        // -------------------------------------------------
+        // SEM VÍDEO
+        // -------------------------------------------------
+
+        mostrarErro(
+            "Não foi possível localizar o conteúdo solicitado."
+        );
 
     }
 
 
-
-    // =========================================================
-    // RECARREGAR
-    // =========================================================
-
-    document
-        .getElementById(
-            "btnRecarregar"
-        )
-        .onclick =
-        () => {
-
-            if (videoParametro) {
-
-                carregarPlayer(
-                    videoParametro
-                );
-
-            }
-
-            else {
-
-                carregarDadosFirestore();
-
-            }
-
-        };
-
-
-    document
-        .getElementById(
-            "btnTentar"
-        )
-        .onclick =
-        () => {
-
-            carregarDadosFirestore();
-
-        };
-
-
-
-    // =========================================================
-    // TECLADO
-    // =========================================================
-
-    document.addEventListener(
-        "keydown",
-        event => {
-
-            /*
-             * ESC = voltar
-             */
-
-            if (
-                event.key === "Escape"
-            ) {
-
-                voltar();
-
-            }
-
-        }
-    );
-
-
-
-    // =========================================================
-    // INICIALIZAÇÃO
-    // =========================================================
-
-    carregarDadosFirestore();
-
+    iniciar();
 
 </script>
 
 
 </body>
-
 </html>
