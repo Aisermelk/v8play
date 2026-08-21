@@ -2,582 +2,1518 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta charset="UTF-8">
 
-    <title>V8 Play+ | Player</title>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
+<title>V8 Play+</title>
 
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    >
+<link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+>
 
-    <style>
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+>
 
-        :root {
-            --primary: #00d4ff;
-            --primary-hover: #00a2c7;
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
 
-            --bg-dark: #080809;
-            --bg-card: #121216;
-            --bg-modal: #17171c;
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+>
 
-            --text: #ffffff;
-            --text-secondary: #aaa;
+<style>
 
-            --danger: #ff4d4d;
+/* =========================================================
+   VARIÁVEIS
+========================================================= */
 
-            --radius: 12px;
-        }
+:root {
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    --primary: #00d4ff;
+    --primary-hover: #00a2c7;
 
-        html,
-        body {
-            width: 100%;
-            min-height: 100%;
-            background: var(--bg-dark);
-            color: var(--text);
-            font-family: 'Poppins', sans-serif;
-        }
+    --bg-dark: #0a0a0b;
+    --bg-card: #16161a;
+    --bg-modal: #121214;
 
-        body {
-            overflow-x: hidden;
-        }
+    --text: #ffffff;
+    --text-secondary: #aaa;
 
-        /* =====================================================
-           HEADER
-        ===================================================== */
+    --border: #2a2a30;
 
-        header {
+    --danger: #ff5c5c;
 
-            position: fixed;
+    --radius: 12px;
 
-            top: 0;
-            left: 0;
+}
 
-            width: 100%;
 
-            height: 70px;
+/* =========================================================
+   RESET
+========================================================= */
 
-            display: flex;
+* {
 
-            align-items: center;
+    box-sizing: border-box;
 
-            gap: 15px;
+    margin: 0;
 
-            padding: 10px 5%;
+    padding: 0;
 
-            z-index: 1000;
+}
 
-            background:
-                linear-gradient(
-                    to bottom,
-                    rgba(8,8,9,.97),
-                    rgba(8,8,9,.75)
-                );
+html {
 
-            backdrop-filter: blur(10px);
+    scroll-behavior: smooth;
 
-            border-bottom:
-                1px solid
-                rgba(255,255,255,.05);
-        }
+}
 
-        .btn-voltar {
+body {
 
-            width: 42px;
-            height: 42px;
+    background: var(--bg-dark);
 
-            display: flex;
+    color: var(--text);
 
-            align-items: center;
-            justify-content: center;
+    font-family: Poppins, sans-serif;
 
-            border: none;
+    overflow-x: hidden;
 
-            border-radius: 50%;
+    min-height: 100vh;
 
-            background:
-                rgba(255,255,255,.08);
+}
 
-            color: white;
+button,
+input {
 
-            cursor: pointer;
+    font-family: inherit;
 
-            font-size: 17px;
+}
 
-            transition: .2s;
-        }
+button {
 
-        .btn-voltar:hover {
+    -webkit-tap-highlight-color: transparent;
 
-            background: var(--primary);
+}
 
-            color: #000;
 
-            transform: translateX(-2px);
-        }
+/* =========================================================
+   HEADER
+========================================================= */
 
-        .logo {
+header {
 
-            display: flex;
+    display: flex;
 
-            align-items: center;
+    align-items: center;
 
-            text-decoration: none;
+    justify-content: space-between;
 
-            color: white;
+    gap: 15px;
 
-            font-weight: 800;
+    padding: 14px 5%;
 
-            font-size: 1.35rem;
-        }
+    position: fixed;
 
-        .logo span {
+    top: 0;
+    left: 0;
 
-            color: var(--primary);
-        }
+    width: 100%;
 
-        .logo-img {
+    z-index: 1000;
 
-            height: 40px;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(10,10,11,.98),
+            rgba(10,10,11,.85),
+            rgba(10,10,11,0)
+        );
 
-            width: auto;
+    backdrop-filter: blur(8px);
 
-            object-fit: contain;
+    -webkit-backdrop-filter: blur(8px);
 
-            margin-right: 8px;
-        }
+}
 
-        /* =====================================================
-           PLAYER
-        ===================================================== */
 
-        main {
+.logo {
 
-            width: 100%;
+    display: flex;
 
-            padding-top: 70px;
+    align-items: center;
 
-            min-height: 100vh;
-        }
+    gap: 8px;
 
-        .player-wrapper {
+    text-decoration: none;
 
-            width: 100%;
+    font-size: 1.5rem;
 
-            max-width: 1400px;
+    font-weight: 800;
 
-            margin: 0 auto;
+    color: #fff;
 
-            padding: 20px 4% 0;
-        }
+    white-space: nowrap;
 
-        .player-container {
+    min-width: max-content;
 
-            width: 100%;
+}
 
-            aspect-ratio: 16 / 9;
+.logo span {
 
-            background: #000;
+    color: var(--primary);
 
-            border-radius: var(--radius);
+}
 
-            overflow: hidden;
+.logo-img {
 
-            position: relative;
+    height: 42px;
 
-            box-shadow:
-                0 15px 50px
-                rgba(0,0,0,.55);
+    width: auto;
 
-            border:
-                1px solid
-                rgba(255,255,255,.06);
-        }
+    max-width: 150px;
 
-        video {
+    object-fit: contain;
 
-            width: 100%;
-            height: 100%;
+}
 
-            display: block;
 
-            background: #000;
+/* =========================================================
+   BUSCA
+========================================================= */
 
-            object-fit: contain;
-        }
+.search-box {
 
-        iframe {
+    flex: 1;
 
-            width: 100%;
-            height: 100%;
+    width: 100%;
 
-            border: none;
+    max-width: 360px;
 
-            display: block;
+    position: relative;
 
-            background: #000;
-        }
+}
 
-        /* =====================================================
-           LOADING
-        ===================================================== */
+#busca {
 
-        #loading {
+    width: 100%;
 
-            position: absolute;
+    padding:
+        10px
+        16px
+        10px
+        40px;
 
-            inset: 0;
+    border-radius: 20px;
 
-            z-index: 20;
+    border: 1px solid var(--border);
 
-            display: flex;
+    background:
+        rgba(255,255,255,.06);
 
-            align-items: center;
+    color: #fff;
 
-            justify-content: center;
+    outline: none;
 
-            flex-direction: column;
+    transition: .3s;
 
-            gap: 15px;
+    font-size: .9rem;
 
-            background: #000;
-        }
+}
 
-        #loading.hidden {
+#busca::placeholder {
 
-            display: none;
-        }
+    color: #888;
 
-        .spinner {
+}
 
-            width: 48px;
-            height: 48px;
+#busca:focus {
 
-            border-radius: 50%;
+    border-color:
+        var(--primary);
 
-            border:
-                4px solid
-                rgba(255,255,255,.15);
+    background:
+        rgba(0,0,0,.45);
 
-            border-top-color:
-                var(--primary);
+    box-shadow:
+        0 0 12px
+        rgba(0,212,255,.18);
 
-            animation:
-                girar .8s linear infinite;
-        }
+}
 
-        @keyframes girar {
+.search-icon {
 
-            to {
-                transform: rotate(360deg);
-            }
+    position: absolute;
 
-        }
+    left: 14px;
 
-        #loadingText {
+    top: 50%;
 
-            color: #aaa;
+    transform:
+        translateY(-50%);
 
-            font-size: .9rem;
+    color:
+        var(--text-secondary);
 
-            text-align: center;
-        }
+    font-size: .85rem;
 
-        /* =====================================================
-           ERRO
-        ===================================================== */
+    pointer-events: none;
 
-        #erroPlayer {
+}
 
-            position: absolute;
 
-            inset: 0;
+/* =========================================================
+   BOTÃO LOGIN
+========================================================= */
 
-            z-index: 30;
+.btn-login {
 
-            display: flex;
+    background:
+        var(--primary);
 
-            align-items: center;
+    color: #000;
 
-            justify-content: center;
+    border: none;
 
-            text-align: center;
+    padding:
+        9px
+        22px;
 
-            padding: 25px;
+    border-radius: 20px;
 
-            background:
-                rgba(0,0,0,.94);
-        }
+    font-weight: 600;
 
-        #erroPlayer.hidden {
+    cursor: pointer;
 
-            display: none;
-        }
+    white-space: nowrap;
 
-        .erro-box {
+    transition: .2s;
 
-            max-width: 500px;
-        }
+    font-size: .9rem;
 
-        .erro-box i {
+}
 
-            font-size: 48px;
+.btn-login:hover {
 
-            color: var(--danger);
+    background:
+        var(--primary-hover);
 
-            margin-bottom: 15px;
-        }
+    transform:
+        translateY(-1px);
 
-        .erro-box h2 {
+}
 
-            font-size: 1.35rem;
 
-            margin-bottom: 10px;
-        }
+/* =========================================================
+   PROMO
+========================================================= */
 
-        .erro-box p {
+.promo-space {
 
-            color: #aaa;
+    width: 100%;
 
-            font-size: .9rem;
+    display: flex;
 
-            line-height: 1.6;
+    justify-content: center;
 
-            margin-bottom: 20px;
-        }
+    align-items: center;
 
-        .btn-retry {
+    padding:
+        10px 5%;
 
-            border: none;
+    margin-top: 72px;
 
-            background: var(--primary);
+}
 
-            color: #000;
+.promo-placeholder,
+.promo-mid-box {
 
-            padding: 10px 20px;
+    width: 100%;
 
-            border-radius: 6px;
+    max-width: 970px;
 
-            font-weight: 700;
+    background: #151519;
 
-            cursor: pointer;
-        }
+    border:
+        1px dashed #333;
 
-        /* =====================================================
-           INFORMAÇÕES
-        ===================================================== */
+    border-radius: 8px;
 
-        .info {
+    display: flex;
 
-            padding: 25px 0 50px;
-        }
+    flex-direction: column;
 
-        .info h1 {
+    justify-content: center;
 
-            font-size: 1.8rem;
+    align-items: center;
 
-            margin-bottom: 8px;
+    text-align: center;
 
-            font-weight: 700;
-        }
+    color: #666;
 
-        .meta {
+    font-size: .78rem;
 
-            display: flex;
+}
 
-            gap: 10px;
+.promo-placeholder {
 
-            flex-wrap: wrap;
+    height: 90px;
 
-            color: var(--text-secondary);
+}
 
-            font-size: .85rem;
+.promo-placeholder small,
+.promo-mid-box small {
 
-            margin-bottom: 15px;
-        }
+    margin-top: 4px;
 
-        .meta span {
+    color: #4f4f54;
 
-            display: inline-flex;
+}
 
-            align-items: center;
+.promo-mid {
 
-            gap: 5px;
-        }
+    width: 100%;
 
-        .descricao {
+    display: flex;
 
-            max-width: 850px;
+    justify-content: center;
 
-            color: #ccc;
+    padding:
+        20px 0;
 
-            line-height: 1.7;
+}
 
-            font-size: .92rem;
-        }
+.promo-mid-box {
 
-        /* =====================================================
-           AVISO TRAILER
-        ===================================================== */
+    height: 120px;
 
-        .trailer-badge {
+    font-size: .8rem;
 
-            display: inline-flex;
+}
 
-            align-items: center;
 
-            gap: 6px;
+/* =========================================================
+   HERO
+========================================================= */
 
-            margin-bottom: 12px;
+#hero {
 
-            padding: 5px 10px;
+    height: 70vh;
 
-            border-radius: 5px;
+    min-height: 500px;
 
-            background:
-                rgba(0,212,255,.12);
+    position: relative;
 
-            border:
-                1px solid
-                rgba(0,212,255,.3);
+    display: flex;
 
-            color:
-                var(--primary);
+    align-items: flex-end;
 
-            font-size: .72rem;
+    padding:
+        0 5% 50px;
 
-            font-weight: 700;
+    background-size: cover;
 
-            text-transform: uppercase;
-        }
+    background-position: center;
 
-        /* =====================================================
-           NOTIFICAÇÃO
-        ===================================================== */
+    background-repeat: no-repeat;
 
-        #notification {
+    background-color: #111;
 
-            position: fixed;
+    transition:
+        background-image .5s
+        ease-in-out;
 
-            bottom: 25px;
+}
 
-            left: 50%;
+#hero:before {
 
-            transform: translateX(-50%);
+    content: "";
 
-            z-index: 5000;
+    position: absolute;
 
-            background: #1d1d22;
+    inset: 0;
 
-            border:
-                1px solid
-                var(--primary);
+    background:
+        linear-gradient(
+            to top,
+            var(--bg-dark) 4%,
+            transparent 62%
+        ),
+        linear-gradient(
+            to right,
+            rgba(10,10,11,.92),
+            rgba(10,10,11,.35),
+            transparent 75%
+        );
 
-            color: white;
+}
 
-            padding: 12px 25px;
+#hero:after {
 
-            border-radius: 30px;
+    content: "";
 
-            font-size: .85rem;
+    position: absolute;
 
-            box-shadow:
-                0 5px 20px
-                rgba(0,0,0,.5);
+    inset: 0;
 
-            max-width: 90%;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.25),
+            transparent 35%
+        );
 
-            text-align: center;
-        }
+    pointer-events: none;
 
-        .hidden {
+}
 
-            display: none !important;
-        }
+.hero-content {
 
-        /* =====================================================
-           MOBILE
-        ===================================================== */
+    position: relative;
 
-        @media (max-width: 700px) {
+    z-index: 2;
 
-            header {
+    max-width: 650px;
 
-                height: 60px;
+}
 
-                padding: 8px 4%;
-            }
+.hero-content h1 {
 
-            main {
+    font-size: 2.8rem;
 
-                padding-top: 60px;
-            }
+    font-weight: 800;
 
-            .btn-voltar {
+    margin-bottom: 12px;
 
-                width: 38px;
-                height: 38px;
-            }
+    line-height: 1.1;
 
-            .logo {
+}
 
-                font-size: 1.05rem;
-            }
+.hero-content p {
 
-            .logo-img {
+    color: #ddd;
 
-                height: 34px;
-            }
+    margin-bottom: 22px;
 
-            .player-wrapper {
+    line-height: 1.6;
 
-                padding:
-                    10px 0 0;
-            }
+    font-size: .95rem;
 
-            .player-container {
+    display: -webkit-box;
 
-                border-radius: 0;
+    -webkit-line-clamp: 3;
 
-                border-left: none;
-                border-right: none;
-            }
+    -webkit-box-orient: vertical;
 
-            .info {
+    overflow: hidden;
 
-                padding:
-                    20px 4% 40px;
-            }
+}
 
-            .info h1 {
+.hero-btns {
 
-                font-size: 1.4rem;
-            }
+    display: flex;
 
-            .descricao {
+    gap: 10px;
 
-                font-size: .85rem;
-            }
+    flex-wrap: wrap;
 
-        }
+}
 
-    </style>
+.hero-btns button {
+
+    padding:
+        12px 25px;
+
+    border-radius: 6px;
+
+    border: none;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+    font-size: .95rem;
+
+}
+
+.btn-assistir {
+
+    background: #fff;
+
+    color: #000;
+
+}
+
+.btn-assistir:hover {
+
+    background: #e4e4e4;
+
+    transform:
+        translateY(-2px);
+
+}
+
+.btn-info {
+
+    background:
+        rgba(255,255,255,.15);
+
+    color: #fff;
+
+    backdrop-filter: blur(5px);
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    padding:
+        10px 20px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+}
+
+.btn-info:hover {
+
+    background:
+        rgba(255,255,255,.25);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================================
+   CATÁLOGO
+========================================================= */
+
+.container {
+
+    padding:
+        30px 5%;
+
+    width: 100%;
+
+}
+
+.filtros {
+
+    display: flex;
+
+    gap: 10px;
+
+    overflow-x: auto;
+
+    padding-bottom: 10px;
+
+    margin-bottom: 15px;
+
+    scrollbar-width: none;
+
+}
+
+.filtros::-webkit-scrollbar {
+
+    display: none;
+
+}
+
+.chip {
+
+    padding:
+        8px 18px;
+
+    border-radius: 20px;
+
+    border:
+        1px solid
+        var(--border);
+
+    background:
+        rgba(255,255,255,.03);
+
+    color:
+        var(--text-secondary);
+
+    cursor: pointer;
+
+    font-size: .85rem;
+
+    white-space: nowrap;
+
+    transition: .2s;
+
+}
+
+.chip:hover {
+
+    border-color:
+        var(--primary);
+
+    color: #fff;
+
+}
+
+.chip.ativo {
+
+    background:
+        var(--primary);
+
+    color: #000;
+
+    border-color:
+        var(--primary);
+
+    font-weight: 600;
+
+}
+
+.section-title {
+
+    font-size: 1.3rem;
+
+    margin:
+        25px 0 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-weight: 600;
+
+}
+
+.cards {
+
+    display: flex;
+
+    gap: 16px;
+
+    overflow-x: auto;
+
+    padding:
+        10px 0 25px;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        #333 transparent;
+
+}
+
+.cards::-webkit-scrollbar {
+
+    height: 6px;
+
+}
+
+.cards::-webkit-scrollbar-track {
+
+    background: transparent;
+
+}
+
+.cards::-webkit-scrollbar-thumb {
+
+    background: #333;
+
+    border-radius: 10px;
+
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.movie-card {
+
+    min-width: 165px;
+
+    width: 165px;
+
+    height: 245px;
+
+    background:
+        var(--bg-card);
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition:
+        transform .25s,
+        box-shadow .25s,
+        border-color .25s;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    position: relative;
+
+    border:
+        1px solid
+        rgba(255,255,255,.05);
+
+}
+
+.movie-card:hover {
+
+    transform:
+        translateY(-6px);
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,212,255,.22);
+
+    border-color:
+        var(--primary);
+
+}
+
+.movie-card img {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+}
+
+.titulo-fallback {
+
+    padding: 15px;
+
+    font-size: .9rem;
+
+    text-align: center;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #1a1a20;
+
+}
+
+.selo-card {
+
+    position: absolute;
+
+    top: 10px;
+
+    right: 10px;
+
+    padding:
+        4px 8px;
+
+    border-radius: 4px;
+
+    font-size: .62rem;
+
+    font-weight: 700;
+
+    z-index: 2;
+
+    box-shadow:
+        0 2px 5px
+        rgba(0,0,0,.5);
+
+    text-transform:
+        uppercase;
+
+}
+
+.selo-card.gratis,
+.selo-card.free {
+
+    background:
+        rgba(0,0,0,.75);
+
+    color:
+        var(--primary);
+
+    border:
+        1px solid
+        var(--primary);
+
+}
+
+.selo-card.prime {
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffaa00,
+            #ff5500
+        );
+
+    color: #000;
+
+}
+
+.selo-card.premium {
+
+    background:
+        linear-gradient(
+            135deg,
+            #00d4ff,
+            #0072ff
+        );
+
+    color: #000;
+
+}
+
+.vazio {
+
+    color:
+        var(--text-secondary);
+
+    font-size: .9rem;
+
+    padding:
+        20px 0;
+
+}
+
+
+/* =========================================================
+   MODAIS
+========================================================= */
+
+.modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    z-index: 3000;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background:
+        rgba(0,0,0,.88);
+
+    backdrop-filter:
+        blur(7px);
+
+    -webkit-backdrop-filter:
+        blur(7px);
+
+    padding: 20px;
+
+    overflow-y: auto;
+
+}
+
+.hidden {
+
+    display: none !important;
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+.login-box,
+.waiting-box {
+
+    background:
+        var(--bg-modal);
+
+    padding: 35px;
+
+    border-radius: 12px;
+
+    width: 100%;
+
+    max-width: 400px;
+
+    text-align: center;
+
+    border:
+        1px solid #222;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.55);
+
+}
+
+.waiting-box {
+
+    max-width: 450px;
+
+}
+
+.login-box h2,
+.waiting-box h2 {
+
+    margin-bottom: 15px;
+
+}
+
+.login-box p,
+.waiting-box p {
+
+    color:
+        var(--text-secondary);
+
+}
+
+.login-box input {
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-bottom: 12px;
+
+    background: #1c1c20;
+
+    border:
+        1px solid #333;
+
+    color: #fff;
+
+    border-radius: 6px;
+
+    outline: none;
+
+}
+
+.login-box input:focus {
+
+    border-color:
+        var(--primary);
+
+}
+
+.btn-secundario {
+
+    background: none;
+
+    color:
+        var(--text-secondary);
+
+    border: none;
+
+    margin-top: 10px;
+
+    cursor: pointer;
+
+    font-size: .85rem;
+
+    display: block;
+
+    width: 100%;
+
+    text-align: center;
+
+}
+
+.btn-secundario:hover {
+
+    color: #fff;
+
+    text-decoration: underline;
+
+}
+
+.erro-msg {
+
+    color:
+        var(--danger) !important;
+
+    font-size: .85rem;
+
+    min-height: 20px;
+
+    margin-bottom: 8px;
+
+}
+
+
+/* =========================================================
+   DETALHES
+========================================================= */
+
+.detalhe-box {
+
+    background:
+        var(--bg-modal);
+
+    border-radius: 12px;
+
+    max-width: 650px;
+
+    width: 100%;
+
+    overflow: hidden;
+
+    border:
+        1px solid #222;
+
+    position: relative;
+
+    box-shadow:
+        0 20px 70px
+        rgba(0,0,0,.65);
+
+}
+
+.detalhe-box img {
+
+    width: 100%;
+
+    max-height: 300px;
+
+    display: block;
+
+    object-fit: cover;
+
+}
+
+.detalhe-info {
+
+    padding: 25px;
+
+}
+
+.detalhe-info h2 {
+
+    margin-bottom: 6px;
+
+    font-size: 1.6rem;
+
+}
+
+.detalhe-meta {
+
+    color:
+        var(--text-secondary);
+
+    font-size: .85rem;
+
+    margin-bottom: 14px;
+
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+}
+
+.detalhe-info p {
+
+    color: #ccc;
+
+    line-height: 1.6;
+
+    margin-bottom: 20px;
+
+    font-size: .92rem;
+
+}
+
+.detalhe-btns {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+
+    flex-wrap: wrap;
+
+}
+
+.detalhe-btns button {
+
+    padding:
+        10px 20px;
+
+    border-radius: 6px;
+
+    border: none;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+    font-size: .9rem;
+
+}
+
+.detalhe-btns button:hover {
+
+    transform:
+        translateY(-1px);
+
+}
+
+.btn-pix-prime {
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffaa00,
+            #ff5500
+        );
+
+    color: #000;
+
+}
+
+.btn-pix-premium {
+
+    background:
+        linear-gradient(
+            135deg,
+            #00d4ff,
+            #0072ff
+        );
+
+    color: #fff;
+
+}
+
+.btn-gratis {
+
+    background:
+        linear-gradient(
+            135deg,
+            #00d4ff,
+            #0072ff
+        );
+
+    color: #000;
+
+}
+
+.checkout-info {
+
+    color: #aaa;
+
+    font-size: .82rem;
+
+    margin-top: 10px;
+
+    line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   AGUARDE
+========================================================= */
+
+.waiting-icon {
+
+    width: 55px;
+
+    height: 55px;
+
+    margin:
+        0 auto 15px;
+
+    border-radius: 50%;
+
+    border:
+        4px solid
+        rgba(255,255,255,.1);
+
+    border-top-color:
+        var(--primary);
+
+    animation:
+        girar .8s linear infinite;
+
+}
+
+@keyframes girar {
+
+    to {
+
+        transform:
+            rotate(360deg);
+
+    }
+
+}
+
+
+/* =========================================================
+   NOTIFICAÇÃO
+========================================================= */
+
+#notification {
+
+    position: fixed;
+
+    bottom: 25px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        #1f1f24;
+
+    color: #fff;
+
+    padding:
+        12px 28px;
+
+    border-radius: 30px;
+
+    z-index: 5000;
+
+    border:
+        1px solid
+        var(--primary);
+
+    box-shadow:
+        0 4px 15px
+        rgba(0,0,0,.5);
+
+    font-size: .9rem;
+
+    text-align: center;
+
+    max-width: 90%;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px) {
+
+    header {
+
+        padding:
+            11px 4%;
+
+        gap: 8px;
+
+    }
+
+    .logo {
+
+        font-size:
+            1.05rem;
+
+    }
+
+    .logo-img {
+
+        height: 34px;
+
+        max-width: 100px;
+
+    }
+
+    .search-box {
+
+        max-width: none;
+
+    }
+
+    #busca {
+
+        padding:
+            9px
+            10px
+            9px
+            34px;
+
+        font-size: .8rem;
+
+    }
+
+    .search-icon {
+
+        left: 11px;
+
+    }
+
+    .btn-login {
+
+        padding:
+            8px 13px;
+
+        font-size: .78rem;
+
+    }
+
+    .promo-space {
+
+        margin-top: 65px;
+
+        padding:
+            8px 4%;
+
+    }
+
+    .promo-placeholder {
+
+        height: 65px;
+
+    }
+
+    #hero {
+
+        height: 65vh;
+
+        min-height: 430px;
+
+        padding:
+            0 5% 35px;
+
+    }
+
+    .hero-content h1 {
+
+        font-size: 2rem;
+
+    }
+
+    .hero-content p {
+
+        font-size: .85rem;
+
+    }
+
+    .hero-btns button {
+
+        padding:
+            10px 17px;
+
+        font-size: .85rem;
+
+    }
+
+    .container {
+
+        padding:
+            20px 4%;
+
+    }
+
+    .section-title {
+
+        font-size: 1.15rem;
+
+    }
+
+    .movie-card {
+
+        min-width: 140px;
+
+        width: 140px;
+
+        height: 210px;
+
+    }
+
+    .login-box {
+
+        padding: 25px;
+
+    }
+
+    .detalhe-info {
+
+        padding: 20px;
+
+    }
+
+    .detalhe-info h2 {
+
+        font-size: 1.35rem;
+
+    }
+
+}
+
+
+@media(max-width:430px) {
+
+    .logo span {
+
+        display: none;
+
+    }
+
+    .logo-img {
+
+        max-width: 85px;
+
+    }
+
+    .btn-login {
+
+        padding:
+            8px 11px;
+
+    }
+
+    .hero-content h1 {
+
+        font-size: 1.75rem;
+
+    }
+
+}
+
+</style>
+
 </head>
 
 
@@ -590,26 +1526,16 @@
 
 <header>
 
-    <button
-        class="btn-voltar"
-        id="btnVoltar"
-        title="Voltar"
-    >
-
-        <i class="fa-solid fa-arrow-left"></i>
-
-    </button>
-
-
     <a
-        href="index.html"
+        href="#"
         class="logo"
+        aria-label="V8 Play+"
     >
 
         <img
             src="assets/v8p.png"
-            class="logo-img"
             alt="V8 Play+"
+            class="logo-img"
             onerror="this.style.display='none'"
         >
 
@@ -619,148 +1545,396 @@
 
     </a>
 
+
+    <div class="search-box">
+
+        <i
+            class="fa-solid fa-magnifying-glass search-icon"
+        ></i>
+
+        <input
+            type="text"
+            id="busca"
+            placeholder="Buscar filmes, séries e doramas..."
+            autocomplete="off"
+            spellcheck="false"
+        >
+
+    </div>
+
+
+    <button
+        class="btn-login"
+        id="authBtn"
+        type="button"
+    >
+        Entrar
+    </button>
+
 </header>
 
 
 <!-- =========================================================
-     CONTEÚDO
+     PROMO
 ========================================================= -->
 
-<main>
+<div class="promo-space">
 
-    <div class="player-wrapper">
+    <div class="promo-placeholder">
 
+        <span>
+            ESPAÇO PROMOCIONAL
+        </span>
 
-        <!-- PLAYER -->
+        <small>
+            Conteúdo patrocinado
+        </small>
 
-        <div class="player-container">
+    </div>
 
-
-            <!-- LOADING -->
-
-            <div id="loading">
-
-                <div class="spinner"></div>
-
-                <div id="loadingText">
-                    Carregando vídeo...
-                </div>
-
-            </div>
+</div>
 
 
-            <!-- VIDEO MP4 -->
+<!-- =========================================================
+     HERO
+========================================================= -->
 
-            <video
-                id="videoPlayer"
-                controls
-                playsinline
-                preload="metadata"
-                class="hidden"
-            ></video>
+<section id="hero">
 
+    <div class="hero-content">
 
-            <!-- YOUTUBE / EMBED -->
+        <h1 id="heroTitle">
+            Carregando...
+        </h1>
 
-            <iframe
-                id="youtubePlayer"
-                class="hidden"
-                allow="
-                    autoplay;
-                    encrypted-media;
-                    picture-in-picture;
-                    fullscreen
-                "
-                allowfullscreen
-                referrerpolicy="strict-origin-when-cross-origin"
-            ></iframe>
+        <p id="heroDesc">
+            Sua nova experiência em entretenimento em alta definição.
+        </p>
 
+        <div class="hero-btns">
 
-            <!-- ERRO -->
-
-            <div
-                id="erroPlayer"
-                class="hidden"
+            <button
+                class="btn-assistir"
+                id="heroAssistir"
+                type="button"
             >
 
-                <div class="erro-box">
+                <i class="fa-solid fa-play"></i>
 
-                    <i
-                        class="fa-solid fa-circle-exclamation"
-                    ></i>
+                Ver Opções
 
-                    <h2>
-                        Não foi possível carregar o vídeo
-                    </h2>
-
-                    <p id="erroTexto">
-                        Verifique o endereço do vídeo
-                        ou tente novamente.
-                    </p>
-
-                    <button
-                        class="btn-retry"
-                        id="btnRetry"
-                    >
-                        <i class="fa-solid fa-rotate"></i>
-                        Tentar novamente
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
+            </button>
 
 
-        <!-- =================================================
-             INFORMAÇÕES
-        ================================================= -->
-
-        <div class="info">
-
-            <div
-                id="trailerBadge"
-                class="trailer-badge hidden"
+            <button
+                class="btn-info"
+                id="heroInfo"
+                type="button"
             >
 
-                <i class="fa-solid fa-film"></i>
+                <i class="fa-solid fa-circle-info"></i>
 
-                Trailer
+                Mais detalhes
 
-            </div>
-
-
-            <h1 id="titulo">
-                Carregando...
-            </h1>
-
-
-            <div class="meta">
-
-                <span id="ano"></span>
-
-                <span id="separadorAno">
-                    •
-                </span>
-
-                <span id="categoria"></span>
-
-            </div>
-
-
-            <p
-                class="descricao"
-                id="descricao"
-            >
-                Carregando informações...
-            </p>
+            </button>
 
         </div>
 
     </div>
 
-</main>
+</section>
+
+
+<!-- =========================================================
+     CATÁLOGO
+========================================================= -->
+
+<div class="container">
+
+
+    <div
+        class="filtros"
+        id="filtros"
+    >
+
+        <button
+            class="chip ativo"
+            data-genero="Todos"
+            type="button"
+        >
+            Todos
+        </button>
+
+    </div>
+
+
+    <h2 class="section-title">
+        🔥 Em Alta
+    </h2>
+
+    <div
+        class="cards"
+        id="emAlta"
+    ></div>
+
+
+    <h2 class="section-title">
+        🎬 Filmes
+    </h2>
+
+    <div
+        class="cards"
+        id="filmes"
+    ></div>
+
+
+    <div class="promo-mid">
+
+        <div class="promo-mid-box">
+
+            <span>
+                ESPAÇO PROMOCIONAL
+            </span>
+
+            <small>
+                V8 Play+
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <h2 class="section-title">
+        📺 Séries
+    </h2>
+
+    <div
+        class="cards"
+        id="series"
+    ></div>
+
+
+    <h2 class="section-title">
+        🎌 Animes
+    </h2>
+
+    <div
+        class="cards"
+        id="animes"
+    ></div>
+
+
+    <h2 class="section-title">
+        🎭 Doramas
+    </h2>
+
+    <div
+        class="cards"
+        id="doramas"
+    ></div>
+
+
+    <h2 class="section-title">
+        ⭐ Recomendados
+    </h2>
+
+    <div
+        class="cards"
+        id="recomendados"
+    ></div>
+
+</div>
+
+
+<!-- =========================================================
+     LOGIN
+========================================================= -->
+
+<div
+    id="loginModal"
+    class="modal hidden"
+>
+
+    <div class="login-box">
+
+        <h2 id="tituloAuth">
+            Entrar no V8 Play+
+        </h2>
+
+        <p
+            class="erro-msg"
+            id="erroAuth"
+        ></p>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="E-mail"
+            autocomplete="username"
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Senha"
+            autocomplete="current-password"
+        >
+
+        <button
+            class="btn-login"
+            id="doLogin"
+            type="button"
+            style="
+                width:100%;
+                border-radius:6px;
+                padding:12px;
+                margin-top:5px
+            "
+        >
+            Entrar
+        </button>
+
+        <button
+            class="btn-secundario"
+            id="btnEsqueciSenha"
+            type="button"
+        >
+            Esqueci minha senha
+        </button>
+
+        <button
+            class="btn-secundario"
+            id="alternarCadastro"
+            type="button"
+        >
+            Ainda não tem conta? Criar conta
+        </button>
+
+        <button
+            class="btn-secundario"
+            id="btnCancelarLogin"
+            type="button"
+            style="
+                margin-top:15px;
+                color:#666
+            "
+        >
+            Cancelar
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     DETALHES
+========================================================= -->
+
+<div
+    id="detalheModal"
+    class="modal hidden"
+>
+
+    <div class="detalhe-box">
+
+        <img
+            id="detImg"
+            src=""
+            alt=""
+        >
+
+        <div class="detalhe-info">
+
+            <h2 id="detTitulo"></h2>
+
+            <div class="detalhe-meta">
+
+                <span id="detAno"></span>
+
+                <span>
+                    •
+                </span>
+
+                <span id="detCategoria"></span>
+
+            </div>
+
+            <p id="detDescricao"></p>
+
+            <div
+                class="detalhe-btns"
+                id="detBtnsContainer"
+            ></div>
+
+            <div
+                class="detalhe-btns"
+                style="margin-top:15px"
+            >
+
+                <button
+                    class="btn-info"
+                    id="btnFecharDetalhes"
+                    type="button"
+                    style="
+                        background:transparent;
+                        border:1px solid #333
+                    "
+                >
+                    Fechar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL DE AÇÃO
+========================================================= -->
+
+<div
+    id="actionModal"
+    class="modal hidden"
+>
+
+    <div class="waiting-box">
+
+        <div class="waiting-icon"></div>
+
+        <h2>
+            Aguarde um momento
+        </h2>
+
+        <p id="actionMessage">
+            Preparando sua solicitação...
+        </p>
+
+        <button
+            id="btnConfirmarAcao"
+            class="btn-login"
+            type="button"
+            disabled
+            style="
+                width:100%;
+                margin-top:20px;
+                border-radius:6px
+            "
+        >
+            Aguarde
+            <span id="actionTimer">
+                5
+            </span>s...
+        </button>
+
+    </div>
+
+</div>
 
 
 <!-- =========================================================
@@ -770,6 +1944,8 @@
 <div
     id="notification"
     class="hidden"
+    role="status"
+    aria-live="polite"
 >
 
     <span id="notificationText"></span>
@@ -778,143 +1954,2088 @@
 
 
 <!-- =========================================================
-     FIREBASE + PLAYER
+     JAVASCRIPT
 ========================================================= -->
 
 <script type="module">
 
-    import {
-        db
-    } from "./js/firebase.js";
-
-    import {
-        doc,
-        getDoc
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import {
+    db,
+    auth
+} from "./js/firebase.js";
 
 
-    // =====================================================
-    // ELEMENTOS
-    // =====================================================
+import {
+    collection,
+    getDocs,
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    const videoPlayer =
-        document.getElementById(
-            "videoPlayer"
+
+import {
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    sendPasswordResetEmail,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+
+/* =========================================================
+   CONFIGURAÇÃO
+========================================================= */
+
+const COLECOES = [
+    "filmes",
+    "series",
+    "animes",
+    "doramas"
+];
+
+
+let catalogo = [];
+
+let filmeAtual = null;
+
+let modoCadastro = false;
+
+let acaoAnuncioPendente = null;
+
+let adTimer = null;
+
+let notificacaoTimer = null;
+
+
+const titulosComprados =
+    new Set();
+
+
+let valoresPlanosAdmin = {
+
+    prime: 9.90,
+
+    premium: 19.90
+
+};
+
+
+const $ = id =>
+    document.getElementById(id);
+
+
+const normalizar = valor =>
+    String(valor ?? "")
+        .toLowerCase()
+        .trim();
+
+
+function formatarPreco(valor) {
+
+    return `R$ ${(Number(valor) || 0)
+        .toFixed(2)
+        .replace(".", ",")}`;
+
+}
+
+
+function obterTagItem(item) {
+
+    return normalizar(
+        item.tag ||
+        item.plano ||
+        "gratis"
+    ) || "gratis";
+
+}
+
+
+/* =========================================================
+   PREÇOS
+========================================================= */
+
+async function carregarPrecosAdmin() {
+
+    try {
+
+        const snap =
+            await getDoc(
+                doc(
+                    db,
+                    "configuracoes",
+                    "planos"
+                )
+            );
+
+
+        if (!snap.exists()) {
+
+            return;
+
+        }
+
+
+        const dados =
+            snap.data();
+
+
+        if (
+            dados.prime !== undefined
+        ) {
+
+            valoresPlanosAdmin.prime =
+                Number(dados.prime);
+
+        }
+
+
+        if (
+            dados.premium !== undefined
+        ) {
+
+            valoresPlanosAdmin.premium =
+                Number(dados.premium);
+
+        }
+
+    }
+
+    catch (erro) {
+
+        console.warn(
+            "Preços não carregados:",
+            erro
         );
 
-    const youtubePlayer =
-        document.getElementById(
-            "youtubePlayer"
-        );
+    }
 
-    const loading =
-        document.getElementById(
-            "loading"
-        );
-
-    const loadingText =
-        document.getElementById(
-            "loadingText"
-        );
-
-    const erroPlayer =
-        document.getElementById(
-            "erroPlayer"
-        );
-
-    const erroTexto =
-        document.getElementById(
-            "erroTexto"
-        );
-
-    const titulo =
-        document.getElementById(
-            "titulo"
-        );
-
-    const ano =
-        document.getElementById(
-            "ano"
-        );
-
-    const categoria =
-        document.getElementById(
-            "categoria"
-        );
-
-    const descricao =
-        document.getElementById(
-            "descricao"
-        );
-
-    const trailerBadge =
-        document.getElementById(
-            "trailerBadge"
-        );
+}
 
 
-    // =====================================================
-    // URL
-    // =====================================================
+/* =========================================================
+   FIRESTORE
+========================================================= */
 
-    const params =
-        new URLSearchParams(
-            window.location.search
+async function buscarColecao(nome) {
+
+    try {
+
+        const snap =
+            await getDocs(
+                collection(
+                    db,
+                    nome
+                )
+            );
+
+
+        const itens = [];
+
+
+        snap.forEach(
+            documento => {
+
+                const dados =
+                    documento.data();
+
+
+                if (
+                    dados.ativo === false
+                ) {
+
+                    return;
+
+                }
+
+
+                itens.push({
+
+                    id:
+                        documento.id,
+
+                    colecao:
+                        nome,
+
+                    ...dados
+
+                });
+
+            }
         );
 
 
-    const itemId =
-        params.get("id") || "";
+        itens.sort(
+            (a,b) => {
+
+                const dataA =
+                    a.data?.toDate
+                        ? a.data.toDate()
+                        : new Date(a.data || 0);
 
 
-    const colecao =
-        params.get("colecao") || "";
+                const dataB =
+                    b.data?.toDate
+                        ? b.data.toDate()
+                        : new Date(b.data || 0);
 
 
-    const videoURL =
-        params.get("video") || "";
+                return dataB - dataA;
+
+            }
+        );
 
 
-    const tituloURL =
-        params.get("title") || "";
+        return itens;
+
+    }
+
+    catch (erro) {
+
+        console.error(
+            `Erro na coleção ${nome}:`,
+            erro
+        );
+
+        return [];
+
+    }
+
+}
 
 
-    const isTrailer =
-        params.get("trailer") === "true";
+/* =========================================================
+   CARREGAR CATÁLOGO
+========================================================= */
+
+async function carregarCatalogo() {
+
+    console.log(
+        "🎬 Carregando catálogo..."
+    );
 
 
-    // =====================================================
-    // ESTADO
-    // =====================================================
-
-    let itemAtual = null;
+    await carregarPrecosAdmin();
 
 
-    // =====================================================
-    // NOTIFICAÇÃO
-    // =====================================================
+    [
+        "emAlta",
+        "filmes",
+        "series",
+        "animes",
+        "doramas",
+        "recomendados"
+    ]
+    .forEach(
+        id => {
 
-    function mostrarNotificacao(
-        mensagem
+            if ($(id)) {
+
+                $(id).innerHTML = "";
+
+            }
+
+        }
+    );
+
+
+    const resultados =
+        await Promise.all(
+            COLECOES.map(
+                buscarColecao
+            )
+        );
+
+
+    catalogo =
+        resultados.flat();
+
+
+    console.log(
+        `🎥 ${catalogo.length} conteúdos encontrados`
+    );
+
+
+    if (!catalogo.length) {
+
+        $("filmes").innerHTML =
+            '<p class="vazio">Nenhum título disponível no momento.</p>';
+
+        carregarDestaque();
+
+        return;
+
+    }
+
+
+    catalogo
+        .filter(
+            item =>
+                item.destaque === true
+        )
+        .forEach(
+            item =>
+                adicionarCard(
+                    "emAlta",
+                    item
+                )
+        );
+
+
+    catalogo.forEach(
+        item => {
+
+            const tipo =
+                normalizar(
+                    item.tipo
+                );
+
+
+            if (
+                tipo === "serie" ||
+                tipo === "series"
+            ) {
+
+                adicionarCard(
+                    "series",
+                    item
+                );
+
+            }
+
+            else if (
+                tipo === "anime" ||
+                tipo === "animes"
+            ) {
+
+                adicionarCard(
+                    "animes",
+                    item
+                );
+
+            }
+
+            else if (
+                tipo === "dorama" ||
+                tipo === "doramas"
+            ) {
+
+                adicionarCard(
+                    "doramas",
+                    item
+                );
+
+            }
+
+            else {
+
+                adicionarCard(
+                    "filmes",
+                    item
+                );
+
+            }
+
+        }
+    );
+
+
+    catalogo
+        .filter(
+            item =>
+                item.recomendado === true
+        )
+        .forEach(
+            item =>
+                adicionarCard(
+                    "recomendados",
+                    item
+                )
+        );
+
+
+    carregarDestaque();
+
+    montarFiltros();
+
+    aplicarFiltrosEBusca();
+
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+function adicionarCard(
+    containerId,
+    item
+) {
+
+    const container =
+        $(containerId);
+
+
+    if (!container) {
+
+        return;
+
+    }
+
+
+    container.appendChild(
+        criarCard(item)
+    );
+
+}
+
+
+function criarCard(item) {
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "movie-card";
+
+
+    card.dataset.titulo =
+        normalizar(
+            item.titulo
+        );
+
+
+    card.dataset.categoria =
+        String(
+            item.categoria || ""
+        );
+
+
+    const tag =
+        obterTagItem(item);
+
+
+    let rotulo =
+        "GRÁTIS";
+
+
+    if (
+        tag === "prime"
     ) {
 
-        const box =
-            document.getElementById(
-                "notification"
+        rotulo =
+            `PRIME ${formatarPreco(
+                valoresPlanosAdmin.prime
+            )}`;
+
+    }
+
+
+    if (
+        tag === "premium"
+    ) {
+
+        rotulo =
+            `PREMIUM ${formatarPreco(
+                valoresPlanosAdmin.premium
+            )}`;
+
+    }
+
+
+    const selo =
+        document.createElement(
+            "span"
+        );
+
+
+    selo.className =
+        `selo-card ${tag}`;
+
+
+    selo.textContent =
+        rotulo;
+
+
+    card.appendChild(
+        selo
+    );
+
+
+    const fallback =
+        document.createElement(
+            "div"
+        );
+
+
+    fallback.className =
+        "titulo-fallback hidden";
+
+
+    fallback.textContent =
+        item.titulo ||
+        "Sem título";
+
+
+    if (item.capa) {
+
+        const img =
+            document.createElement(
+                "img"
             );
 
-        const text =
-            document.getElementById(
-                "notificationText"
-            );
 
-        text.innerText =
-            mensagem;
+        img.src =
+            item.capa;
 
-        box.classList.remove(
+
+        img.alt =
+            item.titulo || "";
+
+
+        img.loading =
+            "lazy";
+
+
+        img.onerror =
+            () => {
+
+                img.style.display =
+                    "none";
+
+                fallback.classList.remove(
+                    "hidden"
+                );
+
+            };
+
+
+        card.appendChild(
+            img
+        );
+
+    }
+
+    else {
+
+        fallback.classList.remove(
             "hidden"
         );
 
+    }
+
+
+    card.appendChild(
+        fallback
+    );
+
+
+    card.addEventListener(
+        "click",
+        () => {
+
+            abrirDetalhes(item);
+
+        }
+    );
+
+
+    return card;
+
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+function montarFiltros() {
+
+    const container =
+        $("filtros");
+
+
+    if (!container) {
+
+        return;
+
+    }
+
+
+    container
+        .querySelectorAll(
+            '.chip:not([data-genero="Todos"])'
+        )
+        .forEach(
+            chip =>
+                chip.remove()
+        );
+
+
+    [
+        ...new Set(
+            catalogo
+                .map(
+                    item =>
+                        item.categoria
+                )
+                .filter(Boolean)
+        )
+    ]
+    .sort()
+    .forEach(
+        genero => {
+
+            const botao =
+                document.createElement(
+                    "button"
+                );
+
+
+            botao.className =
+                "chip";
+
+
+            botao.dataset.genero =
+                genero;
+
+
+            botao.textContent =
+                genero;
+
+
+            container.appendChild(
+                botao
+            );
+
+        }
+    );
+
+}
+
+
+function aplicarFiltrosEBusca() {
+
+    const texto =
+        normalizar(
+            $("busca")?.value
+        );
+
+
+    const genero =
+        document
+            .querySelector(
+                "#filtros .chip.ativo"
+            )
+            ?.dataset.genero ||
+        "Todos";
+
+
+    document
+        .querySelectorAll(
+            ".movie-card"
+        )
+        .forEach(
+            card => {
+
+                const okBusca =
+                    !texto ||
+                    card.dataset.titulo
+                        .includes(texto);
+
+
+                const okGenero =
+                    genero === "Todos" ||
+                    card.dataset.categoria === genero;
+
+
+                card.style.display =
+                    okBusca && okGenero
+                        ? ""
+                        : "none";
+
+            }
+        );
+
+}
+
+
+$("filtros")
+?.addEventListener(
+    "click",
+    evento => {
+
+        const chip =
+            evento.target.closest(
+                ".chip"
+            );
+
+
+        if (!chip) {
+
+            return;
+
+        }
+
+
+        document
+            .querySelectorAll(
+                "#filtros .chip"
+            )
+            .forEach(
+                item =>
+                    item.classList.remove(
+                        "ativo"
+                    )
+            );
+
+
+        chip.classList.add(
+            "ativo"
+        );
+
+
+        aplicarFiltrosEBusca();
+
+    }
+);
+
+
+$("busca")
+?.addEventListener(
+    "input",
+    aplicarFiltrosEBusca
+);
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+function carregarDestaque() {
+
+    const destaque =
+        catalogo.find(
+            item =>
+                item.destaque === true
+        ) ||
+        catalogo[0];
+
+
+    if (!destaque) {
+
+        $("heroTitle").textContent =
+            "V8 Play+";
+
+        $("heroDesc").textContent =
+            "Sua nova experiência em entretenimento.";
+
+        return;
+
+    }
+
+
+    filmeAtual =
+        destaque;
+
+
+    $("heroTitle").textContent =
+        destaque.titulo ||
+        "V8 Play+";
+
+
+    $("heroDesc").textContent =
+        destaque.descricao ||
+        "Sua nova experiência em entretenimento.";
+
+
+    const imagem =
+        destaque.banner ||
+        destaque.capa;
+
+
+    if (imagem) {
+
+        $("hero").style.backgroundImage =
+            `url("${String(imagem)
+                .replaceAll('"', '\\"')}")`;
+
+    }
+
+}
+
+
+/* =========================================================
+   BOTÃO
+========================================================= */
+
+function criarBotao(
+    classe,
+    html
+) {
+
+    const botao =
+        document.createElement(
+            "button"
+        );
+
+
+    botao.className =
+        classe;
+
+
+    botao.innerHTML =
+        html;
+
+
+    return botao;
+
+}
+
+
+/* =========================================================
+   DETALHES
+========================================================= */
+
+function abrirDetalhes(item) {
+
+    filmeAtual =
+        item;
+
+
+    $("detImg").src =
+        item.banner ||
+        item.capa ||
+        "";
+
+
+    $("detImg").alt =
+        item.titulo || "";
+
+
+    $("detTitulo").textContent =
+        item.titulo ||
+        "Sem título";
+
+
+    $("detAno").textContent =
+        item.ano || "";
+
+
+    $("detCategoria").textContent =
+        item.categoria ||
+        item.tipo ||
+        "";
+
+
+    $("detDescricao").textContent =
+        item.descricao ||
+        "Sem descrição disponível.";
+
+
+    const container =
+        $("detBtnsContainer");
+
+
+    container.innerHTML =
+        "";
+
+
+    const tag =
+        obterTagItem(item);
+
+
+    const comprado =
+        titulosComprados.has(
+            item.id
+        );
+
+
+    /* =====================================================
+       GRATUITO
+    ===================================================== */
+
+    if (
+        tag === "gratis" ||
+        tag === "free"
+    ) {
+
+        const assistir =
+            criarBotao(
+                "btn-gratis",
+                '<i class="fa-solid fa-play"></i> Assistir'
+            );
+
+
+        assistir.onclick =
+            () => {
+
+                iniciarFluxoAnuncio(
+                    "assistir",
+                    item
+                );
+
+            };
+
+
+        container.appendChild(
+            assistir
+        );
+
+
+        if (
+            item.arquivoDownload
+        ) {
+
+            const download =
+                criarBotao(
+                    "btn-info",
+                    '<i class="fa-solid fa-download"></i> Baixar'
+                );
+
+
+            download.onclick =
+                () => {
+
+                    iniciarFluxoAnuncio(
+                        "baixar",
+                        item
+                    );
+
+                };
+
+
+            container.appendChild(
+                download
+            );
+
+        }
+
+    }
+
+    /* =====================================================
+       PAGO
+    ===================================================== */
+
+    else {
+
+        const valor =
+            tag === "prime"
+                ? valoresPlanosAdmin.prime
+                : valoresPlanosAdmin.premium;
+
+
+        if (comprado) {
+
+            const assistir =
+                criarBotao(
+                    "btn-login",
+                    '<i class="fa-solid fa-play"></i> Assistir Agora'
+                );
+
+
+            assistir.onclick =
+                () => {
+
+                    irParaPlayer(
+                        item
+                    );
+
+                };
+
+
+            container.appendChild(
+                assistir
+            );
+
+
+            if (
+                item.arquivoDownload
+            ) {
+
+                const download =
+                    criarBotao(
+                        "btn-info",
+                        '<i class="fa-solid fa-download"></i> Baixar Arquivo'
+                    );
+
+
+                download.onclick =
+                    () => {
+
+                        executarDownload(
+                            item
+                        );
+
+                    };
+
+
+                container.appendChild(
+                    download
+                );
+
+            }
+
+        }
+
+        else {
+
+            const classe =
+                tag === "prime"
+                    ? "btn-pix-prime"
+                    : "btn-pix-premium";
+
+
+            const comprar =
+                criarBotao(
+                    classe,
+                    `<i class="fa-brands fa-pix"></i> Comprar ${tag.toUpperCase()} — ${formatarPreco(valor)}`
+                );
+
+
+            comprar.onclick =
+                () => {
+
+                    solicitarPix(
+                        item,
+                        tag,
+                        valor
+                    );
+
+                };
+
+
+            container.appendChild(
+                comprar
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       TRAILER
+    ===================================================== */
+
+    const trailer =
+        item.trailer ||
+        item.videoTrailer;
+
+
+    if (trailer) {
+
+        const botaoTrailer =
+            criarBotao(
+                "btn-info",
+                '<i class="fa-solid fa-film"></i> Trailer'
+            );
+
+
+        botaoTrailer.onclick =
+            () => {
+
+                abrirTrailer(
+                    item
+                );
+
+            };
+
+
+        container.appendChild(
+            botaoTrailer
+        );
+
+    }
+
+
+    $("detalheModal")
+        .classList
+        .remove("hidden");
+
+}
+
+
+/* =========================================================
+   ABRIR PLAYER
+========================================================= */
+
+function irParaPlayer(item) {
+
+    if (!item) {
+
+        mostrarNotificacao(
+            "Conteúdo não encontrado."
+        );
+
+        return;
+
+    }
+
+
+    const video =
+        item.video ||
+        item.video1 ||
+        item.video2 ||
+        item.video3 ||
+        item.embed ||
+        "";
+
+
+    if (!video) {
+
+        mostrarNotificacao(
+            "Este conteúdo não possui vídeo disponível."
+        );
+
+        return;
+
+    }
+
+
+    const params =
+        new URLSearchParams();
+
+
+    if (item.id) {
+
+        params.set(
+            "id",
+            item.id
+        );
+
+    }
+
+
+    if (item.colecao) {
+
+        params.set(
+            "colecao",
+            item.colecao
+        );
+
+    }
+
+
+    params.set(
+        "video",
+        video
+    );
+
+
+    if (item.titulo) {
+
+        params.set(
+            "title",
+            item.titulo
+        );
+
+    }
+
+
+    console.log(
+        "🎬 Abrindo player:",
+        {
+            id: item.id,
+            colecao: item.colecao,
+            video: video
+        }
+    );
+
+
+    fecharModais();
+
+
+    setTimeout(
+        () => {
+
+            window.location.href =
+                `player.html?${params.toString()}`;
+
+        },
+        50
+    );
+
+}
+
+
+/* =========================================================
+   TRAILER
+========================================================= */
+
+function abrirTrailer(item) {
+
+    if (!item) {
+
+        mostrarNotificacao(
+            "Conteúdo não encontrado."
+        );
+
+        return;
+
+    }
+
+
+    const video =
+        item.trailer ||
+        item.videoTrailer ||
+        "";
+
+
+    if (!video) {
+
+        mostrarNotificacao(
+            "Trailer não encontrado."
+        );
+
+        return;
+
+    }
+
+
+    const params =
+        new URLSearchParams();
+
+
+    if (item.id) {
+
+        params.set(
+            "id",
+            item.id
+        );
+
+    }
+
+
+    if (item.colecao) {
+
+        params.set(
+            "colecao",
+            item.colecao
+        );
+
+    }
+
+
+    params.set(
+        "trailer",
+        "true"
+    );
+
+
+    params.set(
+        "video",
+        video
+    );
+
+
+    if (item.titulo) {
+
+        params.set(
+            "title",
+            item.titulo
+        );
+
+    }
+
+
+    console.log(
+        "🎞️ Abrindo trailer:",
+        video
+    );
+
+
+    fecharModais();
+
+
+    setTimeout(
+        () => {
+
+            window.location.href =
+                `player.html?${params.toString()}`;
+
+        },
+        50
+    );
+
+}
+
+
+/* =========================================================
+   ANÚNCIO / ESPERA
+========================================================= */
+
+function iniciarFluxoAnuncio(
+    tipo,
+    item
+) {
+
+    filmeAtual =
+        item;
+
+
+    acaoAnuncioPendente =
+        tipo;
+
+
+    $("detalheModal")
+        .classList
+        .add("hidden");
+
+
+    $("actionModal")
+        .classList
+        .remove("hidden");
+
+
+    $("actionMessage").textContent =
+        tipo === "assistir"
+            ? "Preparando o conteúdo para assistir..."
+            : "Preparando seu download...";
+
+
+    const botao =
+        $("btnConfirmarAcao");
+
+
+    let contador = 5;
+
+
+    botao.disabled =
+        true;
+
+
+    botao.textContent =
+        `Aguarde ${contador}s...`;
+
+
+    if (adTimer) {
+
+        clearInterval(
+            adTimer
+        );
+
+    }
+
+
+    adTimer =
+        setInterval(
+            () => {
+
+                contador--;
+
+
+                if (contador > 0) {
+
+                    botao.textContent =
+                        `Aguarde ${contador}s...`;
+
+                }
+
+                else {
+
+                    clearInterval(
+                        adTimer
+                    );
+
+
+                    adTimer =
+                        null;
+
+
+                    botao.disabled =
+                        false;
+
+
+                    botao.textContent =
+                        tipo === "assistir"
+                            ? "Assistir agora"
+                            : "Iniciar download";
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+/* =========================================================
+   CONFIRMAR AÇÃO
+========================================================= */
+
+$("btnConfirmarAcao")
+?.addEventListener(
+    "click",
+    () => {
+
+        if (!filmeAtual) {
+
+            return;
+
+        }
+
+
+        const item =
+            filmeAtual;
+
+
+        const acao =
+            acaoAnuncioPendente;
+
+
+        fecharModais();
+
+
+        if (
+            acao === "assistir"
+        ) {
+
+            irParaPlayer(
+                item
+            );
+
+        }
+
+        else if (
+            acao === "baixar"
+        ) {
+
+            executarDownload(
+                item
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   DOWNLOAD
+========================================================= */
+
+function executarDownload(item) {
+
+    const url =
+        item?.arquivoDownload;
+
+
+    if (!url) {
+
+        mostrarNotificacao(
+            "Link de download não disponível."
+        );
+
+        return;
+
+    }
+
+
+    window.location.href =
+        url;
+
+}
+
+
+/* =========================================================
+   PIX
+========================================================= */
+
+async function solicitarPix(
+    item,
+    tag,
+    valor
+) {
+
+    if (!auth.currentUser) {
+
+        fecharModais();
+
+        $("loginModal")
+            .classList
+            .remove("hidden");
+
+
+        $("erroAuth").textContent =
+            `Faça login para comprar o acesso ${tag.toUpperCase()}.`;
+
+
+        return;
+
+    }
+
+
+    if (
+        !Number.isFinite(
+            Number(valor)
+        ) ||
+        Number(valor) <= 0
+    ) {
+
+        mostrarNotificacao(
+            "Valor inválido."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        mostrarNotificacao(
+            "Gerando pagamento..."
+        );
+
+
+        const payload = {
+
+            uid:
+                auth.currentUser.uid,
+
+            email:
+                auth.currentUser.email || "",
+
+            itemId:
+                item.id,
+
+            colecao:
+                item.colecao,
+
+            tag:
+                tag,
+
+            valor:
+                Number(valor)
+
+        };
+
+
+        const resposta =
+            await fetch(
+                "/criar-compra-pix",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            payload
+                        )
+
+                }
+            );
+
+
+        const texto =
+            await resposta.text();
+
+
+        let dados;
+
+
+        try {
+
+            dados =
+                JSON.parse(
+                    texto
+                );
+
+            }
+
+        catch {
+
+            dados = {
+
+                success:
+                    false,
+
+                error:
+                    texto ||
+                    "Resposta inválida."
+
+            };
+
+        }
+
+
+        if (!resposta.ok) {
+
+            mostrarNotificacao(
+                dados.error ||
+                `Erro HTTP ${resposta.status}`
+            );
+
+            return;
+
+        }
+
+
+        if (
+            dados.success &&
+            dados.checkout_url
+        ) {
+
+            window.location.href =
+                dados.checkout_url;
+
+            return;
+
+        }
+
+
+        mostrarNotificacao(
+            dados.error ||
+            "Não foi possível criar o checkout."
+        );
+
+    }
+
+    catch (erro) {
+
+        console.error(
+            "Erro InfinitePay:",
+            erro
+        );
+
+
+        mostrarNotificacao(
+            "Falha na conexão com o pagamento."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MODAIS
+========================================================= */
+
+function fecharModais() {
+
+    document
+        .querySelectorAll(
+            ".modal"
+        )
+        .forEach(
+            modal =>
+                modal.classList.add(
+                    "hidden"
+                )
+        );
+
+
+    if (adTimer) {
+
+        clearInterval(
+            adTimer
+        );
+
+        adTimer =
+            null;
+
+    }
+
+
+    acaoAnuncioPendente =
+        null;
+
+}
+
+
+window.fecharModais =
+    fecharModais;
+
+
+$("btnFecharDetalhes")
+?.addEventListener(
+    "click",
+    fecharModais
+);
+
+
+$("btnCancelarLogin")
+?.addEventListener(
+    "click",
+    fecharModais
+);
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+$("heroAssistir")
+?.addEventListener(
+    "click",
+    () => {
+
+        if (filmeAtual) {
+
+            abrirDetalhes(
+                filmeAtual
+            );
+
+        }
+
+    }
+);
+
+
+$("heroInfo")
+?.addEventListener(
+    "click",
+    () => {
+
+        if (filmeAtual) {
+
+            abrirDetalhes(
+                filmeAtual
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CADASTRO
+========================================================= */
+
+$("alternarCadastro")
+?.addEventListener(
+    "click",
+    () => {
+
+        modoCadastro =
+            !modoCadastro;
+
+
+        $("tituloAuth").textContent =
+            modoCadastro
+                ? "Criar nova conta"
+                : "Entrar no V8 Play+";
+
+
+        $("doLogin").textContent =
+            modoCadastro
+                ? "Criar conta"
+                : "Entrar";
+
+
+        $("alternarCadastro").textContent =
+            modoCadastro
+                ? "Já possui conta? Fazer login"
+                : "Ainda não tem conta? Criar conta";
+
+
+        $("erroAuth").textContent =
+            "";
+
+    }
+);
+
+
+/* =========================================================
+   RECUPERAR SENHA
+========================================================= */
+
+$("btnEsqueciSenha")
+?.addEventListener(
+    "click",
+    async () => {
+
+        const email =
+            $("email")
+                .value
+                .trim();
+
+
+        if (!email) {
+
+            $("erroAuth").textContent =
+                "Informe seu e-mail.";
+
+            return;
+
+        }
+
+
+        try {
+
+            await sendPasswordResetEmail(
+                auth,
+                email
+            );
+
+
+            mostrarNotificacao(
+                "E-mail de redefinição enviado."
+            );
+
+
+            $("erroAuth").textContent =
+                "";
+
+        }
+
+        catch (erro) {
+
+            console.error(
+                erro
+            );
+
+
+            $("erroAuth").textContent =
+                "Não foi possível enviar o e-mail.";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+$("doLogin")
+?.addEventListener(
+    "click",
+    async () => {
+
+        const email =
+            $("email")
+                .value
+                .trim();
+
+
+        const senha =
+            $("password")
+                .value;
+
+
+        const erro =
+            $("erroAuth");
+
+
+        erro.textContent =
+            "";
+
+
+        if (
+            !email ||
+            !senha
+        ) {
+
+            erro.textContent =
+                "Preencha todos os campos.";
+
+            return;
+
+        }
+
+
+        try {
+
+            if (modoCadastro) {
+
+                const cred =
+                    await createUserWithEmailAndPassword(
+                        auth,
+                        email,
+                        senha
+                    );
+
+
+                await setDoc(
+                    doc(
+                        db,
+                        "usuarios",
+                        cred.user.uid
+                    ),
+                    {
+
+                        email,
+
+                        admin:
+                            false,
+
+                        criadoEm:
+                            serverTimestamp()
+
+                    }
+                );
+
+            }
+
+            else {
+
+                await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    senha
+                );
+
+            }
+
+
+            fecharModais();
+
+
+            mostrarNotificacao(
+                modoCadastro
+                    ? "Conta criada com sucesso!"
+                    : "Login realizado!"
+            );
+
+        }
+
+        catch (erroFirebase) {
+
+            console.error(
+                erroFirebase
+            );
+
+
+            const mapa = {
+
+                "auth/invalid-credential":
+                    "E-mail ou senha incorretos.",
+
+                "auth/wrong-password":
+                    "E-mail ou senha incorretos.",
+
+                "auth/user-not-found":
+                    "E-mail ou senha incorretos.",
+
+                "auth/email-already-in-use":
+                    "Este e-mail já está cadastrado.",
+
+                "auth/weak-password":
+                    "A senha deve possuir pelo menos 6 caracteres.",
+
+                "auth/invalid-email":
+                    "E-mail inválido."
+
+            };
+
+
+            erro.textContent =
+                mapa[
+                    erroFirebase.code
+                ] ||
+                "Falha na autenticação.";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   LOGIN / LOGOUT
+========================================================= */
+
+$("authBtn")
+?.addEventListener(
+    "click",
+    async () => {
+
+        if (auth.currentUser) {
+
+            await signOut(
+                auth
+            );
+
+
+            mostrarNotificacao(
+                "Sessão encerrada."
+            );
+
+        }
+
+        else {
+
+            $("loginModal")
+                .classList
+                .remove("hidden");
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ESTADO AUTH
+========================================================= */
+
+onAuthStateChanged(
+    auth,
+    user => {
+
+        $("authBtn").textContent =
+            user
+                ? `Sair (${user.email?.split("@")[0] || "Usuário"})`
+                : "Entrar";
+
+    }
+);
+
+
+/* =========================================================
+   NOTIFICAÇÃO
+========================================================= */
+
+function mostrarNotificacao(
+    mensagem
+) {
+
+    const box =
+        $("notification");
+
+
+    const texto =
+        $("notificationText");
+
+
+    if (!box || !texto) {
+
+        return;
+
+    }
+
+
+    texto.textContent =
+        mensagem;
+
+
+    box.classList.remove(
+        "hidden"
+    );
+
+
+    clearTimeout(
+        notificacaoTimer
+    );
+
+
+    notificacaoTimer =
         setTimeout(
             () => {
 
@@ -926,837 +4047,86 @@
             3500
         );
 
-    }
+}
 
 
-    // =====================================================
-    // LOADING
-    // =====================================================
+/* =========================================================
+   FECHAR MODAL CLICANDO FORA
+========================================================= */
 
-    function mostrarLoading(
-        mensagem = "Carregando vídeo..."
-    ) {
+document
+    .querySelectorAll(
+        ".modal"
+    )
+    .forEach(
+        modal => {
 
-        loadingText.innerText =
-            mensagem;
+            modal.addEventListener(
+                "click",
+                evento => {
 
-        loading.classList.remove(
-            "hidden"
-        );
+                    if (
+                        evento.target ===
+                        modal
+                    ) {
 
-        erroPlayer.classList.add(
-            "hidden"
-        );
+                        fecharModais();
 
-    }
-
-
-    function esconderLoading() {
-
-        loading.classList.add(
-            "hidden"
-        );
-
-    }
-
-
-    // =====================================================
-    // ERRO
-    // =====================================================
-
-    function mostrarErro(
-        mensagem
-    ) {
-
-        esconderLoading();
-
-        erroTexto.innerText =
-            mensagem;
-
-        erroPlayer.classList.remove(
-            "hidden"
-        );
-
-    }
-
-
-    // =====================================================
-    // YOUTUBE ID
-    // =====================================================
-
-    function extrairYoutubeID(
-        url
-    ) {
-
-        if (!url)
-            return null;
-
-
-        // ID puro de 11 caracteres
-
-        if (
-            /^[a-zA-Z0-9_-]{11}$/
-                .test(url)
-        ) {
-
-            return url;
-
-        }
-
-
-        try {
-
-            const parsed =
-                new URL(url);
-
-
-            // youtube.com/watch?v=
-
-            if (
-                parsed.hostname
-                    .includes("youtube.com")
-            ) {
-
-                const v =
-                    parsed.searchParams
-                        .get("v");
-
-                if (v)
-                    return v;
-
-
-                // /embed/ID
-
-                const partes =
-                    parsed.pathname
-                        .split("/")
-                        .filter(Boolean);
-
-                const embedIndex =
-                    partes.indexOf("embed");
-
-                if (
-                    embedIndex !== -1 &&
-                    partes[embedIndex + 1]
-                ) {
-
-                    return partes[
-                        embedIndex + 1
-                    ];
+                    }
 
                 }
-
-
-                // /shorts/ID
-
-                const shortsIndex =
-                    partes.indexOf("shorts");
-
-                if (
-                    shortsIndex !== -1 &&
-                    partes[shortsIndex + 1]
-                ) {
-
-                    return partes[
-                        shortsIndex + 1
-                    ];
-
-                }
-
-            }
-
-
-            // youtu.be/ID
-
-            if (
-                parsed.hostname
-                    .includes("youtu.be")
-            ) {
-
-                return parsed.pathname
-                    .replace("/", "")
-                    .split("/")[0];
-
-            }
-
-        }
-
-        catch (e) {
-
-            console.warn(
-                "URL inválida:",
-                url
             );
 
         }
+    );
 
 
-        // Regex adicional
+/* =========================================================
+   ESC
+========================================================= */
 
-        const match =
-            String(url).match(
-                /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
-            );
-
-        return match
-            ? match[1]
-            : null;
-
-    }
-
-
-    // =====================================================
-    // DETECTAR TIPO DE VÍDEO
-    // =====================================================
-
-    function detectarTipoVideo(
-        url
-    ) {
-
-        if (!url)
-            return "nenhum";
-
-
-        const yt =
-            extrairYoutubeID(url);
-
-        if (yt)
-            return "youtube";
-
-
-        const lower =
-            url.toLowerCase();
-
+document.addEventListener(
+    "keydown",
+    evento => {
 
         if (
-            lower.includes(".mp4") ||
-            lower.includes(".webm") ||
-            lower.includes(".ogg") ||
-            lower.includes(".m3u8")
+            evento.key === "Escape"
         ) {
 
-            return "video";
+            fecharModais();
 
         }
-
-
-        if (
-            lower.includes("embed") ||
-            lower.includes("player")
-        ) {
-
-            return "iframe";
-
-        }
-
-
-        return "video";
 
     }
+);
 
 
-    // =====================================================
-    // CARREGAR YOUTUBE
-    // =====================================================
+/* =========================================================
+   INICIAR
+========================================================= */
 
-    function carregarYoutube(
-        url
-    ) {
+console.log(
+    "🚀 V8 Play+ iniciado"
+);
 
-        const id =
-            extrairYoutubeID(url);
+console.log(
+    "🛡️ Player direto ativado"
+);
 
 
-        if (!id) {
-
-            mostrarErro(
-                "O endereço do YouTube não é válido."
-            );
-
-            return;
-
-        }
-
-
-        videoPlayer.classList.add(
-            "hidden"
-        );
-
-        youtubePlayer.classList.remove(
-            "hidden"
-        );
-
-
-        youtubePlayer.src =
-            `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
-
-
-        youtubePlayer.onload =
-            () => {
-
-                esconderLoading();
-
-            };
-
-
-        // Segurança caso o onload não dispare
-
-        setTimeout(
-            () => {
-
-                esconderLoading();
-
-            },
-            2500
-        );
-
-    }
-
-
-    // =====================================================
-    // CARREGAR VÍDEO
-    // =====================================================
-
-    function carregarVideo(
-        url
-    ) {
-
-        youtubePlayer.src =
-            "";
-
-        youtubePlayer.classList.add(
-            "hidden"
-        );
-
-
-        videoPlayer.classList.remove(
-            "hidden"
-        );
-
-
-        videoPlayer.src =
-            url;
-
-        videoPlayer.load();
-
-
-        videoPlayer.onloadedmetadata =
-            () => {
-
-                esconderLoading();
-
-                console.log(
-                    "✅ Vídeo carregado"
-                );
-
-            };
-
-
-        videoPlayer.oncanplay =
-            () => {
-
-                esconderLoading();
-
-            };
-
-
-        videoPlayer.onerror =
-            () => {
-
-                console.error(
-                    "❌ Erro no vídeo:",
-                    videoPlayer.error
-                );
-
-                mostrarErro(
-                    "O vídeo não pôde ser reproduzido. O link pode estar indisponível, bloqueado pelo servidor ou ser incompatível com o navegador."
-                );
-
-            };
-
-
-        // Tentativa automática
-
-        videoPlayer.play()
-            .then(() => {
-
-                console.log(
-                    "▶️ Reprodução iniciada"
-                );
-
-            })
-            .catch(() => {
-
-                console.log(
-                    "ℹ️ Reprodução automática bloqueada pelo navegador."
-                );
-
-                esconderLoading();
-
-            });
-
-    }
-
-
-    // =====================================================
-    // CARREGAR IFRAME
-    // =====================================================
-
-    function carregarIframe(
-        url
-    ) {
-
-        videoPlayer.classList.add(
-            "hidden"
-        );
-
-        youtubePlayer.classList.remove(
-            "hidden"
-        );
-
-
-        youtubePlayer.src =
-            url;
-
-
-        youtubePlayer.onload =
-            () => {
-
-                esconderLoading();
-
-            };
-
-
-        setTimeout(
-            () => {
-
-                esconderLoading();
-
-            },
-            2500
-        );
-
-    }
-
-
-    // =====================================================
-    // ABRIR PLAYER
-    // =====================================================
-
-    function abrirVideo(
-        url
-    ) {
-
-        if (!url) {
-
-            mostrarErro(
-                "Nenhum vídeo foi informado para este conteúdo."
-            );
-
-            return;
-
-        }
-
-
-        mostrarLoading();
-
-
-        const tipo =
-            detectarTipoVideo(url);
-
-
-        console.log(
-            "🎬 Tipo de vídeo:",
-            tipo
-        );
-
-        console.log(
-            "🔗 URL:",
-            url
-        );
-
-
-        if (
-            tipo === "youtube"
-        ) {
-
-            carregarYoutube(
-                url
-            );
-
-            return;
-
-        }
-
-
-        if (
-            tipo === "iframe"
-        ) {
-
-            carregarIframe(
-                url
-            );
-
-            return;
-
-        }
-
-
-        carregarVideo(
-            url
-        );
-
-    }
-
-
-    // =====================================================
-    // BUSCAR FIRESTORE
-    // =====================================================
-
-    async function carregarDadosFirestore() {
-
-        if (
-            !itemId ||
-            !colecao
-        ) {
-
-            console.warn(
-                "ID ou coleção não informados."
-            );
-
-            return null;
-
-        }
-
-
-        try {
-
-            const referencia =
-                doc(
-                    db,
-                    colecao,
-                    itemId
-                );
-
-
-            const snap =
-                await getDoc(
-                    referencia
-                );
-
-
-            if (
-                !snap.exists()
-            ) {
-
-                console.warn(
-                    "Conteúdo não encontrado."
-                );
-
-                return null;
-
-            }
-
-
-            return {
-
-                id:
-                    snap.id,
-
-                colecao:
-                    colecao,
-
-                ...snap.data()
-
-            };
-
-        }
-
-        catch (erro) {
+carregarCatalogo()
+    .catch(
+        erro => {
 
             console.error(
-                "Erro ao consultar Firestore:",
+                "❌ Erro ao iniciar V8 Play+:",
                 erro
             );
 
-            return null;
-
         }
-
-    }
-
-
-    // =====================================================
-    // PREENCHER INFORMAÇÕES
-    // =====================================================
-
-    function preencherInformacoes(
-        item
-    ) {
-
-        if (!item)
-            return;
-
-
-        itemAtual =
-            item;
-
-
-        titulo.innerText =
-            item.titulo ||
-            tituloURL ||
-            "V8 Play+";
-
-
-        ano.innerText =
-            item.ano ||
-            "";
-
-
-        categoria.innerText =
-            item.categoria ||
-            item.tipo ||
-            "";
-
-
-        if (!ano.innerText)
-            document
-                .getElementById(
-                    "separadorAno"
-                )
-                .style.display =
-                "none";
-
-
-        descricao.innerText =
-            item.descricao ||
-            "Sem descrição disponível.";
-
-
-        if (isTrailer) {
-
-            trailerBadge.classList.remove(
-                "hidden"
-            );
-
-        }
-
-    }
-
-
-    // =====================================================
-    // VOLTAR
-    // =====================================================
-
-    document
-        .getElementById(
-            "btnVoltar"
-        )
-        .onclick =
-        () => {
-
-            if (
-                window.history.length > 1
-            ) {
-
-                window.history.back();
-
-            }
-
-            else {
-
-                window.location.href =
-                    "index.html";
-
-            }
-
-        };
-
-
-    // =====================================================
-    // RETRY
-    // =====================================================
-
-    document
-        .getElementById(
-            "btnRetry"
-        )
-        .onclick =
-        () => {
-
-            erroPlayer.classList.add(
-                "hidden"
-            );
-
-            if (itemAtual) {
-
-                const url =
-                    isTrailer
-                        ? (
-                            itemAtual.trailer ||
-                            itemAtual.videoTrailer ||
-                            videoURL
-                        )
-                        : (
-                            itemAtual.video ||
-                            itemAtual.video1 ||
-                            itemAtual.video2 ||
-                            itemAtual.video3 ||
-                            itemAtual.embed ||
-                            videoURL
-                        );
-
-                abrirVideo(url);
-
-            }
-
-            else if (videoURL) {
-
-                abrirVideo(
-                    videoURL
-                );
-
-            }
-
-        };
-
-
-    // =====================================================
-    // INICIALIZAÇÃO
-    // =====================================================
-
-    async function iniciar() {
-
-        console.log(
-            "🚀 Player V8 Play+ iniciado"
-        );
-
-
-        console.log(
-            "ID:",
-            itemId
-        );
-
-        console.log(
-            "Coleção:",
-            colecao
-        );
-
-        console.log(
-            "Vídeo recebido:",
-            videoURL
-        );
-
-        console.log(
-            "Trailer:",
-            isTrailer
-        );
-
-
-        mostrarLoading(
-            "Carregando conteúdo..."
-        );
-
-
-        // -------------------------------------------------
-        // BUSCA FIRESTORE
-        // -------------------------------------------------
-
-        const item =
-            await carregarDadosFirestore();
-
-
-        if (item) {
-
-            preencherInformacoes(
-                item
-            );
-
-
-            let url;
-
-
-            if (isTrailer) {
-
-                url =
-                    item.trailer ||
-                    item.videoTrailer ||
-                    videoURL;
-
-            }
-
-            else {
-
-                url =
-                    item.video ||
-                    item.video1 ||
-                    item.video2 ||
-                    item.video3 ||
-                    item.embed ||
-                    videoURL;
-
-            }
-
-
-            if (!url) {
-
-                mostrarErro(
-                    isTrailer
-                        ? "Este título não possui trailer disponível."
-                        : "Este título não possui vídeo disponível."
-                );
-
-                return;
-
-            }
-
-
-            abrirVideo(
-                url
-            );
-
-
-            return;
-
-        }
-
-
-        // -------------------------------------------------
-        // FALLBACK DA URL
-        // -------------------------------------------------
-
-        if (videoURL) {
-
-            titulo.innerText =
-                tituloURL ||
-                "V8 Play+";
-
-
-            abrirVideo(
-                videoURL
-            );
-
-
-            return;
-
-        }
-
-
-        // -------------------------------------------------
-        // SEM VÍDEO
-        // -------------------------------------------------
-
-        mostrarErro(
-            "Não foi possível localizar o conteúdo solicitado."
-        );
-
-    }
-
-
-    iniciar();
+    );
 
 </script>
-
 
 </body>
 </html>
